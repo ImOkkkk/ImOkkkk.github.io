@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="bUCDF5pEQe">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=66522575" charset="UTF-8"></script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"tonymua.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1.语音识别接口为了实现微信公众号与用户的多样化交互, 本章进行处理用户语音消息的开发. 开发者进入微信公众平台 https://mp.weixin.qq.com/ —接口权限—对话服务—接受消息—打开接收语音识别结果接口权限">
+<meta name="keywords" content="tool">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信公众号开发(四)处理语音消息">
+<meta property="og:url" content="http://tonymua.top/35386/index.html">
+<meta property="og:site_name" content="liuwy1998 BLOG">
+<meta property="og:description" content="1.语音识别接口为了实现微信公众号与用户的多样化交互, 本章进行处理用户语音消息的开发. 开发者进入微信公众平台 https://mp.weixin.qq.com/ —接口权限—对话服务—接受消息—打开接收语音识别结果接口权限">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-04-29T02:44:38.015Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信公众号开发(四)处理语音消息">
+<meta name="twitter:description" content="1.语音识别接口为了实现微信公众号与用户的多样化交互, 本章进行处理用户语音消息的开发. 开发者进入微信公众平台 https://mp.weixin.qq.com/ —接口权限—对话服务—接受消息—打开接收语音识别结果接口权限">
+
+<link rel="canonical" href="http://tonymua.top/35386/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>微信公众号开发(四)处理语音消息 | liuwy1998 BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="liuwy1998 BLOG" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">liuwy1998 BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">When they go low,we go high.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/35386/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="liuwy1998">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuwy1998 BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          微信公众号开发(四)处理语音消息
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="1-语音识别接口"><a href="#1-语音识别接口" class="headerlink" title="1.语音识别接口"></a>1.语音识别接口</h3><p>为了实现微信公众号与用户的多样化交互, 本章进行处理用户语音消息的开发.</p>
+<p>开发者进入微信公众平台 <span class="exturl" data-url="aHR0cHM6Ly9tcC53ZWl4aW4ucXEuY29tLw==">https://mp.weixin.qq.com/<i class="fa fa-external-link-alt"></i></span> —接口权限—对话服务—接受消息—打开接收语音识别结果接口权限</p>
+<a id="more"></a>
+
+<p><img data-src="../../../../assets/img/162311.jpg" alt></p>
+<p><img data-src="../../../../assets/img/162403.jpg" alt></p>
+<h3 id="2-获取语音识别结果"><a href="#2-获取语音识别结果" class="headerlink" title="2.获取语音识别结果"></a>2.获取语音识别结果</h3><p>请注意，开通语音识别后，用户每次发送语音给公众号时，微信会在推送的语音消息XML数据包中，增加一个<strong>Recognition</strong>字段（注：<code>由于客户端缓存，开发者开启或者关闭语音识别功能，对新关注者立刻生效，对已关注用户需要24小时生效。开发者可以重新关注此帐号进行测试</code>）。</p>
+<p>开启语音识别后的语音XML数据包如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">xml</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ToUserName</span>&gt;</span><span class="tag">&lt; ![<span class="attr">CDATA</span>[<span class="attr">toUser</span>] ]&gt;</span><span class="tag">&lt;/<span class="name">ToUserName</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">FromUserName</span>&gt;</span><span class="tag">&lt; ![<span class="attr">CDATA</span>[<span class="attr">fromUser</span>] ]&gt;</span><span class="tag">&lt;/<span class="name">FromUserName</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">CreateTime</span>&gt;</span>1357290913<span class="tag">&lt;/<span class="name">CreateTime</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">MsgType</span>&gt;</span><span class="tag">&lt; ![<span class="attr">CDATA</span>[<span class="attr">voice</span>] ]&gt;</span><span class="tag">&lt;/<span class="name">MsgType</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">MediaId</span>&gt;</span><span class="tag">&lt; ![<span class="attr">CDATA</span>[<span class="attr">media_id</span>] ]&gt;</span><span class="tag">&lt;/<span class="name">MediaId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Format</span>&gt;</span><span class="tag">&lt; ![<span class="attr">CDATA</span>[<span class="attr">Format</span>] ]&gt;</span><span class="tag">&lt;/<span class="name">Format</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Recognition</span>&gt;</span><span class="tag">&lt; ![<span class="attr">CDATA</span>[腾讯微信团队] ]&gt;</span><span class="tag">&lt;/<span class="name">Recognition</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">MsgId</span>&gt;</span>1234567890123456<span class="tag">&lt;/<span class="name">MsgId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">xml</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>语音消息参数说明</strong></p>
+<p><img data-src="../../../../assets/img/161521.jpg" alt></p>
+<p>开通语音识别功能以后，用户每次发送语音给微信公众号，微信会在推送语音消息XML数据包中添加一个<code>Recongnition</code>字段，该字段为语音识别出的文本内容.</p>
+<h3 id="3-功能实现"><a href="#3-功能实现" class="headerlink" title="3.功能实现"></a>3.功能实现</h3><p><strong>实体类VoiceMessage</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VoiceMessage</span> <span class="keyword">extends</span> <span class="title">BaseMessage</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String Recognition;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>MessageUtil</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">voiceMessageToXml</span><span class="params">(VoiceMessage voiceMessage)</span> </span>&#123;</span><br><span class="line">    xstream.alias(<span class="string">"xml"</span>, voiceMessage.getClass());</span><br><span class="line">    <span class="keyword">return</span> xstream.toXML(voiceMessage);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>MsgService</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MsgService</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Logger LOGGER = LoggerFactory.getLogger(MsgService<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">processRequest</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">        String respMessage = <span class="keyword">null</span>;</span><br><span class="line">        System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>)));</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// xml请求解析</span></span><br><span class="line">            Map&lt;String, String&gt; requestMap = MessageUtil.xmlToMap(request);</span><br><span class="line">            <span class="comment">// 发送方帐号（open_id）</span></span><br><span class="line">            String fromUserName = requestMap.get(<span class="string">"FromUserName"</span>);</span><br><span class="line">            <span class="comment">// 公众帐号</span></span><br><span class="line">            String toUserName = requestMap.get(<span class="string">"ToUserName"</span>);</span><br><span class="line">            <span class="comment">// 消息类型</span></span><br><span class="line">            String msgType = requestMap.get(<span class="string">"MsgType"</span>);</span><br><span class="line">            <span class="comment">// 消息内容</span></span><br><span class="line">            String content = requestMap.get(<span class="string">"Content"</span>);</span><br><span class="line"></span><br><span class="line">            String recognition = requestMap.get(<span class="string">"Recognition"</span>);</span><br><span class="line">            LOGGER.info(<span class="string">"FromUserName is:"</span> + fromUserName + <span class="string">", ToUserName is:"</span> + toUserName + <span class="string">", MsgType is:"</span> + msgType);</span><br><span class="line">            <span class="keyword">if</span> (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_VOICE))&#123;</span><br><span class="line">                System.out.println(recognition);</span><br><span class="line">                <span class="keyword">if</span>(recognition.indexOf(<span class="string">"环境信息"</span>)!=-<span class="number">1</span>)&#123;</span><br><span class="line">                    Map map = IoTPopApiUtil.IoTpop();</span><br><span class="line">                    Map ioTpop = JSON.parseObject(JSONObject.toJSONString(map), Map<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">                    Object data = ioTpop.get(<span class="string">"data"</span>);</span><br><span class="line">                    String str = data.toString();</span><br><span class="line">                    <span class="keyword">int</span> index=str.indexOf(<span class="string">"["</span>);</span><br><span class="line">                    String result=str.substring(index);</span><br><span class="line">                    String jsonStr = result.substring(<span class="number">0</span>, result.length() - <span class="number">1</span>);</span><br><span class="line">                    JSONArray array = JSONArray.parseArray(jsonStr);</span><br><span class="line">                    List&lt;Pi&gt; pi = JSONObject.parseArray(array.toJSONString(),Pi<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">                    String returnText=<span class="string">"当前温度:"</span>+pi.get(<span class="number">3</span>).getValue()+<span class="string">"°C"</span>+<span class="string">"\n"</span></span><br><span class="line">                            +<span class="string">"当前湿度:"</span>+pi.get(<span class="number">2</span>).getValue()+<span class="string">"%"</span>+<span class="string">"\n"</span></span><br><span class="line">                            +<span class="string">"当前光照强度:"</span>+pi.get(<span class="number">4</span>).getValue()+<span class="string">"Lux"</span>+<span class="string">"\n"</span></span><br><span class="line">                            +<span class="string">"当前气压:"</span>+pi.get(<span class="number">1</span>).getValue()+<span class="string">"hPa"</span>+<span class="string">"\n"</span></span><br><span class="line">                            +<span class="string">"当前海拔:"</span>+pi.get(<span class="number">0</span>).getValue()+<span class="string">"m"</span>+<span class="string">"\n"</span></span><br><span class="line">                            +<span class="string">"降雨情况:"</span>+(pi.get(<span class="number">5</span>).getValue()==<span class="number">1</span>?<span class="string">"降雨"</span>:<span class="string">"未降雨"</span>);</span><br><span class="line">                    <span class="comment">//文本消息</span></span><br><span class="line">                    TextMessage text = <span class="keyword">new</span> TextMessage();</span><br><span class="line">                    text.setContent(returnText);</span><br><span class="line">                    text.setToUserName(fromUserName);</span><br><span class="line">                    text.setFromUserName(toUserName);</span><br><span class="line">                    text.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>)));</span><br><span class="line">                    text.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);</span><br><span class="line">                    respMessage = MessageUtil.textMessageToXml(text);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(recognition.indexOf(<span class="string">"天气"</span>)!=-<span class="number">1</span>)&#123;</span><br><span class="line">                    <span class="comment">//自动回复</span></span><br><span class="line">                    NewsMessage newmsg = <span class="keyword">new</span> NewsMessage();</span><br><span class="line">                    newmsg.setToUserName(fromUserName);</span><br><span class="line">                    newmsg.setFromUserName(toUserName);</span><br><span class="line">                    newmsg.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>)));</span><br><span class="line">                    newmsg.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);</span><br><span class="line">                    newmsg.setFuncFlag(<span class="number">0</span>);</span><br><span class="line">                    List&lt;Article&gt; articleList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">                    Article article = <span class="keyword">new</span> Article();</span><br><span class="line">                    article.setTitle(<span class="string">"天气预报"</span>);</span><br><span class="line">                    article.setDescription(<span class="string">"点击了解未来天气详情..."</span>);</span><br><span class="line">                    article.setPicUrl(<span class="string">"https://xxxx.oss-cn-beijing.aliyuncs.com/ep.png"</span>);</span><br><span class="line">                    article.setUrl(<span class="string">"https://widget-page.heweather.net/h5/index.html?bg=1&amp;md=0123456&amp;lc=accu&amp;key=4bdfe35a67bb4b53bee844f6ce7a4b5c"</span>);</span><br><span class="line">                    articleList.add(article);</span><br><span class="line">                    <span class="comment">// 设置图文消息个数</span></span><br><span class="line">                    newmsg.setArticleCount(articleList.size());</span><br><span class="line">                    <span class="comment">// 设置图文消息包含的图文集合</span></span><br><span class="line">                    newmsg.setArticles(articleList);</span><br><span class="line">                    <span class="comment">// 将图文消息对象转换成xml字符串</span></span><br><span class="line">                    respMessage = MessageUtil.newsMessageToXml(newmsg);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            LOGGER.error(<span class="string">"error......"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> respMessage;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-测试"><a href="#4-测试" class="headerlink" title="4.测试"></a>4.测试</h3><p><img data-src="../../../../assets/img/163205.jpg" alt></p>
+<p><img data-src="../../../../assets/img/163500.jpg" alt></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>请作者喝瓶肥宅快乐水</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/vxpay.jpg" alt="liuwy1998 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/alipay.jpg" alt="liuwy1998 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/tool/" rel="tag"><i class="fa fa-tag"></i> tool</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/deployment/" rel="prev" title="微信公众号开发(五)部署项目到阿里云服务器">
+      <i class="fa fa-chevron-left"></i> 微信公众号开发(五)部署项目到阿里云服务器
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/55497/" rel="next" title="微服务项目总结(一.通用异常处理, 分类查询, 品牌查询)">
+      微服务项目总结(一.通用异常处理, 分类查询, 品牌查询) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-语音识别接口"><span class="nav-text">1.语音识别接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-获取语音识别结果"><span class="nav-text">2.获取语音识别结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-功能实现"><span class="nav-text">3.功能实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-测试"><span class="nav-text">4.测试</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liuwy1998"
+      src="/../assets/img/head.jpg">
+  <p class="site-author-name" itemprop="name">liuwy1998</p>
+  <div class="site-description" itemprop="description">Java开发, 后端开发</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">皖ICP备19022525号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liuwy1998</span>
+</div><script color="0,137,108" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://tonymua.top/35386/',]
+      });
+      });
+  </script>
+
+</body>
+</html>

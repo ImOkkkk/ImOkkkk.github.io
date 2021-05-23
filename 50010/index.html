@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="bUCDF5pEQe">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=66522575" charset="UTF-8"></script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"tonymua.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1.Hystrix1.1 简介Hystrix是Netflix公司的一款组件。 主页：https://github.com/Netflix/Hystrix/ Hystix是Netflix开源的一个延迟和容错库，用于隔离访问远程服务、第三方库，防止出现级联失败。 1.2 雪崩问题​    微服务中，服务间调用关系错综复杂，一个请求，可能需要调用多个微服务接口才能实现，会形成非常复杂的调用链路. 一次业">
+<meta name="keywords" content="框架">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringCloud框架(二)(微服务)">
+<meta property="og:url" content="http://tonymua.top/50010/index.html">
+<meta property="og:site_name" content="liuwy1998 BLOG">
+<meta property="og:description" content="1.Hystrix1.1 简介Hystrix是Netflix公司的一款组件。 主页：https://github.com/Netflix/Hystrix/ Hystix是Netflix开源的一个延迟和容错库，用于隔离访问远程服务、第三方库，防止出现级联失败。 1.2 雪崩问题​    微服务中，服务间调用关系错综复杂，一个请求，可能需要调用多个微服务接口才能实现，会形成非常复杂的调用链路. 一次业">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-04-29T02:44:38.079Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringCloud框架(二)(微服务)">
+<meta name="twitter:description" content="1.Hystrix1.1 简介Hystrix是Netflix公司的一款组件。 主页：https://github.com/Netflix/Hystrix/ Hystix是Netflix开源的一个延迟和容错库，用于隔离访问远程服务、第三方库，防止出现级联失败。 1.2 雪崩问题​    微服务中，服务间调用关系错综复杂，一个请求，可能需要调用多个微服务接口才能实现，会形成非常复杂的调用链路. 一次业">
+
+<link rel="canonical" href="http://tonymua.top/50010/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>SpringCloud框架(二)(微服务) | liuwy1998 BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="liuwy1998 BLOG" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">liuwy1998 BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">When they go low,we go high.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/50010/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="liuwy1998">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuwy1998 BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SpringCloud框架(二)(微服务)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-Hystrix"><a href="#1-Hystrix" class="headerlink" title="1.Hystrix"></a>1.Hystrix</h4><h5 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1 简介"></a>1.1 简介</h5><p>Hystrix是Netflix公司的一款组件。</p>
+<p>主页：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL05ldGZsaXgvSHlzdHJpeC8=">https://github.com/Netflix/Hystrix/<i class="fa fa-external-link-alt"></i></span></p>
+<p>Hystix是Netflix开源的一个延迟和容错库，用于隔离访问远程服务、第三方库，防止出现级联失败。</p>
+<h5 id="1-2-雪崩问题"><a href="#1-2-雪崩问题" class="headerlink" title="1.2 雪崩问题"></a>1.2 雪崩问题</h5><p>​    微服务中，服务间调用关系错综复杂，一个请求，可能需要调用多个微服务接口才能实现，会形成非常复杂的调用链路.</p>
+<p>一次业务请求，需要调用A、P、H、I四个服务，这四个服务又可能调用其它服务。</p>
+<p>​    如果此时，某个服务出现异常, 请求阻塞，用户不会得到响应，则tomcat的这个线程不会释放，于是越来越多的用户请求到来，越来越多的线程会阻塞服务器支持的线程和并发数有限，请求一直阻塞，会导致服务器资源耗尽，从而导致所有其它服务都不可用，形成雪崩效应。</p>
+<p>Hystix解决雪崩问题的手段有两个：</p>
+<a id="more"></a>
+
+<ul>
+<li><strong>线程隔离</strong></li>
+<li><strong>服务熔断</strong></li>
+</ul>
+<h5 id="1-3-线程隔离，服务降级"><a href="#1-3-线程隔离，服务降级" class="headerlink" title="1.3 线程隔离，服务降级"></a>1.3 线程隔离，服务降级</h5><h6 id="1-3-1-原理"><a href="#1-3-1-原理" class="headerlink" title="1.3.1 原理"></a>1.3.1 原理</h6><p>Hystrix为每个依赖服务调用分配一个小的线程池，如果线程池已满调用将被立即拒绝，默认不采用排队.加速失败判定时间。</p>
+<p>用户的请求将不再直接访问服务，而是通过线程池中的空闲线程来访问服务，如果<strong>线程池已满</strong>，或者<strong>请求超时</strong>，则会进行降级处理，什么是服务降级？</p>
+<blockquote>
+<p>服务降级：优先保证核心服务，而非核心服务不可用或弱可用。</p>
+</blockquote>
+<p>用户的请求故障时，不会被阻塞，更不会无休止的等待或者看到系统崩溃，至少可以看到一个执行结果（例如返回友好的提示信息） 。</p>
+<p>服务降级虽然会导致请求失败，但是不会导致阻塞，而且最多会影响这个依赖服务对应的线程池中的资源，对其它服务没有响应。</p>
+<p>触发Hystix服务降级的情况：</p>
+<ul>
+<li>线程池已满</li>
+<li>请求超时</li>
+</ul>
+<h6 id="1-3-2-动手实践"><a href="#1-3-2-动手实践" class="headerlink" title="1.3.2 动手实践"></a>1.3.2 动手实践</h6><p>首先在consumer_demo的pom.xml中引入Hystrix依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-netflix-hystrix<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>开启熔断</strong></p>
+<p>在启动类中加注解@EnableCircuitBreaker</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableCircuitBreaker</span></span><br><span class="line"><span class="meta">@EnableDiscoveryClient</span></span><br><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsumerApplication</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@LoadBalanced</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RestTemplate <span class="title">restTemplate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> RestTemplate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(ConsumerApplication<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，我们类上的注解越来越多，在微服务中，经常会引入上面的三个注解，于是Spring就提供了一个组合注解：@SpringCloudApplication</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringCloudApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsumerApplication</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@LoadBalanced</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RestTemplate <span class="title">restTemplate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> RestTemplate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(ConsumerApplication<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>编写降级逻辑</strong></p>
+<p>我们改造consumer_demo，当目标服务的调用出现故障，我们希望快速失败，给用户一个友好提示。因此需要提前编写好失败时的降级处理逻辑，要使用HystixCommond来完成：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"consumer"</span>)</span><br><span class="line"><span class="meta">@DefaultProperties</span>(defaultFallback =<span class="string">"fallbackMethod"</span> )</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsumerController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> RestTemplate restTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"&#123;id&#125;"</span>)</span><br><span class="line">    <span class="meta">@HystrixCommand</span></span><br><span class="line"><span class="comment">/*    @HystrixCommand(commandProperties = &#123;</span></span><br><span class="line"><span class="comment">            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds",value = "2000"),</span></span><br><span class="line"><span class="comment">            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold",value = "10"),</span></span><br><span class="line"><span class="comment">            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds",value = "10000"),</span></span><br><span class="line"><span class="comment">            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage",value = "60")</span></span><br><span class="line"><span class="comment">    &#125;)*/</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">queryById</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span>Integer id)</span>&#123;</span><br><span class="line">        String url = <span class="string">"http://account-service/account/"</span>+id;</span><br><span class="line">        <span class="keyword">return</span> restTemplate.getForObject(url,String<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/*熔断方法</span></span><br><span class="line"><span class="comment">     * 返回值要和被熔断的方法的返回值一致</span></span><br><span class="line"><span class="comment">     * 熔断方法不需要参数</span></span><br><span class="line"><span class="comment">     * @return*/</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">fallbackMethod</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"请求繁忙，请稍后再试！"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>要注意，因为熔断的降级逻辑方法必须跟正常逻辑方法保证：<strong>相同的参数列表和返回值声明</strong>。失败逻辑中返回User对象没有太大意义，一般会返回友好提示。所以我们把queryById的方法改造为返回String，反正也是Json数据。这样失败逻辑中返回一个错误说明，会比较方便。</p>
+<ul>
+<li>@DefaultProperties(defaultFallback = “defaultFallBack”)：在类上指明统一的失败降级方法</li>
+<li>@HystrixCommand：在方法上直接使用该注解，使用默认的剪辑方法。</li>
+<li>defaultFallback：默认降级方法，不用任何参数，以匹配更多方法，但是返回值一定一致</li>
+</ul>
+<p><strong>设置超时</strong></p>
+<p>在之前的案例中，请求在超过1秒后都会返回错误信息，这是因为Hystix的默认超时时长为1，我们可以通过配置修改这个值：</p>
+<p>我们可以通过<code>hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds</code>来设置Hystrix超时时间。该配置没有提示。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">hystrix:</span></span><br><span class="line">  <span class="attr">command:</span></span><br><span class="line">    <span class="attr">default:</span></span><br><span class="line">      <span class="attr">execution:</span></span><br><span class="line">        <span class="attr">isolation:</span></span><br><span class="line">          <span class="attr">thread:</span></span><br><span class="line">            <span class="attr">timeoutInMilliseconds:</span> <span class="number">2000</span> <span class="comment"># 设置hystrix的超时时间为2000ms</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="1-4-服务熔断"><a href="#1-4-服务熔断" class="headerlink" title="1.4 服务熔断"></a>1.4 服务熔断</h5><h6 id="1-4-1-熔断原理"><a href="#1-4-1-熔断原理" class="headerlink" title="1.4.1 熔断原理"></a>1.4.1 熔断原理</h6><p><img data-src="../../../../assets/img/1525658640314.png" alt></p>
+<p>熔断状态机3个状态：</p>
+<ul>
+<li>Closed：关闭状态，所有请求都正常访问。</li>
+<li>Open：打开状态，所有请求都会被降级。Hystix会对请求情况计数，当一定时间内失败请求百分比达到阈值，则触发熔断，断路器会完全打开。默认失败比例的阈值是50%，请求次数最少不低于20次。</li>
+<li>Half Open：半开状态，open状态不是永久的，打开后会进入休眠时间（默认是5S）。随后断路器会自动进入半开状态。此时会释放部分请求通过，若这些请求都是健康的，则会完全关闭断路器，否则继续保持打开，再次进行休眠计时</li>
+</ul>
+<h6 id="1-4-2-动手实践"><a href="#1-4-2-动手实践" class="headerlink" title="1.4.2 动手实践"></a>1.4.2 动手实践</h6><p>认的熔断触发要求较高，休眠时间窗较短，为了测试方便，我们可以通过配置修改熔断策略：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">circuitBreaker.requestVolumeThreshold</span>=<span class="string">10</span></span><br><span class="line"><span class="meta">circuitBreaker.sleepWindowInMilliseconds</span>=<span class="string">10000</span></span><br><span class="line"><span class="meta">circuitBreaker.errorThresholdPercentage</span>=<span class="string">50</span></span><br></pre></td></tr></table></figure>
+
+<p>解读：</p>
+<ul>
+<li>requestVolumeThreshold：触发熔断的最小请求次数，默认20</li>
+<li>errorThresholdPercentage：触发熔断的失败请求最小占比，默认50%</li>
+<li>sleepWindowInMilliseconds：休眠时长，默认是5000毫秒</li>
+</ul>
+<h4 id="2-Feign"><a href="#2-Feign" class="headerlink" title="2.Feign"></a>2.Feign</h4><h5 id="2-1-简介"><a href="#2-1-简介" class="headerlink" title="2.1 简介"></a>2.1 简介</h5><p>​    Feign可以把Rest的请求进行隐藏，伪装成类似SpringMVC的Controller一样。你不用再自己拼接url，拼接参数等等操作，一切都交给Feign去做。</p>
+<p>项目主页：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL09wZW5GZWlnbi9mZWlnbg==">https://github.com/OpenFeign/feign<i class="fa fa-external-link-alt"></i></span></p>
+<p><img data-src="../../../../assets/img/1525652009416.png" alt></p>
+<h5 id="2-2-快速入门"><a href="#2-2-快速入门" class="headerlink" title="2.2 快速入门"></a>2.2 快速入门</h5><p>导入依赖:</p>
+<p>我们在启动类上，<strong>添加注解</strong>，开启Feign功能</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringCloudApplication</span></span><br><span class="line"><span class="meta">@EnableFeignClients</span> <span class="comment">//开启feign客户端</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsumerApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(ConsumerApplication<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>删除RestTemplate</strong>：feign已经自动集成了Ribbon负载均衡的RestTemplate。所以，此处不需要再注册RestTemplate。</p>
+<p><strong>Feign的客户端</strong></p>
+<p>在consumer_demo工程中，添加AccountClient接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FeignClient</span>(<span class="string">"account-service"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AccountClient</span> </span>&#123;</span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"account/&#123;id&#125;"</span>)</span><br><span class="line">    <span class="function">Account <span class="title">queryById</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span>Integer id)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>首先这是一个接口，Feign会通过动态代理，帮我们生成实现类。这点跟mybatis的mapper很像</li>
+<li><code>@FeignClient</code>，声明这是一个Feign客户端，类似<code>@Mapper</code>注解。同时通过<code>value</code>属性指定服务名称</li>
+<li>接口中的定义方法，完全采用SpringMVC的注解，Feign会根据注解帮我们生成URL，并访问获取结果</li>
+</ul>
+<p>改造原来的调用逻辑，调用UserClient接口:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"consumer"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsumerController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> AccountClient accountClient;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"&#123;id&#125;"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Account <span class="title">queryById</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span>Integer id)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> accountClient.queryById(id);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-3-负载均衡"><a href="#2-3-负载均衡" class="headerlink" title="2.3 负载均衡"></a>2.3 负载均衡</h5><p>Feign中本身已经集成了Ribbon依赖和自动配置：</p>
+<p>因此我们不需要额外引入依赖，也不需要再注册<code>RestTemplate</code>对象。</p>
+<h5 id="2-4-Hystrix支持"><a href="#2-4-Hystrix支持" class="headerlink" title="2.4 Hystrix支持"></a>2.4 Hystrix支持</h5><p>Feign默认也有对Hystrix的集成：</p>
+<p>只不过，默认情况下是关闭的。我们需要通过下面的参数来开启：(consumer_demo工程添加配置内容)</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">feign:</span></span><br><span class="line">  <span class="attr">hystrix:</span></span><br><span class="line">    <span class="attr">enabled:</span> <span class="literal">true</span> <span class="comment"># 开启Feign的熔断功能</span></span><br></pre></td></tr></table></figure>
+
+<p>但是，Feign中的Fallback配置不像hystrix中那样简单了。</p>
+<p>1）首先，我们要定义一个类AccountClientFallback，实现刚才编写的UserClient，作为fallback的处理类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AccountClientFallback</span> <span class="keyword">implements</span> <span class="title">AccountClient</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Account <span class="title">queryById</span><span class="params">(Integer id)</span> </span>&#123;</span><br><span class="line">        Account account=<span class="keyword">new</span> Account();</span><br><span class="line">        account.setName(<span class="string">"服务器繁忙，请稍后再试！"</span>);</span><br><span class="line">        <span class="keyword">return</span> account;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>2）然后在AccountClient中，指定刚才编写的实现类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FeignClient</span>(value = <span class="string">"account-service"</span>,fallback = AccountClientFallback<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">interface</span> <span class="title">AccountClient</span> </span>&#123;</span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"account/&#123;id&#125;"</span>)</span><br><span class="line">    <span class="function">Account <span class="title">queryById</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span>Integer id)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-5-请求压缩-了解"><a href="#2-5-请求压缩-了解" class="headerlink" title="2.5.请求压缩(了解)"></a>2.5.请求压缩(了解)</h5><p>Spring Cloud Feign 支持对请求和响应进行GZIP压缩，以减少通信过程中的性能损耗。通过下面的参数即可开启请求与响应的压缩功能：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">feign:</span></span><br><span class="line">  <span class="attr">compression:</span></span><br><span class="line">    <span class="attr">request:</span></span><br><span class="line">      <span class="attr">enabled:</span> <span class="literal">true</span> <span class="comment"># 开启请求压缩</span></span><br><span class="line">    <span class="attr">response:</span></span><br><span class="line">      <span class="attr">enabled:</span> <span class="literal">true</span> <span class="comment"># 开启响应压缩</span></span><br></pre></td></tr></table></figure>
+
+<p>同时，我们也可以对请求的数据类型，以及触发压缩的大小下限进行设置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">feign:</span></span><br><span class="line">  <span class="attr">compression:</span></span><br><span class="line">    <span class="attr">request:</span></span><br><span class="line">      <span class="attr">enabled:</span> <span class="literal">true</span> <span class="comment"># 开启请求压缩</span></span><br><span class="line">      <span class="attr">mime-types:</span> <span class="string">text/html,application/xml,application/json</span> <span class="comment"># 设置压缩的数据类型</span></span><br><span class="line">      <span class="attr">min-request-size:</span> <span class="number">2048</span> <span class="comment"># 设置触发压缩的大小下限</span></span><br></pre></td></tr></table></figure>
+
+<p>注：上面的数据类型、压缩大小下限均为默认值。</p>
+<h5 id="2-6-日志级别-了解"><a href="#2-6-日志级别-了解" class="headerlink" title="2.6 日志级别(了解)"></a>2.6 日志级别(了解)</h5><h4 id="3-Zuul网关"><a href="#3-Zuul网关" class="headerlink" title="3.Zuul网关"></a>3.Zuul网关</h4><p>​    服务网关是微服务架构中一个不可或缺的部分。通过服务网关统一向外系统提供REST API的过程中，除了具备<code>服务路由</code>、<code>均衡负载</code>功能之外，它还具备了<code>权限控制</code>等功能。Spring Cloud Netflix中的Zuul就担任了这样的一个角色，为微服务架构提供了前门保护的作用，同时将权限控制这些较重的非业务逻辑内容迁移到服务路由层面，使得服务集群主体能够具备更高的可复用性和可测试性。</p>
+<h5 id="3-1-简介"><a href="#3-1-简介" class="headerlink" title="3.1 简介"></a>3.1 简介</h5><p>官网：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL05ldGZsaXgvenV1bA==">https://github.com/Netflix/zuul<i class="fa fa-external-link-alt"></i></span></p>
+<p><img data-src="../../../../assets/img/1525675168152.png" alt></p>
+<h5 id="3-2-Zuul加入后的架构"><a href="#3-2-Zuul加入后的架构" class="headerlink" title="3.2 Zuul加入后的架构"></a>3.2 Zuul加入后的架构</h5><p><img data-src="../../../../assets/img/1525675648881.png" alt></p>
+<p>​    不管是来自于客户端（PC或移动端）的请求，还是服务内部调用。一切对服务的请求都会经过Zuul这个网关，然后再由网关来实现 鉴权、动态路由等等操作。Zuul就是我们服务的统一入口。</p>
+<h5 id="3-3-快速入门"><a href="#3-3-快速入门" class="headerlink" title="3.3 快速入门"></a>3.3 快速入门</h5><p>新建一个module:gateway</p>
+<p><strong>引入依赖</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-netflix-zuul<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-netflix-eureka-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>启动类GatewayApplication</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableZuulProxy</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GatewayApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(GatewayApplication<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>application.yaml</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8084</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">gateway</span></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line">  <span class="attr">client:</span></span><br><span class="line">    <span class="attr">service-url:</span></span><br><span class="line">      <span class="attr">defaultZone:</span> <span class="string">http://localhost:8082/eureka</span></span><br><span class="line"><span class="attr">zuul:</span></span><br><span class="line">  <span class="attr">routes:</span></span><br><span class="line">    <span class="attr">account-service:</span></span><br><span class="line">      <span class="attr">path:</span> <span class="string">/account/**</span></span><br><span class="line">      <span class="attr">serviceId:</span> <span class="string">account-service</span></span><br><span class="line">      <span class="attr">strip-prefix:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">ignored-services:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">consumer-service</span>	<span class="string">//忽略某些服务的配置</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="3-4-简化的路由配置"><a href="#3-4-简化的路由配置" class="headerlink" title="3.4 简化的路由配置"></a>3.4 简化的路由配置</h5><p>在刚才的配置中，我们的规则是这样的：</p>
+<ul>
+<li><code>zuul.routes.&lt;route&gt;.path=/xxx/**</code>： 来指定映射路径。<code>&lt;route&gt;</code>是自定义的路由名</li>
+<li><code>zuul.routes.&lt;route&gt;.serviceId=service-provider</code>：来指定服务名。</li>
+</ul>
+<p>而大多数情况下，我们的<code>&lt;route&gt;</code>路由名称往往和服务名会写成一样的。因此Zuul就提供了一种简化的配置语法：<code>zuul.routes.&lt;serviceId&gt;=&lt;path&gt;</code></p>
+<p>比方说上面我们关于service-provider的配置可以简化为一条：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">zuul:</span></span><br><span class="line">  <span class="attr">routes:</span></span><br><span class="line">    <span class="attr">account-service:</span> <span class="string">/account-service/**</span> <span class="comment"># 这里是映射路径</span></span><br></pre></td></tr></table></figure>
+
+<p>省去了对服务名称的配置。</p>
+<h5 id="3-5-默认的路由规则"><a href="#3-5-默认的路由规则" class="headerlink" title="3.5 默认的路由规则"></a>3.5 默认的路由规则</h5><p>在使用Zuul的过程中，上面讲述的规则已经大大的简化了配置项。但是当服务较多时，配置也是比较繁琐的。因此Zuul就指定了默认的路由规则：</p>
+<ul>
+<li>默认情况下，一切服务的映射路径就是服务名本身。例如服务名为：<code>account-service</code>，则默认的映射路径就    是：<code>/account-service/**</code></li>
+</ul>
+<p>也就是说，刚才的映射规则我们完全不配置也是OK的，不信就试试看。</p>
+<h5 id="3-6-路由前缀"><a href="#3-6-路由前缀" class="headerlink" title="3.6 路由前缀"></a>3.6 路由前缀</h5><p>配置示例：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">zuul:</span></span><br><span class="line">  <span class="attr">routes:</span></span><br><span class="line">    <span class="attr">account-service:</span> <span class="string">/account-service/**</span></span><br><span class="line">  <span class="attr">prefix:</span> <span class="string">/api</span> <span class="comment"># 添加路由前缀</span></span><br></pre></td></tr></table></figure>
+
+<p>我们通过<code>zuul.prefix=/api</code>来指定了路由的前缀，这样在发起请求时，路径就要以/api开头。</p>
+<h5 id="3-7-过滤器"><a href="#3-7-过滤器" class="headerlink" title="3.7 过滤器"></a>3.7 过滤器</h5><p>Zuul作为网关的其中一个重要功能，就是实现请求的鉴权。而这个动作我们往往是通过Zuul提供的过滤器来实现的。</p>
+<h6 id="3-7-1-ZuulFilter"><a href="#3-7-1-ZuulFilter" class="headerlink" title="3.7.1 ZuulFilter"></a>3.7.1 ZuulFilter</h6><p>ZuulFilter是过滤器的顶级父类。在这里我们看一下其中定义的4个最重要的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> ZuulFilter implements IZuulFilter&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">public</span> String <span class="title">filterType</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">abstract</span> <span class="keyword">public</span> <span class="keyword">int</span> <span class="title">filterOrder</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">shouldFilter</span><span class="params">()</span></span>;<span class="comment">// 来自IZuulFilter</span></span><br><span class="line"></span><br><span class="line">    <span class="function">Object <span class="title">run</span><span class="params">()</span> <span class="keyword">throws</span> ZuulException</span>;<span class="comment">// IZuulFilter</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>shouldFilter</code>：返回一个<code>Boolean</code>值，判断该过滤器是否需要执行。返回true执行，返回false不执行。</li>
+<li><code>run</code>：过滤器的具体业务逻辑。</li>
+<li><code>filterType</code>：返回字符串，代表过滤器的类型。包含以下4种：<ul>
+<li><code>pre</code>：请求在被路由之前执行</li>
+<li><code>route</code>：在路由请求时调用</li>
+<li><code>post</code>：在route和errror过滤器之后调用</li>
+<li><code>error</code>：处理请求时发生错误调用</li>
+</ul>
+</li>
+<li><code>filterOrder</code>：通过返回的int值来定义过滤器的执行顺序，数字越小优先级越高。</li>
+</ul>
+<h6 id="3-7-2-过滤器执行生命周期"><a href="#3-7-2-过滤器执行生命周期" class="headerlink" title="3.7.2 过滤器执行生命周期"></a>3.7.2 过滤器执行生命周期</h6><p>这张是Zuul官网提供的请求生命周期图，清晰的表现了一个请求在各个过滤器的执行顺序。</p>
+<p><img data-src="../../../../assets/img/1529152248172.png" alt></p>
+<p>正常流程：</p>
+<ul>
+<li>请求到达首先会经过pre类型过滤器，而后到达route类型，进行路由，请求就到达真正的服务提供者，执行请求，返回结果后，会到达post过滤器。而后返回响应。</li>
+</ul>
+<p>异常流程：</p>
+<ul>
+<li>整个过程中，pre或者route过滤器出现异常，都会直接进入error过滤器，在error处理完毕后，会将请求交给POST过滤器，最后返回给用户。</li>
+<li>如果是error过滤器自己出现异常，最终也会进入POST过滤器，将最终结果返回给请求客户端。</li>
+<li>如果是POST过滤器出现异常，会跳转到error过滤器，但是与pre和route不同的是，请求不会再到达POST过滤器了。</li>
+</ul>
+<h6 id="3-7-3-使用场景"><a href="#3-7-3-使用场景" class="headerlink" title="3.7.3 使用场景"></a>3.7.3 使用场景</h6><p>场景非常多：</p>
+<ul>
+<li>请求鉴权：一般放在pre类型，如果发现没有访问权限，直接就拦截了</li>
+<li>异常处理：一般会在error类型和post类型过滤器中结合来处理。</li>
+<li>服务调用时长统计：pre和post结合使用。</li>
+</ul>
+<h5 id="3-8-自定义过滤器"><a href="#3-8-自定义过滤器" class="headerlink" title="3.8 自定义过滤器"></a>3.8 自定义过滤器</h5><p>接下来我们来自定义一个过滤器，模拟一个登录的校验。基本逻辑：如果请求中有access-token参数，则认为请求有效，放行。</p>
+<p><strong>LoginFilter</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginFilter</span> <span class="keyword">extends</span> <span class="title">ZuulFilter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">filterType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> FilterConstants.PRE_TYPE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">filterOrder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> FilterConstants.PRE_DECORATION_FILTER_ORDER-<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">shouldFilter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">run</span><span class="params">()</span> <span class="keyword">throws</span> ZuulException </span>&#123;</span><br><span class="line">        <span class="comment">//获取请求上下文</span></span><br><span class="line">        RequestContext ctx = RequestContext.getCurrentContext();</span><br><span class="line">        <span class="comment">//获取Request</span></span><br><span class="line">        HttpServletRequest request = ctx.getRequest();</span><br><span class="line">        <span class="comment">//获取请求参数access-token</span></span><br><span class="line">        String token = request.getParameter(<span class="string">"access-token"</span>);</span><br><span class="line">        <span class="comment">//判断是否存在</span></span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isBlank(token))&#123;</span><br><span class="line">            <span class="comment">//不存在,则拦截</span></span><br><span class="line">            ctx.setSendZuulResponse(<span class="keyword">false</span>);</span><br><span class="line">            <span class="comment">//设置响应状态码，403</span></span><br><span class="line">            ctx.setResponseStatusCode(HttpStatus.FORBIDDEN.value());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>若使用StringUtils, 需要导入依赖:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.commons<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-lang3<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>测试</strong></p>
+<p><img data-src="../../../../assets/img/104816.jpg" alt></p>
+<p><img data-src="../../../../assets/img/104931.jpg" alt></p>
+<h5 id="3-9-负载均衡和熔断"><a href="#3-9-负载均衡和熔断" class="headerlink" title="3.9 负载均衡和熔断"></a>3.9 负载均衡和熔断</h5><p>Zuul中默认就已经集成了Ribbon负载均衡和Hystix熔断机制。但是所有的超时策略都是走的默认值，比如熔断超时时间只有1S，很容易就触发了。因此建议我们手动进行配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">hystrix:</span></span><br><span class="line">  <span class="attr">command:</span></span><br><span class="line">    <span class="attr">default:</span></span><br><span class="line">      <span class="attr">execution:</span></span><br><span class="line">        <span class="attr">isolation:</span></span><br><span class="line">          <span class="attr">thread:</span></span><br><span class="line">            <span class="attr">timeoutInMilliseconds:</span> <span class="number">4000</span> <span class="comment"># 设置hystrix的超时时间为4000ms</span></span><br><span class="line"><span class="attr">ribbon:</span></span><br><span class="line">  <span class="attr">ConnectionTimeOut:</span> <span class="number">500</span></span><br><span class="line">  <span class="attr">ReadTimeOut:</span> <span class="number">1000</span></span><br></pre></td></tr></table></figure>
+
+<p>ribbon的超时时长, 真实值是(connect+read)*2, 需小于hystrix时长.</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>请作者喝瓶肥宅快乐水</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/vxpay.jpg" alt="liuwy1998 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/alipay.jpg" alt="liuwy1998 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/框架/" rel="tag"><i class="fa fa-tag"></i> 框架</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/52552/" rel="prev" title="SpringCloud框架(一)(微服务)">
+      <i class="fa fa-chevron-left"></i> SpringCloud框架(一)(微服务)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/22356/" rel="next" title="SpringMVC框架(一)">
+      SpringMVC框架(一) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-Hystrix"><span class="nav-text">1.Hystrix</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-简介"><span class="nav-text">1.1 简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-雪崩问题"><span class="nav-text">1.2 雪崩问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-线程隔离，服务降级"><span class="nav-text">1.3 线程隔离，服务降级</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-3-1-原理"><span class="nav-text">1.3.1 原理</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-3-2-动手实践"><span class="nav-text">1.3.2 动手实践</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-4-服务熔断"><span class="nav-text">1.4 服务熔断</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-4-1-熔断原理"><span class="nav-text">1.4.1 熔断原理</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-4-2-动手实践"><span class="nav-text">1.4.2 动手实践</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-Feign"><span class="nav-text">2.Feign</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-简介"><span class="nav-text">2.1 简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-快速入门"><span class="nav-text">2.2 快速入门</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-负载均衡"><span class="nav-text">2.3 负载均衡</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4-Hystrix支持"><span class="nav-text">2.4 Hystrix支持</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-5-请求压缩-了解"><span class="nav-text">2.5.请求压缩(了解)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-6-日志级别-了解"><span class="nav-text">2.6 日志级别(了解)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-Zuul网关"><span class="nav-text">3.Zuul网关</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-简介"><span class="nav-text">3.1 简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-Zuul加入后的架构"><span class="nav-text">3.2 Zuul加入后的架构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3-快速入门"><span class="nav-text">3.3 快速入门</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-4-简化的路由配置"><span class="nav-text">3.4 简化的路由配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-5-默认的路由规则"><span class="nav-text">3.5 默认的路由规则</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-6-路由前缀"><span class="nav-text">3.6 路由前缀</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-7-过滤器"><span class="nav-text">3.7 过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#3-7-1-ZuulFilter"><span class="nav-text">3.7.1 ZuulFilter</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-7-2-过滤器执行生命周期"><span class="nav-text">3.7.2 过滤器执行生命周期</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-7-3-使用场景"><span class="nav-text">3.7.3 使用场景</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-8-自定义过滤器"><span class="nav-text">3.8 自定义过滤器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-9-负载均衡和熔断"><span class="nav-text">3.9 负载均衡和熔断</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liuwy1998"
+      src="/../assets/img/head.jpg">
+  <p class="site-author-name" itemprop="name">liuwy1998</p>
+  <div class="site-description" itemprop="description">Java开发, 后端开发</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">皖ICP备19022525号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liuwy1998</span>
+</div><script color="0,137,108" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://tonymua.top/50010/',]
+      });
+      });
+  </script>
+
+</body>
+</html>

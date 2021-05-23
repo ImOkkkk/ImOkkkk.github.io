@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="bUCDF5pEQe">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=66522575" charset="UTF-8"></script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"tonymua.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1.CMS需求分析1.1 什么是CMS(1) CMS是什么 ？ CMS （Content Management System）即内容管理系统，不同的项目对CMS的定位不同，比如：一个在线教育网站，有些公司认为CMS系统是对所有的课程资源进行管理，而在早期网站刚开始盛行时很多公司的业务是网站制作，当时对CMS的定位是创建网站，即对网站的页面、图片等静态资源进行管理。(2) CMS有哪些类型？  上边">
+<meta name="keywords" content="项目">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学成在线(一.CMS服务端开发)">
+<meta property="og:url" content="http://tonymua.top/42599/index.html">
+<meta property="og:site_name" content="liuwy1998 BLOG">
+<meta property="og:description" content="1.CMS需求分析1.1 什么是CMS(1) CMS是什么 ？ CMS （Content Management System）即内容管理系统，不同的项目对CMS的定位不同，比如：一个在线教育网站，有些公司认为CMS系统是对所有的课程资源进行管理，而在早期网站刚开始盛行时很多公司的业务是网站制作，当时对CMS的定位是创建网站，即对网站的页面、图片等静态资源进行管理。(2) CMS有哪些类型？  上边">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-04-29T02:44:38.109Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="学成在线(一.CMS服务端开发)">
+<meta name="twitter:description" content="1.CMS需求分析1.1 什么是CMS(1) CMS是什么 ？ CMS （Content Management System）即内容管理系统，不同的项目对CMS的定位不同，比如：一个在线教育网站，有些公司认为CMS系统是对所有的课程资源进行管理，而在早期网站刚开始盛行时很多公司的业务是网站制作，当时对CMS的定位是创建网站，即对网站的页面、图片等静态资源进行管理。(2) CMS有哪些类型？  上边">
+
+<link rel="canonical" href="http://tonymua.top/42599/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>学成在线(一.CMS服务端开发) | liuwy1998 BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="liuwy1998 BLOG" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">liuwy1998 BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">When they go low,we go high.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/42599/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="liuwy1998">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuwy1998 BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          学成在线(一.CMS服务端开发)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="1-CMS需求分析"><a href="#1-CMS需求分析" class="headerlink" title="1.CMS需求分析"></a>1.CMS需求分析</h3><h4 id="1-1-什么是CMS"><a href="#1-1-什么是CMS" class="headerlink" title="1.1 什么是CMS"></a>1.1 什么是CMS</h4><p>(1) CMS是什么 ？ CMS （Content Management System）即<strong>内容管理系统</strong>，不同的项目对CMS的定位不同，比如：一个在线教育网站，有些公司认为CMS系统是对所有的课程资源进行管理，而在早期网站刚开始盛行时很多公司的业务是网站制作，当时对CMS的定位是创建网站，即<strong>对网站的页面、图片等静态资源进行管理</strong>。<br>(2) CMS有哪些类型？<br>  上边也谈到每个公司对每个项目的CMS定位不同，CMS基本上分为：<strong>针对后台数据内容的管理、针对前端页面的 管理、针对样式风格的管理等</strong> 。比如：一个给企业做网站的公司，其CMS系统主要是网站页面管理及样式风格的 管理。</p>
+<p>(3) 本项目CMS的定位是什么？ 本项目作为一个大型的在线教育平台，对CMS系统的定位是对各各网站（子站点）页面的管理，主要<strong>管理运营需要而经常变动的页面，从而实现根据运营需要快速进行页面开发、上线的需求</strong>。</p>
+<a id="more"></a>
+
+<h4 id="1-2-SSI服务端包含技术"><a href="#1-2-SSI服务端包含技术" class="headerlink" title="1.2 SSI服务端包含技术"></a>1.2 SSI服务端包含技术</h4><p>(1) 页面内容多如何管理？ 将页面拆分成一个一个的小页面，通过cms去管理这些小页面，当要更改部分页面内容时只需要更改具体某个小页面即可。<br>(2) 页面拆出来怎么样通过web服务浏览呢？ 使用web服务(例如nginx)的SSI技术，将多个子页面合并渲染输出。<br>(3) SI是什么？</p>
+<p><img data-src="../../../../assets/img/155541.jpg" alt></p>
+<p>ssi包含类似于jsp页面中的incluce指令，SSI是<strong>在web服务端将include指定的页面包含在网页中，渲染html网页响应给客户端</strong> 。nginx、apache等多数web容器都支持SSI指令。 SSI指令如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">!‐‐#include</span> <span class="attr">virtual</span>=<span class="string">"/../....html"</span>‐‐&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>(4) 将首页拆分成</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">index.html：首页主体内容 </span><br><span class="line">include/header.html：头部区域 </span><br><span class="line">include/index_banner.html：轮播图 </span><br><span class="line">include/index_category.html：左侧列表导航 </span><br><span class="line">include/footer.html：页尾</span><br></pre></td></tr></table></figure>
+
+<p>(5) 在nginx虚拟主机中开通SSI</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">server&#123; </span><br><span class="line">	listen       <span class="number">80</span><span class="comment">;      </span></span><br><span class="line">	server_name  www.xuecheng.com<span class="comment">;      </span></span><br><span class="line">	ssi on<span class="comment">;      </span></span><br><span class="line">	ssi_silent_errors on<span class="comment">;      </span></span><br><span class="line">	.....</span><br></pre></td></tr></table></figure>
+
+<p><strong>SSI的配置参数</strong>如下： </p>
+<p>​    ssi on： 开启ssi支持 </p>
+<p>​    ssi_silent_errors on：默认为oﬀ，设置为on则在处理SSI文件出错时不输出错误信息 </p>
+<p>​    ssi_types：默认为 ssi_types text/html，如果需要支持shtml（服务器执行脚本，类似于jsp）则需要设置为                        ssi_types text/shtml </p>
+<h4 id="1-3-CMS页面管理需求"><a href="#1-3-CMS页面管理需求" class="headerlink" title="1.3 CMS页面管理需求"></a>1.3 CMS页面管理需求</h4><ul>
+<li><p>这些页面的管理流程是什么？<br>(1) 创建站点<br>一个网站有很多子站点，比如：学成在线有主门户、学习中心、问答系统等子站点。具体的哪个页面是归属于具体的站点，所以要管理页面，先要管理页面所属的站点。<br>(2) 创建模板<br>页面如何创建呢？比如电商网站的商品详情页面，每个页面的内容布局、板式是相同的，不同的只是内容，这个页面的布局、板式就是页面模板，模板+数据就组成一个完整的页面，最终要创建一个页面文件需要先定义此页面的模板，最终拿到页面的数据再结合模板就拼装成一个完整的页面。</p>
+<p>(3) 创建页面</p>
+<p>创建页面是指填写页面的基本信息，如：页面的名称、页面的url地址等。<br>(4) 页面预览<br>页面预览是页面发布前的一项工作，页面预览使用静态化技术根据页面模板和数据生成页面内容，并通过浏览器预览页面。页面发布前进行页面预览的目是为了保证页面发布后的正确性。<br>(5) 页面发布<br>使用计算机技术将页面发送到页面所在站点的服务器，页面发布成功就可以通过浏览器来访问了。 </p>
+</li>
+<li><p>本项目要实现什么样的功能？</p>
+<p>(1) 页面管理<br>管理员在后台添加、修改、删除页面信息<br>(2) 页面预览<br>管理员通过页面预览功能预览页面发布后的效果。<br>(3) 页面发布<br>管理员通过页面发布功能将页面发布到远程门户服务器。<br>页面发布成功，用户即可在浏览器浏览到最新发布的页面，整个页面添加、发布的过程由于软件自动执行，无需人 工登录服务器操作。</p>
+</li>
+</ul>
+<h3 id="2-CMS服务端工程搭建"><a href="#2-CMS服务端工程搭建" class="headerlink" title="2.CMS服务端工程搭建"></a>2.CMS服务端工程搭建</h3><h4 id="2-1-工程结构"><a href="#2-1-工程结构" class="headerlink" title="2.1 工程结构"></a>2.1 工程结构</h4><p>CMS及其它服务端工程基于maven进行构建，首先需要创建如下基础工程： </p>
+<p>​    parent工程：父工程，提供依赖管理</p>
+<p>​    common工程：通用工程，提供各层封装</p>
+<p>​    model工程：模型工程，提供统一的模型类管理 </p>
+<p>​    utils工程：工具类工程，提供本项目所使用的工具类</p>
+<p>​    Api工程：接口工程，统一管理本项目的服务接口</p>
+<p><img data-src="../../../../assets/img/160743.jpg" alt></p>
+<h4 id="2-2-MongoDB数据导入"><a href="#2-2-MongoDB数据导入" class="headerlink" title="2.2 MongoDB数据导入"></a>2.2 MongoDB数据导入</h4><p><img data-src="../../../../assets/img/161003.jpg" alt></p>
+<h3 id="3-页面查询接口定义"><a href="#3-页面查询接口定义" class="headerlink" title="3.页面查询接口定义"></a>3.页面查询接口定义</h3><h4 id="3-1-定义模型"><a href="#3-1-定义模型" class="headerlink" title="3.1 定义模型"></a>3.1 定义模型</h4><h5 id="3-1-1-需求分析"><a href="#3-1-1-需求分析" class="headerlink" title="3.1.1 需求分析"></a>3.1.1 需求分析</h5><p>在梳理完用户需求后就要去定义前后端的接口，接口定义后前端和后端就可以依据接口去开发功能了。<br>本次定义页面查询接口，本接口供前端请求查询页面列表，支持分页及自定义条件查询方式。<br>具体需求如下：<br>(1) 分页查询CmsPage 集合下的数据 </p>
+<p>(2) 根据站点Id、模板Id、页面别名查询页面信息</p>
+<p>(3) 接口基于Http Get请求，响应Json数据</p>
+<h5 id="3-1-2-模型类介绍"><a href="#3-1-2-模型类介绍" class="headerlink" title="3.1.2 模型类介绍"></a>3.1.2 模型类介绍</h5><p>接口的定义离不开数据模型，根据前边对需求的分析，整个页面管理模块的数据模型如下：</p>
+<p><img data-src="../../../../assets/img/150539.jpg" alt></p>
+<p>CmsSite：站点模型     CmsTemplate：页面模板     CmsPage：页面信息<br>页面信息如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="meta">@Document</span>(collection = <span class="string">"cms_page"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CmsPage</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 页面名称、别名、访问地址、类型（静态/动态）、页面模版、状态</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="comment">//站点ID</span></span><br><span class="line">    <span class="keyword">private</span> String siteId; </span><br><span class="line">    <span class="comment">//页面ID</span></span><br><span class="line">    <span class="meta">@Id</span></span><br><span class="line">    <span class="keyword">private</span> String pageId;</span><br><span class="line">    <span class="comment">//页面名称</span></span><br><span class="line">    <span class="keyword">private</span> String pageName;</span><br><span class="line">    <span class="comment">//别名</span></span><br><span class="line">    <span class="keyword">private</span> String pageAliase;</span><br><span class="line">    <span class="comment">//访问地址</span></span><br><span class="line">    <span class="keyword">private</span> String pageWebPath;</span><br><span class="line">    <span class="comment">//参数</span></span><br><span class="line">    <span class="keyword">private</span> String pageParameter;</span><br><span class="line">    <span class="comment">//物理路径</span></span><br><span class="line">    <span class="keyword">private</span> String pagePhysicalPath;</span><br><span class="line">    <span class="comment">//类型（静态/动态）</span></span><br><span class="line">    <span class="keyword">private</span> String pageType;</span><br><span class="line">    <span class="comment">//页面模版</span></span><br><span class="line">    <span class="keyword">private</span> String pageTemplate;</span><br><span class="line">    <span class="comment">//页面静态化内容</span></span><br><span class="line">    <span class="keyword">private</span> String pageHtml;</span><br><span class="line">    <span class="comment">//状态</span></span><br><span class="line">    <span class="keyword">private</span> String pageStatus;</span><br><span class="line">    <span class="comment">//创建时间</span></span><br><span class="line">    <span class="keyword">private</span> Date pageCreateTime;</span><br><span class="line">    <span class="comment">//模版id</span></span><br><span class="line">    <span class="keyword">private</span> String templateId;</span><br><span class="line">    <span class="comment">//参数列表</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;CmsPageParam&gt; pageParams;</span><br><span class="line">    <span class="comment">//模版文件Id</span></span><br><span class="line"><span class="comment">//    private String templateFileId;</span></span><br><span class="line">    <span class="comment">//静态文件Id</span></span><br><span class="line">    <span class="keyword">private</span> String htmlFileId;</span><br><span class="line">    <span class="comment">//数据Url</span></span><br><span class="line">    <span class="keyword">private</span> String dataUrl;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>属性说明：<br>(1) 定义一个页面需要指定页面所属站点<br>一个站点包括多个页面，比如：学成在线的门户站点（网站）包括了多个页面。<br>(2) 定义一个页面需要指定页面使用的模板<br>多个页面可以使用相同的模板，比如：商品信息模板，每个商品就是一个页面，所有商品使用同一个商品信息模板<br>注解说明：</p>
+<ul>
+<li><p>@Data、@ToString、@Document注解表示什么意思？ </p>
+<p>@Data、@ToString：是Lombok提供的注解 </p>
+<p>@Document：是Spring Data mongodb提供的注解，最终CMS的开发会使用Mongodb数据库。</p>
+</li>
+</ul>
+<h4 id="3-2-定义接口"><a href="#3-2-定义接口" class="headerlink" title="3.2 定义接口"></a>3.2 定义接口</h4><h5 id="3-2-1-定义请求及响应类型"><a href="#3-2-1-定义请求及响应类型" class="headerlink" title="3.2.1 定义请求及响应类型"></a>3.2.1 定义请求及响应类型</h5><p>(1) 定义请求模型QueryPageRequest，此模型作为查询条件类型 </p>
+<p>​     为后期扩展需求，请求类型统一继承RequestData类型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QueryPageRequest</span> </span>&#123;</span><br><span class="line">    <span class="comment">//站点id</span></span><br><span class="line">    <span class="keyword">private</span> String siteId;</span><br><span class="line">    <span class="comment">//页面id</span></span><br><span class="line">    <span class="keyword">private</span> String pageId;</span><br><span class="line">    <span class="comment">//页面名称</span></span><br><span class="line">    <span class="keyword">private</span> String pageName;</span><br><span class="line">    <span class="comment">//别名</span></span><br><span class="line">    <span class="keyword">private</span> String pageAliase;</span><br><span class="line">    <span class="comment">//模板id</span></span><br><span class="line">    <span class="keyword">private</span> String templateId;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>(2) 响应结果类型，分页查询统一使用QueryResponseResult</p>
+<h5 id="3-2-2-定义接口"><a href="#3-2-2-定义接口" class="headerlink" title="3.2.2 定义接口"></a>3.2.2 定义接口</h5><p>在Api接口工程专门定义接口，在Api工程单独定义接口的原因如下： </p>
+<p>(1) 接口集中管理</p>
+<p>(2) Api工程的接口将作为各微服务远程调用使用。<br>页面查询接口定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CmsPageControllerApi</span> </span>&#123;</span><br><span class="line">    <span class="comment">//页面查询</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> QueryResponseResult <span class="title">findList</span><span class="params">(<span class="keyword">int</span> page, <span class="keyword">int</span> size, QueryPageRequest queryPageRequest)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此接口编写后会在CMS服务工程编写Controller类实现此接口</p>
+<h3 id="4-页面查询服务端开发"><a href="#4-页面查询服务端开发" class="headerlink" title="4.页面查询服务端开发"></a>4.页面查询服务端开发</h3><h4 id="4-1-创建CMS服务工程"><a href="#4-1-创建CMS服务工程" class="headerlink" title="4.1 创建CMS服务工程"></a>4.1 创建CMS服务工程</h4><h5 id="4-1-1-创建CMS工程结构"><a href="#4-1-1-创建CMS工程结构" class="headerlink" title="4.1.1 创建CMS工程结构"></a>4.1.1 创建CMS工程结构</h5><p>(1) 创建maven工程， CMS工程的名称为 xc-service-manage-cms，父工程为xc-framework-parent</p>
+<p>pom.xml如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">project</span> <span class="attr">xmlns</span>=<span class="string">"http://maven.apache.org/POM/4.0.0"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>xc-framework-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.xuecheng<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">relativePath</span>&gt;</span>../xc-framework-parent/pom.xml<span class="tag">&lt;/<span class="name">relativePath</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.xuecheng<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>xc-service-manage-cms<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.xuecheng<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>xc-framework-common<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.xuecheng<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>xc-framework-utils<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.xuecheng<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>xc-framework-model<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.xuecheng<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>xc-service-api<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-freemarker<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-mongodb<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-amqp<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.squareup.okhttp3<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>okhttp<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--</span></span><br><span class="line"><span class="comment">        &lt;dependency&gt;</span></span><br><span class="line"><span class="comment">            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span></span><br><span class="line"><span class="comment">            &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;</span></span><br><span class="line"><span class="comment">        &lt;/dependency&gt;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        &lt;dependency&gt;</span></span><br><span class="line"><span class="comment">            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span></span><br><span class="line"><span class="comment">            &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;</span></span><br><span class="line"><span class="comment">        &lt;/dependency&gt;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">        &lt;dependency&gt;</span></span><br><span class="line"><span class="comment">            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;</span></span><br><span class="line"><span class="comment">            &lt;artifactId&gt;spring-cloud-starter-oauth2&lt;/artifactId&gt;</span></span><br><span class="line"><span class="comment">        &lt;/dependency&gt;</span></span><br><span class="line"><span class="comment">        &lt;dependency&gt;</span></span><br><span class="line"><span class="comment">            &lt;groupId&gt;org.springframework.security.oauth&lt;/groupId&gt;</span></span><br><span class="line"><span class="comment">            &lt;artifactId&gt;spring-security-oauth2&lt;/artifactId&gt;</span></span><br><span class="line"><span class="comment">            &lt;version&gt;2.0.14.RELEASE&lt;/version&gt;</span></span><br><span class="line"><span class="comment">            &lt;scope&gt;compile&lt;/scope&gt;</span></span><br><span class="line"><span class="comment">        &lt;/dependency&gt;--&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">project</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>(2) 创建基本的包结构： </p>
+<p>com.xuecheng.manage_cms.conﬁg：配置类目录，数据库配置、MQ配置等</p>
+<p>com.xuecheng.manage_cms.dao：dao接口目录 </p>
+<p>com.xuecheng.manage_cms.service：service类目录</p>
+<p>com.xuecheng.manage_cms.web.controller：controller类目录<br>工程结构如下：</p>
+<p><img data-src="../../../../assets/img/205005.jpg" alt></p>
+<p>(3) 配置文件<br>在resources下配置application.yml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="string">$&#123;PORT:31001&#125;</span></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">xc-service-manage-cms</span></span><br><span class="line">  <span class="attr">data:</span></span><br><span class="line">    <span class="attr">mongodb:</span></span><br><span class="line">      <span class="attr">uri:</span>  <span class="string">mongodb://root:root@localhost:27017</span></span><br><span class="line">      <span class="attr">database:</span> <span class="string">xc_cms</span></span><br></pre></td></tr></table></figure>
+
+<p>logback-spring.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--定义日志文件的存储地址,使用绝对路径--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"LOG_HOME"</span> <span class="attr">value</span>=<span class="string">"e:/logs"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- Console 输出设置 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"CONSOLE"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.ConsoleAppender"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125; - %msg%n<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">charset</span>&gt;</span>utf8<span class="tag">&lt;/<span class="name">charset</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 按照每天生成日志文件 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"FILE"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.RollingFileAppender"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">rollingPolicy</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.core.rolling.TimeBasedRollingPolicy"</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--日志文件输出的文件名--&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">fileNamePattern</span>&gt;</span>$&#123;LOG_HOME&#125;/xc.%d&#123;yyyy-MM-dd&#125;.log<span class="tag">&lt;/<span class="name">fileNamePattern</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">rollingPolicy</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">encoder</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">pattern</span>&gt;</span>%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125; - %msg%n<span class="tag">&lt;/<span class="name">pattern</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">encoder</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 异步输出 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">appender</span> <span class="attr">name</span>=<span class="string">"ASYNC"</span> <span class="attr">class</span>=<span class="string">"ch.qos.logback.classic.AsyncAppender"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">discardingThreshold</span>&gt;</span>0<span class="tag">&lt;/<span class="name">discardingThreshold</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 更改默认的队列的深度,该值会影响性能.默认值为256 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">queueSize</span>&gt;</span>512<span class="tag">&lt;/<span class="name">queueSize</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 添加附加的appender,最多只能添加一个 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"FILE"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">appender</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">"org.apache.ibatis.cache.decorators.LoggingCache"</span> <span class="attr">level</span>=<span class="string">"DEBUG"</span> <span class="attr">additivity</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"CONSOLE"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">logger</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">"org.springframework.boot"</span> <span class="attr">level</span>=<span class="string">"DEBUG"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">root</span> <span class="attr">level</span>=<span class="string">"info"</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--&lt;appender-ref ref="ASYNC"/&gt;--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"FILE"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">appender-ref</span> <span class="attr">ref</span>=<span class="string">"CONSOLE"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>(4) SpringBoot 启动类</p>
+<p>Spring Boot应用需要创建一个应用启动类，启动过程中会扫描Bean并注入spring 容器 </p>
+<p>注意：此类创建在本工程com.xuecheng.manage_cms包下 :</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EntityScan</span>(<span class="string">"com.xuecheng.framework.domain.cms"</span>)    <span class="comment">//扫描实体类</span></span><br><span class="line"><span class="meta">@ComponentScan</span>(basePackages = &#123;<span class="string">"com.xuecheng.api"</span>&#125;)    <span class="comment">//扫描接口</span></span><br><span class="line"><span class="meta">@ComponentScan</span>(basePackages = &#123;<span class="string">"com.xuecheng.manage_cms"</span>&#125;)    <span class="comment">//扫描本项目下的所有类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ManageCmsApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(ManageCmsApplication<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-1-2-测试Controller"><a href="#4-1-2-测试Controller" class="headerlink" title="4.1.2 测试Controller"></a>4.1.2 测试Controller</h5><p>使用springMVC完成接口实现开发，这里暂时使用测试数据，稍后会让controller调用service来查询数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/cms/page"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CmsPageController</span> <span class="keyword">implements</span> <span class="title">CmsPageControllerApi</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/list/&#123;page&#125;/&#123;size&#125;"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> QueryResponseResult <span class="title">findList</span><span class="params">(@PathVariable(<span class="string">"page"</span>)</span> <span class="keyword">int</span> page, @<span class="title">PathVariable</span><span class="params">(<span class="string">"size"</span>)</span> <span class="keyword">int</span> size, QueryPageRequest queryPageRequest) </span>&#123;</span><br><span class="line">        <span class="comment">//暂时采用测试数据，测试接口是否可以正常运行</span></span><br><span class="line">        QueryResult&lt;CmsPage&gt; queryResult=<span class="keyword">new</span> QueryResult&lt;&gt;();</span><br><span class="line">        List&lt;CmsPage&gt; list=<span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        CmsPage cmsPage=<span class="keyword">new</span> CmsPage();</span><br><span class="line">        cmsPage.setPageName(<span class="string">"测试页面"</span>);</span><br><span class="line">        list.add(cmsPage);</span><br><span class="line">        queryResult.setList(list);</span><br><span class="line">        queryResult.setTotal(<span class="number">1</span>);</span><br><span class="line">        QueryResponseResult queryResponseResult=<span class="keyword">new</span> QueryResponseResult(CommonCode.SUCCESS,queryResult);</span><br><span class="line">        <span class="keyword">return</span> queryResponseResult;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用浏览器测试<br>输入：<span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDozMTAwMS9jbXMvcGFnZS9saXN0LzEvMg==">http://localhost:31001/cms/page/list/1/2<i class="fa fa-external-link-alt"></i></span> </p>
+<h4 id="4-2-Dao"><a href="#4-2-Dao" class="headerlink" title="4.2 Dao"></a>4.2 Dao</h4><h5 id="4-2-1-分页查询测试"><a href="#4-2-1-分页查询测试" class="headerlink" title="4.2.1 分页查询测试"></a>4.2.1 分页查询测试</h5><h6 id="4-2-1-1-定义Dao接口"><a href="#4-2-1-1-定义Dao接口" class="headerlink" title="4.2.1.1 定义Dao接口"></a>4.2.1.1 定义Dao接口</h6><p>本项目使用Spring Data Mongodb完成Mongodb数据库的查询，Spring Data Mongodb提供一套快捷操作 mongodb的方法。 创建Dao，继承MongoRepository，并指定实体类型和主键类型。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CmsPageRepository</span> <span class="keyword">extends</span> <span class="title">MongoRepository</span>&lt;<span class="title">CmsPage</span>,<span class="title">String</span>&gt; </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="4-2-1-2编写测试类"><a href="#4-2-1-2编写测试类" class="headerlink" title="4.2.1.2编写测试类"></a>4.2.1.2编写测试类</h6><p>test下的包路径与main下的包路径保持一致。 测试程序使用@SpringBootTest和@RunWith(SpringRunner.class)注解，启动测试类会从main下找springBoot启 动类，加载spring容器。<br>测试代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="meta">@RunWith</span>(SpringRunner<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">CmsPageRepositoryTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    CmsPageRepository cmsPageRepository;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindAll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        List&lt;CmsPage&gt; all = cmsPageRepository.findAll();</span><br><span class="line">        System.out.println(all);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//测试分页查询</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindPage</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//分页参数</span></span><br><span class="line">        <span class="keyword">int</span> page=<span class="number">0</span>;    <span class="comment">//页码从0开始</span></span><br><span class="line">        <span class="keyword">int</span> size=<span class="number">10</span>;</span><br><span class="line">        Pageable pageable = PageRequest.of(page, size);</span><br><span class="line">        Page&lt;CmsPage&gt; all = cmsPageRepository.findAll(pageable);</span><br><span class="line">        System.out.println(all);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-2-2-基础方法测试"><a href="#4-2-2-基础方法测试" class="headerlink" title="4.2.2 基础方法测试"></a>4.2.2 基础方法测试</h5><p> 这里Dao接口继承了MongoRepository，在MongoRepository中定义了很多现成的方法，如save、delete等，通 过下边的代码来测试这里父类方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//添加</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testInsert</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">//定义实体类</span></span><br><span class="line">        CmsPage cmsPage = <span class="keyword">new</span> CmsPage();</span><br><span class="line">        cmsPage.setSiteId(<span class="string">"s001"</span>);</span><br><span class="line">        cmsPage.setTemplateId(<span class="string">"t001"</span>);</span><br><span class="line">        cmsPage.setPageName(<span class="string">"测试页面"</span>);</span><br><span class="line">        cmsPage.setPageCreateTime(<span class="keyword">new</span> Date());</span><br><span class="line">        List&lt;CmsPageParam&gt; cmsPageParams = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        CmsPageParam cmsPageParam = <span class="keyword">new</span> CmsPageParam();</span><br><span class="line">        cmsPageParam.setPageParamName(<span class="string">"param1"</span>);</span><br><span class="line">        cmsPageParam.setPageParamValue(<span class="string">"value1"</span>);</span><br><span class="line">        cmsPageParams.add(cmsPageParam);</span><br><span class="line">        cmsPage.setPageParams(cmsPageParams);</span><br><span class="line">        <span class="comment">//添加</span></span><br><span class="line">        cmsPageRepository.save(cmsPage);</span><br><span class="line">        System.out.println(cmsPage);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//删除</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testDelete</span><span class="params">()</span></span>&#123;</span><br><span class="line">        cmsPageRepository.deleteById(<span class="string">"5b17a2c511fe5e0c409e5eb3"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//修改</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testUpdate</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Optional&lt;CmsPage&gt; optional = cmsPageRepository.findById(<span class="string">"5b17a2c511fe5e0c409e5eb3"</span>);</span><br><span class="line">        <span class="keyword">if</span> (optional.isPresent())&#123;</span><br><span class="line">            CmsPage cmsPage = optional.get();</span><br><span class="line">            cmsPage.setPageName(<span class="string">"测试页面01"</span>);</span><br><span class="line">            cmsPageRepository.save(cmsPage);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>关于Optional</strong>： Optional是jdk1.8引入的类型，Optional是一个容器对象，它包括了我们需要的对象，使用isPresent方法判断所包 含对象是否为空，isPresent方法返回false则表示Optional包含对象为空，否则可以使用get()取出对象进行操作。<br>Optional的优点是： </p>
+<p>(1) 提醒你非空判断。<br>(2) 将对象非空检测标准化。 </p>
+<h5 id="4-2-3-自定义Dao方法"><a href="#4-2-3-自定义Dao方法" class="headerlink" title="4.2.3 自定义Dao方法"></a>4.2.3 自定义Dao方法</h5><p>同Spring Data JPA一样Spring Data mongodb也提供自定义方法的规则，如下： 按照ﬁndByXXX，ﬁndByXXXAndYYY、countByXXXAndYYY等规则定义方法，实现查询操作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CmsPageRepository</span> <span class="keyword">extends</span> <span class="title">MongoRepository</span>&lt;<span class="title">CmsPage</span>, <span class="title">String</span>&gt; </span>&#123;</span><br><span class="line">    <span class="comment">//根据页面名称查询</span></span><br><span class="line">    <span class="function">CmsPage <span class="title">findByPageName</span><span class="params">(String pageName)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//根据页面名称和类型查询</span></span><br><span class="line">    <span class="function">CmsPage <span class="title">findByPageNameAndPageType</span><span class="params">(String pageName, String pageType)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//根据站点和页面类型查询记录数</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">countBySiteIdAndPageType</span><span class="params">(String siteId, String pageType)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//根据站点和页面类型分页查询</span></span><br><span class="line">    <span class="function">Page&lt;CmsPage&gt; <span class="title">findBySiteIdAndPageType</span><span class="params">(String siteId, String pageType, Pageable pageable)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Test:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//根据页面名称查询</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFindByPageName</span><span class="params">()</span></span>&#123;</span><br><span class="line">    CmsPage cmsPage = cmsPageRepository.findByPageName(<span class="string">"测试页面01"</span>);</span><br><span class="line">    System.out.println(cmsPage);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-3-Service"><a href="#4-3-Service" class="headerlink" title="4.3 Service"></a>4.3 Service</h4><p>定义页面查询方法，根据条件查询暂时不实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PageService</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    CmsPageRepository cmsPageRepository;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 页面列表分页查询</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> page 当前页码</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> size 页面显示个数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> queryPageRequest 查询条件</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 页面列表</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//页面查询方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> QueryResponseResult <span class="title">findList</span><span class="params">(<span class="keyword">int</span> page, <span class="keyword">int</span> size, QueryPageRequest queryPageRequest)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (page&lt;=<span class="number">0</span>)&#123;</span><br><span class="line">            page=<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        page=page-<span class="number">1</span>;    <span class="comment">//为了适应mongodb的接口将页码减1</span></span><br><span class="line">        <span class="keyword">if</span> (size&lt;=<span class="number">0</span>)&#123;</span><br><span class="line">            size=<span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        Pageable pageable= PageRequest.of(page,size);</span><br><span class="line">        Page&lt;CmsPage&gt; all = cmsPageRepository.findAll(pageable);</span><br><span class="line">        QueryResult&lt;CmsPage&gt; queryResult=<span class="keyword">new</span> QueryResult&lt;&gt;();</span><br><span class="line">        queryResult.setList(all.getContent());  <span class="comment">//数据列表</span></span><br><span class="line">        queryResult.setTotal(all.getTotalElements());   <span class="comment">//数据总记录数</span></span><br><span class="line">        QueryResponseResult queryResponseResult=<span class="keyword">new</span> QueryResponseResult(CommonCode.SUCCESS,queryResult);</span><br><span class="line">        <span class="keyword">return</span> queryResponseResult;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-4-Controller"><a href="#4-4-Controller" class="headerlink" title="4.4 Controller"></a>4.4 Controller</h4><p>使用springMVC完成接口实现开发</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/cms/page"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CmsPageController</span> <span class="keyword">implements</span> <span class="title">CmsPageControllerApi</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    PageService pageService;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"/list/&#123;page&#125;/&#123;size&#125;"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> QueryResponseResult <span class="title">findList</span><span class="params">(@PathVariable(<span class="string">"page"</span>)</span> <span class="keyword">int</span> page, @<span class="title">PathVariable</span><span class="params">(<span class="string">"size"</span>)</span> <span class="keyword">int</span> size, QueryPageRequest queryPageRequest) </span>&#123;</span><br><span class="line">        <span class="comment">//调用Service</span></span><br><span class="line">        <span class="keyword">return</span> pageService.findList(page,size,queryPageRequest);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用浏览器测试<br>输入：<span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDozMTAwMS9jbXMvcGFnZS9saXN0LzEvMTA=">http://localhost:31001/cms/page/list/1/10<i class="fa fa-external-link-alt"></i></span> 查询第1页，每页显示10条记录</p>
+<h4 id="4-5-接口开发规范"><a href="#4-5-接口开发规范" class="headerlink" title="4.5  接口开发规范"></a>4.5  接口开发规范</h4><h5 id="4-5-1-Api请求及响应规范"><a href="#4-5-1-Api请求及响应规范" class="headerlink" title="4.5.1 Api请求及响应规范"></a>4.5.1 Api请求及响应规范</h5><p>为了严格按照接口进行开发，提高效率，对请求及响应格式进行规范化。<br>(1) get 请求时，采用key/value格式请求，SpringMVC可采用基本类型的变量接收，也可以采用对象接收。<br>(2) Post请求时，可以提交form表单数据（application/x-www-form-urlencoded）和Json数据（ContentType=application/json），文件等多部件类型（multipart/form-data）三种数据格式，<strong>SpringMVC接收Json数据 使用@RequestBody注解解析请求的json数据</strong>。<br>(3) 响应结果统一信息为：是否成功、操作代码、提示信息及自定义数据。<br>(4) 响应结果统一格式为json。 </p>
+<h5 id="4-5-2-Api定义约束"><a href="#4-5-2-Api定义约束" class="headerlink" title="4.5.2 Api定义约束"></a>4.5.2 Api定义约束</h5><p>Api定义使用SpringMVC来完成，由于此接口后期将作为微服务远程调用使用，在定义接口时有如下限制： </p>
+<p>(1) @PathVariable 统一指定参数名称，如：@PathVariable(“id”)<br>(2) @RequestParam统一指定参数名称，如： @RequestParam（”id”）</p>
+<h3 id="5-页面查询接口测试"><a href="#5-页面查询接口测试" class="headerlink" title="5 页面查询接口测试"></a>5 页面查询接口测试</h3><p>上边的代码是基于服务端编写接口，如果前端人员等待服务端人员将接口开发完毕再去开发前端内容这样做效率是非常低下的，所以当接口定义完成，可以使用工具生成接口文档，前端人员查看接口文档即可进行前端开发，这样前端和服务人员并行开发，大大提高了生产效率。<br>本章节介绍两种接口开发工具，Swagger和Postman。 </p>
+<h4 id="5-1-Swagger"><a href="#5-1-Swagger" class="headerlink" title="5.1 Swagger"></a>5.1 Swagger</h4><h5 id="5-1-1-Swagger介绍"><a href="#5-1-1-Swagger介绍" class="headerlink" title="5.1.1 Swagger介绍"></a>5.1.1 Swagger介绍</h5><p>​    OpenAPI规范（OpenAPI Speciﬁcation 简称OAS）是Linux基金会的一个项目，试图通过<strong>定义一种用来描述API格式或API定义的语言，来规范RESTful服务开发过程</strong>，目前版本是V3.0，并且已经发布并开源在github上。<br>​    Swagger是全球最大的OpenAPI规范（OAS）API开发工具框架，支持从设计和文档到测试和部署的整个API生命周期的开发。 (<span class="exturl" data-url="aHR0cHM6Ly9zd2FnZ2VyLmlvLw==">https://swagger.io/<i class="fa fa-external-link-alt"></i></span>)<br>​    Spring Boot 可以集成Swagger，生成Swagger接口，Spring Boot是Java领域的神器，它是Spring项目下快速构建项目的框架。 </p>
+<h5 id="5-1-2-Swagger常用注解"><a href="#5-1-2-Swagger常用注解" class="headerlink" title="5.1.2 Swagger常用注解"></a>5.1.2 Swagger常用注解</h5><p><strong>在Java类中添加Swagger的注解即可生成Swagger接口</strong>，常用Swagger注解如下：</p>
+<p>@Api：修饰整个类，描述Controller的作用<br>@ApiOperation：描述一个类的一个方法，或者说一个接口<br>@ApiParam：单个参数描述<br>@ApiModel：用对象来接收参数<br>@ApiModelProperty：用对象接收参数时，描述对 象的一个字段<br>@ApiResponse：HTTP响应其中1个描述 @ApiResponses：HTTP响应整体描述<br>@ApiIgnore：使用 该注解忽略这个API<br>@ApiError ：发生错误返回的信息<br>@ApiImplicitParam：一个请求参数<br>@ApiImplicitParams：多个请求参数 </p>
+<p>@ApiImplicitParam属性：</p>
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>取值</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>paramType</td>
+<td></td>
+<td>查询参数类型</td>
+</tr>
+<tr>
+<td></td>
+<td>path</td>
+<td>以地址的形式提交数据</td>
+</tr>
+<tr>
+<td></td>
+<td>query</td>
+<td>直接跟参数完成自动映射赋值</td>
+</tr>
+<tr>
+<td></td>
+<td>body</td>
+<td>以流的形式提交 仅支持POST</td>
+</tr>
+<tr>
+<td></td>
+<td>header</td>
+<td>参数在request headers 里边提交</td>
+</tr>
+<tr>
+<td></td>
+<td>form</td>
+<td>以form表单的形式提交 仅支持POST</td>
+</tr>
+<tr>
+<td>dataType</td>
+<td></td>
+<td>参数的数据类型 只作为标志说明，并没有实际验证</td>
+</tr>
+<tr>
+<td></td>
+<td>Long</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>String</td>
+<td></td>
+</tr>
+<tr>
+<td>name</td>
+<td></td>
+<td>接收参数名</td>
+</tr>
+<tr>
+<td>value</td>
+<td></td>
+<td>接收参数的意义描述</td>
+</tr>
+<tr>
+<td>required</td>
+<td></td>
+<td>参数是否必填</td>
+</tr>
+<tr>
+<td></td>
+<td>true</td>
+<td>必填</td>
+</tr>
+<tr>
+<td></td>
+<td>false</td>
+<td>非必填</td>
+</tr>
+<tr>
+<td>defaultValue</td>
+<td></td>
+<td>默认值</td>
+</tr>
+</tbody></table>
+<h5 id="5-1-3-Swagger接口定义"><a href="#5-1-3-Swagger接口定义" class="headerlink" title="5.1.3 Swagger接口定义"></a>5.1.3 Swagger接口定义</h5><p>修改接口工程中页面查询接口，添加Swagger注解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Api</span>(value=<span class="string">"cms页面管理接口"</span>,description=<span class="string">"cms页面管理接口，提供页面的增、删、改、查"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CmsPageControllerApi</span> </span>&#123;</span><br><span class="line">    <span class="comment">//页面查询</span></span><br><span class="line">    <span class="meta">@ApiOperation</span>(<span class="string">"分页查询页面列表"</span>)</span><br><span class="line">    <span class="meta">@ApiImplicitParams</span>(&#123;</span><br><span class="line">            <span class="meta">@ApiImplicitParam</span>(name = <span class="string">"page"</span>,value = <span class="string">"页码"</span>,required = <span class="keyword">true</span>,paramType =<span class="string">"path"</span>, dataType = <span class="string">"int"</span>),</span><br><span class="line">            <span class="meta">@ApiImplicitParam</span>(name = <span class="string">"size"</span>,value = <span class="string">"每页记录数"</span>,required = <span class="keyword">true</span>,paramType =<span class="string">"path"</span>, dataType = <span class="string">"int"</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> QueryResponseResult <span class="title">findList</span><span class="params">(<span class="keyword">int</span> page, <span class="keyword">int</span> size, QueryPageRequest queryPageRequest)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在QueryPageRequest类中使用注解 ApiModelProperty 对属性注释</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QueryPageRequest</span> </span>&#123;</span><br><span class="line">    <span class="comment">//站点id</span></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"站点id"</span>)</span><br><span class="line">    <span class="keyword">private</span> String siteId;</span><br><span class="line">    <span class="comment">//页面id</span></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"页面id"</span>)</span><br><span class="line">    <span class="keyword">private</span> String pageId;</span><br><span class="line">    <span class="comment">//页面名称</span></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"页面名称"</span>)</span><br><span class="line">    <span class="keyword">private</span> String pageName;</span><br><span class="line">    <span class="comment">//别名</span></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"别名"</span>)</span><br><span class="line">    <span class="keyword">private</span> String pageAliase;</span><br><span class="line">    <span class="comment">//模板id</span></span><br><span class="line">    <span class="meta">@ApiModelProperty</span>(<span class="string">"模板id"</span>)</span><br><span class="line">    <span class="keyword">private</span> String templateId;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="5-1-4-Swagger接口测试"><a href="#5-1-4-Swagger接口测试" class="headerlink" title="5.1.4 Swagger接口测试"></a>5.1.4 Swagger接口测试</h5><p>Swagger接口生成工作原理：<br>(1) 系统启动，扫描到api工程中的Swagger2Conﬁguration类<br>(2) 在此类中指定了包路径com.xuecheng，找到在此包下及子包下标记有@RestController注解的controller类<br>(3) 根据controller类中的Swagger注解生成接口文档。<br>  启动cms服务工程，查看接口文档，请求：<span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDozMTAwMS9zd2FnZ2VyLXVpLmh0bWw=">http://localhost:31001/swagger-ui.html<i class="fa fa-external-link-alt"></i></span></p>
+<p><img data-src="../../../../assets/img/164719.jpg" alt></p>
+<p>点击“分页查询页面列表”，打开接口详情</p>
+<p>使用Swagger工具测试服务接口：<br>(1) 在cms服务接口中打断点<br>(2)打开接口文档页面，输入请求参数，点击“Try it out”发起请求。</p>
+<p><img data-src="../../../../assets/img/164938.jpg" alt></p>
+<h4 id="5-2-Postman"><a href="#5-2-Postman" class="headerlink" title="5.2 Postman"></a>5.2 Postman</h4><p>Postman是一款功能强大的http接口测试工具，使用postman可以完成http各种请求的功能测试。<br>官方地址：<span class="exturl" data-url="aHR0cHM6Ly93d3cuZ2V0cG9zdG1hbi5jb20v">https://www.getpostman.com/<i class="fa fa-external-link-alt"></i></span> </p>
+<p>(1) 安装Postman<br>本教程使用，双击打开 Postman-win64-6.0.10-Setup.exe<br>新建一个Postman窗口</p>
+<p>(2) 使用postman测试http接口</p>
+<p><img data-src="../../../../assets/img/165545.jpg" alt></p>
+<p>(3) 请求参数设置 </p>
+<p>form-data：将表单的数据转为键值对，并且可以包括文件 x-www-form-urlencoded: content-type为application/x-www-from-urlencoded，将表单的数据转为键值对<br>raw：请求text、json、xml、html，比如如果请求json数据则使用此格式<br>binary：content-type为application/octet-stream，可用于上传文件</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>请作者喝瓶肥宅快乐水</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/vxpay.jpg" alt="liuwy1998 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/alipay.jpg" alt="liuwy1998 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/项目/" rel="tag"><i class="fa fa-tag"></i> 项目</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/23116/" rel="prev" title="四种常见的排序算法">
+      <i class="fa fa-chevron-left"></i> 四种常见的排序算法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/20521/" rel="next" title="学成在线(七.课程管理)">
+      学成在线(七.课程管理) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-CMS需求分析"><span class="nav-text">1.CMS需求分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-什么是CMS"><span class="nav-text">1.1 什么是CMS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-SSI服务端包含技术"><span class="nav-text">1.2 SSI服务端包含技术</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-CMS页面管理需求"><span class="nav-text">1.3 CMS页面管理需求</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-CMS服务端工程搭建"><span class="nav-text">2.CMS服务端工程搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-工程结构"><span class="nav-text">2.1 工程结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-MongoDB数据导入"><span class="nav-text">2.2 MongoDB数据导入</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-页面查询接口定义"><span class="nav-text">3.页面查询接口定义</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-定义模型"><span class="nav-text">3.1 定义模型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-1-需求分析"><span class="nav-text">3.1.1 需求分析</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-2-模型类介绍"><span class="nav-text">3.1.2 模型类介绍</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-定义接口"><span class="nav-text">3.2 定义接口</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-1-定义请求及响应类型"><span class="nav-text">3.2.1 定义请求及响应类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-2-定义接口"><span class="nav-text">3.2.2 定义接口</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-页面查询服务端开发"><span class="nav-text">4.页面查询服务端开发</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-创建CMS服务工程"><span class="nav-text">4.1 创建CMS服务工程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-1-创建CMS工程结构"><span class="nav-text">4.1.1 创建CMS工程结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-1-2-测试Controller"><span class="nav-text">4.1.2 测试Controller</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-Dao"><span class="nav-text">4.2 Dao</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-1-分页查询测试"><span class="nav-text">4.2.1 分页查询测试</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#4-2-1-1-定义Dao接口"><span class="nav-text">4.2.1.1 定义Dao接口</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4-2-1-2编写测试类"><span class="nav-text">4.2.1.2编写测试类</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-2-基础方法测试"><span class="nav-text">4.2.2 基础方法测试</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-3-自定义Dao方法"><span class="nav-text">4.2.3 自定义Dao方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-Service"><span class="nav-text">4.3 Service</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-Controller"><span class="nav-text">4.4 Controller</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-5-接口开发规范"><span class="nav-text">4.5  接口开发规范</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-5-1-Api请求及响应规范"><span class="nav-text">4.5.1 Api请求及响应规范</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-5-2-Api定义约束"><span class="nav-text">4.5.2 Api定义约束</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-页面查询接口测试"><span class="nav-text">5 页面查询接口测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1-Swagger"><span class="nav-text">5.1 Swagger</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#5-1-1-Swagger介绍"><span class="nav-text">5.1.1 Swagger介绍</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-1-2-Swagger常用注解"><span class="nav-text">5.1.2 Swagger常用注解</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-1-3-Swagger接口定义"><span class="nav-text">5.1.3 Swagger接口定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-1-4-Swagger接口测试"><span class="nav-text">5.1.4 Swagger接口测试</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2-Postman"><span class="nav-text">5.2 Postman</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liuwy1998"
+      src="/../assets/img/head.jpg">
+  <p class="site-author-name" itemprop="name">liuwy1998</p>
+  <div class="site-description" itemprop="description">Java开发, 后端开发</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">皖ICP备19022525号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liuwy1998</span>
+</div><script color="0,137,108" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://tonymua.top/42599/',]
+      });
+      });
+  </script>
+
+</body>
+</html>

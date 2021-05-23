@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="bUCDF5pEQe">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=66522575" charset="UTF-8"></script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"tonymua.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1.获取首页分类信息步骤实现:1.导入jar包 2.导入JedisUtils工具类(修改参数127.0.0.1) 3.启动windows版本的redis 4.实现CategoryServlet__&amp;gt;findAllCats    在redis中获取全部分类信息   如果无法获取分类信息,   查询DB中的分类,转换为JSON格式字符串,  将JSON格式字符串向redis缓存一份,之后将JSO">
+<meta name="keywords" content="项目">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网上商城项目总结(二.商品分类和详情)">
+<meta property="og:url" content="http://tonymua.top/48295/index.html">
+<meta property="og:site_name" content="liuwy1998 BLOG">
+<meta property="og:description" content="1.获取首页分类信息步骤实现:1.导入jar包 2.导入JedisUtils工具类(修改参数127.0.0.1) 3.启动windows版本的redis 4.实现CategoryServlet__&amp;gt;findAllCats    在redis中获取全部分类信息   如果无法获取分类信息,   查询DB中的分类,转换为JSON格式字符串,  将JSON格式字符串向redis缓存一份,之后将JSO">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-04-29T02:44:38.065Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网上商城项目总结(二.商品分类和详情)">
+<meta name="twitter:description" content="1.获取首页分类信息步骤实现:1.导入jar包 2.导入JedisUtils工具类(修改参数127.0.0.1) 3.启动windows版本的redis 4.实现CategoryServlet__&amp;gt;findAllCats    在redis中获取全部分类信息   如果无法获取分类信息,   查询DB中的分类,转换为JSON格式字符串,  将JSON格式字符串向redis缓存一份,之后将JSO">
+
+<link rel="canonical" href="http://tonymua.top/48295/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>网上商城项目总结(二.商品分类和详情) | liuwy1998 BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="liuwy1998 BLOG" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">liuwy1998 BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">When they go low,we go high.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/48295/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="liuwy1998">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuwy1998 BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          网上商城项目总结(二.商品分类和详情)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-获取首页分类信息"><a href="#1-获取首页分类信息" class="headerlink" title="1.获取首页分类信息"></a>1.获取首页分类信息</h4><h5 id="步骤实现"><a href="#步骤实现" class="headerlink" title="步骤实现:"></a>步骤实现:</h5><p>1.导入jar包</p>
+<p>2.导入JedisUtils工具类(修改参数127.0.0.1)</p>
+<p>3.启动windows版本的redis</p>
+<p>4.实现CategoryServlet__&gt;findAllCats   </p>
+<p>在redis中获取全部分类信息  </p>
+<p>如果无法获取分类信息,   查询DB中的分类,转换为JSON格式字符串,  将JSON格式字符串向redis缓存一份,之后将JSON格式数据响应到客户端</p>
+<p>如果可以获取到分类信息</p>
+<p>直接响应即可</p>
+<h6 id="CategoryServlet"><a href="#CategoryServlet" class="headerlink" title="CategoryServlet:"></a>CategoryServlet:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CategoryServlet</span> <span class="keyword">extends</span> <span class="title">BaseServlet</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//findAllCats</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">findAllCats</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">//在redis中获取全部分类信息</span></span><br><span class="line">		Jedis jedis=JedisUtils.getJedis();</span><br><span class="line">		String jsonStr=jedis.get(<span class="string">"allCats"</span>);</span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">null</span>==jsonStr||<span class="string">""</span>.equals(jsonStr))&#123;</span><br><span class="line">			<span class="comment">//调用业务层获取全部分类</span></span><br><span class="line">			CategoryService categoryService=<span class="keyword">new</span> CategoryServiceImp();</span><br><span class="line">			List&lt;Category&gt; list = categoryService.getAllCats();</span><br><span class="line">			<span class="comment">//将全部分类转换为JSON格式的数据</span></span><br><span class="line">			jsonStr=JSONArray.fromObject(list).toString();</span><br><span class="line">			System.out.println(jsonStr);</span><br><span class="line">			<span class="comment">//将获取到的JSON格式的数据存入redis</span></span><br><span class="line">			jedis.set(<span class="string">"allCats"</span>, jsonStr);</span><br><span class="line">			System.out.println(<span class="string">"redis缓存中没有数据"</span>);</span><br><span class="line">			<span class="comment">//将全部分类信息响应到客户端</span></span><br><span class="line">			<span class="comment">//告诉浏览器本次响应的数据是JSON格式的字符串</span></span><br><span class="line">			resp.setContentType(<span class="string">"application/json;charset=utf-8"</span>);</span><br><span class="line">			resp.getWriter().print(jsonStr);			</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			System.out.println(<span class="string">"redis缓存中有数据"</span>);</span><br><span class="line">			</span><br><span class="line">			<span class="comment">//将全部分类信息响应到客户端</span></span><br><span class="line">			<span class="comment">//告诉浏览器本次响应的数据是JSON格式的字符串</span></span><br><span class="line">			resp.setContentType(<span class="string">"application/json;charset=utf-8"</span>);</span><br><span class="line">			resp.getWriter().print(jsonStr);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		JedisUtils.closeJedis(jedis);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h6 id="CategoryServiceImpl"><a href="#CategoryServiceImpl" class="headerlink" title="CategoryServiceImpl:"></a>CategoryServiceImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;Category&gt; <span class="title">getAllCats</span><span class="params">()</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">		CategoryDao categoryDao=<span class="keyword">new</span> CategoryDaoImpl();</span><br><span class="line">		<span class="keyword">return</span> categoryDao.getAllCats();</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="CategoryDaoImpl"><a href="#CategoryDaoImpl" class="headerlink" title="CategoryDaoImpl:"></a>CategoryDaoImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;Category&gt; <span class="title">getAllCats</span><span class="params">()</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">		String sql=<span class="string">"select * from category"</span>;</span><br><span class="line">		QueryRunner queryRunner=<span class="keyword">new</span> QueryRunner(JDBCUtils.getDataSource());</span><br><span class="line">		<span class="keyword">return</span> queryRunner.query(sql, <span class="keyword">new</span> BeanListHandler&lt;Category&gt;(Category<span class="class">.<span class="keyword">class</span>))</span>;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="JedisUtils"><a href="#JedisUtils" class="headerlink" title="JedisUtils:"></a>JedisUtils:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JedisUtils</span> </span>&#123;</span><br><span class="line">	<span class="comment">//创建连接池</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> JedisPoolConfig config;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> JedisPool pool;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">static</span>&#123;</span><br><span class="line">		config=<span class="keyword">new</span> JedisPoolConfig();</span><br><span class="line">		config.setMaxTotal(<span class="number">30</span>);</span><br><span class="line">		config.setMaxIdle(<span class="number">2</span>);</span><br><span class="line">		</span><br><span class="line">		pool=<span class="keyword">new</span> JedisPool(config, <span class="string">"127.0.0.1"</span>, <span class="number">6379</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//获取连接的方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Jedis <span class="title">getJedis</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">return</span> pool.getResource();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//释放连接</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">closeJedis</span><span class="params">(Jedis j)</span></span>&#123;</span><br><span class="line">		j.close();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="javascript"><a href="#javascript" class="headerlink" title="javascript:"></a>javascript:</h6><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">$(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">	<span class="comment">//向服务端CategoryServlet_getAllCats发起ajax请求,服务端经过处理</span></span><br><span class="line">	<span class="comment">//将所有分类信息以JSON格式的数据返回,获取到返回的所有分类绑定在页面的显示分类区域</span></span><br><span class="line">	<span class="keyword">var</span> url=<span class="string">"/store_v5/CategoryServlet"</span>;</span><br><span class="line">	<span class="keyword">var</span> obj=&#123;<span class="string">"method"</span>:<span class="string">"findAllCats"</span>&#125;;</span><br><span class="line">	$.post(url,obj,<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">		<span class="comment">//alert(data);</span></span><br><span class="line">		<span class="comment">//获取到服务端响应回的数据 遍历data中的JSON数组,动态的显示分类区域</span></span><br><span class="line">		$.each(data,<span class="function"><span class="keyword">function</span>(<span class="params">i,obj</span>)</span>&#123;</span><br><span class="line">			<span class="keyword">var</span> li=<span class="string">"&lt;li&gt;&lt;a href='/store_v5/ProductServlet?method=findProductsByCidWithPage&amp;num=1&amp;cid="</span>+obj.cid+<span class="string">"'&gt;"</span>+obj.cname+<span class="string">"&lt;/a&gt;&lt;/li&gt;"</span>;</span><br><span class="line">			$(<span class="string">"#myUL"</span>).append(li);</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;,<span class="string">"json"</span>)</span><br><span class="line">&#125;)</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-首页热门商品和最新商品显示"><a href="#2-首页热门商品和最新商品显示" class="headerlink" title="2.首页热门商品和最新商品显示"></a>2.首页热门商品和最新商品显示</h4><h5 id="SQL语句"><a href="#SQL语句" class="headerlink" title="SQL语句:"></a>SQL语句:</h5><p>#查询商品表中最新的9件商品信息</p>
+<p>SELECT * FROM product WHERE pflag=0 ORDER BY pdate DESC LIMIT 0 ,9 </p>
+<p>#查询商品表中最热,最新的9件商品信息</p>
+<p>SELECT * FROM product WHERE pflag=0 AND is_hot=1 ORDER BY pdate DESC LIMIT 0 ,9 </p>
+<h5 id="步骤分析"><a href="#步骤分析" class="headerlink" title="步骤分析:"></a>步骤分析:</h5><p>1.IndexServlet___&gt;execute    //调用业务层查询最新商品,查询最热商品,返回2个集合    //将2个集合放入到request      //转发到真实的首页</p>
+<p>2.建立商品模块相关程序  ProductServlet  ProductService ProductServiceImp ProductDao ProductDaoImp Product</p>
+<p>3.调用service,dao   </p>
+<p>4./jsp/index.jsp  获取最新/最热9件商品信息</p>
+<h6 id="IndexServlet"><a href="#IndexServlet" class="headerlink" title="IndexServlet:"></a>IndexServlet:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IndexServlet</span> <span class="keyword">extends</span> <span class="title">BaseServlet</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">execute</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 调用业务层查询最新商品,最热商品</span></span><br><span class="line">		ProductService productService = <span class="keyword">new</span> ProductServiceImpl();</span><br><span class="line">		List&lt;Product&gt; list01 = productService.findHots();</span><br><span class="line">		List&lt;Product&gt; list02 = productService.findNews();</span><br><span class="line">		<span class="comment">// 将2个集合放入到request</span></span><br><span class="line">		request.setAttribute(<span class="string">"hots"</span>, list01);</span><br><span class="line">		request.setAttribute(<span class="string">"news"</span>, list02);</span><br><span class="line">		<span class="comment">// 转发到真实的首页</span></span><br><span class="line">		<span class="keyword">return</span> <span class="string">"/jsp/index.jsp"</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="ProductServiceImpl"><a href="#ProductServiceImpl" class="headerlink" title="ProductServiceImpl:"></a>ProductServiceImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;Product&gt; <span class="title">findHots</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> productDao.findHots();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;Product&gt; <span class="title">findNews</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> productDao.findNews();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="ProductDaoImpl"><a href="#ProductDaoImpl" class="headerlink" title="ProductDaoImpl:"></a>ProductDaoImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;Product&gt; <span class="title">findHots</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String sql = <span class="string">"select * from product where pflag=0 and is_hot=1 ORDER BY pdate DESC LIMIT 0,9"</span>;</span><br><span class="line">		QueryRunner queryRunner = <span class="keyword">new</span> QueryRunner(JDBCUtils.getDataSource());</span><br><span class="line">		<span class="keyword">return</span> queryRunner.query(sql, <span class="keyword">new</span> BeanListHandler&lt;Product&gt;(Product<span class="class">.<span class="keyword">class</span>))</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;Product&gt; <span class="title">findNews</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String sql = <span class="string">"select * from product where pflag=0 ORDER BY pdate DESC LIMIT 0,9"</span>;</span><br><span class="line">		QueryRunner queryRunner = <span class="keyword">new</span> QueryRunner(JDBCUtils.getDataSource());</span><br><span class="line">		<span class="keyword">return</span> queryRunner.query(sql, <span class="keyword">new</span> BeanListHandler&lt;Product&gt;(Product<span class="class">.<span class="keyword">class</span>))</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="JSP"><a href="#JSP" class="headerlink" title="JSP:"></a>JSP:</h6><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;c:forEach items=<span class="string">"$&#123;hots &#125;"</span> <span class="keyword">var</span>=<span class="string">"p"</span>&gt;</span><br><span class="line">				&lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"col-md-2"</span> style=<span class="string">"text-align:center;height:200px;padding:10px 0px;"</span>&gt;</span><br><span class="line">					&lt;a href=<span class="string">"$&#123;pageContext.request.contextPath&#125;/ProductServlet?method=findProductByPid&amp;pid=$&#123;p.pid&#125;"</span>&gt;</span><br><span class="line">						&lt;img src=<span class="string">"$&#123;pageContext.request.contextPath&#125;/$&#123;p.pimage&#125;"</span> width=<span class="string">"130"</span> height=<span class="string">"130"</span> style=<span class="string">"display: inline-block;"</span>&gt;</span><br><span class="line">					&lt;/a&gt;</span><br><span class="line">					&lt;p&gt;&lt;a href="$&#123;pageContext.request.contextPath&#125;/ProductServlet?method=findProductByPid&amp;pid=$&#123;p.pid&#125;" style='color:#666'&gt;$&#123;p.pname&#125;&lt;/a&gt;&lt;/p&gt;</span><br><span class="line">					&lt;p&gt;&lt;font color="#E4393C" style="font-size:16px"&gt;&amp;yen;$&#123;p.shop_price&#125;&lt;/font&gt;&lt;/p&gt;</span><br><span class="line">				&lt;/div&gt;</span><br><span class="line">			&lt;/c:forEach&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-商品详情显示"><a href="#3-商品详情显示" class="headerlink" title="3.商品详情显示"></a>3.商品详情显示</h4><h5 id="步骤实现-1"><a href="#步骤实现-1" class="headerlink" title="步骤实现:"></a>步骤实现:</h5><p>1.准备工作   /jsp/index.jsp修改连接</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=<span class="string">"$&#123;pageContext.request.contextPath&#125;/ProductServlet?method=findProductByPid&amp;pid=$&#123;p.pid&#125;"</span>&gt;</span><br><span class="line">							&lt;img src=<span class="string">"$&#123;pageContext.request.contextPath&#125;/$&#123;p.pimage&#125;"</span> width=<span class="string">"130"</span> height=<span class="string">"130"</span> style=<span class="string">"display: inline-block;"</span>&gt;</span><br><span class="line">						&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+
+<p>2.ProductServlet___&gt;findProductByPid  获取商品pid  根据商品pid查询商品信息</p>
+<p>将获取到的商品放入request  转发到/jsp/product_info.jsp</p>
+<p>3.ProductServiceImpl___&gt;ProductDaoImpl</p>
+<p>4./jsp/product_info.jsp</p>
+<h6 id="ProductServlet"><a href="#ProductServlet" class="headerlink" title="ProductServlet:"></a>ProductServlet:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">findProductByPid</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 获取商品pid</span></span><br><span class="line">		String pid = request.getParameter(<span class="string">"pid"</span>);</span><br><span class="line">		<span class="comment">// 根据商品pid查询商品信息</span></span><br><span class="line">		ProductService productService = <span class="keyword">new</span> ProductServiceImpl();</span><br><span class="line">		Product product = productService.findProductByPid(pid);</span><br><span class="line">		<span class="comment">// 将获取到的商品放入request</span></span><br><span class="line">		request.setAttribute(<span class="string">"product"</span>, product);</span><br><span class="line">		<span class="comment">// 转发到/jsp/product_info.jsp</span></span><br><span class="line">		<span class="keyword">return</span> <span class="string">"/jsp/product_info.jsp"</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="ProductServiceImpl-1"><a href="#ProductServiceImpl-1" class="headerlink" title="ProductServiceImpl:"></a>ProductServiceImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Product <span class="title">findProductByPid</span><span class="params">(String pid)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> productDao.findProductByPid(pid);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="ProductDaoImpl-1"><a href="#ProductDaoImpl-1" class="headerlink" title="ProductDaoImpl:"></a>ProductDaoImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Product <span class="title">findProductByPid</span><span class="params">(String pid)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String sql = <span class="string">"select * from product where pid=?"</span>;</span><br><span class="line">		QueryRunner queryRunner = <span class="keyword">new</span> QueryRunner(JDBCUtils.getDataSource());</span><br><span class="line">		<span class="keyword">return</span> queryRunner.query(sql, <span class="keyword">new</span> BeanHandler&lt;Product&gt;(Product<span class="class">.<span class="keyword">class</span>), <span class="title">pid</span>)</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-分页查看下分类下的商品信息"><a href="#4-分页查看下分类下的商品信息" class="headerlink" title="4.分页查看下分类下的商品信息"></a>4.分页查看下分类下的商品信息</h4><h5 id="SQL语句-1"><a href="#SQL语句-1" class="headerlink" title="SQL语句:"></a>SQL语句:</h5><p>#查看类别cid为1的商品的信息带有分页</p>
+<p>SELECT * FROM product WHERE cid =  1 LIMIT ? ,?</p>
+<p>#统计类别为1的商品的数量</p>
+<p>SELECT COUNT(*) FROM product WHERE cid =  1</p>
+<h5 id="步骤实现-2"><a href="#步骤实现-2" class="headerlink" title="步骤实现:"></a>步骤实现:</h5><p>1.准备工作   /jsp/header.jsp </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=<span class="string">'/store_v5/ProductServlet?method=findProductsByCidWithPage&amp;num=1&amp;cid="</span></span><br><span class="line"><span class="string"></span></span><br><span class="line">+obj.cid+"'&gt;"+obj.cname+"&lt;/a&gt;&lt;/li&gt;";</span><br></pre></td></tr></table></figure>
+
+<p>2.ProductServlet_____&gt;findProductsByCidWithPage  获取cid,num   调用业务层功能:以分页形式查询当前类别下商品信息         返回PageModel对象(1.当前页商品信息2.分页3.url)将PageModel对象放入request     转发到/jsp/product_list.jsp</p>
+<p>3.ProductService   创建PageModel对象   目的:计算分页参数   关联集合   关联url</p>
+<p>4.ProductDao    1.统计当前类别下商品个数    2.统计当前类别的当前页中的商品信息</p>
+<p>5./jsp/product_list.jsp    获取了当前类别下的当前页中的分类数据和分页参数 </p>
+<p>约定: 1.当前页: num   2.向request放入PageModel属性名称page</p>
+<h6 id="ProductServlet-1"><a href="#ProductServlet-1" class="headerlink" title="ProductServlet:"></a>ProductServlet:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">findProductsByCidWithPage</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	<span class="comment">// 获取cid,num</span></span><br><span class="line"></span><br><span class="line">	String cid = request.getParameter(<span class="string">"cid"</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> curNum = Integer.parseInt(request.getParameter(<span class="string">"num"</span>));</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 调用业务层功能:以分页形式查询当前类别下商品信息</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// 返回PageModel对象(1_当前页商品信息2_分页3_url)</span></span><br><span class="line"></span><br><span class="line">	ProductService productService = <span class="keyword">new</span> ProductServiceImpl();</span><br><span class="line"></span><br><span class="line">	PageModel pm = productService.findProductsByCidWithPage(cid, curNum);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 将PageModel对象放入request</span></span><br><span class="line"></span><br><span class="line">	request.setAttribute(<span class="string">"page"</span>, pm);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 转发到/jsp/product_list.jsp</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="string">"/jsp/product_list.jsp"</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="ProductServiceImpl-2"><a href="#ProductServiceImpl-2" class="headerlink" title="ProductServiceImpl:"></a>ProductServiceImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> PageModel <span class="title">findProductsByCidWithPage</span><span class="params">(String cid, <span class="keyword">int</span> curNum)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 1_创建PageModel对象 目的:计算分页参数</span></span><br><span class="line">		<span class="comment">// 统计当前分类下商品个数 select count(*) from product where cid=?</span></span><br><span class="line">		<span class="keyword">int</span> totalRecords = productDao.findTotalRecords(cid);</span><br><span class="line">		PageModel pm = <span class="keyword">new</span> PageModel(curNum, totalRecords, <span class="number">12</span>);</span><br><span class="line">		<span class="comment">// 2_关联集合 select * from product where cid =? limit ? ,?</span></span><br><span class="line">		List list = productDao.findProductsByCidWithPage(cid, pm.getStartIndex(), pm.getPageSize());</span><br><span class="line">		pm.setList(list);</span><br><span class="line">		<span class="comment">// 3_关联url</span></span><br><span class="line">		pm.setUrl(<span class="string">"ProductServlet?method=findProductsByCidWithPage&amp;cid="</span> + cid);</span><br><span class="line">		<span class="keyword">return</span> pm;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="ProductDaoImpl-2"><a href="#ProductDaoImpl-2" class="headerlink" title="ProductDaoImpl:"></a>ProductDaoImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List <span class="title">findProductsByCidWithPage</span><span class="params">(String cid, <span class="keyword">int</span> startIndex, <span class="keyword">int</span> pageSize)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String sql = <span class="string">"select * from product where cid=? limit ? , ?"</span>;</span><br><span class="line">		QueryRunner qr = <span class="keyword">new</span> QueryRunner(JDBCUtils.getDataSource());</span><br><span class="line">		<span class="keyword">return</span> qr.query(sql, <span class="keyword">new</span> BeanListHandler&lt;Product&gt;(Product<span class="class">.<span class="keyword">class</span>), <span class="title">cid</span>, <span class="title">startIndex</span>, <span class="title">pageSize</span>)</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findTotalRecords</span><span class="params">(String cid)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String sql = <span class="string">"select count(*) from product where cid =?"</span>;</span><br><span class="line">		QueryRunner qr = <span class="keyword">new</span> QueryRunner(JDBCUtils.getDataSource());</span><br><span class="line">		Long num = (Long) qr.query(sql, <span class="keyword">new</span> ScalarHandler(), cid);</span><br><span class="line">		<span class="keyword">return</span> num.intValue();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>请作者喝瓶肥宅快乐水</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/vxpay.jpg" alt="liuwy1998 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/alipay.jpg" alt="liuwy1998 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/项目/" rel="tag"><i class="fa fa-tag"></i> 项目</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/21309/" rel="prev" title="网上商城项目总结(三.购物车与订单)">
+      <i class="fa fa-chevron-left"></i> 网上商城项目总结(三.购物车与订单)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/36372/" rel="next" title="网上商城项目总结(四.后台)">
+      网上商城项目总结(四.后台) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-获取首页分类信息"><span class="nav-text">1.获取首页分类信息</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤实现"><span class="nav-text">步骤实现:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#CategoryServlet"><span class="nav-text">CategoryServlet:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#CategoryServiceImpl"><span class="nav-text">CategoryServiceImpl:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#CategoryDaoImpl"><span class="nav-text">CategoryDaoImpl:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#JedisUtils"><span class="nav-text">JedisUtils:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#javascript"><span class="nav-text">javascript:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-首页热门商品和最新商品显示"><span class="nav-text">2.首页热门商品和最新商品显示</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#SQL语句"><span class="nav-text">SQL语句:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤分析"><span class="nav-text">步骤分析:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#IndexServlet"><span class="nav-text">IndexServlet:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ProductServiceImpl"><span class="nav-text">ProductServiceImpl:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ProductDaoImpl"><span class="nav-text">ProductDaoImpl:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#JSP"><span class="nav-text">JSP:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-商品详情显示"><span class="nav-text">3.商品详情显示</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤实现-1"><span class="nav-text">步骤实现:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#ProductServlet"><span class="nav-text">ProductServlet:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ProductServiceImpl-1"><span class="nav-text">ProductServiceImpl:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ProductDaoImpl-1"><span class="nav-text">ProductDaoImpl:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-分页查看下分类下的商品信息"><span class="nav-text">4.分页查看下分类下的商品信息</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#SQL语句-1"><span class="nav-text">SQL语句:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤实现-2"><span class="nav-text">步骤实现:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#ProductServlet-1"><span class="nav-text">ProductServlet:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ProductServiceImpl-2"><span class="nav-text">ProductServiceImpl:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ProductDaoImpl-2"><span class="nav-text">ProductDaoImpl:</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liuwy1998"
+      src="/../assets/img/head.jpg">
+  <p class="site-author-name" itemprop="name">liuwy1998</p>
+  <div class="site-description" itemprop="description">Java开发, 后端开发</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">皖ICP备19022525号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liuwy1998</span>
+</div><script color="0,137,108" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://tonymua.top/48295/',]
+      });
+      });
+  </script>
+
+</body>
+</html>

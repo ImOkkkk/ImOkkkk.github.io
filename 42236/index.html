@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="bUCDF5pEQe">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=66522575" charset="UTF-8"></script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"tonymua.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1.ElasticSearch介绍1.1 介绍​    ElasticSearch是一个基于Lucene的搜索服务器。它提供了一个分布式多用户能力的全文搜索引擎，基于RESTful web接口。Elasticsearch是用Java语言开发的，并作为Apache许可条款下的开放源码发布，是一种流行的企业级搜索引擎。ElasticSearch用于云计算中，能够达到实时搜索，稳定，可靠，快速，安装使用">
+<meta name="keywords" content="项目">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学成在线(十一.ElasticSearch(一))">
+<meta property="og:url" content="http://tonymua.top/42236/index.html">
+<meta property="og:site_name" content="liuwy1998 BLOG">
+<meta property="og:description" content="1.ElasticSearch介绍1.1 介绍​    ElasticSearch是一个基于Lucene的搜索服务器。它提供了一个分布式多用户能力的全文搜索引擎，基于RESTful web接口。Elasticsearch是用Java语言开发的，并作为Apache许可条款下的开放源码发布，是一种流行的企业级搜索引擎。ElasticSearch用于云计算中，能够达到实时搜索，稳定，可靠，快速，安装使用">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-04-29T02:44:38.088Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="学成在线(十一.ElasticSearch(一))">
+<meta name="twitter:description" content="1.ElasticSearch介绍1.1 介绍​    ElasticSearch是一个基于Lucene的搜索服务器。它提供了一个分布式多用户能力的全文搜索引擎，基于RESTful web接口。Elasticsearch是用Java语言开发的，并作为Apache许可条款下的开放源码发布，是一种流行的企业级搜索引擎。ElasticSearch用于云计算中，能够达到实时搜索，稳定，可靠，快速，安装使用">
+
+<link rel="canonical" href="http://tonymua.top/42236/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>学成在线(十一.ElasticSearch(一)) | liuwy1998 BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="liuwy1998 BLOG" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">liuwy1998 BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">When they go low,we go high.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/42236/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="liuwy1998">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuwy1998 BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          学成在线(十一.ElasticSearch(一))
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="1-ElasticSearch介绍"><a href="#1-ElasticSearch介绍" class="headerlink" title="1.ElasticSearch介绍"></a>1.ElasticSearch介绍</h3><h4 id="1-1-介绍"><a href="#1-1-介绍" class="headerlink" title="1.1 介绍"></a>1.1 介绍</h4><p>​    ElasticSearch是一个基于<span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS9MdWNlbmUvNjc1MzMwMg==">Lucene<i class="fa fa-external-link-alt"></i></span>的搜索服务器。它提供了一个分布式多用户能力的全文搜索引擎，基于RESTful web接口。Elasticsearch是用Java语言开发的，并作为Apache许可条款下的开放源码发布，是一种流行的企业级搜索引擎。ElasticSearch用于<span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS/kupHorqHnrpcvOTk2OTM1Mw==">云计算<i class="fa fa-external-link-alt"></i></span>中，能够达到实时搜索，稳定，可靠，快速，安装使用方便。官方客户端在Java、.NET（C#）、PHP、Python、Apache Groovy、Ruby和许多其他语言中都是可用的。根据DB-Engines的排名显示，Elasticsearch是最受欢迎的企业搜索引擎，其次是Apache Solr，也是基于Lucene。</p>
+<p>官方网址：<span class="exturl" data-url="aHR0cHM6Ly93d3cuZWxhc3RpYy5jby9jbi9wcm9kdWN0cy9lbGFzdGljc2VhcmNo">https://www.elastic.co/cn/products/elasticsearch<i class="fa fa-external-link-alt"></i></span><br>Github：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VsYXN0aWMvZWxhc3RpY3NlYXJjaA==">https://github.com/elastic/elasticsearch<i class="fa fa-external-link-alt"></i></span></p>
+<ul>
+<li><p>总结</p>
+<ol>
+<li>ElasticSearch是一个基于Lucene的<strong>高扩展</strong>的<strong>分布式</strong>搜索服务器，支持<strong>开箱即用</strong>。</li>
+<li>ElasticSearch隐藏了Lucene的复杂性，对外提供<strong>Restful接口</strong>来操作索引、搜索。</li>
+</ol>
+</li>
+<li><p>突出优点</p>
+<ol>
+<li>扩展性好，可部署上百台服务器集群，处理PB级数据。</li>
+<li>近实时的去索引数据、搜索数据。</li>
+</ol>
+</li>
+</ul>
+<a id="more"></a>
+
+<h4 id="1-2-原理与应用"><a href="#1-2-原理与应用" class="headerlink" title="1.2 原理与应用"></a>1.2 原理与应用</h4><h5 id="1-2-1-索引结构"><a href="#1-2-1-索引结构" class="headerlink" title="1.2.1 索引结构"></a>1.2.1 索引结构</h5><p>下图是ElasticSearch的索引结构，下边黑色部分是物理结构，上边黄色部分是逻辑结构，逻辑结构也是为了更好的去描述ElasticSearch的工作原理及去使用物理结构中的索引文件。</p>
+<p><img data-src="../../../../assets/img/152012.jpg" alt></p>
+<p>逻辑结构部分是一个<strong>倒排索引表</strong>：</p>
+<ol>
+<li>将要搜索的文档内容分词，所有不重复的词组成分词列表。</li>
+<li>将搜索的文档终以Document方式存储起来。 </li>
+<li>每个词和docment都有关联。</li>
+</ol>
+<p>如下：<img data-src="../../../../assets/img/152229.jpg" alt></p>
+<p>现在，如果我们想搜索 <code>quick brown</code> ，我们只需要查找包含每个词条的文档：</p>
+<p><img data-src="../../../../assets/img/152327.jpg" alt></p>
+<p>两个文档都匹配，但是第一个文档比第二个匹配度更高。如果我们使用仅计算匹配词条数量的简单相似性算法 ， 那么，我们可以说，对于我们查询的相关性来讲，第一个文档比第二个文档更佳。</p>
+<h5 id="1-2-2-RESTful应用方法"><a href="#1-2-2-RESTful应用方法" class="headerlink" title="1.2.2 RESTful应用方法"></a>1.2.2 RESTful应用方法</h5><p>ElasticSearch提供 RESTful Api接口进行索引、搜索，并且支持多种客户端。</p>
+<p>下图是es在项目中的应用方式：</p>
+<p><img data-src="../../../../assets/img/153718.jpg" alt></p>
+<ol>
+<li>用户在前端搜索关键字 </li>
+<li>项目前端通过http方式请求项目服务端 </li>
+<li>项目服务端通过Http RESTful方式请求ES集群进行搜索</li>
+<li>ES集群从索引库检索数据。 </li>
+</ol>
+<h3 id="2-ES快速入门"><a href="#2-ES快速入门" class="headerlink" title="2.ES快速入门"></a>2.ES快速入门</h3><h4 id="2-1-创建索引库"><a href="#2-1-创建索引库" class="headerlink" title="2.1 创建索引库"></a>2.1 创建索引库</h4><p>ES的索引库是一个逻辑概念，它包括了<strong>分词列表及文档列表</strong>，同一个索引库中存储了相同类型的文档。它就相当于 MySQL中的表，或相当于Mongodb中的集合。<br>关于索引这个语：<br>索引（名词）：ES是基于Lucene构建的一个搜索服务，它要从索引库搜索符合条件索引数据。<br>索引（动词）：索引库刚创建起来是空的，将数据添加到索引库的过程称为索引。<br>下边介绍两种创建索引库的方法，它们的工作原理是相同的，都是客户端向ES服务发送命令。</p>
+<ol>
+<li><p>使用postman或curl这样的工具创建：</p>
+<p>put <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL+e0ouW8leW6k+WQjeensA==">http://localhost:9200/索引库名称<i class="fa fa-external-link-alt"></i></span></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="attr">"settings"</span>:&#123;</span><br><span class="line">	<span class="attr">"index"</span>:&#123;</span><br><span class="line">		<span class="attr">"number_of_shards"</span>:<span class="number">1</span>,</span><br><span class="line">		<span class="attr">"number_of_replicas"</span>:<span class="number">0</span></span><br><span class="line">    	&#125;</span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>number_of_shards：设置分片的数量，在集群中通常设置多个分片，表示一个索引库将拆分成多片分别存储不同 的结点，提高了ES的处理能力和高可用性，入门程序使用单机环境，这里设置为1<br>number_of_replicas：设置副本的数量，设置副本是为了提高ES的高可靠性，单机环境设置为0<br>如下是创建的例子，创建xc_course索引库，共1个分片，0个副本：</p>
+<p><img data-src="../../../../assets/img/164536.jpg" alt></p>
+</li>
+<li><p>使用head插件创建</p>
+<p><img data-src="../../../../assets/img/165258.jpg" alt></p>
+</li>
+</ol>
+<h4 id="2-2-创建映射"><a href="#2-2-创建映射" class="headerlink" title="2.2 创建映射"></a>2.2 创建映射</h4><h5 id="2-2-1-概念说明"><a href="#2-2-1-概念说明" class="headerlink" title="2.2.1 概念说明"></a>2.2.1 概念说明</h5><p>在索引中每个文档都包括了一个或多个ﬁeld，<strong>创建映射就是向索引库中创建ﬁeld的过程</strong>，下边是document和ﬁeld 与关系数据库的概念的类比：<br>文档（Document）—————-Row记录<br>字段（Field）——————-Columns列<br>注意：6.0之前的版本有type（类型）概念，<strong>type相当于关系数据库的表</strong>，ES官方将在ES9.0版本中彻底删除type。<br>上边讲的创建索引库相当于关系数据库中的数据库还是表？</p>
+<ol>
+<li>如果相当于数据库就表示一个索引库可以创建很多不同类型的文档，这在ES中也是允许的。</li>
+<li>如果相当于表就表示一个索引库只能存储相同类型的文档，ES官方建议在一个索引库中只存储相同类型的文 档。 </li>
+</ol>
+<h5 id="2-2-2-创建映射"><a href="#2-2-2-创建映射" class="headerlink" title="2.2.2 创建映射"></a>2.2.2 创建映射</h5><p>我们要把课程信息存储到ES中，这里我们创建课程信息的映射，先来一个简单的映射，如下：<br>发送：post <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL+e0ouW8leW6k+WQjeensC/nsbvlnovlkI3np7AvX21hcHBpbmc=">http://localhost:9200/索引库名称/类型名称/_mapping<i class="fa fa-external-link-alt"></i></span><br>创建类型为xc_course的映射，共包括三个字段：name、description、studymondel<br>由于ES6.0版本还没有将type彻底删除，所以暂时把type起一个没有特殊意义的名字。 </p>
+<p>post 请求：<span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL3hjX2NvdXJzZS9kb2MvX21hcHBpbmc=">http://localhost:9200/xc_course/doc/_mapping<i class="fa fa-external-link-alt"></i></span><br>表示：在xc_course索引库下的doc类型下创建映射。doc是类型名，可以自定义，在ES6.0中要弱化类型的概念， 给它起一个没有具体业务意义的名称。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="attr">"properties"</span>: &#123;</span><br><span class="line">		<span class="attr">"name"</span>: &#123; </span><br><span class="line">			<span class="attr">"type"</span>: <span class="string">"text"</span> </span><br><span class="line">			&#125;, </span><br><span class="line">			<span class="attr">"description"</span>: &#123;</span><br><span class="line">				<span class="attr">"type"</span>: <span class="string">"text"</span></span><br><span class="line">			&#125;, </span><br><span class="line">			<span class="attr">"studymodel"</span>: &#123;</span><br><span class="line">				<span class="attr">"type"</span>: <span class="string">"keyword"</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="../../../../assets/img/141140.jpg" alt></p>
+<h4 id="2-3-创建文档"><a href="#2-3-创建文档" class="headerlink" title="2.3 创建文档"></a>2.3 创建文档</h4><p>ES中的文档相当于MySQL数据库表中的记录。<br>发送：put 或Post <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL3hjX2NvdXJzZS9kb2MvaWTlgLw=">http://localhost:9200/xc_course/doc/id值<i class="fa fa-external-link-alt"></i></span> （如果不指定id值ES会自动生成ID）<br><span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL3hjX2NvdXJzZS9kb2MvNDAyOGU1ODE2MWJjZjdmNDAxNjFiY2Y4Yjc3YzAwMDA=">http://localhost:9200/xc_course/doc/4028e58161bcf7f40161bcf8b77c0000<i class="fa fa-external-link-alt"></i></span></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123; </span><br><span class="line">	<span class="attr">"name"</span>:<span class="string">"Bootstrap开发框架"</span>,</span><br><span class="line">	<span class="attr">"description"</span>:<span class="string">"Bootstrap是由Twitter推出的一个前台页面开发框架，在行业之中使用较为广泛。此开发框架包 含了大量的CSS、JS程序代码，可以帮助开发者（尤其是不擅长页面开发的程序人员）轻松的实现一个不受浏览器限制的 精美界面效果。"</span>,</span><br><span class="line">	<span class="attr">"studymodel"</span>:<span class="string">"201001"</span> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用postman测试：<img data-src="../../../../assets/img/142520.jpg" alt></p>
+<p>通过head查询数据：<img data-src="../../../../assets/img/142627.jpg" alt></p>
+<h4 id="2-4-搜索文档"><a href="#2-4-搜索文档" class="headerlink" title="2.4 搜索文档"></a>2.4 搜索文档</h4><ol>
+<li>根据课程id查询文档<br>发送：Get <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL3hjX2NvdXJzZS9kb2MvNDAyOGU1ODE2MWJjZjdmNDAxNjFiY2Y4Yjc3YzAwMDA=">http://localhost:9200/xc_course/doc/4028e58161bcf7f40161bcf8b77c0000<i class="fa fa-external-link-alt"></i></span><br>使用postman测试：<img data-src="../../../../assets/img/142750.jpg" alt></li>
+<li>查询所有记录<br>发送 Get <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL3hjX2NvdXJzZS9kb2MvX3NlYXJjaA==">http://localhost:9200/xc_course/doc/_search<i class="fa fa-external-link-alt"></i></span></li>
+<li>查询名称中包括spring 关键字的的记录<br> 发送：Get <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL3hjX2NvdXJzZS9kb2MvX3NlYXJjaD9xPW5hbWU6Ym9vdHN0cmFw">http://localhost:9200/xc_course/doc/_search?q=name:bootstrap<i class="fa fa-external-link-alt"></i></span></li>
+<li>查询学习模式为201001的记录<br> 发送 Get <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL3hjX2NvdXJzZS9kb2MvX3NlYXJjaD9xPXN0dWR5bW9kZWw6MjAxMDAx">http://localhost:9200/xc_course/doc/_search?q=studymodel:201001<i class="fa fa-external-link-alt"></i></span> </li>
+</ol>
+<h5 id="2-4-1-查询结果分析"><a href="#2-4-1-查询结果分析" class="headerlink" title="2.4.1 查询结果分析"></a>2.4.1 查询结果分析</h5><p>分析上边查询结果：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="attr">"took"</span>: <span class="number">8</span>,</span><br><span class="line">	<span class="attr">"timed_out"</span>: <span class="literal">false</span>,</span><br><span class="line">	<span class="attr">"_shards"</span>: &#123;</span><br><span class="line">		<span class="attr">"total"</span>: <span class="number">1</span>,</span><br><span class="line">		<span class="attr">"successful"</span>: <span class="number">1</span>,</span><br><span class="line">		<span class="attr">"skipped"</span>: <span class="number">0</span>,</span><br><span class="line">		<span class="attr">"failed"</span>: <span class="number">0</span></span><br><span class="line">	&#125;,</span><br><span class="line">	<span class="attr">"hits"</span>: &#123;</span><br><span class="line">		<span class="attr">"total"</span>: <span class="number">1</span>,</span><br><span class="line">		<span class="attr">"max_score"</span>: <span class="number">1.0</span>,</span><br><span class="line">		<span class="attr">"hits"</span>: [</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="attr">"_index"</span>: <span class="string">"xc_course"</span>,</span><br><span class="line">				<span class="attr">"_type"</span>: <span class="string">"doc"</span>,</span><br><span class="line">				<span class="attr">"_id"</span>: <span class="string">"4028e58161bcf7f40161bcf8b77c0000"</span>,</span><br><span class="line">				<span class="attr">"_score"</span>: <span class="number">1.0</span>,</span><br><span class="line">				<span class="attr">"_source"</span>: &#123;</span><br><span class="line">					<span class="attr">"name"</span>: <span class="string">"Bootstrap开发框架"</span>,</span><br><span class="line">					<span class="attr">"description"</span>: <span class="string">"Bootstrap是由Twitter推出的一个前台页面开发框架，在行业之中使用较为广泛。此开发框架包 含了大量的CSS、JS程序代码，可以帮助开发者（尤其是不擅长页面开发的程序人员）轻松的实现一个不受浏览器限制的 精美界面效果。"</span>,</span><br><span class="line">					<span class="attr">"studymodel"</span>: <span class="string">"201001"</span></span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		]</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>took：本次操作花费的时间，单位为毫秒。<br>timed_out：请求是否超时<br>_shards：说明本次操作共搜索了哪些分片<br>hits：搜索命中的记录<br>hits.total ： 符合条件的文档总数<br>hits.hits ：匹配度较高的前N个文档<br>hits.max_score：文档匹配得分，这里为高分<br>_score：每个文档都有一个匹配度得分，按照降序排列<br>_source：显示了文档的原始内容。</p>
+<h3 id="3-IK分词器"><a href="#3-IK分词器" class="headerlink" title="3.IK分词器"></a>3.IK分词器</h3><h4 id="3-1-测试分词器"><a href="#3-1-测试分词器" class="headerlink" title="3.1 测试分词器"></a>3.1 测试分词器</h4><p>在添加文档时会进行分词，索引中存放的就是一个一个的词（term），当你去搜索时就是拿关键字去匹配词，终 找到词关联的文档。<br>测试当前索引库使用的分词器：<br>post 发送：<span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL19hbmFseXpl">http://localhost:9200/_analyze<i class="fa fa-external-link-alt"></i></span> </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;	</span><br><span class="line">	<span class="attr">"text"</span>:<span class="string">"测试分词器，后边是测试内容：spring cloud实战"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果如下：<img data-src="../../../../assets/img/151332.jpg" alt><br>会发现分词的效果将 “测试” 这个词拆分成两个单字“测”和“试”，这是因为当前索引库使用的分词器对中文就是单字分词。 </p>
+<h4 id="3-2-IK分词器"><a href="#3-2-IK分词器" class="headerlink" title="3.2 IK分词器"></a>3.2 IK分词器</h4><p>使用IK分词器可以实现对中文分词的效果。<br>下载IK分词器：（Github地址：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL21lZGNsL2VsYXN0aWNzZWFyY2gtYW5hbHlzaXMtaWvvvIk=">https://github.com/medcl/elasticsearch-analysis-ik）<i class="fa fa-external-link-alt"></i></span> </p>
+<p>测试分词效果：<br>发送：post <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL19hbmFseXpl">http://localhost:9200/_analyze<i class="fa fa-external-link-alt"></i></span></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="attr">"text"</span>:<span class="string">"测试分词器，后边是测试内容：spring cloud实战"</span>,</span><br><span class="line">	<span class="attr">"analyzer"</span>:<span class="string">"ik_max_word"</span> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="../../../../assets/img/151927.jpg" alt></p>
+<h4 id="3-3-两种分词模式"><a href="#3-3-两种分词模式" class="headerlink" title="3.3 两种分词模式"></a>3.3 两种分词模式</h4><p>ik分词器有两种分词模式：ik_max_word和ik_smart模式。</p>
+<ol>
+<li>ik_max_word<br>  会将文本做细粒度的拆分，比如会将“中华人民共和国人民大会堂”拆分为“中华人民共和国、中华人民、中华、 华人、人民共和国、人民、共和国、大会堂、大会、会堂等词语。</li>
+<li>ik_smart<br> 会做粗粒度的拆分，比如会将“中华人民共和国人民大会堂”拆分为中华人民共和国、人民大会堂。</li>
+</ol>
+<h4 id="3-4-自定义词库"><a href="#3-4-自定义词库" class="headerlink" title="3.4 自定义词库"></a>3.4 自定义词库</h4><p>如果要让分词器支持一些专有词语，可以自定义词库。<br>iK分词器自带一个main.dic的文件，此文件为词库文件。</p>
+<p><img data-src="../../../../assets/img/152501.jpg" alt></p>
+<p>在上边的目录中新建一个my.dic文件（注意文件格式为utf-8（不要选择utf-8 BOM））<br>可以在其中自定义词汇：<br>比如定义：<br>配置文件中配置my.dic，<img data-src="../../../../assets/img/152952.jpg" alt></p>
+<h3 id="4-映射"><a href="#4-映射" class="headerlink" title="4.映射"></a>4.映射</h3><h4 id="4-1-映射维护方法"><a href="#4-1-映射维护方法" class="headerlink" title="4.1 映射维护方法"></a>4.1 映射维护方法</h4><ol>
+<li><p>查询所有索引的映射：GET： <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL19tYXBwaW5n">http://localhost:9200/_mapping<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+<li><p>创建映射 Post 请求：<span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL3hjX2NvdXJzZS9kb2MvX21hcHBpbmc=">http://localhost:9200/xc_course/doc/_mapping<i class="fa fa-external-link-alt"></i></span></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;	</span><br><span class="line">	<span class="attr">"properties"</span>: &#123;</span><br><span class="line">		<span class="attr">"name"</span>: &#123;</span><br><span class="line">			<span class="attr">"type"</span>: <span class="string">"text"</span></span><br><span class="line">		&#125;, </span><br><span class="line">		<span class="attr">"description"</span>: &#123;</span><br><span class="line">			<span class="attr">"type"</span>: <span class="string">"text"</span></span><br><span class="line">		&#125;, </span><br><span class="line">		<span class="attr">"studymodel"</span>: &#123;</span><br><span class="line">			<span class="attr">"type"</span>: <span class="string">"keyword"</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>更新映射<br>映射创建成功可以添加新字段，已有字段不允许更新。</p>
+</li>
+<li><p>删除映射<br>通过删除索引来删除映射。 </p>
+</li>
+</ol>
+<h4 id="4-2-常用映射类型"><a href="#4-2-常用映射类型" class="headerlink" title="4.2 常用映射类型"></a>4.2 常用映射类型</h4><h5 id="4-2-1-text文本字段"><a href="#4-2-1-text文本字段" class="headerlink" title="4.2.1 text文本字段"></a>4.2.1 text文本字段</h5><p>下图是ES6.2核心的字段类型如下：</p>
+<p><img data-src="../../../../assets/img/145656.jpg" alt></p>
+<p>字符串包括text和keyword两种类型：</p>
+<ol>
+<li><p>text</p>
+<p>(1) analyzer 通过analyzer属性指定分词器。<br>下边指定name的字段类型为text，使用ik分词器的ik_max_word分词模式。</p>
+</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> "name": &#123;                   </span><br><span class="line"> 			"type": "text",                   </span><br><span class="line"> 			"analyzer":"ik_max_word" </span><br><span class="line"> 		&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上边指定了analyzer是指在索引和搜索都使用ik_max_word，如果单独想定义搜索时使用的分词器则可以通过 <strong>search_analyzer</strong>属性。 对于ik分词器建议是<strong>索引时使用ik_max_word将搜索内容进行细粒度分词，搜索时使用ik_smart提高搜索精确性</strong>。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">"name": &#123;                   </span><br><span class="line">			"type": "text",                   </span><br><span class="line">			"analyzer":"ik_max_word",                   </span><br><span class="line">			"search_analyzer":"ik_smart"    </span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    (2) index </p>
+<p>通过index属性指定是否索引。<br>默认为index=true，即要进行索引，只有进行索引才可以从索引库搜索到。 但是也有一些内容不需要索引，比如：商品图片地址只被用来展示图片，不进行搜索图片，此时可以将index设置为false。 删除索引，重新创建映射，将pic的index设置为false，尝试根据pic去搜索，结果搜索不到数据</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">"pic": &#123;   </span><br><span class="line">		"type": "text",                           </span><br><span class="line">		"index":false            </span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    (3) store</p>
+<p>是否在source之外存储，每个文档索引后会在 ES中保存一份原始文档，存放在”source”中，一般情况下不需要设置 store为true，因为在source中已经有一份原始文档了。</p>
+<blockquote>
+<p><strong>测试</strong></p>
+</blockquote>
+<p>删除xc_course/doc下的映射 创建新映射：Post <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL3hjX2NvdXJzZS9kb2MvX21hcHBpbmc=">http://localhost:9200/xc_course/doc/_mapping<i class="fa fa-external-link-alt"></i></span></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="attr">"properties"</span>: &#123; </span><br><span class="line">		<span class="attr">"name"</span>: &#123;</span><br><span class="line">			<span class="attr">"type"</span>: <span class="string">"text"</span>,</span><br><span class="line">			<span class="attr">"analyzer"</span>:<span class="string">"ik_max_word"</span>,</span><br><span class="line">			<span class="attr">"search_analyzer"</span>:<span class="string">"ik_smart"</span></span><br><span class="line">			&#125;,</span><br><span class="line">			<span class="attr">"description"</span>: &#123;</span><br><span class="line">				<span class="attr">"type"</span>: <span class="string">"text"</span>,</span><br><span class="line">				<span class="attr">"analyzer"</span>:<span class="string">"ik_max_word"</span>, </span><br><span class="line">				<span class="attr">"search_analyzer"</span>:<span class="string">"ik_smart"</span></span><br><span class="line">			&#125;, </span><br><span class="line">			<span class="attr">"pic"</span>:&#123;</span><br><span class="line">				<span class="attr">"type"</span>:<span class="string">"text"</span>,</span><br><span class="line">				<span class="attr">"index"</span>:<span class="literal">false</span> </span><br><span class="line">			&#125;, </span><br><span class="line">			<span class="attr">"studymodel"</span>:&#123;</span><br><span class="line">				<span class="attr">"type"</span>:<span class="string">"text"</span></span><br><span class="line">			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>插入文档：<br><span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL3hjX2NvdXJzZS9kb2MvNDAyOGU1ODE2MWJjZjdmNDAxNjFiY2Y4Yjc3YzAwMDA=">http://localhost:9200/xc_course/doc/4028e58161bcf7f40161bcf8b77c0000<i class="fa fa-external-link-alt"></i></span></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123; </span><br><span class="line">	<span class="attr">"name"</span>:<span class="string">"Bootstrap开发框架"</span>,</span><br><span class="line">	<span class="attr">"description"</span>:<span class="string">"Bootstrap是由Twitter推出的一个前台页面开发框架，在行业之中使用较为广泛。此开发框架包 含了大量的CSS、JS程序代码，可以帮助开发者（尤其是不擅长页面开发的程序人员）轻松的实现一个不受浏览器限制的 精美界面效果。"</span>,</span><br><span class="line">	<span class="attr">"studymodel"</span>:<span class="string">"201001"</span> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查询测试：<br>Get <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL3hjX2NvdXJzZS9fc2VhcmNoP3E9bmFtZTrlvIDlj5E=">http://localhost:9200/xc_course/_search?q=name:开发<i class="fa fa-external-link-alt"></i></span><br>Get <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL3hjX2NvdXJzZS9fc2VhcmNoP3E9ZGVzY3JpcHRpb2465byA5Y+R">http://localhost:9200/xc_course/_search?q=description:开发<i class="fa fa-external-link-alt"></i></span><br>Get <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL3hjX2NvdXJzZS9fc2VhcmNoP3E9cGljOmdyb3VwMS9NMDAvMDAvMDEvd0tobFFGcU80TW1BT1A1M0FBQWN3RHdtNlNVNDkwLmpwZw==">http://localhost:9200/xc_course/_search?q=pic:group1/M00/00/01/wKhlQFqO4MmAOP53AAAcwDwm6SU490.jpg<i class="fa fa-external-link-alt"></i></span><br>Get <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL3hjX2NvdXJzZS9fc2VhcmNoP3E9c3R1ZHltb2RlbDoyMDEwMDI=">http://localhost:9200/xc_course/_search?q=studymodel:201002<i class="fa fa-external-link-alt"></i></span><br>通过测试发现：name和description都支持全文检索，pic不可作为查询条件。</p>
+<h5 id="4-2-2-keyword关键字字段"><a href="#4-2-2-keyword关键字字段" class="headerlink" title="4.2.2 keyword关键字字段"></a>4.2.2 keyword关键字字段</h5><p>上边介绍的text文本字段在映射时要设置分词器，keyword字段为<strong>关键字字段</strong>，通常搜索keyword是按照<strong>整体搜 索</strong>，所以创建keyword字段的索引时是<strong>不进行分词</strong>的，比如：邮政编码、手机号码、身份证等。keyword字段通常 用于<strong>过滤、排序、聚合</strong>等。</p>
+<blockquote>
+<p><strong>测试</strong> </p>
+</blockquote>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;   </span><br><span class="line">	<span class="attr">"properties"</span>: &#123;                </span><br><span class="line">		<span class="attr">"studymodel"</span>:&#123;              </span><br><span class="line">		<span class="attr">"type"</span>:<span class="string">"keyword"</span>            </span><br><span class="line">		&#125;,             </span><br><span class="line">		<span class="attr">"name"</span>:&#123;              </span><br><span class="line">		<span class="attr">"type"</span>:<span class="string">"keyword"</span>            </span><br><span class="line">		&#125;   </span><br><span class="line">	&#125;     </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>插入文档：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;  </span><br><span class="line">	<span class="attr">"name"</span>: <span class="string">"java编程基础"</span>,  </span><br><span class="line">	<span class="attr">"description"</span>: <span class="string">"java语言是世界第一编程语言，在软件开发领域使用人数多。"</span>,</span><br><span class="line">    <span class="attr">"pic"</span>:<span class="string">"group1/M00/00/01/wKhlQFqO4MmAOP53AAAcwDwm6SU490.jpg"</span>,  </span><br><span class="line">    <span class="attr">"studymodel"</span>: <span class="string">"201001"</span> </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>根据studymodel查询文档<br>搜索：<span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL3hjX2NvdXJzZS9fc2VhcmNoP3E9bmFtZTpqYXZh">http://localhost:9200/xc_course/_search?q=name:java<i class="fa fa-external-link-alt"></i></span><br>name是keyword类型，所以查询方式是精确查询。</p>
+<h5 id="4-2-3-date日期类型"><a href="#4-2-3-date日期类型" class="headerlink" title="4.2.3 date日期类型"></a>4.2.3 date日期类型</h5><p><strong>日期类型不用设置分词器</strong>。<br>通常日期类型的字段用于<strong>排序</strong>。<br>format 通过format设置日期格式<br>例子: 下边的设置允许date字段存储年月日时分秒、年月日及毫秒三种格式。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123; </span><br><span class="line">	<span class="attr">"properties"</span>: &#123;              </span><br><span class="line">		<span class="attr">"timestamp"</span>: &#123;           </span><br><span class="line">		<span class="attr">"type"</span>:   <span class="string">"date"</span>,           </span><br><span class="line">		<span class="attr">"format"</span>: <span class="string">"yyyy‐MM‐dd HH:mm:ss||yyyy‐MM‐dd"</span>         </span><br><span class="line">		&#125;       </span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>插入文档：3<br>Post :<span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL3hjX2NvdXJzZS9kb2MvMw==">http://localhost:9200/xc_course/doc/3<i class="fa fa-external-link-alt"></i></span></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123; </span><br><span class="line">	<span class="attr">"name"</span>: <span class="string">"spring开发基础"</span>, </span><br><span class="line">	<span class="attr">"description"</span>: <span class="string">"spring 在java领域非常流行，java程序员都在用。"</span>, </span><br><span class="line">	<span class="attr">"studymodel"</span>: <span class="string">"201001"</span>,  </span><br><span class="line">	<span class="attr">"pic"</span>:<span class="string">"group1/M00/00/01/wKhlQFqO4MmAOP53AAAcwDwm6SU490.jpg"</span>,  </span><br><span class="line">	<span class="attr">"timestamp"</span>:<span class="string">"2018‐07‐04 18:28:58"</span> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="4-2-4-数值类型"><a href="#4-2-4-数值类型" class="headerlink" title="4.2.4 数值类型"></a>4.2.4 数值类型</h5><p>下边是ES支持的数值类型</p>
+<p><img data-src="../../../../assets/img/155333.jpg" alt></p>
+<ol>
+<li><p><strong>尽量选择范围小的类型，提高搜索效率</strong></p>
+</li>
+<li><p>对于浮点数尽量用比例因子，比如一个价格字段，单位为元，我们将比例因子设置为100这在ES中会按分存 储，映射如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">"price": &#123;   </span><br><span class="line">		"type": "scaled_float",                 </span><br><span class="line">		"scaling_factor": 100   </span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于比例因子为100，如果我们输入的价格是23.45则ES中会将23.45乘以100存储在ES中。<br>如果输入的价格是23.456，ES会将23.456乘以100再取一个接近原始值的数，得出2346。<br>使用比例因子的好处是整型比浮点型<strong>更易压缩，节省磁盘空间</strong>。</p>
+<p>如果比例因子不适合，则从下表选择范围小的去用</p>
+<p><img data-src="../../../../assets/img/155627.jpg" alt></p>
+<p>更新已有映射，并插入文档：<br><span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL3hjX2NvdXJzZS9kb2MvMw==">http://localhost:9200/xc_course/doc/3<i class="fa fa-external-link-alt"></i></span></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123; </span><br><span class="line">	<span class="attr">"name"</span>: <span class="string">"spring开发基础"</span>, </span><br><span class="line">	<span class="attr">"description"</span>: <span class="string">"spring 在java领域非常流行，java程序员都在用。"</span>, </span><br><span class="line">	<span class="attr">"studymodel"</span>: <span class="string">"201001"</span>,</span><br><span class="line">	<span class="attr">"pic"</span>:<span class="string">"group1/M00/00/01/wKhlQFqO4MmAOP53AAAcwDwm6SU490.jpg"</span>,  </span><br><span class="line">	<span class="attr">"timestamp"</span>:<span class="string">"2018‐07‐04 18:28:58"</span>,  </span><br><span class="line">	<span class="attr">"price"</span>:<span class="number">38.6</span> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h5 id="4-2-5-综合例子"><a href="#4-2-5-综合例子" class="headerlink" title="4.2.5 综合例子"></a>4.2.5 综合例子</h5><p>创建如下映射<br>Post：<span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL3hjX2NvdXJzZS9kb2MvX21hcHBpbmc=">http://localhost:9200/xc_course/doc/_mapping<i class="fa fa-external-link-alt"></i></span></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="attr">"properties"</span>: &#123;</span><br><span class="line">		<span class="attr">"description"</span>: &#123;</span><br><span class="line">			<span class="attr">"type"</span>: <span class="string">"text"</span>,</span><br><span class="line">			<span class="attr">"analyzer"</span>: <span class="string">"ik_max_word"</span>,</span><br><span class="line">			<span class="attr">"search_analyzer"</span>: <span class="string">"ik_smart"</span></span><br><span class="line">		&#125;,</span><br><span class="line">		<span class="attr">"name"</span>: &#123;</span><br><span class="line">			<span class="attr">"type"</span>: <span class="string">"text"</span>,</span><br><span class="line">			<span class="attr">"analyzer"</span>: <span class="string">"ik_max_word"</span>,</span><br><span class="line">			<span class="attr">"search_analyzer"</span>: <span class="string">"ik_smart"</span></span><br><span class="line">		&#125;,</span><br><span class="line">		<span class="attr">"pic"</span>:&#123;</span><br><span class="line">			<span class="attr">"type"</span>:<span class="string">"text"</span>,</span><br><span class="line">			<span class="attr">"index"</span>:<span class="literal">false</span></span><br><span class="line">		&#125;,</span><br><span class="line">		<span class="attr">"price"</span>: &#123;</span><br><span class="line">			<span class="attr">"type"</span>: <span class="string">"float"</span></span><br><span class="line">		&#125;,</span><br><span class="line">		<span class="attr">"studymodel"</span>: &#123;</span><br><span class="line">			<span class="attr">"type"</span>: <span class="string">"keyword"</span></span><br><span class="line">		&#125;,</span><br><span class="line">		<span class="attr">"timestamp"</span>: &#123;</span><br><span class="line">			<span class="attr">"type"</span>: <span class="string">"date"</span>,</span><br><span class="line">			<span class="attr">"format"</span>: <span class="string">"yyyy‐MM‐dd HH:mm:ss||yyyy‐MM‐dd||epoch_millis"</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>   插入文档：Post: <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo5MjAwL3hjX2NvdXJzZS9kb2MvMQ==">http://localhost:9200/xc_course/doc/1<i class="fa fa-external-link-alt"></i></span> </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123; </span><br><span class="line">	<span class="attr">"name"</span>: <span class="string">"Bootstrap开发"</span>, </span><br><span class="line">	<span class="attr">"description"</span>: <span class="string">"Bootstrap是由Twitter 推出的一个前台页面开发框架，是一个非常流行的开发框架，此框架集成了多种页面效果。此开发框架包含了大量 的CSS、JS程序代码，可以帮助开发者（尤其是不擅长页面开发的程序人员）轻松的实现一个不受浏览器限制的精 美界面效果。"</span>, </span><br><span class="line">	<span class="attr">"studymodel"</span>: <span class="string">"201002"</span>, </span><br><span class="line">    <span class="attr">"price"</span>:<span class="number">38.6</span>, </span><br><span class="line">	<span class="attr">"timestamp"</span>:<span class="string">"2018‐04‐25 19:11:35"</span>,						  								<span class="attr">"pic"</span>:<span class="string">"group1/M00/00/00/wKhlQFs6RCeAY0pHAAJx5ZjNDEM428.jpg"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>请作者喝瓶肥宅快乐水</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/vxpay.jpg" alt="liuwy1998 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/alipay.jpg" alt="liuwy1998 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/项目/" rel="tag"><i class="fa fa-tag"></i> 项目</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/22867/" rel="prev" title="学成在线(十.课程预览, 课程发布)">
+      <i class="fa fa-chevron-left"></i> 学成在线(十.课程预览, 课程发布)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/64679/" rel="next" title="学成在线(十三.课程搜索)">
+      学成在线(十三.课程搜索) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-ElasticSearch介绍"><span class="nav-text">1.ElasticSearch介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-介绍"><span class="nav-text">1.1 介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-原理与应用"><span class="nav-text">1.2 原理与应用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-1-索引结构"><span class="nav-text">1.2.1 索引结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-2-RESTful应用方法"><span class="nav-text">1.2.2 RESTful应用方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-ES快速入门"><span class="nav-text">2.ES快速入门</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-创建索引库"><span class="nav-text">2.1 创建索引库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-创建映射"><span class="nav-text">2.2 创建映射</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-1-概念说明"><span class="nav-text">2.2.1 概念说明</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-2-创建映射"><span class="nav-text">2.2.2 创建映射</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-创建文档"><span class="nav-text">2.3 创建文档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-搜索文档"><span class="nav-text">2.4 搜索文档</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4-1-查询结果分析"><span class="nav-text">2.4.1 查询结果分析</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-IK分词器"><span class="nav-text">3.IK分词器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-测试分词器"><span class="nav-text">3.1 测试分词器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-IK分词器"><span class="nav-text">3.2 IK分词器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-两种分词模式"><span class="nav-text">3.3 两种分词模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-自定义词库"><span class="nav-text">3.4 自定义词库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-映射"><span class="nav-text">4.映射</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-映射维护方法"><span class="nav-text">4.1 映射维护方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-常用映射类型"><span class="nav-text">4.2 常用映射类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-1-text文本字段"><span class="nav-text">4.2.1 text文本字段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-2-keyword关键字字段"><span class="nav-text">4.2.2 keyword关键字字段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-3-date日期类型"><span class="nav-text">4.2.3 date日期类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-4-数值类型"><span class="nav-text">4.2.4 数值类型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-2-5-综合例子"><span class="nav-text">4.2.5 综合例子</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liuwy1998"
+      src="/../assets/img/head.jpg">
+  <p class="site-author-name" itemprop="name">liuwy1998</p>
+  <div class="site-description" itemprop="description">Java开发, 后端开发</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">皖ICP备19022525号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liuwy1998</span>
+</div><script color="0,137,108" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://tonymua.top/42236/',]
+      });
+      });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="bUCDF5pEQe">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=66522575" charset="UTF-8"></script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"tonymua.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1.SVN介绍​    SVN是Subversion的简称，是一个自由开源的版本控制系统。 Subversion将文件存放在中心版本库里，这个版本库很像一个普通的文件服务器，不同的是，它可以记录每一次文 件和目录的修改情况，这样就可以借此将数据恢复到以前的版本，并可以查看数据的更改细节早期版本控制使用的是CVS,后来SVN替代了CVS,随着android兴起，出现Git版本控制工具 1.1 SVN">
+<meta name="keywords" content="tool">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SVN, AdminLTE">
+<meta property="og:url" content="http://tonymua.top/36764/index.html">
+<meta property="og:site_name" content="liuwy1998 BLOG">
+<meta property="og:description" content="1.SVN介绍​    SVN是Subversion的简称，是一个自由开源的版本控制系统。 Subversion将文件存放在中心版本库里，这个版本库很像一个普通的文件服务器，不同的是，它可以记录每一次文 件和目录的修改情况，这样就可以借此将数据恢复到以前的版本，并可以查看数据的更改细节早期版本控制使用的是CVS,后来SVN替代了CVS,随着android兴起，出现Git版本控制工具 1.1 SVN">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-04-29T06:03:28.172Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SVN, AdminLTE">
+<meta name="twitter:description" content="1.SVN介绍​    SVN是Subversion的简称，是一个自由开源的版本控制系统。 Subversion将文件存放在中心版本库里，这个版本库很像一个普通的文件服务器，不同的是，它可以记录每一次文 件和目录的修改情况，这样就可以借此将数据恢复到以前的版本，并可以查看数据的更改细节早期版本控制使用的是CVS,后来SVN替代了CVS,随着android兴起，出现Git版本控制工具 1.1 SVN">
+
+<link rel="canonical" href="http://tonymua.top/36764/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>SVN, AdminLTE | liuwy1998 BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="liuwy1998 BLOG" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">liuwy1998 BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">When they go low,we go high.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/36764/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="liuwy1998">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuwy1998 BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SVN, AdminLTE
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-SVN介绍"><a href="#1-SVN介绍" class="headerlink" title="1.SVN介绍"></a>1.SVN介绍</h4><p>​    SVN是Subversion的简称，是一个自由开源的版本控制系统。 Subversion将文件存放在中心版本库里，这个版本库很像一个普通的文件服务器，不同的是，它可以记录每一次文 件和目录的修改情况，这样就可以借此将数据恢复到以前的版本，并可以查看数据的更改细节早期版本控制使用的是CVS,后来SVN替代了CVS,随着android兴起，出现Git版本控制工具</p>
+<h5 id="1-1-SVN基本概念"><a href="#1-1-SVN基本概念" class="headerlink" title="1.1 SVN基本概念"></a>1.1 SVN基本概念</h5><a id="more"></a>
+
+<p><img data-src="../../../../assets/img/svn.jpg" alt></p>
+<p>问题: 怎样让系统允许用户共享信息，而不会让他们因意外而互相干扰？ </p>
+<p><strong>复制-修改-合并方案(Subversion默认的模式)</strong></p>
+<p>​    在这种模型里，每一个客户读取项目配置库建立一个私有工作副本——版本库中文件和目录的本地映射。用户并行工作，修改各自的工作副本，终，各个私有的复制合并在一起，成为终的版本，这种系统通常可以辅助合并操 作，但是终要靠人工去确定正误。</p>
+<p>*<em>锁定-修改-解锁方案 *</em></p>
+<p>在这样的模型里，在一个时间段里配置库的一个文件只允许被一个人修改。 此模式不适合软件开发这种工作。 </p>
+<h4 id="2-IDEA下SVN使用"><a href="#2-IDEA下SVN使用" class="headerlink" title="2.IDEA下SVN使用"></a>2.IDEA下SVN使用</h4><p>​    SVN是一种集中式管理代码的版本控制系统，原理就是把代码都保存到一个固定的位置（仓库），每次从这个位置 拷贝更新代码，进行编辑；再把修改后的代码提交到该目录中。多人协作开发也是如此。因此需要一个类似Oracle 或者Mysql的服务器用于保存和管理库文件（要保存的代码等文件）的服务端——VisualSVN Server。还需要一个 用户的操作端，用于提交更新检出代码，常用的有idea的Svn插件，以及TortoiseSVN（小乌龟）。<br>SubVersion 官网：<span class="exturl" data-url="aHR0cDovL3N1YnZlcnNpb24uYXBhY2hlLm9yZy8=">http://subversion.apache.org/<i class="fa fa-external-link-alt"></i></span> </p>
+<h5 id="2-1-IDEA下svn配置"><a href="#2-1-IDEA下svn配置" class="headerlink" title="2.1 IDEA下svn配置"></a>2.1 IDEA下svn配置</h5><p>前提是我们的电脑上已经安装了TortoiseSVN.</p>
+<p><img data-src="../../../../assets/img/idea_svn.jpg" alt></p>
+<p>1.Update Project 更新项目 </p>
+<p>2.Commit changes 提交项目上所有变化文件 </p>
+<p>3.Compare with the Same Repository Version 当前文件与服务器上该文件通版本的内容进行比较。如果当前编辑 的文件没有修改，则是灰色不可点击。</p>
+<p>4.Show history 显示当前文件的历史记录 </p>
+<p>5.Revert 还原当前被修改的文件到违背修改的版本状态下</p>
+<p>1.Local Changes 本地修改过的文件都会出现在这里 </p>
+<p>2.Repository svn仓库所有提交记录</p>
+<p>3.Incoming 本地还没有更新的别人提交的代码</p>
+<h5 id="2-2-IDEA下SVN使用"><a href="#2-2-IDEA下SVN使用" class="headerlink" title="2.2 IDEA下SVN使用"></a>2.2 IDEA下SVN使用</h5><h6 id="2-2-1-share-project"><a href="#2-2-1-share-project" class="headerlink" title="2.2.1 share project"></a>2.2.1 share project</h6><p><img data-src="../../../../assets/img/idea_svn1.jpg" alt></p>
+<h6 id="2-2-2-checkout"><a href="#2-2-2-checkout" class="headerlink" title="2.2.2 checkout"></a>2.2.2 checkout</h6><p><img data-src="../../../../assets/img/idea_svn2.jpg" alt></p>
+<h6 id="2-2-3-add-commit-update"><a href="#2-2-3-add-commit-update" class="headerlink" title="2.2.3 add commit update"></a>2.2.3 add commit update</h6><p><img data-src="../../../../assets/img/idea_svn3.jpg" alt></p>
+<h6 id="2-2-4-ignor"><a href="#2-2-4-ignor" class="headerlink" title="2.2.4 ignor"></a>2.2.4 ignor</h6><p><img data-src="../../../../assets/img/idea_svn4.jpg" alt></p>
+<h6 id="2-2-5-解决冲突"><a href="#2-2-5-解决冲突" class="headerlink" title="2.2.5 解决冲突"></a>2.2.5 解决冲突</h6><h4 id="3-SVN规范"><a href="#3-SVN规范" class="headerlink" title="3.SVN规范"></a>3.SVN规范</h4><h5 id="3-1-SVN目录规范"><a href="#3-1-SVN目录规范" class="headerlink" title="3.1 SVN目录规范"></a>3.1 SVN目录规范</h5><p>在visualSVN中创建仓库时，可以选择svn目录结构</p>
+<p>​    Trunk 主干目录，此目录下的文件为基准文件 </p>
+<p>​    Branches 用于开发的分支目录 Tags 用于发布的版本目录</p>
+<p>​    假设有一个项目OA,我们完成了1.0版本，这时就可以打一个tags 后续我们在OA项目上添加一个新的模块(及时通讯),我们就可以开一个分支,又有一个公司需要在我们OA基础上添加 财务管理模块，我们又可以打一个分支.我们后续针对OA的1.0版本在升级，我们不需要原来附加功能,就可以在原来的主干上继续开发，形成OA2.0版本， 开发完成后就可以在打一个tags </p>
+<h5 id="3-2-分支与标记"><a href="#3-2-分支与标记" class="headerlink" title="3.2 分支与标记"></a>3.2 分支与标记</h5><p><strong>分支的定义规则:</strong> Project name+日期时间+功能点 Tags的定义规则 Project name+版本号 版本号定义为三段数字 编号 xxx.xxx.xxx 第一个:革命性的产品升级版 第二个:新功能版 第三个:修正bug </p>
+<p><img data-src="../../../../assets/img/svn1.jpg" alt></p>
+<p><img data-src="../../../../assets/img/svn2.jpg" alt></p>
+<p>Tags一般是只读，它代表的是发布的版本，所以我们不要进行改变。 </p>
+<h5 id="3-3-主干与分支或标记的合并"><a href="#3-3-主干与分支或标记的合并" class="headerlink" title="3.3 主干与分支或标记的合并"></a>3.3 主干与分支或标记的合并</h5><p><strong>主干合并到分支</strong></p>
+<p>首先保证主干是新的(先update)，在分支这边进行操作</p>
+<p><img data-src="../../../../assets/img/svn3.jpg" alt></p>
+<p><img data-src="../../../../assets/img/svn4.jpg" alt></p>
+<p><img data-src="../../../../assets/img/svn5.jpg" alt></p>
+<h4 id="4-AdminLTE快速入门"><a href="#4-AdminLTE快速入门" class="headerlink" title="4.AdminLTE快速入门"></a>4.AdminLTE快速入门</h4><p>​    AdminLTE是一款建立在bootstrap和jquery之上的开源的模板主题工具，它提供了一系列响应的、 可重复使用的组件，并内置了多个模板页面；同时自适应多种屏幕分辨率，兼容PC和移动端。通 过AdminLTE，我们可以快速的创建一个响应式的Html5网站。AdminLTE框架在网页架构与设计 上，有很大的辅助作用，尤其是前端架构设计师，用好AdminLTE 不但美观，而且可以免去写很大 CSS与JS的工作量。</p>
+<p>​    <strong>结构介绍</strong></p>
+<ol>
+<li>bower_components：存放了这个框架依赖的其他框架，如bootstrap，jquery、字体样式、图标样式等。</li>
+<li>build： 编译前的源文件目录</li>
+<li>dist：编译后的静态资源目录</li>
+<li>pages：目录下是一些示例页面</li>
+<li>plugins：目录存放依赖的插件</li>
+<li>starter.html ：是 AdminLTE 建议用来作为起点的参考示例</li>
+<li>index.html：是AdminLTE中比较完善的展示品，用于参考、借鉴。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>请作者喝瓶肥宅快乐水</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/vxpay.jpg" alt="liuwy1998 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/alipay.jpg" alt="liuwy1998 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/tool/" rel="tag"><i class="fa fa-tag"></i> tool</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/10555/" rel="prev" title="SSM框架整合">
+      <i class="fa fa-chevron-left"></i> SSM框架整合
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/1060/" rel="next" title="top K问题的优化解法">
+      top K问题的优化解法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-SVN介绍"><span class="nav-text">1.SVN介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-SVN基本概念"><span class="nav-text">1.1 SVN基本概念</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-IDEA下SVN使用"><span class="nav-text">2.IDEA下SVN使用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-IDEA下svn配置"><span class="nav-text">2.1 IDEA下svn配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-IDEA下SVN使用"><span class="nav-text">2.2 IDEA下SVN使用</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#2-2-1-share-project"><span class="nav-text">2.2.1 share project</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-2-2-checkout"><span class="nav-text">2.2.2 checkout</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-2-3-add-commit-update"><span class="nav-text">2.2.3 add commit update</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-2-4-ignor"><span class="nav-text">2.2.4 ignor</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-2-5-解决冲突"><span class="nav-text">2.2.5 解决冲突</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-SVN规范"><span class="nav-text">3.SVN规范</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-SVN目录规范"><span class="nav-text">3.1 SVN目录规范</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-2-分支与标记"><span class="nav-text">3.2 分支与标记</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-3-主干与分支或标记的合并"><span class="nav-text">3.3 主干与分支或标记的合并</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-AdminLTE快速入门"><span class="nav-text">4.AdminLTE快速入门</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liuwy1998"
+      src="/../assets/img/head.jpg">
+  <p class="site-author-name" itemprop="name">liuwy1998</p>
+  <div class="site-description" itemprop="description">Java开发, 后端开发</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">皖ICP备19022525号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liuwy1998</span>
+</div><script color="0,137,108" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://tonymua.top/36764/',]
+      });
+      });
+  </script>
+
+</body>
+</html>

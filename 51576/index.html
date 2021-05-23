@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="bUCDF5pEQe">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=66522575" charset="UTF-8"></script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"tonymua.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1.面向对象: 面向对象是一种思想，能让复杂问题简单化，程序员不需要了解具体的实现过程，只需要指挥对象去实现功能。如把需要洗的衣服交给洗衣机去洗. 多态: 允许不同类的对象对同一消息做出响应(发送消息就是函数调用) 2.封装继承多态举例:  封装：就像一个盒子，你不需要知道里面有什么东西，只知道它有那些用处就行    继承：就像父子关系，儿子是父亲的继承    多态：好比一个父亲有多个儿子，各个儿">
+<meta name="keywords" content="面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java基础常见面试题">
+<meta property="og:url" content="http://tonymua.top/51576/index.html">
+<meta property="og:site_name" content="liuwy1998 BLOG">
+<meta property="og:description" content="1.面向对象: 面向对象是一种思想，能让复杂问题简单化，程序员不需要了解具体的实现过程，只需要指挥对象去实现功能。如把需要洗的衣服交给洗衣机去洗. 多态: 允许不同类的对象对同一消息做出响应(发送消息就是函数调用) 2.封装继承多态举例:  封装：就像一个盒子，你不需要知道里面有什么东西，只知道它有那些用处就行    继承：就像父子关系，儿子是父亲的继承    多态：好比一个父亲有多个儿子，各个儿">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-04-29T02:44:38.021Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java基础常见面试题">
+<meta name="twitter:description" content="1.面向对象: 面向对象是一种思想，能让复杂问题简单化，程序员不需要了解具体的实现过程，只需要指挥对象去实现功能。如把需要洗的衣服交给洗衣机去洗. 多态: 允许不同类的对象对同一消息做出响应(发送消息就是函数调用) 2.封装继承多态举例:  封装：就像一个盒子，你不需要知道里面有什么东西，只知道它有那些用处就行    继承：就像父子关系，儿子是父亲的继承    多态：好比一个父亲有多个儿子，各个儿">
+
+<link rel="canonical" href="http://tonymua.top/51576/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Java基础常见面试题 | liuwy1998 BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="liuwy1998 BLOG" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">liuwy1998 BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">When they go low,we go high.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/51576/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="liuwy1998">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuwy1998 BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java基础常见面试题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><strong>1.面向对象:</strong> 面向对象是一种思想，能让复杂问题简单化，程序员不需要了解具体的实现过程，只需要指挥对象去实现功能。如把需要洗的衣服交给洗衣机去洗.</p>
+<p><strong>多态:</strong> 允许不同类的对象对同一消息做出响应(发送消息就是函数调用)</p>
+<p><strong>2.封装继承多态举例:</strong></p>
+<ul>
+<li><p>封装：就像一个盒子，你不需要知道里面有什么东西，只知道它有那些用处就行  </p>
+</li>
+<li><p>继承：就像父子关系，儿子是父亲的继承  </p>
+</li>
+<li><p>多态：好比一个父亲有多个儿子，各个儿子有不同的特征</p>
+</li>
+</ul>
+<p><strong>3.Array与ArrayList的区别:</strong> </p>
+<a id="more"></a>
+
+<ol>
+<li>Array可以包含基本类型和对象类型, ArrayList只可以包含对象类型.</li>
+<li>Array大小不可改变, ArrayList的大小是可以动态变化的</li>
+<li>ArrayList提供了更多的方法和特性, 如addAll(), removeAll()</li>
+</ol>
+<p><strong>4.ArrayList, Vector, LinkedList:</strong> </p>
+<ol>
+<li><p>ArrayList与Vector都是使用数组方式存储数据, LinkedList使用双向链表存储数据</p>
+</li>
+<li><p>ArrayList与Vector索引(查找)数据快插入和删除数据慢, Vector线程安全, 性能较差; LinkedList索引数据慢插入和删除数据快</p>
+<p>注: ArrayList在并发add()时可能会出现数组下标越界</p>
+</li>
+</ol>
+<p><strong>5.String, StringBuffer, StringBuilder:</strong></p>
+<ol>
+<li><p>String: 字符串不可改变</p>
+</li>
+<li><p>StringBuffer: 字符串可变, 线程安全, 效率低</p>
+</li>
+<li><p>StringBuilder: 字符串可变, 线程不安全, 效率高</p>
+<p>注: （1）如果要操作少量的数据用 String；</p>
+<p>​      （2）多线程操作字符串缓冲区下操作大量数据 StringBuffer；</p>
+<p>​      （3）单线程操作字符串缓冲区下操作大量数据 StringBuilder。</p>
+</li>
+</ol>
+<p><strong>6.String为啥不可变:</strong> JDK中String被声明为一个fina类, 且内部的value字节数组也是final的; 安全, 多线程安全, 保证了hash码的唯一性</p>
+<p><strong>7.==比较的是什么:</strong> </p>
+<ol>
+<li>‘’==’’ 对比两个对象基于内存引用, 如果两个对象的引用完全相同(指向同一个对象), ‘’==’’ 操作将返回true, 否则返回false</li>
+<li>‘’==’’ 如果两边是基本类型, 就是比较数值是否相等</li>
+</ol>
+<p><strong>8.==与equals的区别:</strong></p>
+<p>equals方法不能作用于基本数据类型的变量</p>
+<ol>
+<li>没有重写equals方法时，是判断两个对象地址值是否相等。</li>
+<li>重写了equals方法时，是判断两个对象所指向的内容是否相等。（如String、Date都重写了equals方法）</li>
+</ol>
+<p><strong>9.是否可以在static环境中访问非static变量:</strong> 不可以, static变量在Java中是属于类的,它在所有的实例中的值是一样的, 当类被Java虚拟机载入的时候, 会对static变量进行初始化. 如果尝试不用实例来访问非static的变量, 编译器会报错, 因为这些变量还没有被创建出来, 还没有与任何实例关联上</p>
+<p><strong>10.接口与抽象类的区别:</strong></p>
+<ol>
+<li>类可以实现很多个接口, 但只能继承一个抽象类</li>
+<li>Java接口中声明的变量默认都是final的, 抽象类可以包含非final的变量</li>
+<li>接口中所有的方法隐含的都是抽象的, 而抽象类则可以同时包含抽象和非抽象的方法</li>
+<li>Java接口中的成员函数默认是public的, 抽象类的成员函数可以是private, protected或者public的</li>
+<li>接口是绝对抽象的, 不可以被实例化. 抽象类页不可以被实例化, 但是, 如果它包含main()方法的话是可以被调用的</li>
+<li>类如果要实现一个接口，它必须要实现接口声明的所有方法。但是，类可以不实现抽象类声明的所有方法，当然，在这种情况下，类也必须得声明成是抽象的。</li>
+</ol>
+<p><strong>11.Java里的final关键字怎么用:</strong></p>
+<ol>
+<li><p>当用final修饰一个类时, 表示这个类不能被继承</p>
+</li>
+<li><p>对于一个final变量, 如果是基本数据类型的变量, 则在其数值一旦在初始化之后便不能更改; 如果是引用类型的变量, 则在对其初始化之后便不能再让其指向另一个对象</p>
+<p>注:使用final方法的原因有两个, 第一个原因是把方法锁定, 以防任何继承类修改它的含义; 第二个原因是效率, 在早期的Java实现版本中, 会将final方法转为内置方法</p>
+</li>
+</ol>
+<p><strong>12.final, finally, finalize的区别:</strong></p>
+<ul>
+<li>final用于声明属性, 方法和类, 分别表示属性不可改变, 方法不可覆盖, 类不可继承</li>
+<li>finally是异常处理语句结构的一部分, 表示总是执行</li>
+<li>finalize是Object类的一个方法, 在垃圾收集器执行的时候会调用被回收对象的此方法, 可以覆盖此方法提供垃圾收集时的其他资源回收, 例如关闭文件等</li>
+</ul>
+<p><strong>13.四种权限修饰符:</strong></p>
+<table>
+<thead>
+<tr>
+<th>修饰符</th>
+<th>同类中</th>
+<th>同一个包中(子类和无关类)</th>
+<th>不同包(子类)</th>
+<th>不同包(无关类)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>protected</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>N</td>
+</tr>
+<tr>
+<td>默认</td>
+<td>Y</td>
+<td>Y</td>
+<td>N</td>
+<td>N</td>
+</tr>
+<tr>
+<td>private</td>
+<td>Y</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+</tr>
+</tbody></table>
+<p><strong>14.列举你所知道的Object类的方法:</strong> </p>
+<p>​    Object()默认构造方法。</p>
+<ul>
+<li>clone() 创建并返回此对象的一个副本。</li>
+<li>equals(Object obj) 指示某个其他对象是否与此对象“相等”。</li>
+<li>finalize()当垃圾回收器确定不存在对该对象的更多引用时，由对象的垃圾回收器调用此方法。getClass()返回一个对象的运行时类。</li>
+<li>hashCode()返回该对象的哈希码值。 </li>
+<li>notify()唤醒在此对象监视器上等待的单个线程。 </li>
+<li>notifyAll()唤醒在此对象监视器上等待的所有线程。</li>
+<li>toString()返回该对象的字符串表示。</li>
+<li>wait()导致当前的线程等待，直到其他线程调用此对象的 notify() 方法或 notifyAll() 方法。</li>
+<li>wait(long timeout)导致当前的线程等待，直到其他线程调用此对象的 notify() 方法或 notifyAll() 方法，或者超过指定的时间量。</li>
+<li>wait(long timeout, int nanos) 导致当前的线程等待，直到其他线程调用此对象的 notify() 方法或 notifyAll() 方法，或者其他某个线程中断当前线程，或者已超过某个实际时间量。  </li>
+</ul>
+<p><strong>15.Java支持的数据类型有哪些? 什么是自动拆装箱?</strong></p>
+<p>Java语言支持的8种基本数据类型是:byte    short    int    long    float    double    boolean    char</p>
+<p>自动装箱是Java编译器在基本数据类型和对应的对象包装数据类型之间做的一个转化, 分别对应的为:</p>
+<p>Byte    Short    Integer    Long    Float    Double    Boolean    Character</p>
+<p><strong>16.Java集合类框架的基本接口有哪些?</strong></p>
+<ol>
+<li>Collection: 代表一组对象, 每一个对象都是它的子元素</li>
+<li>Set: 不包含重复元素的Collection</li>
+<li>List: 有顺序的Collection, 并可以包含重复元素</li>
+<li>Map: 可以把键(key)映射到值(value)的对象, 键不能重复</li>
+</ol>
+<p><img data-src="../../../../assets/img/42448.png" alt></p>
+<p><strong>17.Collection和Collections的区别:</strong></p>
+<p>Collection是集合类的上级接口, 继承于它的接口主要有Set和List; Collections是针对集合类的一个帮助类, 他提供一系列静态方法实现对各种集合的搜索, 排序, 线程安全化等操作</p>
+<p><strong>18.List, Set, Map是否继承自Collection接口?</strong></p>
+<p>List, Set是, Map不是</p>
+<p><strong>19.什么是迭代器:</strong></p>
+<p>Iterator接口提供了很多对集合元素进行迭代的方法。每一个集合类都包含了可以返回迭代器实例的迭代方法。迭代器可以在迭代的过程中删除底层集合的元素。</p>
+<p><strong>20.Iterator和ListIterator的区别是什么:</strong></p>
+<ol>
+<li>Iterator可用来遍历Set和List集合, 但是ListIterator只能用来遍历List</li>
+<li>Iterator对集合只能是向前遍历, ListIterator既可以向前也可以向后</li>
+<li>ListIterator实现了iterator接口, 并包含其他功能, 比如:增加元素, 替换元素等</li>
+</ol>
+<p><strong>21.map的分类和常见的情况</strong></p>
+<p>Java为数据结构中的映射定义了一个接口java.util.Map;它有四个实现类,分别是HashMap Hashtable LinkedHashMap 和TreeMap</p>
+<ul>
+<li><p><strong>Map</strong>主要用于存储健值对，根据键得到值，因此不允许键重复(重复了覆盖了),但允许值重复</p>
+</li>
+<li><p><strong>Hashmap</strong>它根据键的HashCode值存储数据,根据键可以直接获取它的值，具有很快的访问速度，遍历时，取得数据的<strong>顺序是完全随机</strong>的。 HashMap<strong>最多只允许一条记录的键为Null;允许多条记录的值为 Nul</strong>l; <strong>HashMap不支持线程的同步</strong>，即任一时刻可以有多个线程同时写HashMap;可能会导致数据的不一致。如果需要同步，可以用 Collections的<strong>synchronizedMap</strong>方法使HashMap具有同步的能力，或者使用<strong>ConcurrentHashMap</strong>。</p>
+</li>
+<li><p><strong>Hashtable</strong>与 HashMap类似,它继承自<strong>Dictionary类</strong>, 不同的是:它<strong>不允许记录的键或者值为空</strong>; 它<strong>支持线程的同步</strong>，即任一时刻只有一个线程能写Hashtable,因此也导致了 Hashtable在写入时会比较慢。</p>
+</li>
+<li><p><strong>LinkedHashMap</strong> 是HashMap的一个子类，<strong>保存了记录的插入顺序</strong>，在用Iterator遍历LinkedHashMap时，先得到的记录肯定是先插入的.也可以在构造时用带参数，按照应用次数排序。在遍历的时候会比HashMap慢，不过有种情况例外，当HashMap容量很大，实际数据较少时，遍历起来可能会比 LinkedHashMap慢，因为LinkedHashMap的遍历速度只和实际数据有关，和容量无关，而HashMap的遍历速度和他的容量有关</p>
+</li>
+<li><p><strong>TreeMap</strong>实现SortMap接口，能够把它保存的记录根据键排序, <strong>默认是按键值的升序排序</strong>，也可以指定排序的比较器，当用Iterator 遍历TreeMap时，得到的记录是排过序的</p>
+</li>
+</ul>
+<p><strong>22.为什么重写equals还要重写hashcode?</strong></p>
+<ol>
+<li>如果两个对象相同(即equals返回true)hashcode一定相等；但是hashcod相等时, 两个对象却不一定equals </li>
+<li>为了提高程序的执行效率; 先进行hashcode比较, 如果不同, 就没有必要进行equals比较了, 这样就大大的减少了equals的使用次数, 从而效率得到提高</li>
+</ol>
+<p><strong>23.Java中的异常处理关键字是什么？</strong></p>
+<p>​    try来执行一段程序，如果出现异常，系统会抛出（throws）一个异常，这时候你可以通过它的类型来捕捉（catch）它，或最后（finally）由缺省处理器来处理。用try来指定一块预防所有”异常”的程序。紧跟在try程序后面，应包含一个catch子句来指定你想要捕捉的”异常”的类型。</p>
+<ol>
+<li>throw: 用来明确地抛出一个”异常”。</li>
+<li>throws: 用来标明一个成员函数可能抛出的各种”异常”。</li>
+<li>finally: 为确保一段代码不管发生什么”异常”都被执行一段代码。</li>
+</ol>
+<p><strong>24.请问运行时异常与受检异常有什么区别？</strong></p>
+<p>运行时异常表示虚拟机的通常操作中可能遇到的异常，是一种常见运行错误，只要程序设计得没有问题通常就不会发生。受检异常跟程序运行的上下文环境有关，即使程序设计无误，仍然可能因使用的问题而引发。Java编译器要求方法必须声明抛出可能发生的受检异常，但是并不要求必须声明抛出未被捕获的运行时异常。</p>
+<p><strong>25.error和exception有什么区别?</strong></p>
+<p>error 表示恢复不是不可能但很困难的情况下的一种严重问题。比如说内存溢出。不可能指望程序能处理这样的情况。<br>exception 表示一种设计或实现问题。也就是说，它表示如果程序运行正常，从不会发生的情况。</p>
+<p><strong>26.如何保证线程安全？</strong></p>
+<ol>
+<li>通过合理的时间调度，避开共享资源的存取冲突</li>
+<li>在并行任务设计上可以通过适当的策略，保证任务与任务之间不存在共享资源</li>
+</ol>
+<p><strong>27.举例说明同步和异步</strong></p>
+<p>如果系统中存在临界资源（资源数量少于竞争资源的线程数量的资源），例如正在写的数据以后可能被另一个线程读到，或者正在读的数据可能已经被另一个线程写过了，那么这些数据就必须进行同步存取（数据库操作中的排他锁就是最好的例子）。当应用程序在对象上调用了一个需要花费很长时间来执行的方法，并且不希望让程序等待方法的返回时，就应该使用异步编程，在很多情况下采用异步途径往往更有效率。事实上，所谓的同步就是指阻塞式操作，而异步就是非阻塞式操作。</p>
+<p><strong>28.请简述一下线程的sleep()方法和yield()方法有什么区别？</strong></p>
+<ol>
+<li>sleep()方法给其他线程运行机会时不考虑线程的优先级，因此会给低优先级的线程以运行的机会；yield()方法只会给相同优先级或更高优先级的线程以运行的机会</li>
+<li>线程执行sleep()方法后转入阻塞（blocked）状态，而执行yield()方法后转入就绪（ready）状态</li>
+<li>sleep()方法声明抛出InterruptedException，而yield()方法没有声明任何异常</li>
+<li>sleep()方法比yield()方法（跟操作系统CPU调度相关）具有更好的可移植性</li>
+</ol>
+<p><strong>29.创建线程有几种不同的方式？</strong></p>
+<ol>
+<li>继承Thread类 </li>
+<li>实现Runnable接口 </li>
+</ol>
+<p><strong>30.请说明一下sleep() 和 wait() 有什么区别？</strong></p>
+<p>sleep是线程类（Thread）的方法，导致此线程暂停执行指定时间，把执行机会给其他线程，但是监控状态依然保持，到时后会自动恢复。调用sleep不会释放对象锁。<br>wait是Object类的方法，对此对象调用wait方法导致本线程放弃对象锁，进入等待此对象的等待锁定池，只有针对此对象发出notify方法（或notifyAll）后本线程才进入对象锁定池准备获得对象锁进入运行状态。</p>
+<p><strong>31.请说明一下锁和同步的区别</strong></p>
+<ol>
+<li>synchronized既可以加在方法上，也可以加载特定代码块上，而lock需要显示地指定起始位置和终止位置。</li>
+<li>synchronized是托管给JVM执行的，lock的锁定是通过代码实现的，它有比synchronized更精确的线程语义。</li>
+<li>synchronized获取锁和释放锁的方式都是在块结构中，当获取多个锁时，必须以相反的顺序释放，并且是自动解锁。而Lock则需要开发人员手动释放，并且必须在finally中释放，否则会引起死锁。</li>
+</ol>
+<p><strong>32.请你谈谈关于Synchronized和lock</strong> </p>
+<ol>
+<li>synchronized是Java中的关键字，synchronized是内置的语言实现；synchronized在发生异常时，会自动释放线程占有的锁，因此不会导致死锁现象发生；Lock是一个接口，Lock在发生异常时，如果没有主动通过unLock()去释放锁，则很可能造成死锁现象，因此使用Lock时需要在finally块中释放锁</li>
+<li>Lock可以让等待锁的线程响应中断，而synchronized却不行，使用synchronized时，等待的线程会一直等待下去，不能够响应中断</li>
+<li>通过Lock可以知道有没有成功获取锁，而synchronized却无法办到</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>请作者喝瓶肥宅快乐水</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/vxpay.jpg" alt="liuwy1998 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/alipay.jpg" alt="liuwy1998 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/面试/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/HashMap/" rel="prev" title="HashMap分析">
+      <i class="fa fa-chevron-left"></i> HashMap分析
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/15205/" rel="next" title="Java常见小案例(不定时补充)">
+      Java常见小案例(不定时补充) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liuwy1998"
+      src="/../assets/img/head.jpg">
+  <p class="site-author-name" itemprop="name">liuwy1998</p>
+  <div class="site-description" itemprop="description">Java开发, 后端开发</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">皖ICP备19022525号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liuwy1998</span>
+</div><script color="0,137,108" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://tonymua.top/51576/',]
+      });
+      });
+  </script>
+
+</body>
+</html>

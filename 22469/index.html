@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="bUCDF5pEQe">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=66522575" charset="UTF-8"></script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"tonymua.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1.什么是分布式文件系统1.1 技术应用场景分布式文件系统解决了海量文件存储及传输访问的瓶颈问题，对海量视频的管理、对海量图片的管理等。 1.2 什么是分布式文件系统引用“百度百科”中的描述：">
+<meta name="keywords" content="tool">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分布式文件系统 FastDFS研究">
+<meta property="og:url" content="http://tonymua.top/22469/index.html">
+<meta property="og:site_name" content="liuwy1998 BLOG">
+<meta property="og:description" content="1.什么是分布式文件系统1.1 技术应用场景分布式文件系统解决了海量文件存储及传输访问的瓶颈问题，对海量视频的管理、对海量图片的管理等。 1.2 什么是分布式文件系统引用“百度百科”中的描述：">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-04-29T02:44:38.051Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="分布式文件系统 FastDFS研究">
+<meta name="twitter:description" content="1.什么是分布式文件系统1.1 技术应用场景分布式文件系统解决了海量文件存储及传输访问的瓶颈问题，对海量视频的管理、对海量图片的管理等。 1.2 什么是分布式文件系统引用“百度百科”中的描述：">
+
+<link rel="canonical" href="http://tonymua.top/22469/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>分布式文件系统 FastDFS研究 | liuwy1998 BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="liuwy1998 BLOG" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">liuwy1998 BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">When they go low,we go high.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/22469/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="liuwy1998">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuwy1998 BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          分布式文件系统 FastDFS研究
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="1-什么是分布式文件系统"><a href="#1-什么是分布式文件系统" class="headerlink" title="1.什么是分布式文件系统"></a>1.什么是分布式文件系统</h3><h4 id="1-1-技术应用场景"><a href="#1-1-技术应用场景" class="headerlink" title="1.1 技术应用场景"></a>1.1 技术应用场景</h4><p>分布式文件系统解决了海量文件存储及传输访问的瓶颈问题，对海量视频的管理、对海量图片的管理等。</p>
+<h4 id="1-2-什么是分布式文件系统"><a href="#1-2-什么是分布式文件系统" class="headerlink" title="1.2 什么是分布式文件系统"></a>1.2 什么是分布式文件系统</h4><p>引用“百度百科”中的描述：</p>
+<a id="more"></a>
+
+<p><img data-src="../../../../assets/img/193636.jpg" alt></p>
+<p>为什么会有分布文件系统呢？</p>
+<p>分布式文件系统是面对互联网的需求而产生，互联网时代对海量数据如何存储？靠简单的增加硬盘的个数已经满足不了我们的要求，因为硬盘传输速度有限但是数据在急剧增长，另外我们还要要做好数据备份、数据安全等。</p>
+<p>采用分布式文件系统可以<strong>将多个地点的文件系统通过网络连接起来，组成一个文件系统网络，结点之间通过网络进 行通信</strong>，一台文件系统的存储和传输能力有限，我们让文件在多台计算机上存储，通过<strong>多台计算机共同传输</strong>。如下 图：</p>
+<p><img data-src="../../../../assets/img/193919.jpg" alt></p>
+<p><strong>好处:</strong></p>
+<ul>
+<li>一台计算机的文件系统处理能力扩充到<strong>多台计算机同时处理</strong></li>
+<li>一台计算机挂了还有另外<strong>副本</strong>计算机提供数据</li>
+<li>每台计算机可以放在不同的地域，这样用户就可以<strong>就近访问，提高访问速度</strong></li>
+</ul>
+<h4 id="1-3-主流的分布式文件系统"><a href="#1-3-主流的分布式文件系统" class="headerlink" title="1.3 主流的分布式文件系统"></a>1.3 主流的分布式文件系统</h4><p><strong>(1) NFS</strong></p>
+<p>​    NFS是基于<span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS9VRFAvNTcxNTEx">UDP<i class="fa fa-external-link-alt"></i></span>/IP协议的应用，其实现主要是采用<span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS/ov5znqIvov4fnqIvosIPnlKg=">远程过程调用<i class="fa fa-external-link-alt"></i></span><span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS9SUEMvNjA5ODYx">RPC<i class="fa fa-external-link-alt"></i></span>机制，RPC提供了一组与机器、操作系统以及低层传送协议无关的存取远程文件的操作。<span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS9SUEM=">RPC<i class="fa fa-external-link-alt"></i></span>采用了<span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS9YRFI=">XDR<i class="fa fa-external-link-alt"></i></span>的支持。<span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS9YRFIvODc5NjkwNA==">XDR<i class="fa fa-external-link-alt"></i></span>是一种与机器无关的数据描述编码的协议，他以独立与任意机器体系结构的格式对网上传送的数据进行编码和解码，支持在异构系统之间数据的传送。</p>
+<p><img data-src="../../../../assets/img/194336.jpg" alt><br>1）在客户端上映射NFS服务器的驱动器。<br>2）客户端通过网络访问NFS服务器的硬盘完全透明。 </p>
+<p><strong>(2) GFS</strong></p>
+<p>​    GFS是一个可扩展的<span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS/liIbluIPlvI/mlofku7bns7vnu58vMTI1MDM4OA==">分布式文件系统<i class="fa fa-external-link-alt"></i></span>，用于大型的、分布式的、对大量数据进行访问的应用。它运行于廉价的普通硬件上，并提供容错功能。它可以给大量的用户提供总体性能较高的服务。</p>
+<p><img data-src="../../../../assets/img/7667.jpg" alt><br>1）GFS采用主从结构，一个GFS集群由一个master和大量的chunkserver组成。<br>2）master存储了数据文件的元数据，一个文件被分成了若干块存储在多个chunkserver中。 3）用户从master中获取数据元信息，从chunkserver存储数据。</p>
+<p><strong>(3) HDFS</strong></p>
+<p><img data-src="../../../../assets/img/194749.jpg" alt></p>
+<p><img data-src="../../../../assets/img/1561651.jpg" alt></p>
+<p>1）HDFS采用主从结构，一个HDFS集群由一个名称结点和若干数据结点组成<br>     名称结点存储数据的元信息，一个完整的数据文件分成若干块存储在数据结点。<br>2）客户端从名称结点获取数据的元信息及数据分块的信息，得到信息客户端即可从数据块来存取数据。</p>
+<h4 id="1-4-分布式文件服务提供商"><a href="#1-4-分布式文件服务提供商" class="headerlink" title="1.4 分布式文件服务提供商"></a>1.4 分布式文件服务提供商</h4><p>1）阿里的OSS<br>2）七牛云存储<br>3）百度云存储</p>
+<h3 id="2-什么是FastDFS"><a href="#2-什么是FastDFS" class="headerlink" title="2.什么是FastDFS"></a>2.什么是FastDFS</h3><h4 id="2-1-FastDSF介绍"><a href="#2-1-FastDSF介绍" class="headerlink" title="2.1 FastDSF介绍"></a>2.1 FastDSF介绍</h4><p>FastDFS是用c语言编写的一款开源的分布式文件系统，它是由淘宝资深架构师余庆编写并开源。FastDFS专<strong>为互联 网量身定制</strong>，充分考虑了冗余备份、负载均衡、线性扩容等机制，并注重高可用、高性能等指标，使用FastDFS很 容易搭建一套高性能的文件服务器集群提供文件上传、下载等服务。</p>
+<ul>
+<li><p>为什么要使用fastDFS呢？</p>
+<p>上边介绍的NFS、GFS都是通用的分布式文件系统，<strong>通用的分布式文件系统的优点的是开发体验好，但是系统复杂性高、性能一般</strong>，而<strong>专用的分布式文件系统虽然开发体验性差，但是系统复杂性低并且性能高</strong>。FastDFS非常适合存储图片等那些小文件，FastDFS不对文件进行分块，所以它就没有分块合并的开销，FastDFS网络通信采用 socket，通信速度很快。 </p>
+</li>
+</ul>
+<h4 id="2-2-FastDSF工作原理"><a href="#2-2-FastDSF工作原理" class="headerlink" title="2.2 FastDSF工作原理"></a>2.2 FastDSF工作原理</h4><h5 id="2-2-1-FastDSF架构"><a href="#2-2-1-FastDSF架构" class="headerlink" title="2.2.1 FastDSF架构"></a>2.2.1 FastDSF架构</h5><p>FastDFS架构包括 Tracker server和Storageserver。<strong>客户端请求Tracker server进行文件上传、下载</strong>，通过<strong>Tracker server调度</strong>最终由<strong>Storage server完成文件上传和下载</strong>。</p>
+<p>如下图：<br><img data-src="../../../../assets/img/200608.jpg" alt></p>
+<p><strong>1）Tracker</strong><br>Tracker Server作用是<strong>负载均衡和调度</strong>，通过Tracker server在文件上传时可以根据一些策略<strong>找到Storage server</strong>提 供文件上传服务。可以将tracker称为<strong>追踪服务器或调度服务器</strong>。</p>
+<p>FastDFS集群中的Tracker server可以有多台，Tracker server之间是相互平等关系同时提供服务，Tracker server 不存在单点故障。客户端请求Tracker server采用<strong>轮询</strong>方式，如果请求的tracker无法提供服务则换另一个tracker。 </p>
+<p><strong>2）Storage</strong><br>Storage Server作用是<strong>文件存储</strong>，客户端上传的文件最终存储在Storage服务器上，Storage server没有实现自己 的文件系统而是使用操作系统的文件系统来管理文件。可以将storage称为<strong>存储服务器</strong>。</p>
+<p> Storage集群采用了<strong>分组存储</strong>方式。storage集群由一个或多个组构成，集群存储总容量为集群中所有组的存储容 量之和。一个组由一台或多台存储服务器组成，组内的Storage server之间是平等关系，不同组的Storage server 之间不会相互通信，同组内的Storage server之间会相互连接进行文件同步，从而保证同组内每个storage上的文件完全一致的。一个组的存储容量为该组内的存储服务器容量最小的那个，由此可见组内存储服务器的软硬件配置最好是一致的。</p>
+<p>采用分组存储方式的好处是灵活、可控性较强。比如上传文件时，可以由客户端直接指定上传到的组也可以由 tracker进行调度选择。一个分组的存储服务器访问压力较大时，可以在该组<strong>增加存储服务器来扩充服务能力（纵向扩容）</strong>。当系统容量不足时，可以<strong>增加组来扩充存储容量（横向扩容）</strong>。</p>
+<p><strong>3）Storage状态收集</strong><br> Storage server会<strong>连接集群中所有的Tracker server，定时向他们报告自己的状态</strong>，包括磁盘剩余空间、文件同步 状况、文件上传下载次数等统计信息。</p>
+<h5 id="2-2-2-文件上传流程"><a href="#2-2-2-文件上传流程" class="headerlink" title="2.2.2 文件上传流程"></a>2.2.2 文件上传流程</h5><p><img data-src="../../../../assets/img/201035.jpg" alt><br><strong>客户端上传文件后存储服务器将文件ID返回给客户端</strong>，此文件ID用于以后访问该文件的索引信息。文件索引信息 包括：组名，虚拟磁盘路径，数据两级目录，文件名。</p>
+<p><code>http://192.168.179.101/group1/M00/00/00/wKizZV3s2muAO7pFAACd4a31kFU720.png</code></p>
+<ul>
+<li>组名：文件上传后所在的storage组名称，在文件上传成功后有storage服务器返回，需要客户端自行保存。 </li>
+<li>虚拟磁盘路径：storage配置的虚拟路径，与磁盘选项store_path*对应。如果配置了store_path0则是M00， 如果配置了store_path1则是M01，以此类推。 </li>
+<li>数据两级目录：storage服务器在每个虚拟磁盘路径下创建的两级目录，用于存储数据文件。</li>
+<li>文件名：与文件上传时不同。是由存储服务器根据特定信息生成，文件名包含：源存储服务器IP地址、文件创 建时间戳、文件大小、随机数和文件拓展名等信息。</li>
+</ul>
+<h5 id="2-2-3-文件下载流程"><a href="#2-2-3-文件下载流程" class="headerlink" title="2.2.3 文件下载流程"></a>2.2.3 文件下载流程</h5><p><img data-src="../../../../assets/img/201337.jpg" alt><br>tracker根据请求的文件路径即文件ID 来快速定义文件。<br>比如请求下边的文件：</p>
+<p><code>http://192.168.179.101/group1/M00/00/00/wKizZV3s2muAO7pFAACd4a31kFU720.png</code></p>
+<p>(1) 通过组名tracker能够很快的定位到客户端需要访问的存储服务器组是group1，并选择合适的存储服务器提供客户端访问。<br>(2) 存储服务器根据“文件存储虚拟磁盘路径”和“数据文件两级目录”可以很快定位到文件所在目录，并根据文件名找到客户端需要访问的文件。</p>
+<h3 id="3-fastDFS入门"><a href="#3-fastDFS入门" class="headerlink" title="3.fastDFS入门"></a>3.fastDFS入门</h3><h4 id="3-1-文件上传下载测试"><a href="#3-1-文件上传下载测试" class="headerlink" title="3.1 文件上传下载测试"></a>3.1 文件上传下载测试</h4><h5 id="3-1-1-搭建环境"><a href="#3-1-1-搭建环境" class="headerlink" title="3.1.1 搭建环境"></a>3.1.1 搭建环境</h5><p>这里我们使用javaApi测试文件的上传，java版本的fastdfs-client地址在： <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hhcHB576yBc2gxMDAvZmFzdGRmcy1jbGllbnQtamF2Ye+8jOWPguiAg+atpOW3peeoi+e8luWGmea1i+ivleeUqOS+i+OAgg==">https://github.com/happyﬁsh100/fastdfs-client-java，参考此工程编写测试用例。<i class="fa fa-external-link-alt"></i></span> </p>
+<p>1）创建maven工程 </p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>xc-framework-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.xuecheng<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">relativePath</span>&gt;</span>../xc-framework-parent/pom.xml<span class="tag">&lt;/<span class="name">relativePath</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">modelVersion</span>&gt;</span>4.0.0<span class="tag">&lt;/<span class="name">modelVersion</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>test-fastdfs<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.csource<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>fastdfs-client-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.27-SNAPSHOT<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.commons<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-io<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>2) 配置文件</p>
+<p>在classpath:conﬁg下创建fastdfs-client.properties文件</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">fastdfs.connect_timeout_in_seconds</span> = <span class="string">5</span></span><br><span class="line"><span class="meta">fastdfs.network_timeout_in_seconds</span> = <span class="string">30</span></span><br><span class="line"><span class="meta">fastdfs.charset</span> = <span class="string">UTF-8</span></span><br><span class="line"><span class="meta">fastdfs.tracker_servers</span> = <span class="string">192.168.179.101:22122</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="3-1-2-文件上传"><a href="#3-1-2-文件上传" class="headerlink" title="3.1.2 文件上传"></a>3.1.2 文件上传</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//上传文件</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testUpload</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        ClientGlobal.initByProperties(<span class="string">"config/fastdfs-client.properties"</span>);</span><br><span class="line">        System.out.println(<span class="string">"network_timeout="</span>+ClientGlobal.g_network_timeout+<span class="string">"ms"</span>);</span><br><span class="line">        System.out.println(<span class="string">"charset="</span>+ClientGlobal.g_charset);</span><br><span class="line">        <span class="comment">//创建客户端</span></span><br><span class="line">        TrackerClient trackerClient=<span class="keyword">new</span> TrackerClient();</span><br><span class="line">        <span class="comment">//连接tracker Server</span></span><br><span class="line">        TrackerServer trackerServer = trackerClient.getConnection();</span><br><span class="line">        <span class="keyword">if</span> (trackerServer==<span class="keyword">null</span>)&#123;</span><br><span class="line">            System.out.println(<span class="string">"getConnection return null"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//获取一个storage server</span></span><br><span class="line">        StorageServer storageServer = trackerClient.getStoreStorage(trackerServer);</span><br><span class="line">        <span class="keyword">if</span> (storageServer==<span class="keyword">null</span>)&#123;</span><br><span class="line">            System.out.println(<span class="string">"getStoreStorage return null"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//创建一个storage存储客户端</span></span><br><span class="line">        StorageClient1 storageClient1=<span class="keyword">new</span> StorageClient1(trackerServer,storageServer);</span><br><span class="line">        NameValuePair[] meta_list=<span class="keyword">null</span>; <span class="comment">//new NameValuePair[0];</span></span><br><span class="line">        String item=<span class="string">"E:\\test.png"</span>;</span><br><span class="line">        String fileid=(storageClient1.upload_file1(item,<span class="string">"png"</span>,meta_list));</span><br><span class="line">        System.out.println(<span class="string">"Upload local file"</span>+item+<span class="string">"ok,fileid="</span>+fileid);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-1-3-文件查询"><a href="#3-1-3-文件查询" class="headerlink" title="3.1.3 文件查询"></a>3.1.3 文件查询</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//查询文件</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testQueryFile</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        ClientGlobal.initByProperties(<span class="string">"config/fastdfs-client.properties"</span>);</span><br><span class="line">        TrackerClient trackerClient=<span class="keyword">new</span> TrackerClient();</span><br><span class="line">        TrackerServer trackerServer=trackerClient.getConnection();</span><br><span class="line">        StorageServer storageServer=<span class="keyword">null</span>;</span><br><span class="line">        StorageClient storageClient=<span class="keyword">new</span> StorageClient(trackerServer,storageServer);</span><br><span class="line">        FileInfo fileInfo = storageClient.query_file_info(<span class="string">"group1"</span>, <span class="string">"M00/00/00/wKizZV3s2muAO7pFAACd4a31kFU720.png"</span>);</span><br><span class="line">        System.out.println(fileInfo);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="3-1-4-文件下载"><a href="#3-1-4-文件下载" class="headerlink" title="3.1.4 文件下载"></a>3.1.4 文件下载</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//下载文件</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testDownload</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        ClientGlobal.initByProperties(<span class="string">"config/fastdfs-client.properties"</span>);</span><br><span class="line">        TrackerClient trackerClient=<span class="keyword">new</span> TrackerClient();</span><br><span class="line">        TrackerServer trackerServer = trackerClient.getConnection();</span><br><span class="line">        StorageServer storageServer=<span class="keyword">null</span>;</span><br><span class="line">        StorageClient1 storageClient1=<span class="keyword">new</span> StorageClient1(trackerServer,storageServer);</span><br><span class="line">        <span class="keyword">byte</span>[] result = storageClient1.download_file1(<span class="string">"M00/00/00/wKizZV3s2muAO7pFAACd4a31kFU720.png"</span>);</span><br><span class="line">        File file=<span class="keyword">new</span> File(<span class="string">"E:/1.png"</span>);</span><br><span class="line">        FileOutputStream fileOutputStream=<span class="keyword">new</span> FileOutputStream(file);</span><br><span class="line">        fileOutputStream.write(result);</span><br><span class="line">        fileOutputStream.close();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>请作者喝瓶肥宅快乐水</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/vxpay.jpg" alt="liuwy1998 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/alipay.jpg" alt="liuwy1998 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/tool/" rel="tag"><i class="fa fa-tag"></i> tool</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/shell_tree/" rel="prev" title="使用tree命令导出文件夹/文件的目录树">
+      <i class="fa fa-chevron-left"></i> 使用tree命令导出文件夹/文件的目录树
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/31824/" rel="next" title="初始ElasticSearch集群">
+      初始ElasticSearch集群 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-什么是分布式文件系统"><span class="nav-text">1.什么是分布式文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-技术应用场景"><span class="nav-text">1.1 技术应用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-什么是分布式文件系统"><span class="nav-text">1.2 什么是分布式文件系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-主流的分布式文件系统"><span class="nav-text">1.3 主流的分布式文件系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-分布式文件服务提供商"><span class="nav-text">1.4 分布式文件服务提供商</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-什么是FastDFS"><span class="nav-text">2.什么是FastDFS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-FastDSF介绍"><span class="nav-text">2.1 FastDSF介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-FastDSF工作原理"><span class="nav-text">2.2 FastDSF工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-1-FastDSF架构"><span class="nav-text">2.2.1 FastDSF架构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-2-文件上传流程"><span class="nav-text">2.2.2 文件上传流程</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-3-文件下载流程"><span class="nav-text">2.2.3 文件下载流程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-fastDFS入门"><span class="nav-text">3.fastDFS入门</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-文件上传下载测试"><span class="nav-text">3.1 文件上传下载测试</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-1-搭建环境"><span class="nav-text">3.1.1 搭建环境</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-2-文件上传"><span class="nav-text">3.1.2 文件上传</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-3-文件查询"><span class="nav-text">3.1.3 文件查询</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-1-4-文件下载"><span class="nav-text">3.1.4 文件下载</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liuwy1998"
+      src="/../assets/img/head.jpg">
+  <p class="site-author-name" itemprop="name">liuwy1998</p>
+  <div class="site-description" itemprop="description">Java开发, 后端开发</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">皖ICP备19022525号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liuwy1998</span>
+</div><script color="0,137,108" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://tonymua.top/22469/',]
+      });
+      });
+  </script>
+
+</body>
+</html>

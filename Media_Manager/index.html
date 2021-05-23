@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="bUCDF5pEQe">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=66522575" charset="UTF-8"></script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"tonymua.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1.视频处理1.1 需求分析原始视频通常需要经过编码处理，生成m3u8和ts文件方可基于HLS协议播放视频。通常用户上传原始视频，系统自动处理成标准格式，系统对用户上传的视频自动编码、转换，最终生成m3u8文件和ts文件，处理流程如下：  用户上传视频成功 系统对上传成功的视频自动开始编码处理 用户查看视频处理结果，没有处理成功的视频用户可在管理界面再次触发处理 视频处理完成将视频地址及处理结果保">
+<meta name="keywords" content="视频处理,RabbitMQ,m3u8">
+<meta property="og:type" content="article">
+<meta property="og:title" content="学成在线(十五.媒资管理)">
+<meta property="og:url" content="http://tonymua.top/Media_Manager/index.html">
+<meta property="og:site_name" content="liuwy1998 BLOG">
+<meta property="og:description" content="1.视频处理1.1 需求分析原始视频通常需要经过编码处理，生成m3u8和ts文件方可基于HLS协议播放视频。通常用户上传原始视频，系统自动处理成标准格式，系统对用户上传的视频自动编码、转换，最终生成m3u8文件和ts文件，处理流程如下：  用户上传视频成功 系统对上传成功的视频自动开始编码处理 用户查看视频处理结果，没有处理成功的视频用户可在管理界面再次触发处理 视频处理完成将视频地址及处理结果保">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-06-25T13:51:28.242Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="学成在线(十五.媒资管理)">
+<meta name="twitter:description" content="1.视频处理1.1 需求分析原始视频通常需要经过编码处理，生成m3u8和ts文件方可基于HLS协议播放视频。通常用户上传原始视频，系统自动处理成标准格式，系统对用户上传的视频自动编码、转换，最终生成m3u8文件和ts文件，处理流程如下：  用户上传视频成功 系统对上传成功的视频自动开始编码处理 用户查看视频处理结果，没有处理成功的视频用户可在管理界面再次触发处理 视频处理完成将视频地址及处理结果保">
+
+<link rel="canonical" href="http://tonymua.top/Media_Manager/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>学成在线(十五.媒资管理) | liuwy1998 BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="liuwy1998 BLOG" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">liuwy1998 BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">When they go low,we go high.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/Media_Manager/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="liuwy1998">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuwy1998 BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          学成在线(十五.媒资管理)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/项目/" itemprop="url" rel="index"><span itemprop="name">项目</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="1-视频处理"><a href="#1-视频处理" class="headerlink" title="1.视频处理"></a>1.视频处理</h3><h4 id="1-1-需求分析"><a href="#1-1-需求分析" class="headerlink" title="1.1 需求分析"></a>1.1 需求分析</h4><p>原始视频通常需要经过编码处理，生成m3u8和ts文件方可基于HLS协议播放视频。通常用户上传原始视频，系统自动处理成标准格式，系统对用户上传的视频<strong>自动编码</strong>、<strong>转换</strong>，最终生成m3u8文件和ts文件，处理流程如下：</p>
+<ol>
+<li>用户上传视频成功</li>
+<li>系统对上传成功的视频自动开始编码处理</li>
+<li>用户查看视频处理结果，没有处理成功的视频用户可在管理界面再次触发处理</li>
+<li>视频处理完成将视频地址及处理结果保存到数据库</li>
+</ol>
+<a id="more"></a>
+
+<p>视频处理流程如下：<br><img data-src="../../../../assets/img/123923.jpg" alt></p>
+<p>视频处理进程的任务是接收视频处理消息进行视频处理，业务流程如下：</p>
+<ol>
+<li>监听MQ，接收视频处理消息。</li>
+<li>进行视频处理。</li>
+<li>向数据库写入视频处理结果。<br>视频处理进程属于媒资管理系统的一部分，考虑提高系统的扩展性，将视频处理单独定义视频处理工程。</li>
+</ol>
+<h4 id="1-2-视频处理开发"><a href="#1-2-视频处理开发" class="headerlink" title="1.2 视频处理开发"></a>1.2 视频处理开发</h4><h5 id="1-2-1-RabbitMQ配置"><a href="#1-2-1-RabbitMQ配置" class="headerlink" title="1.2.1 RabbitMQ配置"></a>1.2.1 RabbitMQ配置</h5><ol>
+<li><p>使用rabbitMQ的routing交换机模式，视频处理程序监听视频处理队列，如下图：<br><img data-src="../../../../assets/img/154332.jpg" alt></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RabbitMQConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String EX_MEDIA_PROCESSTASK = <span class="string">"ex_media_processor"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//视频处理队列</span></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;xc-service-manage-media.mq.queue-media-video-processor&#125;"</span>)</span><br><span class="line">    <span class="keyword">public</span>  String queue_media_video_processtask;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//视频处理路由</span></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;xc-service-manage-media.mq.routingkey-media-video&#125;"</span>)</span><br><span class="line">    <span class="keyword">public</span>  String routingkey_media_video;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//消费者并发数量</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_CONCURRENT = <span class="number">10</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 交换机配置</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> the exchange</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span>(EX_MEDIA_PROCESSTASK)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Exchange <span class="title">EX_MEDIA_VIDEOTASK</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ExchangeBuilder.directExchange(EX_MEDIA_PROCESSTASK).durable(<span class="keyword">true</span>).build();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//声明队列</span></span><br><span class="line">    <span class="meta">@Bean</span>(<span class="string">"queue_media_video_processtask"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Queue <span class="title">QUEUE_PROCESSTASK</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Queue queue = <span class="keyword">new</span> Queue(queue_media_video_processtask,<span class="keyword">true</span>,<span class="keyword">false</span>,<span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">return</span> queue;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 绑定队列到交换机.</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> queue    the queue</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> exchange the exchange</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> the binding</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Binding <span class="title">binding_queue_media_processtask</span><span class="params">(@Qualifier(<span class="string">"queue_media_video_processtask"</span>)</span> Queue queue, @<span class="title">Qualifier</span><span class="params">(EX_MEDIA_PROCESSTASK)</span> Exchange exchange) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> BindingBuilder.bind(queue).to(exchange).with(routingkey_media_video).noargs();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在application.yml中配置队列名称及routingkey</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">xc-service-manage-media:</span></span><br><span class="line">  <span class="attr">mq:</span></span><br><span class="line">    <span class="attr">queue-media-video-processor:</span> <span class="string">queue_media_video_processor</span></span><br><span class="line">    <span class="attr">routingkey-media-video:</span> <span class="string">routingkey_media_video</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h5 id="1-2-2-视频处理技术方案"><a href="#1-2-2-视频处理技术方案" class="headerlink" title="1.2.2 视频处理技术方案"></a>1.2.2 视频处理技术方案</h5><p>如何通过程序进行视频处理？<br>ffmpeg是一个可行的视频处理程序，可以<strong>通过Java调用ffmpeg.exe</strong>完成视频处理。<br>在java中可以使用<strong>Runtime类</strong>和<strong>Process Builder类</strong>两种方式来<strong>执行外部程序</strong>，工作中至少掌握一种。<br>本项目使用Process Builder的方式来调用ffmpeg完成视频处理。<br>关于Process Builder的测试如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootTest</span></span><br><span class="line"><span class="meta">@RunWith</span>(SpringRunner<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">TestProcessBuilder</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testProcessBuilder</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">//创建ProcessBuilder对象</span></span><br><span class="line">        ProcessBuilder processBuilder =<span class="keyword">new</span> ProcessBuilder();</span><br><span class="line">        <span class="comment">//设置执行的第三方程序(命令)</span></span><br><span class="line"><span class="comment">//        processBuilder.command("ping","127.0.0.1");</span></span><br><span class="line">        processBuilder.command(<span class="string">"ipconfig"</span>);</span><br><span class="line"><span class="comment">//        processBuilder.command("java","-jar","f:/xc-service-manage-course.jar");</span></span><br><span class="line">        <span class="comment">//将标准输入流和错误输入流合并，通过标准输入流读取信息就可以拿到第三方程序输出的错误信息、正常信息</span></span><br><span class="line">        processBuilder.redirectErrorStream(<span class="keyword">true</span>);</span><br><span class="line">        <span class="comment">//启动一个进程</span></span><br><span class="line">        Process process = processBuilder.start();</span><br><span class="line">        <span class="comment">//由于前边将错误和正常信息合并在输入流，只读取输入流</span></span><br><span class="line">        InputStream inputStream = process.getInputStream();</span><br><span class="line">        <span class="comment">//将字节流转成字符流</span></span><br><span class="line">        InputStreamReader reader = <span class="keyword">new</span> InputStreamReader(inputStream,<span class="string">"gbk"</span>);</span><br><span class="line">       <span class="comment">//字符缓冲区</span></span><br><span class="line">        <span class="keyword">char</span>[] chars = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">1024</span>];</span><br><span class="line">        <span class="keyword">int</span> len = -<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>((len = reader.read(chars))!=-<span class="number">1</span>)&#123;</span><br><span class="line">            String string = <span class="keyword">new</span> String(chars,<span class="number">0</span>,len);</span><br><span class="line">            System.out.println(string);</span><br><span class="line">        &#125;</span><br><span class="line">        inputStream.close();</span><br><span class="line">        reader.close();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//测试使用工具类将avi转成mp4</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testProcessMp4</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">//String ffmpeg_path, String video_path, String mp4_name, String mp4folder_path</span></span><br><span class="line">        <span class="comment">//ffmpeg的路径</span></span><br><span class="line">        String ffmpeg_path = <span class="string">"E:/software/ffmpeg/bin/ffmpeg.exe"</span>;</span><br><span class="line">        <span class="comment">//video_path视频地址</span></span><br><span class="line">        String video_path = <span class="string">"E:\\test\\1.avi"</span>;</span><br><span class="line">        <span class="comment">//mp4_name mp4文件名称</span></span><br><span class="line">        String mp4_name  =<span class="string">"1.mp4"</span>;</span><br><span class="line">        <span class="comment">//mp4folder_path mp4文件目录路径</span></span><br><span class="line">        String mp4folder_path=<span class="string">"E:\\test\\"</span>;</span><br><span class="line">        Mp4VideoUtil mp4VideoUtil = <span class="keyword">new</span> Mp4VideoUtil(ffmpeg_path,video_path,mp4_name,mp4folder_path);</span><br><span class="line">        <span class="comment">//开始编码,如果成功返回success，否则返回输出的日志</span></span><br><span class="line">        String result = mp4VideoUtil.generateMp4();</span><br><span class="line">        System.out.println(result);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上边的代码已经封装成工具类，参见：<img data-src="../../../../assets/img/191834.jpg" alt><br>上边的工具类中：<br>    Mp4VideoUtil.java完成avi转mp4<br>    HlsVideoUtil.java完成mp4转hls</p>
+<h5 id="1-2-3-视频处理实现"><a href="#1-2-3-视频处理实现" class="headerlink" title="1.2.3 视频处理实现"></a>1.2.3 视频处理实现</h5><h6 id="1-2-3-1-确定消息格式"><a href="#1-2-3-1-确定消息格式" class="headerlink" title="1.2.3.1 确定消息格式"></a>1.2.3.1 确定消息格式</h6><p>MQ消息统一采用<strong>json格式</strong>，视频处理生产方会向MQ发送如下消息，视频处理消费方接收此消息后进行视频处<br>理：<code>{&quot;mediaId&quot;:XXXX}</code></p>
+<h6 id="1-2-3-2-处理流程"><a href="#1-2-3-2-处理流程" class="headerlink" title="1.2.3.2 处理流程"></a>1.2.3.2 处理流程</h6><ol>
+<li>接收视频处理消息</li>
+<li>判断媒体文件是否需要处理（本视频处理程序目前只接收avi视频的处理）, 当前只有avi文件需要处理，其它文件需要更新处理状态为“无需处理”。</li>
+<li>处理前初始化处理状态为“未处理”</li>
+<li>处理失败需要在数据库记录处理日志，及处理状态为“处理失败”</li>
+<li>处理成功记录处理状态为“处理成功”</li>
+</ol>
+<h6 id="1-2-3-3-数据模型"><a href="#1-2-3-3-数据模型" class="headerlink" title="1.2.3.3 数据模型"></a>1.2.3.3 数据模型</h6><p>在<strong>MediaFile</strong>类中添加mediaFileProcess_m3u8属性记录ts文件列表，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="meta">@Document</span>(collection = <span class="string">"media_file"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MediaFile</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//hls处理</span></span><br><span class="line">    <span class="keyword">private</span> MediaFileProcess_m3u8 mediaFileProcess_m3u8;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>MediaFileProcess_m3u8</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MediaFileProcess_m3u8</span> <span class="keyword">extends</span> <span class="title">MediaFileProcess</span> </span>&#123;</span><br><span class="line">    <span class="comment">//ts列表</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;String&gt; tslist;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="1-2-3-4-视频处理"><a href="#1-2-3-4-视频处理" class="headerlink" title="1.2.3.4 视频处理"></a>1.2.3.4 视频处理</h6><ol>
+<li><p>视频处理结果需要保存到媒资数据库，创建dao如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MediaFileRepository</span> <span class="keyword">extends</span> <span class="title">MongoRepository</span>&lt;<span class="title">MediaFile</span>,<span class="title">String</span>&gt; </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p>在application.yml中配置ffmpeg的位置及视频目录的根目录：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">xc-service-manage-media:</span></span><br><span class="line">  <span class="attr">mq:</span></span><br><span class="line">    <span class="attr">queue-media-video-processor:</span> <span class="string">queue_media_video_processor</span></span><br><span class="line">    <span class="attr">routingkey-media-video:</span> <span class="string">routingkey_media_video</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>处理任务类<br>在mq包下创建MediaProcessTask类，此类负责<strong>监听视频处理队列，并进行视频处理</strong>。整个视频处理内容较多，这里分两部分实现：生成mp4和生成m3u8。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MediaProcessTask</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    MediaFileRepository mediaFileRepository;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//ffmpeg绝对路径</span></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;xc-service-manage-media.ffmpeg-path&#125;"</span>)</span><br><span class="line">    String ffmpeg_path;</span><br><span class="line">    <span class="comment">//上传文件根目录</span></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;xc-service-manage-media.video-location&#125;"</span>)</span><br><span class="line">    String serverPath;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//接收视频处理消息进行视频处理</span></span><br><span class="line">    <span class="meta">@RabbitListener</span>(queues = <span class="string">"$&#123;xc-service-manage-media.mq.queue-media-video-processor&#125;"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">receiveMediaProcessTask</span><span class="params">(String msg)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//1.解析消息内容,得到mediaId</span></span><br><span class="line">        Map map = JSON.parseObject(msg, Map<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">        String mediaId = (String) map.get(<span class="string">"mediaId"</span>);</span><br><span class="line">        <span class="comment">//2.根据mediaId查询文件信息</span></span><br><span class="line">        Optional&lt;MediaFile&gt; optional = mediaFileRepository.findById(mediaId);</span><br><span class="line">        <span class="keyword">if</span> (!optional.isPresent()) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        MediaFile mediaFile = optional.get();</span><br><span class="line">        <span class="comment">//文件类型</span></span><br><span class="line">        String fileType = mediaFile.getFileType();</span><br><span class="line">        <span class="keyword">if</span> (!fileType.equals(<span class="string">"avi"</span>)) &#123;</span><br><span class="line">            <span class="comment">//目前只处理avi文件</span></span><br><span class="line">            mediaFile.setProcessStatus(<span class="string">"303004"</span>);<span class="comment">//处理状态为无需处理</span></span><br><span class="line">            mediaFileRepository.save(mediaFile);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            mediaFile.setProcessStatus(<span class="string">"303001"</span>);</span><br><span class="line">            mediaFileRepository.save(mediaFile);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//3.使用工具类将avi转成mp4</span></span><br><span class="line">        <span class="comment">//要处理的视频文件的路径</span></span><br><span class="line">        String video_path=serverPath+ mediaFile.getFilePath()+mediaFile.getFileName();</span><br><span class="line">        <span class="comment">//生成的mp4的文件名称</span></span><br><span class="line">        String mp4_name=mediaFile.getFileId()+<span class="string">".mp4"</span>;</span><br><span class="line">        <span class="comment">//生成mp4所在的路径</span></span><br><span class="line">        String mp4folder_path=serverPath+mediaFile.getFilePath();</span><br><span class="line">        <span class="comment">//创建工具类对象</span></span><br><span class="line">        Mp4VideoUtil mp4VideoUtil=<span class="keyword">new</span> Mp4VideoUtil(ffmpeg_path,video_path,mp4_name,mp4folder_path);</span><br><span class="line">        <span class="comment">//进行处理</span></span><br><span class="line">        String result = mp4VideoUtil.generateMp4();</span><br><span class="line">        <span class="keyword">if</span> (result==<span class="keyword">null</span>||!result.equals(<span class="string">"success"</span>))&#123;</span><br><span class="line">            <span class="comment">//处理失败</span></span><br><span class="line">            mediaFile.setProcessStatus(<span class="string">"303003"</span>);</span><br><span class="line">            <span class="comment">//定义mediaFileProcess_m3u8</span></span><br><span class="line">            MediaFileProcess_m3u8 mediaFileProcess_m3u8=<span class="keyword">new</span> MediaFileProcess_m3u8();</span><br><span class="line">            mediaFileProcess_m3u8.setErrormsg(result);</span><br><span class="line">            mediaFile.setMediaFileProcess_m3u8(mediaFileProcess_m3u8);</span><br><span class="line">            mediaFileRepository.save(mediaFile);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//4.将mp4生成m3u8</span></span><br><span class="line">        <span class="comment">//mp4视频文件路径</span></span><br><span class="line">        String mp4_video_path=mp4folder_path+mp4_name;</span><br><span class="line">        <span class="comment">//m3u8文件名称</span></span><br><span class="line">        String m3u8_name=mediaFile.getFileId()+<span class="string">".m3u8"</span>;</span><br><span class="line">        <span class="comment">//m3u8文件所在目录</span></span><br><span class="line">        String m3u8folder_path=serverPath+mediaFile.getFilePath()+<span class="string">"hls/"</span>;</span><br><span class="line">        HlsVideoUtil hlsVideoUtil=<span class="keyword">new</span> HlsVideoUtil(ffmpeg_path,mp4_video_path,m3u8_name,m3u8folder_path);</span><br><span class="line">        result = hlsVideoUtil.generateM3u8();</span><br><span class="line">        <span class="keyword">if</span> (result==<span class="keyword">null</span>||!result.equals(<span class="string">"success"</span>))&#123;</span><br><span class="line">            <span class="comment">//处理失败</span></span><br><span class="line">            mediaFile.setProcessStatus(<span class="string">"303003"</span>);</span><br><span class="line">            <span class="comment">//定义mediaFileProcess_m3u8</span></span><br><span class="line">            MediaFileProcess_m3u8 mediaFileProcess_m3u8=<span class="keyword">new</span> MediaFileProcess_m3u8();</span><br><span class="line">            mediaFileProcess_m3u8.setErrormsg(result);</span><br><span class="line">            mediaFile.setMediaFileProcess_m3u8(mediaFileProcess_m3u8);</span><br><span class="line">            mediaFileRepository.save(mediaFile);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//处理成功</span></span><br><span class="line">        mediaFile.setProcessStatus(<span class="string">"303002"</span>);</span><br><span class="line">        <span class="comment">//获取m3u8列表</span></span><br><span class="line">        List&lt;String&gt; ts_list = hlsVideoUtil.get_ts_list();</span><br><span class="line">        MediaFileProcess_m3u8 mediaFileProcess_m3u8=<span class="keyword">new</span> MediaFileProcess_m3u8();</span><br><span class="line">        mediaFileProcess_m3u8.setTslist(ts_list);</span><br><span class="line">        mediaFile.setMediaFileProcess_m3u8(mediaFileProcess_m3u8);</span><br><span class="line">        <span class="comment">//m3u8 fileUrl(视频播放的相对路径)</span></span><br><span class="line">        mediaFile.setFileUrl(mediaFile.getFilePath()+<span class="string">"hls/"</span>+m3u8_name);</span><br><span class="line">        mediaFileRepository.save(mediaFile);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h4 id="1-3-发送视频处理消息"><a href="#1-3-发送视频处理消息" class="headerlink" title="1.3 发送视频处理消息"></a>1.3 发送视频处理消息</h4><p>当视频上传成功后向MQ 发送视频处理消息。<br>修改媒资管理服务的文件上传代码，当文件上传成功向MQ发送视频处理消息。</p>
+<h5 id="1-3-1-RabbitMQ配置"><a href="#1-3-1-RabbitMQ配置" class="headerlink" title="1.3.1 RabbitMQ配置"></a>1.3.1 RabbitMQ配置</h5><ol>
+<li><p>将media-processor工程下的RabbitmqConfig配置类拷贝到media工程下。</p>
+</li>
+<li><p>在media工程下配置mq队列等信息<br>修改application.yml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">xc-service-manage-media:</span></span><br><span class="line">  <span class="attr">mq:</span></span><br><span class="line">    <span class="attr">queue-media-video-processor:</span> <span class="string">queue_media_video_processor</span></span><br><span class="line">    <span class="attr">routingkey-media-video:</span> <span class="string">routingkey_media_video</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h5 id="1-3-2-修改Service"><a href="#1-3-2-修改Service" class="headerlink" title="1.3.2 修改Service"></a>1.3.2 修改Service</h5><p>在文件合并方法中添加向mq发送视频处理消息的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">  <span class="meta">@Autowired</span></span><br><span class="line">  RabbitTemplate rabbitTemplate;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Value</span>(<span class="string">"$&#123;xc-service-manage-media.mq.routingkey-media-video&#125;"</span>)</span><br><span class="line">  String routingkey_media_video;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//发送视频处理MQ消息</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> ResponseResult <span class="title">sendProcessVideoMsg</span><span class="params">(String mediaId)</span></span>&#123;</span><br><span class="line">      Optional&lt;MediaFile&gt; optional = mediaFileRepository.findById(mediaId);</span><br><span class="line">      <span class="keyword">if</span> (!optional.isPresent())&#123;</span><br><span class="line">          ExceptionCast.cast(CommonCode.FAIL);</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//构造消息内容</span></span><br><span class="line">      Map&lt;String,String&gt; map=<span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">      map.put(<span class="string">"mediaId"</span>,mediaId);</span><br><span class="line">      String jsonString = JSON.toJSONString(map);</span><br><span class="line">      <span class="comment">//发送视频处理消息</span></span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">rabbitTemplate.convertAndSend(RabbitMQConfig.EX_MEDIA_PROCESSTASK,routingkey_media_video,jsonString);</span><br><span class="line">      &#125; <span class="keyword">catch</span> (AmqpException e) &#123;</span><br><span class="line">          e.printStackTrace();</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">new</span> ResponseResult(CommonCode.FAIL);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> ResponseResult(CommonCode.SUCCESS);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在mergechunks方法最后调用sendProcessVideo方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//状态为上传成功</span></span><br><span class="line">      mediaFile.setFileStatus(<span class="string">"301002"</span>);</span><br><span class="line">      MediaFile save = mediaFileRepository.save(mediaFile);</span><br><span class="line">      sendProcessVideoMsg(mediaFile.getFileId());</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> ResponseResult(CommonCode.SUCCESS);</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>请作者喝瓶肥宅快乐水</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/vxpay.jpg" alt="liuwy1998 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/alipay.jpg" alt="liuwy1998 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/视频处理/" rel="tag"><i class="fa fa-tag"></i> 视频处理</a>
+              <a href="/tags/RabbitMQ/" rel="tag"><i class="fa fa-tag"></i> RabbitMQ</a>
+              <a href="/tags/m3u8/" rel="tag"><i class="fa fa-tag"></i> m3u8</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2642/" rel="prev" title="学成在线(十二.ElasticSearch(二))">
+      <i class="fa fa-chevron-left"></i> 学成在线(十二.ElasticSearch(二))
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/HLS/" rel="next" title="学成在线(十四.在线学习HLS)">
+      学成在线(十四.在线学习HLS) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-视频处理"><span class="nav-text">1.视频处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-需求分析"><span class="nav-text">1.1 需求分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-视频处理开发"><span class="nav-text">1.2 视频处理开发</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-1-RabbitMQ配置"><span class="nav-text">1.2.1 RabbitMQ配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-2-视频处理技术方案"><span class="nav-text">1.2.2 视频处理技术方案</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-3-视频处理实现"><span class="nav-text">1.2.3 视频处理实现</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-2-3-1-确定消息格式"><span class="nav-text">1.2.3.1 确定消息格式</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-2-3-2-处理流程"><span class="nav-text">1.2.3.2 处理流程</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-2-3-3-数据模型"><span class="nav-text">1.2.3.3 数据模型</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#1-2-3-4-视频处理"><span class="nav-text">1.2.3.4 视频处理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-发送视频处理消息"><span class="nav-text">1.3 发送视频处理消息</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-1-RabbitMQ配置"><span class="nav-text">1.3.1 RabbitMQ配置</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-2-修改Service"><span class="nav-text">1.3.2 修改Service</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liuwy1998"
+      src="/../assets/img/head.jpg">
+  <p class="site-author-name" itemprop="name">liuwy1998</p>
+  <div class="site-description" itemprop="description">Java开发, 后端开发</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">皖ICP备19022525号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liuwy1998</span>
+</div><script color="0,137,108" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://tonymua.top/Media_Manager/',]
+      });
+      });
+  </script>
+
+</body>
+</html>

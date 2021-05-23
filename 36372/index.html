@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="bUCDF5pEQe">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=66522575" charset="UTF-8"></script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"tonymua.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1.权限过滤器  项目运行过程,希望某些资源不能被未登录用户直接访问到,只有登录后才可以访问.例如:购物车页面,订单详情等资源. 12345678910111213141516171819202122232425262728public class PriviledgeFilter implements Filter &amp;#123;	public void destroy() &amp;#123;	&amp;#12">
+<meta name="keywords" content="项目">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网上商城项目总结(四.后台)">
+<meta property="og:url" content="http://tonymua.top/36372/index.html">
+<meta property="og:site_name" content="liuwy1998 BLOG">
+<meta property="og:description" content="1.权限过滤器  项目运行过程,希望某些资源不能被未登录用户直接访问到,只有登录后才可以访问.例如:购物车页面,订单详情等资源. 12345678910111213141516171819202122232425262728public class PriviledgeFilter implements Filter &amp;#123;	public void destroy() &amp;#123;	&amp;#12">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-04-29T02:44:38.097Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网上商城项目总结(四.后台)">
+<meta name="twitter:description" content="1.权限过滤器  项目运行过程,希望某些资源不能被未登录用户直接访问到,只有登录后才可以访问.例如:购物车页面,订单详情等资源. 12345678910111213141516171819202122232425262728public class PriviledgeFilter implements Filter &amp;#123;	public void destroy() &amp;#123;	&amp;#12">
+
+<link rel="canonical" href="http://tonymua.top/36372/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>网上商城项目总结(四.后台) | liuwy1998 BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="liuwy1998 BLOG" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">liuwy1998 BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">When they go low,we go high.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/36372/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="liuwy1998">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuwy1998 BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          网上商城项目总结(四.后台)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-权限过滤器"><a href="#1-权限过滤器" class="headerlink" title="1.权限过滤器"></a>1.权限过滤器</h4><p>  项目运行过程,希望某些资源不能被未登录用户直接访问到,只有登录后才可以访问.例如:购物车页面,订单详情等资源.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PriviledgeFilter</span> <span class="keyword">implements</span> <span class="title">Filter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest request, ServletResponse response, FilterChain chain)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">		HttpServletRequest myRequest = (HttpServletRequest) request;</span><br><span class="line">		<span class="comment">// 判断当前session中是否存在已经登录的用户</span></span><br><span class="line">		User user = (User) myRequest.getSession().getAttribute(<span class="string">"loginUser"</span>);</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">null</span> != user) &#123;</span><br><span class="line">			<span class="comment">// 如果存在,放行</span></span><br><span class="line">			chain.doFilter(request, response);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// 如果不存在,进入提示页面</span></span><br><span class="line">			myRequest.setAttribute(<span class="string">"msg"</span>, <span class="string">"请先登录"</span>);</span><br><span class="line">			<span class="comment">// 转入到提示页面</span></span><br><span class="line">			myRequest.getRequestDispatcher(<span class="string">"/jsp/info.jsp"</span>).forward(request, response);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(FilterConfig fConfig)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p><strong>PS:一个过滤器可以配置多个不同的路径</strong></p>
+<h4 id="2-后台查看所有分类"><a href="#2-后台查看所有分类" class="headerlink" title="2.后台查看所有分类"></a>2.后台查看所有分类</h4><h5 id="步骤实现"><a href="#步骤实现" class="headerlink" title="步骤实现:"></a>步骤实现:</h5><p>1.准备工作  </p>
+<p> 创建AdminCategoryServlet    修改链接  left.jsp</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d.add(<span class="string">'010201'</span>,<span class="string">'0102'</span>,<span class="string">'分类管理'</span>,    <span class="string">'$&#123;pageContext.request.contextPath&#125;/AdminCategoryServlet?method=findAllCats'</span>,<span class="string">''</span>,<span class="string">'mainFrame'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>2.AdminCategoryServlet___&gt;findAllCats</p>
+<p>获取全部分类信息   全部分类信息放入request   转发到/admin/category/list.jsp</p>
+<p>3.service_dao</p>
+<p>4.在/admin/category/list.jsp获取分类信息,完成响应</p>
+<h6 id="AdminCategoryServlet"><a href="#AdminCategoryServlet" class="headerlink" title="AdminCategoryServlet:"></a>AdminCategoryServlet:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">findAllCats</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 获取全部分类信息</span></span><br><span class="line">		CategoryServsice categoryServsice = <span class="keyword">new</span> CategoryServiceImpl();</span><br><span class="line">		List&lt;Category&gt; list = categoryServsice.getAllCats();</span><br><span class="line">		<span class="comment">// 全部分类信息放入request</span></span><br><span class="line">		request.setAttribute(<span class="string">"allCats"</span>, list);</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"/admin/category/list.jsp"</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="CategoryServiceImpl"><a href="#CategoryServiceImpl" class="headerlink" title="CategoryServiceImpl:"></a>CategoryServiceImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;Category&gt; <span class="title">getAllCats</span><span class="params">()</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> categoryDao.getAllCats();</span><br><span class="line"></span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="CategoryDaoImpl"><a href="#CategoryDaoImpl" class="headerlink" title="CategoryDaoImpl:"></a>CategoryDaoImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;Category&gt; <span class="title">getAllCats</span><span class="params">()</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">		String sql=<span class="string">"select * from category"</span>;</span><br><span class="line">		QueryRunner queryRunner=<span class="keyword">new</span> QueryRunner(JDBCUtils.getDataSource());</span><br><span class="line">		<span class="keyword">return</span> queryRunner.query(sql, <span class="keyword">new</span> BeanListHandler&lt;Category&gt;(Category<span class="class">.<span class="keyword">class</span>))</span>;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-后台添加分类信息"><a href="#3-后台添加分类信息" class="headerlink" title="3.后台添加分类信息:"></a>3.后台添加分类信息:</h4><h5 id="步骤实现-1"><a href="#步骤实现-1" class="headerlink" title="步骤实现:"></a>步骤实现:</h5><p>1./admin/category/add.jsp</p>
+<p>设置form __&gt;method ,action     设置form表单下各种input标签的name属性</p>
+<p>2.AdminCategoryServlet__&gt;addCategory</p>
+<p>获取分类名称    创建分类ID    调用业务层添加分类功能    重定向到查询全部分类信息</p>
+<p>3.CategoryService___&gt;CategoryDaoImp</p>
+<p><strong>PS:要在CategoryService及时更新redis中缓存的信息</strong></p>
+<p>总结: 虽然使用redis可以提升项目性能,但是带来开发量.  开发中,如果对redis缓存中的数据发生了更新操作,及时更新redis缓存信息,否则会造成数据不统一问题.</p>
+<h6 id="AdminCategoryServlet-1"><a href="#AdminCategoryServlet-1" class="headerlink" title="AdminCategoryServlet:"></a>AdminCategoryServlet:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">addCategory</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">//获取分类名称</span></span><br><span class="line">		String cname = request.getParameter(<span class="string">"cname"</span>);</span><br><span class="line">		<span class="comment">//创建分类ID</span></span><br><span class="line">		String cid = UUIDUtils.getCode();</span><br><span class="line">		Category category=<span class="keyword">new</span> Category();</span><br><span class="line">		category.setCname(cname);</span><br><span class="line">		category.setCid(cid);</span><br><span class="line">		<span class="comment">//调用业务层添加分类功能</span></span><br><span class="line">		CategoryServsice categoryServsice=<span class="keyword">new</span> CategoryServiceImpl();</span><br><span class="line">		categoryServsice.addCategory(category);</span><br><span class="line">		<span class="comment">//重定向到查询分类信息</span></span><br><span class="line">		response.sendRedirect(<span class="string">"/store_v5/AdminCategoryServlet?method=findAllCats"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="CategoryServiceImpl-1"><a href="#CategoryServiceImpl-1" class="headerlink" title="CategoryServiceImpl:"></a>CategoryServiceImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCategory</span><span class="params">(Category category)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">//本质是向MySQL插入一条数据</span></span><br><span class="line">		categoryDao.addCategory(category);</span><br><span class="line">		<span class="comment">//更新redis缓存</span></span><br><span class="line">		Jedis jedis=JedisUtils.getJedis();</span><br><span class="line">		jedis.del(<span class="string">"allCats"</span>);</span><br><span class="line">		JedisUtils.closeJedis(jedis);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="CategoryDaoImpl-1"><a href="#CategoryDaoImpl-1" class="headerlink" title="CategoryDaoImpl:"></a>CategoryDaoImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCategory</span><span class="params">(Category category)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String sql=<span class="string">"insert into category values(?,?)"</span>;</span><br><span class="line">		QueryRunner queryRunner=<span class="keyword">new</span> QueryRunner(JDBCUtils.getDataSource());</span><br><span class="line">		queryRunner.update(sql,category.getCid(),category.getCname());</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-后台分页查看所有商品"><a href="#4-后台分页查看所有商品" class="headerlink" title="4.后台分页查看所有商品"></a>4.后台分页查看所有商品</h4><h5 id="步骤实现-2"><a href="#步骤实现-2" class="headerlink" title="步骤实现:"></a>步骤实现:</h5><p>1.修改连接  left.jsp</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d.add(<span class="string">'010401'</span>,<span class="string">'0104'</span>,<span class="string">'商品管理'</span>,</span><br><span class="line"><span class="string">'/store_v5/AdminProductServletmethod=findAllProductsWithPage&amp;num=1'</span>,<span class="string">'提示信息'</span>,<span class="string">'mainFrame'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>2AdminProductServlet___&gt;findAllProductsWithPage</p>
+<p>获取当前页    调用业务层查全部商品信息返回PageModel    将PageModel放入request    转发到/admin/product/list.jsp</p>
+<p>3.ProductService</p>
+<p>创建PageModel对象    关联集合    关联URL</p>
+<p>4./admin/product/list.jsp获取商品信息和分页数据</p>
+<h6 id="AdminProductServlet"><a href="#AdminProductServlet" class="headerlink" title="AdminProductServlet:"></a>AdminProductServlet:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">findAllProductsWithPage</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 获取当前页</span></span><br><span class="line">		<span class="keyword">int</span> curNum = Integer.parseInt(request.getParameter(<span class="string">"num"</span>));</span><br><span class="line">		<span class="comment">// 调用业务层查询全部商品信息返回PageModel</span></span><br><span class="line">		ProductService productService = <span class="keyword">new</span> ProductServiceImpl();</span><br><span class="line">		PageModel pm = productService.findAllProductsWithPage(curNum);</span><br><span class="line">		<span class="comment">// 将PageModel放入Request</span></span><br><span class="line">		request.setAttribute(<span class="string">"page"</span>, pm);</span><br><span class="line">		<span class="comment">// 转发</span></span><br><span class="line">		<span class="keyword">return</span> <span class="string">"/admin/product/list.jsp"</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="ProductServiceImpl"><a href="#ProductServiceImpl" class="headerlink" title="ProductServiceImpl:"></a>ProductServiceImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> PageModel <span class="title">findAllProductsWithPage</span><span class="params">(<span class="keyword">int</span> curNum)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">//1.创建对象</span></span><br><span class="line">		<span class="keyword">int</span> totalRecords=productDao.findTotalRecords();</span><br><span class="line">		PageModel pm=<span class="keyword">new</span> PageModel(curNum, totalRecords, <span class="number">5</span>);</span><br><span class="line">		<span class="comment">//2.关联集合</span></span><br><span class="line">		List&lt;Product&gt; list=productDao.findAllProductsWithPage(pm.getStartIndex(),pm.getPageSize());</span><br><span class="line">		pm.setList(list);</span><br><span class="line">		<span class="comment">//3.关联url</span></span><br><span class="line">		pm.setUrl(<span class="string">"AdminProductServlet?method=findAllProductsWithPage"</span>);</span><br><span class="line">		<span class="keyword">return</span> pm;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="ProductDaoImpl"><a href="#ProductDaoImpl" class="headerlink" title="ProductDaoImpl:"></a>ProductDaoImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findTotalRecords</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String sql = <span class="string">"select count(*) from product"</span>;</span><br><span class="line">		QueryRunner qr = <span class="keyword">new</span> QueryRunner(JDBCUtils.getDataSource());</span><br><span class="line">		Long num = (Long) qr.query(sql, <span class="keyword">new</span> ScalarHandler());</span><br><span class="line">		<span class="keyword">return</span> num.intValue();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;Product&gt; <span class="title">findAllProductsWithPage</span><span class="params">(<span class="keyword">int</span> startIndex, <span class="keyword">int</span> pageSize)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String sql = <span class="string">"select * from product order by pdate desc limit ? , ?"</span>;</span><br><span class="line">		QueryRunner qr = <span class="keyword">new</span> QueryRunner(JDBCUtils.getDataSource());</span><br><span class="line">		<span class="keyword">return</span> qr.query(sql, <span class="keyword">new</span> BeanListHandler&lt;Product&gt;(Product<span class="class">.<span class="keyword">class</span>), <span class="title">startIndex</span>, <span class="title">pageSize</span>)</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="JSP"><a href="#JSP" class="headerlink" title="JSP:"></a>JSP:</h6><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;c:forEach items=<span class="string">"$&#123;page.list&#125;"</span> <span class="keyword">var</span>=<span class="string">"p"</span> varStatus=<span class="string">"status"</span>&gt;</span><br><span class="line">										&lt;tr onmouseover=<span class="string">"this.style.backgroundColor = 'white'"</span></span><br><span class="line">											onmouseout=<span class="string">"this.style.backgroundColor = '#F5FAFE';"</span>&gt;</span><br><span class="line">											&lt;td style=<span class="string">"CURSOR: hand; HEIGHT: 22px"</span> align=<span class="string">"center"</span></span><br><span class="line">												width=<span class="string">"18%"</span>&gt;</span><br><span class="line">												$&#123; status.count &#125;</span><br><span class="line">											&lt;/td&gt;</span><br><span class="line">											&lt;td style=<span class="string">"CURSOR: hand; HEIGHT: 22px"</span> align=<span class="string">"center"</span></span><br><span class="line">												width=<span class="string">"17%"</span>&gt;</span><br><span class="line">												&lt;img width=<span class="string">"40"</span> height=<span class="string">"45"</span> src=<span class="string">"$&#123; pageContext.request.contextPath &#125;/$&#123;p.pimage&#125;"</span>&gt;</span><br><span class="line">											&lt;/td&gt;</span><br><span class="line">											&lt;td style=<span class="string">"CURSOR: hand; HEIGHT: 22px"</span> align=<span class="string">"center"</span></span><br><span class="line">												width=<span class="string">"17%"</span>&gt;</span><br><span class="line">												$&#123; p.pname &#125;</span><br><span class="line">											&lt;/td&gt;</span><br><span class="line">											&lt;td style=<span class="string">"CURSOR: hand; HEIGHT: 22px"</span> align=<span class="string">"center"</span></span><br><span class="line">												width=<span class="string">"17%"</span>&gt;</span><br><span class="line">												$&#123; p.shop_price &#125;</span><br><span class="line">											&lt;/td&gt;</span><br><span class="line">											&lt;td style=<span class="string">"CURSOR: hand; HEIGHT: 22px"</span> align=<span class="string">"center"</span></span><br><span class="line">												width=<span class="string">"17%"</span>&gt;</span><br><span class="line">													是(<span class="number">1</span>)/否(<span class="number">0</span>)</span><br><span class="line">											&lt;/td&gt;</span><br><span class="line">											&lt;td align=<span class="string">"center"</span> style=<span class="string">"HEIGHT: 22px"</span>&gt;</span><br><span class="line">												&lt;a href=<span class="string">""</span>&gt;</span><br><span class="line">													&lt;img src=<span class="string">"$&#123;pageContext.request.contextPath&#125;/img/admin/i_edit.gif"</span> border=<span class="string">"0"</span> style=<span class="string">"CURSOR: hand"</span>&gt;</span><br><span class="line">												&lt;/a&gt;</span><br><span class="line">											&lt;/td&gt;</span><br><span class="line">									</span><br><span class="line">											&lt;td align=<span class="string">"center"</span> style=<span class="string">"HEIGHT: 22px"</span>&gt;</span><br><span class="line">												&lt;%--下架 pushdown --%&gt;</span><br><span class="line">												&lt;a href=<span class="string">"$&#123;pageContext.request.contextPath&#125;/"</span>&gt;</span><br><span class="line">													&lt;img src=<span class="string">"$&#123;pageContext.request.contextPath&#125;/img/admin/i_del.gif"</span> width=<span class="string">"16"</span> height=<span class="string">"16"</span> border=<span class="string">"0"</span> style=<span class="string">"CURSOR: hand"</span>&gt;</span><br><span class="line">												&lt;/a&gt;</span><br><span class="line">											&lt;/td&gt;</span><br><span class="line">										&lt;/tr&gt;</span><br><span class="line">									&lt;/c:forEach&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-后台添加商品"><a href="#5-后台添加商品" class="headerlink" title="5.后台添加商品"></a>5.后台添加商品</h4><h5 id="步骤实现-3"><a href="#步骤实现-3" class="headerlink" title="步骤实现:"></a>步骤实现:</h5><p>1.准备工作</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Form method=”post”   </span><br><span class="line"></span><br><span class="line">&lt;input type=<span class="string">"file"</span>/&gt;</span><br><span class="line"></span><br><span class="line">Form enctype=”multiprt/form-data”</span><br></pre></td></tr></table></figure>
+
+<p> /admin/product/list.jsp ,修改了 addProduct() 函数中的链接</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">window.location.href = <span class="string">"$&#123;pageContext.request.contextPath&#125;/AdminProductServlet?method=addProductUI"</span>;</span><br></pre></td></tr></table></figure>
+
+<p>2.导入commons-fileupload-1.2.1.rar之后</p>
+<p>3.执行很简单的3行语句</p>
+<p>4.获取到一个集合(<fileitem>对象)   将每对分割线中间的内容封装在FileItem对象上.</fileitem></p>
+<p>5.遍历集合</p>
+<p>6.如果当前的FileItem对象是普通项  将普通项上name属性的值作为键,将获取到的内容作为值,放入MAP中</p>
+<p>7.如果当前的FileItem对象是上传项</p>
+<p>  通过FileItem获取到输入流对象,通过输入流可以获取到图片二进制数据</p>
+<p>  在服务端创建一个空文件(后缀必须和上传到服务端的文件名后缀一致)</p>
+<p>  建立和空文件对应的输出流</p>
+<p>  将输入流中的数据刷到输出流中</p>
+<p>  释放资源</p>
+<p>  向map中存入一个键值对的数据</p>
+<p>8.利用BeanUtils将MAP中的数据填充到user对象上</p>
+<p>9.调用servcie_dao将user上携带的数据存入数据仓库,重定向到查询全部商品信息路径</p>
+<p>PS:1.如果文件重名发生覆盖问题    UUID</p>
+<p>​     2.同目录下文件/目录过多,性能问题   在images下最多创建16个目录,任意一个目录进入之后最多创建16个目录,</p>
+<p>   最多创建8层目录.</p>
+<h6 id="AdminProductServlet-1"><a href="#AdminProductServlet-1" class="headerlink" title="AdminProductServlet:"></a>AdminProductServlet:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">addProduct</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 存储表单中数据</span></span><br><span class="line">		Map&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</span><br><span class="line">		<span class="comment">//携带表单中的数据向servcie,dao</span></span><br><span class="line">		Product product=<span class="keyword">new</span> Product();</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">// 利用request.getInputStream();获取到请求体中全部数据,进行拆分和封装</span></span><br><span class="line">			DiskFileItemFactory fac = <span class="keyword">new</span> DiskFileItemFactory();</span><br><span class="line">			ServletFileUpload upload = <span class="keyword">new</span> ServletFileUpload(fac);</span><br><span class="line">			List&lt;FileItem&gt; list = upload.parseRequest(request);</span><br><span class="line">			<span class="comment">// 遍历集合</span></span><br><span class="line">			<span class="keyword">for</span> (FileItem item : list) &#123;</span><br><span class="line">				<span class="keyword">if</span> (item.isFormField()) &#123;</span><br><span class="line">					<span class="comment">// 如果当前的FileItem对象是普通项</span></span><br><span class="line">					<span class="comment">// 将普通项上name属性的值作为键,将获取到的内容作为值,放入MAP中</span></span><br><span class="line">					<span class="comment">// &#123;username&lt;==&gt;tom,password&lt;==&gt;1234&#125;</span></span><br><span class="line">					map.put(item.getFieldName(), item.getString(<span class="string">"utf-8"</span>));</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					<span class="comment">// 如果当前的FileItem对象是上传项</span></span><br><span class="line">					<span class="comment">// 获取到原始的文件名称</span></span><br><span class="line">					String oldFileName = item.getName();</span><br><span class="line">					<span class="comment">//获取到要保存文件的名称 </span></span><br><span class="line">					String newFileName = UploadUtils.getUUIDName(oldFileName);</span><br><span class="line">					<span class="comment">//通过FileItem获取到输入流对象,通过输入流可以获取到图片二进制数据</span></span><br><span class="line">					InputStream is = item.getInputStream();</span><br><span class="line">					<span class="comment">//获取到当前项目下products/3下的真实路径</span></span><br><span class="line">					String realPath = getServletContext().getRealPath(<span class="string">"/products/3/"</span>);</span><br><span class="line">					String dir = UploadUtils.getDir(newFileName);</span><br><span class="line">					String path=realPath+dir;</span><br><span class="line">					<span class="comment">//内存中声明一个目录</span></span><br><span class="line">					File newDir=<span class="keyword">new</span> File(path);</span><br><span class="line">					<span class="keyword">if</span> (!newDir.exists()) &#123;</span><br><span class="line">						newDir.mkdirs();</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="comment">//在服务端创建一个空文件(后缀必须和上传到服务端的文件名后缀一致)</span></span><br><span class="line">					File finalFile=<span class="keyword">new</span> File(newDir,newFileName);</span><br><span class="line">					<span class="keyword">if</span> (!finalFile.exists()) &#123;</span><br><span class="line">						finalFile.createNewFile();</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="comment">//建立和空文件对应的输出流</span></span><br><span class="line">					OutputStream os=<span class="keyword">new</span> FileOutputStream(finalFile);</span><br><span class="line">					<span class="comment">//将输入流中的数据刷到输出流中</span></span><br><span class="line">					IOUtils.copy(is, os);</span><br><span class="line">					<span class="comment">//释放资源</span></span><br><span class="line">					IOUtils.closeQuietly(is);</span><br><span class="line">					IOUtils.closeQuietly(os);</span><br><span class="line">					<span class="comment">//向map中存入一个键值对的数据 userhead&lt;===&gt; /image/11.bmp</span></span><br><span class="line">					map.put(<span class="string">"pimage"</span>,<span class="string">"/products/3/"</span>+dir+<span class="string">"/"</span> +newFileName);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">//利用BeanUtils将MAP中的数据填充到Product对象上</span></span><br><span class="line">			BeanUtils.populate(product, map);</span><br><span class="line">			product.setPid(UUIDUtils.getId());</span><br><span class="line">			product.setPdate(<span class="keyword">new</span> Date());</span><br><span class="line">			product.setPflag(<span class="number">0</span>);</span><br><span class="line">			<span class="comment">//调用servcie_dao将user上携带的数据存入数据仓库,重定向到查询全部商品信息路径</span></span><br><span class="line">			ProductService productService=<span class="keyword">new</span> ProductServiceImpl();</span><br><span class="line">			productService.saveProduct(product);</span><br><span class="line">			response.sendRedirect(<span class="string">"/store_v5/AdminProductServlet?method=findAllProductsWithPage&amp;num=1"</span>);</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="ProductServiceImpl-1"><a href="#ProductServiceImpl-1" class="headerlink" title="ProductServiceImpl:"></a>ProductServiceImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">saveProduct</span><span class="params">(Product product)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		productDao.saveProduct(product);</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="ProductDaoImpl-1"><a href="#ProductDaoImpl-1" class="headerlink" title="ProductDaoImpl:"></a>ProductDaoImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">saveProduct</span><span class="params">(Product product)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String sql=<span class="string">"INSERT INTO product VALUES(?,?,?,?,?,?,?,?,?,?)"</span>;</span><br><span class="line">		QueryRunner qr=<span class="keyword">new</span> QueryRunner(JDBCUtils.getDataSource());</span><br><span class="line">		Object[] params=&#123;product.getPid(),product.getPname(),product.getMarket_price(),product.getShop_price(),product.getPimage(),product.getPdate(),product.getIs_hot(),product.getPdesc(),product.getPflag(),product.getCid()&#125;;</span><br><span class="line">		qr.update(sql, params);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="6-工厂模式解耦"><a href="#6-工厂模式解耦" class="headerlink" title="6.工厂模式解耦"></a>6.工厂模式解耦</h4><p>​    我们当前的开发末实现,service层对DAO层有依赖,例如在UserServcieImp中出现了 UserDao userDao=new UserDaoImp(); 这条语句.  </p>
+<p>​    假如我们做了一个产品OA,但是我们没有办法确定客户采用什么样的数据库,此时我们需要为当前项目开发不同的数据库的版本,例如为oracle,sqlserver,mysql分别开发不同的DAO的实现,但是在项目具体的运行时,我们由无法确定到底执行那种版本. 此时我们可以通过配置文件来配置dao层的各个具体的实现.</p>
+<h6 id="application-xml"><a href="#application-xml" class="headerlink" title="application.xml:"></a>application.xml:</h6><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"CategoryDao"</span> <span class="attr">class</span>=<span class="string">"dao.daoimpl.CategoryDaoImpl"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"UserDao"</span> <span class="attr">class</span>=<span class="string">"dao.daoimpl.UserDaoImpl"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"ProductDao"</span> <span class="attr">class</span>=<span class="string">"dao.daoimpl.ProductDaoImpl"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h6 id="BeanFactory"><a href="#BeanFactory" class="headerlink" title="BeanFactory:"></a>BeanFactory:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BeanFactory</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">creatObject</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">// 通过传递来的name获取application.xml中name对应的class</span></span><br><span class="line"></span><br><span class="line">			<span class="comment">// 获取到Document对象</span></span><br><span class="line">			SAXReader reader = <span class="keyword">new</span> SAXReader();</span><br><span class="line">			<span class="comment">// 获取application.xml文件的输入流 (application.xml必须位于src下)</span></span><br><span class="line">			InputStream is = BeanFactory.class.getClassLoader().getResourceAsStream("application.xml");</span><br><span class="line">			Document document = reader.read(is);</span><br><span class="line">			<span class="comment">// 通过Document对象获取根节点beans</span></span><br><span class="line">			Element rootElement = document.getRootElement();</span><br><span class="line">			<span class="comment">// 通过根节点获取到根节点下所有的子节点 bean,返回集合</span></span><br><span class="line">			List&lt;Element&gt; list = rootElement.elements();</span><br><span class="line">			<span class="comment">// 遍历集合,判断每个元素上的id的值是否和当前的name一致</span></span><br><span class="line">			<span class="keyword">for</span> (Element ele : list) &#123;</span><br><span class="line">				<span class="comment">// ele相当于beans节点下的每个bean</span></span><br><span class="line">				<span class="comment">// 获取到当前节点的id属性值</span></span><br><span class="line">				<span class="comment">// 如果一致,获取到当前元素上class属性值</span></span><br><span class="line">				String id = ele.attributeValue(<span class="string">"id"</span>);</span><br><span class="line">				<span class="keyword">if</span> (id.equals(name)) &#123;</span><br><span class="line">					String str = ele.attributeValue(<span class="string">"class"</span>);</span><br><span class="line">					<span class="comment">// 通过反射创建对象并且返回</span></span><br><span class="line">					Class clazz = Class.forName(str);</span><br><span class="line">					<span class="comment">// 利用class值通过反射创建对象返回</span></span><br><span class="line">					<span class="keyword">return</span> clazz.newInstance();</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="运用"><a href="#运用" class="headerlink" title="运用:"></a>运用:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CategoryDao categoryDao = (CategoryDao) BeanFactory.creatObject(<span class="string">"CategoryDao"</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-后台分页查看所有商品"><a href="#7-后台分页查看所有商品" class="headerlink" title="7.后台分页查看所有商品"></a>7.后台分页查看所有商品</h4><h6 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作:"></a>准备工作:</h6><figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">d.add(<span class="string">'010501'</span>,<span class="string">'0105'</span>,<span class="string">'订单管理'</span>,<span class="string">'$&#123;pageContext.request.contextPath&#125;/AdminOrderServlet?method=findOrdersWithPage&amp;num=1'</span>,<span class="string">''</span>,<span class="string">'mainFrame'</span>);</span><br><span class="line">		d.add(<span class="string">'010502'</span>,<span class="string">'0105'</span>,<span class="string">'未付款的订单'</span>,<span class="string">'$&#123;pageContext.request.contextPath&#125;/AdminOrderServlet?method=findOrdersWithPage&amp;num=1&amp;state=1'</span>,<span class="string">''</span>,<span class="string">'mainFrame'</span>);</span><br><span class="line">		d.add(<span class="string">'010503'</span>,<span class="string">'0105'</span>,<span class="string">'已付款订单'</span>,<span class="string">'$&#123;pageContext.request.contextPath&#125;/AdminOrderServlet?method=findOrdersWithPage&amp;num=1&amp;state=2'</span>,<span class="string">''</span>,<span class="string">'mainFrame'</span>);</span><br><span class="line">		d.add(<span class="string">'010504'</span>,<span class="string">'0105'</span>,<span class="string">'已发货的订单'</span>,<span class="string">'$&#123;pageContext.request.contextPath&#125;/AdminOrderServlet?method=findOrdersWithPage&amp;num=1&amp;state=3'</span>,<span class="string">''</span>,<span class="string">'mainFrame'</span>);</span><br><span class="line">		d.add(<span class="string">'010505'</span>,<span class="string">'0105'</span>,<span class="string">'已完成的订单'</span>,<span class="string">'$&#123;pageContext.request.contextPath&#125;/AdminOrderServlet?method=findOrdersWithPage&amp;num=1&amp;state=4'</span>,<span class="string">''</span>,<span class="string">'mainFrame'</span>);</span><br></pre></td></tr></table></figure>
+
+<h6 id="AdminOrderServlet"><a href="#AdminOrderServlet" class="headerlink" title="AdminOrderServlet:"></a>AdminOrderServlet:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">findOrdersWithPage</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 接收状态</span></span><br><span class="line">		String str = request.getParameter(<span class="string">"state"</span>);</span><br><span class="line">		<span class="comment">// 获取当前页</span></span><br><span class="line">		<span class="keyword">int</span> curNum = Integer.parseInt(request.getParameter(<span class="string">"num"</span>));</span><br><span class="line">		<span class="comment">// 调用业务层查询全部订单信息返回PageModel</span></span><br><span class="line">		OrderService orderService = <span class="keyword">new</span> OrderServiceImpl();</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">null</span> == str || <span class="string">""</span>.equals(str)) &#123;</span><br><span class="line">			PageModel pm = orderService.findOrdersWithPage(curNum);</span><br><span class="line">			<span class="comment">// 将PageModel放入request</span></span><br><span class="line">			request.setAttribute(<span class="string">"page"</span>, pm);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			PageModel pm = orderService.findOrdersWithPage(curNum, str);</span><br><span class="line">			<span class="comment">// 将PageModel放入request</span></span><br><span class="line">			request.setAttribute(<span class="string">"page"</span>, pm);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> <span class="string">"/admin/order/list.jsp"</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="OrderServiceImpl"><a href="#OrderServiceImpl" class="headerlink" title="OrderServiceImpl:"></a>OrderServiceImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> PageModel <span class="title">findOrdersWithPage</span><span class="params">(<span class="keyword">int</span> curNum)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 1.创建对象</span></span><br><span class="line">		<span class="keyword">int</span> totalRecords = orderDao.findTotalRecords();</span><br><span class="line">		PageModel pm = <span class="keyword">new</span> PageModel(curNum, totalRecords, <span class="number">5</span>);</span><br><span class="line">		<span class="comment">// 2.关联集合</span></span><br><span class="line">		List&lt;Order&gt; list = orderDao.findOrdersWithPage(pm.getStartIndex(), pm.getPageSize());</span><br><span class="line">		pm.setList(list);</span><br><span class="line">		<span class="comment">// 3.关联url</span></span><br><span class="line">		pm.setUrl(<span class="string">"AdminOrderServlet?method=findOrdersWithPage"</span>);</span><br><span class="line">		<span class="keyword">return</span> pm;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> PageModel <span class="title">findOrdersWithPage</span><span class="params">(<span class="keyword">int</span> curNum, String str)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 1.创建对象</span></span><br><span class="line">		<span class="keyword">int</span> totalRecords = orderDao.findTotalRecords();</span><br><span class="line">		PageModel pm = <span class="keyword">new</span> PageModel(curNum, totalRecords, <span class="number">5</span>);</span><br><span class="line">		<span class="comment">// 2.关联集合</span></span><br><span class="line">		List&lt;Order&gt; list = orderDao.findOrdersWithPage(pm.getStartIndex(), pm.getPageSize(), str);</span><br><span class="line">		pm.setList(list);</span><br><span class="line">		<span class="comment">// 3.关联url</span></span><br><span class="line">		pm.setUrl(<span class="string">"AdminOrderServlet?method=findOrdersWithPage"</span> + <span class="string">"&amp;state="</span> + str);</span><br><span class="line">		<span class="keyword">return</span> pm;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="OrderDaoImpl"><a href="#OrderDaoImpl" class="headerlink" title="OrderDaoImpl:"></a>OrderDaoImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;Order&gt; <span class="title">findOrdersWithPage</span><span class="params">(<span class="keyword">int</span> startIndex, <span class="keyword">int</span> pageSize)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String sql=<span class="string">"select * from orders order by ordertime desc limit ?,?"</span>;</span><br><span class="line">		QueryRunner queryRunner=<span class="keyword">new</span> QueryRunner(JDBCUtils.getDataSource());</span><br><span class="line">		<span class="keyword">return</span> queryRunner.query(sql, <span class="keyword">new</span> BeanListHandler&lt;Order&gt;(Order<span class="class">.<span class="keyword">class</span>),<span class="title">startIndex</span>,<span class="title">pageSize</span>)</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;Order&gt; <span class="title">findOrdersWithPage</span><span class="params">(<span class="keyword">int</span> startIndex, <span class="keyword">int</span> pageSize, String str)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String sql=<span class="string">"select * from orders where state=? order by ordertime desc limit ?,? "</span>;</span><br><span class="line">		QueryRunner queryRunner=<span class="keyword">new</span> QueryRunner(JDBCUtils.getDataSource());</span><br><span class="line">		<span class="keyword">return</span> queryRunner.query(sql, <span class="keyword">new</span> BeanListHandler&lt;Order&gt;(Order<span class="class">.<span class="keyword">class</span>),<span class="title">str</span>,<span class="title">startIndex</span>,<span class="title">pageSize</span>)</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="JSP-1"><a href="#JSP-1" class="headerlink" title="JSP:"></a>JSP:</h6><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">&lt;c:forEach items=<span class="string">"$&#123;page.list &#125;"</span> <span class="keyword">var</span>=<span class="string">"o"</span> varStatus=<span class="string">"status"</span>&gt;</span><br><span class="line">										&lt;tr onmouseover=<span class="string">"this.style.backgroundColor = 'white'"</span></span><br><span class="line">											onmouseout=<span class="string">"this.style.backgroundColor = '#F5FAFE';"</span>&gt;</span><br><span class="line">											&lt;td style=<span class="string">"CURSOR: hand; HEIGHT: 22px"</span> align=<span class="string">"center"</span></span><br><span class="line">												width=<span class="string">"18%"</span>&gt;</span><br><span class="line">												$&#123;status.count &#125;</span><br><span class="line">											&lt;/td&gt;</span><br><span class="line">											&lt;td style=<span class="string">"CURSOR: hand; HEIGHT: 22px"</span> align=<span class="string">"center"</span></span><br><span class="line">												width=<span class="string">"20%"</span>&gt;</span><br><span class="line">												$&#123;o.oid &#125;</span><br><span class="line">											&lt;/td&gt;</span><br><span class="line">											&lt;td style=<span class="string">"CURSOR: hand; HEIGHT: 22px"</span> align=<span class="string">"center"</span></span><br><span class="line">												width=<span class="string">"5%"</span>&gt;</span><br><span class="line">												$&#123;o.total &#125;</span><br><span class="line">											&lt;/td&gt;</span><br><span class="line">											&lt;td style=<span class="string">"CURSOR: hand; HEIGHT: 22px"</span> align=<span class="string">"center"</span></span><br><span class="line">												width=<span class="string">"5%"</span>&gt;</span><br><span class="line">												$&#123;o.name &#125;</span><br><span class="line">											&lt;/td&gt;</span><br><span class="line">											&lt;td style=<span class="string">"CURSOR: hand; HEIGHT: 22px"</span> align=<span class="string">"center"</span></span><br><span class="line">												width=<span class="string">"5%"</span>&gt;</span><br><span class="line">													&lt;c:if test="$&#123;o.state==1 &#125;"&gt;未付款&lt;/c:if&gt;</span><br><span class="line">													&lt;c:if test="$&#123;o.state==2 &#125;"&gt;&lt;a href="$&#123;pageContext.request.contextPath&#125;/AdminOrderServlet?method=updateOrderByOid&amp;oid=$&#123;o.oid&#125;"&gt;去发货&lt;/a&gt;&lt;/c:if&gt;</span><br><span class="line">													&lt;c:if test="$&#123;o.state==3&#125;"&gt;已发货&lt;/c:if&gt;</span><br><span class="line">													&lt;c:if test="$&#123;o.state==4 &#125;"&gt;订单完成&lt;/c:if&gt;</span><br><span class="line">											&lt;/td&gt;</span><br><span class="line">											&lt;td align=<span class="string">"center"</span> style=<span class="string">"HEIGHT: 22px"</span> width=<span class="string">"60%"</span>&gt;</span><br><span class="line">												&lt;input type=<span class="string">"button"</span> value=<span class="string">"订单详情"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"myClass"</span> id=<span class="string">"$&#123;o.oid &#125;"</span>/&gt;</span><br><span class="line">												&lt;table border=<span class="string">"1"</span> width=<span class="string">"100%"</span>&gt;</span><br><span class="line">												&lt;/table&gt;</span><br><span class="line">											&lt;/td&gt;</span><br><span class="line">							</span><br><span class="line">										&lt;/tr&gt;</span><br><span class="line">										&lt;/c:forEach&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="8-异步显示订单详情"><a href="#8-异步显示订单详情" class="headerlink" title="8.异步显示订单详情"></a>8.异步显示订单详情</h4><h5 id="步骤实现-4"><a href="#步骤实现-4" class="headerlink" title="步骤实现:"></a>步骤实现:</h5><p>1.将当前功能要实现最终效果先实现(静态效果)</p>
+<p>2.用户点击订单详情按钮,向服务端发起ajax请求,向服务端传递订单id</p>
+<p>3.服务端获取到订单ID,查询这个订单下所有的订单项以及订单项对应的商品信息,返回集合</p>
+<p>4.将返回的集合转换为JSON格式字符串,响应到客户端</p>
+<p>5.调试,排除2端错误</p>
+<p>6.在客户端获取到服务端想回会的JSON格式的数据,将这些数据绑定在页面上</p>
+<h6 id="AdminOrderServlet-1"><a href="#AdminOrderServlet-1" class="headerlink" title="AdminOrderServlet:"></a>AdminOrderServlet:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">findOrderByOidWithAjax</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">//服务端获取到订单ID</span></span><br><span class="line">		String oid = request.getParameter(<span class="string">"id"</span>);</span><br><span class="line">		<span class="comment">//查询这个订单下所有的订单项以及订单项对应的商品信息,返回集合</span></span><br><span class="line">		OrderService orderService=<span class="keyword">new</span> OrderServiceImpl();</span><br><span class="line">		Order order = orderService.findOrderByOid(oid);</span><br><span class="line">		<span class="comment">//将返回的集合转换为JSON格式字符串,响应到客户端</span></span><br><span class="line">		String jsonStr=JSONArray.fromObject(order.getList()).toString();</span><br><span class="line">		<span class="comment">//响应到客户端</span></span><br><span class="line">		response.setContentType(<span class="string">"application/json;charset=utf-8"</span>);</span><br><span class="line">		response.getWriter().println(jsonStr);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="Javascript"><a href="#Javascript" class="headerlink" title="Javascript:"></a>Javascript:</h6><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">	$(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="comment">//页面加载完毕之后,获取样式名称为myClass一批元素,为期绑定点击事件</span></span><br><span class="line">		$(<span class="string">".myClass"</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">			<span class="comment">//获取当前订单id</span></span><br><span class="line">			<span class="keyword">var</span> id=<span class="keyword">this</span>.id;</span><br><span class="line">			</span><br><span class="line">			<span class="comment">//获取当前按钮文字</span></span><br><span class="line">			<span class="keyword">var</span> txt=<span class="keyword">this</span>.value;</span><br><span class="line">			</span><br><span class="line">			<span class="comment">//PS:获取到当前元素的下一个对象table</span></span><br><span class="line">			<span class="keyword">var</span> $tb=$(<span class="keyword">this</span>).next();</span><br><span class="line">			</span><br><span class="line">			<span class="keyword">if</span>(txt==<span class="string">"订单详情"</span>)&#123;</span><br><span class="line">				<span class="comment">//向服务端发送Ajax请求,将当前的订单id传递到服务端</span></span><br><span class="line">				<span class="keyword">var</span> url=<span class="string">"/store_v5/AdminOrderServlet"</span>;</span><br><span class="line">				<span class="keyword">var</span> obj=&#123;<span class="string">"method"</span>:<span class="string">"findOrderByOidWithAjax"</span>,<span class="string">"id"</span>:id&#125;;</span><br><span class="line">				</span><br><span class="line">			</span><br><span class="line">				</span><br><span class="line">				$.post(url,obj,<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">					</span><br><span class="line">					<span class="comment">//var $tb=$(this).next();  //此处坑爹,错误的写法</span></span><br><span class="line">					</span><br><span class="line">					<span class="comment">//alert(data);</span></span><br><span class="line">					<span class="comment">//清除内容</span></span><br><span class="line">					$tb.html(<span class="string">""</span>);</span><br><span class="line">					<span class="keyword">var</span> th=<span class="string">"&lt;tr&gt;&lt;th&gt;商品&lt;/th&gt;&lt;th&gt;名称&lt;/th&gt;&lt;th&gt;单价&lt;/th&gt;&lt;th&gt;数量&lt;/th&gt;&lt;/tr&gt;"</span>;</span><br><span class="line">					$tb.append(th);</span><br><span class="line">					</span><br><span class="line">					<span class="comment">//利用JQUERY遍历响应到客户端的数据</span></span><br><span class="line">					$.each(data,<span class="function"><span class="keyword">function</span>(<span class="params">i,obj</span>)</span>&#123;</span><br><span class="line">						<span class="keyword">var</span> td=<span class="string">"&lt;tr&gt;&lt;td&gt;&lt;img src='/store_v5/"</span>+obj.product.pimage+<span class="string">"' width='50px'/&gt;&lt;/td&gt;&lt;td&gt;"</span>+obj.product.pname+<span class="string">"&lt;/td&gt;&lt;td&gt;"</span>+obj.product.shop_price+<span class="string">"&lt;/td&gt;&lt;td&gt;"</span>+obj.quantity+<span class="string">"&lt;/td&gt;&lt;/tr&gt;"</span>;</span><br><span class="line">						$tb.append(td);				</span><br><span class="line">					&#125;)</span><br><span class="line">				&#125;,<span class="string">"json"</span>);</span><br><span class="line">				</span><br><span class="line">				<span class="keyword">this</span>.value=<span class="string">"关闭"</span>;</span><br><span class="line">				<span class="comment">//$(this).val("关闭");</span></span><br><span class="line">				</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				<span class="keyword">this</span>.value=<span class="string">"订单详情"</span>;</span><br><span class="line">				<span class="comment">//清空表格内容</span></span><br><span class="line">				$tb.html(<span class="string">""</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;);</span><br><span class="line">	&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="9-更新订单状态"><a href="#9-更新订单状态" class="headerlink" title="9.更新订单状态"></a>9.更新订单状态</h4><h5 id="步骤实现-5"><a href="#步骤实现-5" class="headerlink" title="步骤实现:"></a>步骤实现:</h5><p>1.准备工作  admin/order/list.jsp</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href="/store_v5/AdminOrderServlet?method=updateOrderByOid&amp;oid=$&#123;o.oid&#125;"&gt;发货&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+
+<p>2.AdminOrderServlet___&gt;updateOrderByOid</p>
+<p>获取订单ID    根据订单ID查询订单    设置订单状态    修改订单信息    重新定向到查询已发货订单</p>
+<p>3.service__&gt;dao</p>
+<h6 id="AdminOrderServlet-2"><a href="#AdminOrderServlet-2" class="headerlink" title="AdminOrderServlet:"></a>AdminOrderServlet:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">updateOrderByOid</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">//获取订单id</span></span><br><span class="line">		String oid = request.getParameter(<span class="string">"oid"</span>);</span><br><span class="line">		<span class="comment">//根据订单id查询订单</span></span><br><span class="line">		OrderService orderService=<span class="keyword">new</span> OrderServiceImpl();</span><br><span class="line">		Order order = orderService.findOrderByOid(oid);</span><br><span class="line">		<span class="comment">//设置订单状态</span></span><br><span class="line">		order.setState(<span class="number">3</span>);</span><br><span class="line">		<span class="comment">//修改订单信息</span></span><br><span class="line">		orderService.updateOrder(order);</span><br><span class="line">		<span class="comment">//重新定向到查询已发货订单</span></span><br><span class="line">		response.sendRedirect(<span class="string">"/store_v5/AdminOrderServlet?method=findOrdersWithPage&amp;num=1&amp;state=3"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>请作者喝瓶肥宅快乐水</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/vxpay.jpg" alt="liuwy1998 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/alipay.jpg" alt="liuwy1998 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/项目/" rel="tag"><i class="fa fa-tag"></i> 项目</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/48295/" rel="prev" title="网上商城项目总结(二.商品分类和详情)">
+      <i class="fa fa-chevron-left"></i> 网上商城项目总结(二.商品分类和详情)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/65346/" rel="next" title="计算机网络与网络编程">
+      计算机网络与网络编程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-权限过滤器"><span class="nav-text">1.权限过滤器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-后台查看所有分类"><span class="nav-text">2.后台查看所有分类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤实现"><span class="nav-text">步骤实现:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#AdminCategoryServlet"><span class="nav-text">AdminCategoryServlet:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#CategoryServiceImpl"><span class="nav-text">CategoryServiceImpl:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#CategoryDaoImpl"><span class="nav-text">CategoryDaoImpl:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-后台添加分类信息"><span class="nav-text">3.后台添加分类信息:</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤实现-1"><span class="nav-text">步骤实现:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#AdminCategoryServlet-1"><span class="nav-text">AdminCategoryServlet:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#CategoryServiceImpl-1"><span class="nav-text">CategoryServiceImpl:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#CategoryDaoImpl-1"><span class="nav-text">CategoryDaoImpl:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-后台分页查看所有商品"><span class="nav-text">4.后台分页查看所有商品</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤实现-2"><span class="nav-text">步骤实现:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#AdminProductServlet"><span class="nav-text">AdminProductServlet:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ProductServiceImpl"><span class="nav-text">ProductServiceImpl:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ProductDaoImpl"><span class="nav-text">ProductDaoImpl:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#JSP"><span class="nav-text">JSP:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-后台添加商品"><span class="nav-text">5.后台添加商品</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤实现-3"><span class="nav-text">步骤实现:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#AdminProductServlet-1"><span class="nav-text">AdminProductServlet:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ProductServiceImpl-1"><span class="nav-text">ProductServiceImpl:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ProductDaoImpl-1"><span class="nav-text">ProductDaoImpl:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-工厂模式解耦"><span class="nav-text">6.工厂模式解耦</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#application-xml"><span class="nav-text">application.xml:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#BeanFactory"><span class="nav-text">BeanFactory:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#运用"><span class="nav-text">运用:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-后台分页查看所有商品"><span class="nav-text">7.后台分页查看所有商品</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#准备工作"><span class="nav-text">准备工作:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#AdminOrderServlet"><span class="nav-text">AdminOrderServlet:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#OrderServiceImpl"><span class="nav-text">OrderServiceImpl:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#OrderDaoImpl"><span class="nav-text">OrderDaoImpl:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#JSP-1"><span class="nav-text">JSP:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-异步显示订单详情"><span class="nav-text">8.异步显示订单详情</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤实现-4"><span class="nav-text">步骤实现:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#AdminOrderServlet-1"><span class="nav-text">AdminOrderServlet:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Javascript"><span class="nav-text">Javascript:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-更新订单状态"><span class="nav-text">9.更新订单状态</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#步骤实现-5"><span class="nav-text">步骤实现:</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#AdminOrderServlet-2"><span class="nav-text">AdminOrderServlet:</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liuwy1998"
+      src="/../assets/img/head.jpg">
+  <p class="site-author-name" itemprop="name">liuwy1998</p>
+  <div class="site-description" itemprop="description">Java开发, 后端开发</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">皖ICP备19022525号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liuwy1998</span>
+</div><script color="0,137,108" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://tonymua.top/36372/',]
+      });
+      });
+  </script>
+
+</body>
+</html>

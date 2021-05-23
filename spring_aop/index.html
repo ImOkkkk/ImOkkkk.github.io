@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="bUCDF5pEQe">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=66522575" charset="UTF-8"></script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"tonymua.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1.AOP概述1.1 什么是AOP？AOP(Aspect Oriented Programming 面向切面编程)，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。利用AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。常用于日志记录，性能统计，安全控制，事务处理，异常处理等等。">
+<meta name="keywords" content="Spring,AOP,面向切面编程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring AOP">
+<meta property="og:url" content="http://tonymua.top/spring_aop/index.html">
+<meta property="og:site_name" content="liuwy1998 BLOG">
+<meta property="og:description" content="1.AOP概述1.1 什么是AOP？AOP(Aspect Oriented Programming 面向切面编程)，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。利用AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。常用于日志记录，性能统计，安全控制，事务处理，异常处理等等。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-08-19T06:47:53.564Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring AOP">
+<meta name="twitter:description" content="1.AOP概述1.1 什么是AOP？AOP(Aspect Oriented Programming 面向切面编程)，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。利用AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的效率。常用于日志记录，性能统计，安全控制，事务处理，异常处理等等。">
+
+<link rel="canonical" href="http://tonymua.top/spring_aop/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Spring AOP | liuwy1998 BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="liuwy1998 BLOG" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">liuwy1998 BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">When they go low,we go high.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/spring_aop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="liuwy1998">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuwy1998 BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spring AOP
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="1-AOP概述"><a href="#1-AOP概述" class="headerlink" title="1.AOP概述"></a>1.AOP概述</h3><h4 id="1-1-什么是AOP？"><a href="#1-1-什么是AOP？" class="headerlink" title="1.1 什么是AOP？"></a>1.1 什么是AOP？</h4><p>AOP(Aspect Oriented Programming 面向切面编程)，通过<strong>预编译</strong>方式和<strong>运行期动态代理</strong>实现程序功能的统一维护的一种技术。利用AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的<strong>耦合度降低</strong>，提高程序的<strong>可重用性</strong>，同时提高了<strong>开发的效率</strong>。<br>常用于日志记录，性能统计，安全控制，事务处理，异常处理等等。</p>
+<a id="more"></a>
+<h4 id="1-2-AOP术语"><a href="#1-2-AOP术语" class="headerlink" title="1.2 AOP术语"></a>1.2 AOP术语</h4><p><strong>切面</strong>(Aspect)：由横切关注点构成的特殊对象。<br><strong>连接点</strong>(Join Point)：连接点是指在<strong>程序执行过程中某个特定的点</strong>，比如某方法调用的时候或者处理异常的时候；<br><strong>通知</strong>(Advice)：指在切面的某个特定的连接点上<strong>执行的动作</strong>。<br>Spring切面可以应用5种通知：</p>
+<ul>
+<li><strong>前置通知</strong>(Before):在目标方法或者说连接点被<strong>调用前</strong>执行的通知；</li>
+<li><strong>后置通知</strong>(After)：指在某个连接点<strong>完成后</strong>执行的通知；</li>
+<li><strong>返回通知</strong>(After-returning)：指在某个连接点<strong>成功执行之后</strong>执行的通知；</li>
+<li><strong>异常通知</strong>(After-throwing)：指在方法<strong>抛出异常后</strong>执行的通知；</li>
+<li><strong>环绕通知</strong>(Around)：指包围一个连接点通知，在被通知的方法<strong>调用之前和之后执行自定义的方法</strong>。</li>
+</ul>
+<p><strong>切点</strong>(Pointcut)：指匹配连接点的断言。通知与一个切入点表达式关联，并在满足这个切入的连接点上运行，例如：当执行某个特定的名称的方法。<br>引入(Introduction)：引入也被称为内部类型声明，声明额外的方法或者某个类型的字段。<br>目标对象(Target Object)：目标对象是被一个或者多个切面<strong>所通知的对象</strong>。<br>AOP代理(AOP Proxy)：向目标对象应用通知之后创建的对象。<br>织入(Wearving)：增强添加到目标类具体连接点上的过程。AOP有三种织入的方式：编译期织入、类装载期织入、动态代理织入(spring采用动态代理织入)。</p>
+<h4 id="1-3-通知执行顺序"><a href="#1-3-通知执行顺序" class="headerlink" title="1.3 通知执行顺序"></a>1.3 通知执行顺序</h4><ul>
+<li>正常情况<br>@Around -&gt;@Before-&gt;主方法体-&gt;@Around中pjp.proceed()-&gt;@After-&gt;@AfterReturning</li>
+<li>存在异常<ol>
+<li>异常在Around中pjp.proceed()之前<br>@Around -&gt; @After -&gt; @AfterThrowing</li>
+<li>异常在Around中pjp.proceed()之后<br>@Around -&gt;@Before-&gt;主方法体-&gt;@Around中pjp.proceed()-&gt;@After-&gt;@AfterThrowing<h4 id="1-4-实现原理"><a href="#1-4-实现原理" class="headerlink" title="1.4 实现原理"></a>1.4 实现原理</h4></li>
+</ol>
+</li>
+</ul>
+<ol>
+<li>JDK动态代理(JDK提供，只能代理<strong>接口</strong>)<br> 使用动态代理可以为一个或多个接口在运行期动态生成实现对象，生成的对象中实现接口的方法时可以添加增强代码，从而实现AOP。缺点是<strong>只能针对接口进行代理</strong>，另外由于动态代理是<strong>通过反射实现的，有时可能要考虑反射调用的开销</strong>。</li>
+<li>CGLib动态代理: (适用CGLib工具)<br>采用<strong>动态的字节码生成技术</strong>，运行时动态生成指定类的一个子类对象，并覆盖其中特定方法，覆盖方法时可以添加增强代码，从而实现AOP 。<h4 id="1-5-Pointcut切入点的语法"><a href="#1-5-Pointcut切入点的语法" class="headerlink" title="1.5 Pointcut切入点的语法"></a>1.5 Pointcut切入点的语法</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 1、使用within表达式匹配</span></span><br><span class="line"><span class="comment"> * 下面示例表示匹配com.example.controller包下所有的类的方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Pointcut</span>(<span class="string">"within(com.example.controller..*)"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pointcutWithin</span><span class="params">()</span></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 2、this匹配目标指定的方法，此处就是HelloController的方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Pointcut</span>(<span class="string">"this(com.example.controller.HelloController)"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pointcutThis</span><span class="params">()</span></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 3、target匹配实现UserInfoService接口的目标对象</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Pointcut</span>(<span class="string">"target(com.leo.service.UserInfoService)"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pointcutTarge</span><span class="params">()</span></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 4、bean匹配所有以Service结尾的bean里面的方法，</span></span><br><span class="line"><span class="comment"> * 注意：使用自动注入的时候默认实现类首字母小写为bean的id</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Pointcut</span>(<span class="string">"bean(*ServiceImpl)"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pointcutBean</span><span class="params">()</span></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 5、args匹配第一个入参是String类型的方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Pointcut</span>(<span class="string">"args(String, ..)"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pointcutArgs</span><span class="params">()</span></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 6、<span class="doctag">@annotation</span>匹配是<span class="doctag">@Controller</span>类型的方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Pointcut</span>(<span class="string">"@annotation(org.springframework.stereotype.Controller)"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pointcutAnnocation</span><span class="params">()</span></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 7、<span class="doctag">@within</span>匹配<span class="doctag">@Controller</span>注解下的方法，要求注解的<span class="doctag">@Controller</span>级别为<span class="doctag">@Retention</span>(RetentionPolicy.CLASS)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Pointcut</span>(<span class="string">"@within(org.springframework.stereotype.Controller)"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pointcutWithinAnno</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 8、<span class="doctag">@target</span>匹配的是<span class="doctag">@Controller</span>的类下面的方法，要求注解的<span class="doctag">@Controller</span>级别为<span class="doctag">@Retention</span>(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Pointcut</span>(<span class="string">"@target(org.springframework.stereotype.Controller)"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pointcutTargetAnno</span><span class="params">()</span></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 9、<span class="doctag">@args</span>匹配参数中标注为<span class="doctag">@Sevice</span>的注解的方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Pointcut</span>(<span class="string">"@args(org.springframework.stereotype.Service)"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pointcutArgsAnno</span><span class="params">()</span></span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 10、使用excution表达式</span></span><br><span class="line"><span class="comment"> * execution(</span></span><br><span class="line"><span class="comment"> *  modifier-pattern?           //用于匹配public、private等访问修饰符</span></span><br><span class="line"><span class="comment"> *  ret-type-pattern            //用于匹配返回值类型，不可省略</span></span><br><span class="line"><span class="comment"> *  declaring-type-pattern?     //用于匹配包类型</span></span><br><span class="line"><span class="comment"> *  name-pattern(param-pattern) //用于匹配类中的方法，不可省略</span></span><br><span class="line"><span class="comment"> *  throws-pattern?             //用于匹配抛出异常的方法</span></span><br><span class="line"><span class="comment"> * )</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 下面的表达式解释为：匹配com.example.controller.HelloController类中以hello开头的修饰符为public返回类型任意的方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Pointcut</span>(value = <span class="string">"execution(public * com.example.controller.HelloController.hello*(..))"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pointCut</span><span class="params">()</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="2-AOP实践"><a href="#2-AOP实践" class="headerlink" title="2.AOP实践"></a>2.AOP实践</h3><h4 id="2-1-HTTP接口鉴权"><a href="#2-1-HTTP接口鉴权" class="headerlink" title="2.1 HTTP接口鉴权"></a>2.1 HTTP接口鉴权</h4><p>需求：</p>
+<ol>
+<li>可以定制地为某些指定的 HTTP RESTful api 提供权限验证功能。</li>
+<li>当调用方的权限不符时, 返回错误。<br>相关依赖<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-aop<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h5 id="2-1-1-自定义注解"><a href="#2-1-1-自定义注解" class="headerlink" title="2.1.1 自定义注解"></a>2.1.1 自定义注解</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target</span>(ElementType.METHOD)</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> AuthChecker &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>AuthChecker</code> 注解是一个方法注解，它用于注解 RequestMapping 方法。</p>
+<h5 id="2-1-2-aspect的实现"><a href="#2-1-2-aspect的实现" class="headerlink" title="2.1.2 aspect的实现"></a>2.1.2 aspect的实现</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpAopAdviseDefine</span> </span>&#123;</span><br><span class="line">    <span class="comment">//定义一个 Pointcut, 使用切点表达式函数来描述对哪些Join point使用advice.</span></span><br><span class="line">    <span class="meta">@Pointcut</span>(<span class="string">"@annotation(com.example.annotation.AuthChecker)"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pointcut</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//定义advice</span></span><br><span class="line">    <span class="meta">@Around</span>(<span class="string">"pointcut()"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">checkAuth</span><span class="params">(ProceedingJoinPoint proceedingJoinPoint)</span></span>&#123;</span><br><span class="line">        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();</span><br><span class="line">        <span class="comment">//检查用户所传递的 token 是否合法</span></span><br><span class="line">        String token = getToken(request);</span><br><span class="line">        <span class="keyword">if</span> (!token.equalsIgnoreCase(<span class="string">"111"</span>))&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"token不合法！"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> proceedingJoinPoint.proceed();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable throwable) &#123;</span><br><span class="line">            throwable.printStackTrace();</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getToken</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">        Cookie[] cookies = request.getCookies();</span><br><span class="line">        <span class="keyword">if</span> (cookies == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (Cookie cookie : cookies) &#123;</span><br><span class="line">            <span class="keyword">if</span> (cookie.getName().equalsIgnoreCase(<span class="string">"token"</span>)) &#123;</span><br><span class="line">                <span class="keyword">return</span> cookie.getValue();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-1-3-Controller"><a href="#2-1-3-Controller" class="headerlink" title="2.1.3 Controller"></a>2.1.3 Controller</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/aop/http"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AopController</span> </span>&#123;</span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"alive"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">alive</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"服务一切正常"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@AuthChecker</span></span><br><span class="line">    <span class="meta">@GetMapping</span>(<span class="string">"login"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">login</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"登录成功！"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-1-4-测试"><a href="#2-1-4-测试" class="headerlink" title="2.1.4 测试"></a>2.1.4 测试</h5><p><img data-src="../../../../assets/img/222715.jpg" alt><br>token缺失/不正确：<br><img data-src="../../../../assets/img/222716.jpg" alt><br>token正确：<br><img data-src="../../../../assets/img/222717.jpg" alt></p>
+<h4 id="2-2-方法调用日志"><a href="#2-2-方法调用日志" class="headerlink" title="2.2 方法调用日志"></a>2.2 方法调用日志</h4><p>需求:</p>
+<ol>
+<li>某个服务下的方法的调用需要有log记录调用的参数以及返回结果。</li>
+<li>当方法调用出异常时，有特殊处理，例如打印异常 log，报警等。<h5 id="2-2-1-aspect-的实现"><a href="#2-2-1-aspect-的实现" class="headerlink" title="2.2.1 aspect 的实现"></a>2.2.1 aspect 的实现</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogAopAdviseDefine</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 定义一个Pointcut, 使用切点表达式函数来描述对哪些 Join point 使用 advise.</span></span><br><span class="line">    <span class="meta">@Pointcut</span>(<span class="string">"within(com.example.service..*)"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">poincut</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 定义advise</span></span><br><span class="line">    <span class="meta">@Before</span>(<span class="string">"poincut()"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">logMethodInvokeParam</span><span class="params">(JoinPoint joinPoint)</span> </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"---Before method &#123;&#125; invoke, param: &#123;&#125;---"</span>,</span><br><span class="line">            joinPoint.getSignature().toShortString(),</span><br><span class="line">            joinPoint.getArgs());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@AfterReturning</span>(pointcut = <span class="string">"poincut()"</span>,returning = <span class="string">"message"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">logMethodInvokeResult</span><span class="params">(JoinPoint joinPoint,Object message)</span></span>&#123;</span><br><span class="line">        logger.info(<span class="string">"---After method &#123;&#125; invoke, result: &#123;&#125;---"</span>,</span><br><span class="line">                joinPoint.getSignature().toShortString(),</span><br><span class="line">                joinPoint.getArgs());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@AfterThrowing</span>(pointcut = <span class="string">"poincut()"</span>,throwing = <span class="string">"exception"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">logMethodInvokeException</span><span class="params">(JoinPoint joinPoint,Exception exception)</span></span>&#123;</span><br><span class="line">        logger.info(<span class="string">"---method &#123;&#125; invoke exception: &#123;&#125;---"</span>,</span><br><span class="line">                joinPoint.getSignature().toShortString(),</span><br><span class="line">                exception.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h5 id="2-2-2-Service"><a href="#2-2-2-Service" class="headerlink" title="2.2.2 Service"></a>2.2.2 Service</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogServiceImpl</span> <span class="keyword">implements</span> <span class="title">LogService</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line">    <span class="keyword">private</span> Random random = <span class="keyword">new</span> Random(System.currentTimeMillis());</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">LogMethod</span><span class="params">(String param)</span> </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"---LogService: logMethod invoked, param: &#123;&#125;---"</span>, param);</span><br><span class="line">        <span class="keyword">return</span> random.nextInt();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionMethod</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"---LogService: exceptionMethod invoked---"</span>);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"Something bad happened!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NormalServiceImpl</span> <span class="keyword">implements</span> <span class="title">NormalService</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">normalMethod</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"---NormalService: someMethod invoked---"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-2-3-测试"><a href="#2-2-3-测试" class="headerlink" title="2.2.3 测试"></a>2.2.3 测试</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith</span>(SpringRunner<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">@<span class="title">SpringBootTest</span></span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">LogAdviseTest</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> LogService logService;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> NormalService normalService;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testLogAdvise</span><span class="params">()</span></span>&#123;</span><br><span class="line">        logService.LogMethod(<span class="string">"LogMethod Test!"</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            logService.exceptionMethod();</span><br><span class="line">        &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        normalService.normalMethod();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="../../../../assets/img/103636.jpg" alt></p>
+<h4 id="2-3-方法耗时统计"><a href="#2-3-方法耗时统计" class="headerlink" title="2.3 方法耗时统计"></a>2.3 方法耗时统计</h4><p>需求:</p>
+<ol>
+<li>为服务中的每个方法调用进行调用耗时记录.</li>
+<li>将方法调用的时间戳, 方法名, 调用耗时上报到监控平台<h5 id="2-3-1-aspect-实现"><a href="#2-3-1-aspect-实现" class="headerlink" title="2.3.1 aspect 实现"></a>2.3.1 aspect 实现</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExpiredAopAdviseDefine</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Pointcut</span>(<span class="string">"within(com.example.service.impl.ExpiredServiceImpl)"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pointcut</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Around</span>(<span class="string">"pointcut()"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">methodInvokeExpiredTime</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        ProceedingJoinPoint proceedingJoinPoint)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// StopWatch 任务执行时间监视器</span></span><br><span class="line">            StopWatch stopWatch = <span class="keyword">new</span> StopWatch();</span><br><span class="line">            <span class="comment">// 开始</span></span><br><span class="line">            stopWatch.start();</span><br><span class="line">            Object proceed = proceedingJoinPoint.proceed();</span><br><span class="line">            <span class="comment">// 结束</span></span><br><span class="line">            stopWatch.stop();</span><br><span class="line">            <span class="comment">// 上报到监控平台</span></span><br><span class="line">            reportToMonitorSystem(</span><br><span class="line">                proceedingJoinPoint.getSignature().toShortString(),</span><br><span class="line">                stopWatch.getTotalTimeMillis());</span><br><span class="line">            <span class="keyword">return</span> proceed;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (Throwable throwable) &#123;</span><br><span class="line">            throwable.printStackTrace();</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reportToMonitorSystem</span><span class="params">(String methodName, <span class="keyword">long</span> expiredTime)</span> </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"---method &#123;&#125; invoked, expired time: &#123;&#125; ms---"</span>,</span><br><span class="line">            methodName,</span><br><span class="line">            expiredTime);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h5 id="2-3-2-Service"><a href="#2-3-2-Service" class="headerlink" title="2.3.2 Service"></a>2.3.2 Service</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExpiredServiceImpl</span> <span class="keyword">implements</span> <span class="title">ExpiredService</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Logger logger = LoggerFactory.getLogger(getClass());</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> Random random = <span class="keyword">new</span> Random(System.currentTimeMillis());</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">expiredTimeMethod</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        logger.info(<span class="string">"---SomeService: someMethod invoked---"</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//模拟耗时任务</span></span><br><span class="line">            Thread.sleep(random.nextInt(<span class="number">500</span>));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-3-3-测试"><a href="#2-3-3-测试" class="headerlink" title="2.3.3 测试"></a>2.3.3 测试</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith</span>(SpringRunner<span class="class">.<span class="keyword">class</span>)</span></span><br><span class="line"><span class="class">@<span class="title">SpringBootTest</span></span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">class</span> <span class="title">ExpiredAdviseTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ExpiredService expiredService;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testExpiredTime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        expiredService.expiredTimeMethod();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="../../../../assets/img/111548.jpg" alt></p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>请作者喝瓶肥宅快乐水</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/vxpay.jpg" alt="liuwy1998 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/alipay.jpg" alt="liuwy1998 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Spring/" rel="tag"><i class="fa fa-tag"></i> Spring</a>
+              <a href="/tags/AOP/" rel="tag"><i class="fa fa-tag"></i> AOP</a>
+              <a href="/tags/面向切面编程/" rel="tag"><i class="fa fa-tag"></i> 面向切面编程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/SpringCloudAlibaba/" rel="prev" title="Sping Cloud Alibaba">
+      <i class="fa fa-chevron-left"></i> Sping Cloud Alibaba
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/58845/" rel="next" title="SpringBoot框架">
+      SpringBoot框架 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-AOP概述"><span class="nav-text">1.AOP概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-什么是AOP？"><span class="nav-text">1.1 什么是AOP？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-AOP术语"><span class="nav-text">1.2 AOP术语</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-通知执行顺序"><span class="nav-text">1.3 通知执行顺序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-实现原理"><span class="nav-text">1.4 实现原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-Pointcut切入点的语法"><span class="nav-text">1.5 Pointcut切入点的语法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-AOP实践"><span class="nav-text">2.AOP实践</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-HTTP接口鉴权"><span class="nav-text">2.1 HTTP接口鉴权</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-1-自定义注解"><span class="nav-text">2.1.1 自定义注解</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-2-aspect的实现"><span class="nav-text">2.1.2 aspect的实现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-3-Controller"><span class="nav-text">2.1.3 Controller</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-4-测试"><span class="nav-text">2.1.4 测试</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-方法调用日志"><span class="nav-text">2.2 方法调用日志</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-1-aspect-的实现"><span class="nav-text">2.2.1 aspect 的实现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-2-Service"><span class="nav-text">2.2.2 Service</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-3-测试"><span class="nav-text">2.2.3 测试</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-方法耗时统计"><span class="nav-text">2.3 方法耗时统计</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-1-aspect-实现"><span class="nav-text">2.3.1 aspect 实现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-2-Service"><span class="nav-text">2.3.2 Service</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-3-测试"><span class="nav-text">2.3.3 测试</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liuwy1998"
+      src="/../assets/img/head.jpg">
+  <p class="site-author-name" itemprop="name">liuwy1998</p>
+  <div class="site-description" itemprop="description">Java开发, 后端开发</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">皖ICP备19022525号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liuwy1998</span>
+</div><script color="0,137,108" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://tonymua.top/spring_aop/',]
+      });
+      });
+  </script>
+
+</body>
+</html>

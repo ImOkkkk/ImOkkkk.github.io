@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="bUCDF5pEQe">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=66522575" charset="UTF-8"></script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"tonymua.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="1.购物车1.1抽取购物车模型步骤实现:购物项:(图片路径,商品名称,商品价格,这类商品购买的数量,这类商品总价小计) 1234567891011121314151617181920212223242526272829303132333435363738394041public class CartItem &amp;#123;	private Product product;	private int n">
+<meta name="keywords" content="项目">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网上商城项目总结(三.购物车与订单)">
+<meta property="og:url" content="http://tonymua.top/21309/index.html">
+<meta property="og:site_name" content="liuwy1998 BLOG">
+<meta property="og:description" content="1.购物车1.1抽取购物车模型步骤实现:购物项:(图片路径,商品名称,商品价格,这类商品购买的数量,这类商品总价小计) 1234567891011121314151617181920212223242526272829303132333435363738394041public class CartItem &amp;#123;	private Product product;	private int n">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-04-29T02:44:38.096Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="网上商城项目总结(三.购物车与订单)">
+<meta name="twitter:description" content="1.购物车1.1抽取购物车模型步骤实现:购物项:(图片路径,商品名称,商品价格,这类商品购买的数量,这类商品总价小计) 1234567891011121314151617181920212223242526272829303132333435363738394041public class CartItem &amp;#123;	private Product product;	private int n">
+
+<link rel="canonical" href="http://tonymua.top/21309/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>网上商城项目总结(三.购物车与订单) | liuwy1998 BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="liuwy1998 BLOG" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">liuwy1998 BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">When they go low,we go high.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">10</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/21309/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="liuwy1998">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuwy1998 BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          网上商城项目总结(三.购物车与订单)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="1-购物车"><a href="#1-购物车" class="headerlink" title="1.购物车"></a>1.购物车</h4><h5 id="1-1抽取购物车模型"><a href="#1-1抽取购物车模型" class="headerlink" title="1.1抽取购物车模型"></a>1.1抽取购物车模型</h5><h6 id="步骤实现"><a href="#步骤实现" class="headerlink" title="步骤实现:"></a>步骤实现:</h6><p><strong>购物项</strong>:(图片路径,商品名称,商品价格,这类商品购买的数量,这类商品总价小计)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CartItem</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> Product product;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> num;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">double</span> subTotal;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">CartItem</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">CartItem</span><span class="params">(Product product, <span class="keyword">int</span> num, <span class="keyword">double</span> subTotal)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>();</span><br><span class="line">		<span class="keyword">this</span>.product = product;</span><br><span class="line">		<span class="keyword">this</span>.num = num;</span><br><span class="line">		<span class="keyword">this</span>.subTotal = subTotal;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Product <span class="title">getProduct</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> product;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setProduct</span><span class="params">(Product product)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.product = product;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getNum</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> num;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setNum</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.num = num;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getSubTotal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> product.getShop_price() * num;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSubTotal</span><span class="params">(<span class="keyword">double</span> subTotal)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.subTotal = subTotal;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p><strong>购物车</strong>(个数不确定的购物项)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Cart</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 总计/积分</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">double</span> total = <span class="number">0</span>;</span><br><span class="line">	<span class="comment">// 个数不确定的购物项 商品pid&lt;===&gt;CartItem</span></span><br><span class="line">	Map&lt;String, CartItem&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 添加购物项到购物车</span></span><br><span class="line">	<span class="comment">// 当用户点击加入购物车按钮,可以将当前要购买的商品id,商品数量发送到服务端,服务端根据商品id查询到商品信息</span></span><br><span class="line">	<span class="comment">// 有了商品信息Product对象,有了要购买商品数量,当前的购物项也就可以获取到了</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addCartItemToCart</span><span class="params">(CartItem cartItem)</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 获取到正在想购物车中添加的商品pid</span></span><br><span class="line">		String pid = cartItem.getProduct().getPid();</span><br><span class="line">		<span class="comment">// 将当前的购物项加入购物车之前,判断之前是否买过这类商品</span></span><br><span class="line">		<span class="comment">// 如果没有买过 list.add(cartItem);</span></span><br><span class="line">		<span class="comment">// 如果买过: 获取到原先的数量,获取到本次的数量,相加之后设置到原先购物项上</span></span><br><span class="line">		<span class="keyword">if</span> (map.containsKey(pid)) &#123;</span><br><span class="line">			<span class="comment">// 获取到原先的购物项</span></span><br><span class="line">			CartItem oldItem = map.get(pid);</span><br><span class="line">			oldItem.setNum(oldItem.getNum() + cartItem.getNum());</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			map.put(pid, cartItem);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> Collection&lt;CartItem&gt; <span class="title">getCartItems</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> map.values();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 移除购物项</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">removeCartItem</span><span class="params">(String pid)</span> </span>&#123;</span><br><span class="line">		map.remove(pid);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 清空购物车</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clearCart</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		map.clear();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 总计是可以经过计算获取到</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getTotal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="comment">// 总计是可以经过计算获取到</span></span><br><span class="line">		total = <span class="number">0</span>;</span><br><span class="line">		<span class="comment">// 获取到Map中所有的购物项</span></span><br><span class="line">		Collection&lt;CartItem&gt; values = map.values();</span><br><span class="line">		<span class="comment">// 遍历所有的购物项,将购物项上的小计相加</span></span><br><span class="line">		<span class="keyword">for</span> (CartItem cartItem : values) &#123;</span><br><span class="line">			total += cartItem.getSubTotal();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> total;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTotal</span><span class="params">(<span class="keyword">double</span> total)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.total = total;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Map&lt;String, CartItem&gt; <span class="title">getMap</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> map;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMap</span><span class="params">(Map&lt;String, CartItem&gt; map)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.map = map;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-2添加商品到购物车"><a href="#1-2添加商品到购物车" class="headerlink" title="1.2添加商品到购物车"></a>1.2添加商品到购物车</h5><h6 id="步骤实现-1"><a href="#步骤实现-1" class="headerlink" title="步骤实现:"></a>步骤实现:</h6><p>1_准备工作   /jsp/product_list.jsp  修改连接</p>
+<figure class="highlight jsp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=<span class="string">"$&#123;pageContext.request.contextPath&#125;/ProductServlet?method=findProductByPid&amp;pid=$&#123;p.pid&#125;"</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>  /jsp/product_info.jsp   自己设置form表单,设置form method,action   设置隐藏域向服务端传递商品pid</p>
+<p>  PS:如果一个表单中有多个按钮,点击不同的按钮提交到不同路径</p>
+<p> var form= document.getElementById(“formId”);</p>
+<p> form.submit();</p>
+<p>2.CartServlet____&gt;addCartgItemToCart</p>
+<p>  从session获取购物车: 如果获取不到,创建购物车对象,放在session中  如果获取到,使用即可 获取到商品id,数量  通过商品id查询都商品对象     获取到待购买的购物项   调用购物车上的方法   重定向到/jsp/cart.jsp</p>
+<p>3_./jsp/cart.jsp 获取购物车上商品信息 </p>
+<h6 id="CartServlet"><a href="#CartServlet" class="headerlink" title="CartServlet:"></a>CartServlet:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">addCartItemToCart</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	<span class="comment">// 从session获取购物车</span></span><br><span class="line">	Cart cart = (Cart) request.getSession().getAttribute(<span class="string">"cart"</span>);</span><br><span class="line">	<span class="keyword">if</span> (<span class="keyword">null</span> == cart) &#123;</span><br><span class="line">		cart = <span class="keyword">new</span> Cart();</span><br><span class="line">		request.getSession().setAttribute(<span class="string">"cart"</span>, cart);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 如果获取到,使用即可</span></span><br><span class="line">	<span class="comment">// 获取到商品id,数量</span></span><br><span class="line">	String pid = request.getParameter(<span class="string">"pid"</span>);</span><br><span class="line">	<span class="keyword">int</span> num = Integer.parseInt(request.getParameter(<span class="string">"quantity"</span>));</span><br><span class="line">	<span class="comment">// 通过商品id查询都商品对象</span></span><br><span class="line">	ProductService productService = <span class="keyword">new</span> ProductServiceImpl();</span><br><span class="line">	Product product = productService.findProductByPid(pid);</span><br><span class="line">	<span class="comment">// 获取到待购买的购物项</span></span><br><span class="line">	CartItem cartItem = <span class="keyword">new</span> CartItem();</span><br><span class="line">	cartItem.setNum(num);</span><br><span class="line">	cartItem.setProduct(product);</span><br><span class="line">	<span class="comment">// 调用购物车上的方法</span></span><br><span class="line">	cart.addCartItemToCart(cartItem);</span><br><span class="line">	response.sendRedirect(<span class="string">"/store_v5/jsp/cart.jsp"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="ProductServiceImpl"><a href="#ProductServiceImpl" class="headerlink" title="ProductServiceImpl:"></a>ProductServiceImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Product <span class="title">findProductByPid</span><span class="params">(String pid)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> productDao.findProductByPid(pid);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="ProductDaoImpl"><a href="#ProductDaoImpl" class="headerlink" title="ProductDaoImpl:"></a>ProductDaoImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Product <span class="title">findProductByPid</span><span class="params">(String pid)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String sql = <span class="string">"select * from product where pid=?"</span>;</span><br><span class="line">		QueryRunner queryRunner = <span class="keyword">new</span> QueryRunner(JDBCUtils.getDataSource());</span><br><span class="line">		<span class="keyword">return</span> queryRunner.query(sql, <span class="keyword">new</span> BeanHandler&lt;Product&gt;(Product<span class="class">.<span class="keyword">class</span>), <span class="title">pid</span>)</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="JSP"><a href="#JSP" class="headerlink" title="JSP:"></a>JSP:</h6><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;c:forEach items=<span class="string">"$&#123;cart.cartItems&#125;"</span> <span class="keyword">var</span>=<span class="string">"item"</span>&gt;</span><br><span class="line">								&lt;tr <span class="class"><span class="keyword">class</span></span>=<span class="string">"active"</span>&gt;</span><br><span class="line">									&lt;td width=<span class="string">"60"</span> width=<span class="string">"40%"</span>&gt;&lt;input type=<span class="string">"hidden"</span> name=<span class="string">"id"</span> value=<span class="string">"22"</span>&gt; &lt;img</span><br><span class="line">										src="$&#123;pageContext.request.contextPath&#125;/$&#123;item.product.pimage&#125;" width="70" height="60"&gt;&lt;/td&gt;</span><br><span class="line">									&lt;td width="30%"&gt;&lt;a target="_blank"&gt;$&#123;item.product.pname&#125;&lt;/a&gt;&lt;/td&gt;</span><br><span class="line">									&lt;td width="20%"&gt;￥$&#123;item.product.shop_price&#125;&lt;/td&gt;</span><br><span class="line">									&lt;td width="10%"&gt;&lt;input type="text" name="quantity" value="$&#123;item.num&#125;" maxlength="4" size="10"&gt;&lt;/td&gt;</span><br><span class="line">									&lt;td width="15%"&gt;&lt;span class="subtotal"&gt;￥$&#123;item.subTotal&#125;&lt;/span&gt;&lt;/td&gt;</span><br><span class="line">									&lt;td&gt;&lt;a href="javascript:;" id="$&#123;item.product.pid&#125;" class="delete"&gt;删除&lt;/a&gt;&lt;/td&gt;</span><br><span class="line">								&lt;/tr&gt;</span><br><span class="line">							&lt;/c:forEach&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-3移除购物项"><a href="#1-3移除购物项" class="headerlink" title="1.3移除购物项"></a>1.3移除购物项</h5><h6 id="步骤实现-2"><a href="#步骤实现-2" class="headerlink" title="步骤实现:"></a>步骤实现:</h6><p>1.准备工作  为购物车上的删除链接绑定了点击事件</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">       <span class="comment">//页面加载完毕之后获取到class的值为delete元素,为其绑定点击事件</span></span><br><span class="line"></span><br><span class="line"> $(<span class="string">".delete"</span>).click(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">              <span class="keyword">if</span>(confirm(<span class="string">"确认删除?"</span>))&#123;</span><br><span class="line"></span><br><span class="line">                     <span class="comment">//获取到被删除商品pid</span></span><br><span class="line"></span><br><span class="line">                     <span class="keyword">var</span> pid=<span class="keyword">this</span>.id;</span><br><span class="line"></span><br><span class="line">                     <span class="built_in">window</span>.loaction.href=<span class="string">"/store_v5/CartServlet?method=removeCartItem&amp;id="</span>+pid;</span><br><span class="line"></span><br><span class="line">              &#125;</span><br><span class="line"></span><br><span class="line">       &#125;);</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>2.CartServlet___&gt;removeCartItem     获取待删除商品pid    获取到购物车    调用购物车删除购物项方法       重定向到/jsp/cart.jsp</p>
+<h6 id="CartServlet-1"><a href="#CartServlet-1" class="headerlink" title="CartServlet:"></a>CartServlet:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">removeCartItem</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">//获取待删除商品pid</span></span><br><span class="line">		String pid=req.getParameter(<span class="string">"id"</span>);</span><br><span class="line">		<span class="comment">//获取到购物车</span></span><br><span class="line">		Cart cart=(Cart)req.getSession().getAttribute(<span class="string">"cart"</span>);</span><br><span class="line">		<span class="comment">//调用购物车删除购物项方法</span></span><br><span class="line">		cart.removeCartItem(pid);</span><br><span class="line">		<span class="comment">//重定向到/jsp/cart.jsp</span></span><br><span class="line">		resp.sendRedirect(<span class="string">"/store_v5/jsp/cart.jsp"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-4清空购物车"><a href="#1-4清空购物车" class="headerlink" title="1.4清空购物车"></a>1.4清空购物车</h5><h6 id="步骤实现-3"><a href="#步骤实现-3" class="headerlink" title="步骤实现:"></a>步骤实现:</h6><p>1.准备工作  /jsp/cart.jsp   修改连接</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href=<span class="string">"$&#123;pageContext.request.contextPath&#125;/CartServlet?method=clearCart"</span></span><br><span class="line">id="clear" class="clear"&gt;清空购物车&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+
+<p>2.CartServlet___&gt;clearCart  获取购物车  调用购物车的清空方法  重定向到/jsp/cart.jsp页面</p>
+<h6 id="CartServlet-2"><a href="#CartServlet-2" class="headerlink" title="CartServlet:"></a>CartServlet:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">clearCart</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">//获取购物车</span></span><br><span class="line">		Cart cart=(Cart)req.getSession().getAttribute(<span class="string">"cart"</span>);</span><br><span class="line">		<span class="comment">//调用购物车上的清空购物车方法</span></span><br><span class="line">		cart.clearCart();</span><br><span class="line">		<span class="comment">//重新定向到/jsp/cart.jsp</span></span><br><span class="line">		resp.sendRedirect(<span class="string">"/store_v5/jsp/cart.jsp"</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-订单"><a href="#2-订单" class="headerlink" title="2.订单"></a>2.订单</h4><h5 id="2-1订单模型抽取"><a href="#2-1订单模型抽取" class="headerlink" title="2.1订单模型抽取"></a>2.1订单模型抽取</h5><p><strong>OrderItem:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderItem</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String itemid; <span class="comment">//id</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> quantity; <span class="comment">//数量</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">double</span> total; <span class="comment">//小计</span></span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//1.对象对应对象</span></span><br><span class="line">	<span class="comment">//2.product,order携带更多的数据</span></span><br><span class="line">	<span class="keyword">private</span> Product product;</span><br><span class="line">	<span class="keyword">private</span> Order order;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getItemid</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> itemid;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setItemid</span><span class="params">(String itemid)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.itemid = itemid;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getQuantity</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> quantity;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setQuantity</span><span class="params">(<span class="keyword">int</span> quantity)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.quantity = quantity;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getTotal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> total;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTotal</span><span class="params">(<span class="keyword">double</span> total)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.total = total;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> Product <span class="title">getProduct</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> product;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setProduct</span><span class="params">(Product product)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.product = product;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> Order <span class="title">getOrder</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> order;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOrder</span><span class="params">(Order order)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.order = order;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Order:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Order</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String oid; <span class="comment">//订单编号</span></span><br><span class="line">	<span class="keyword">private</span> Date ordertime; <span class="comment">//下单时间</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">double</span> total; <span class="comment">//总计</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> state; <span class="comment">//状态</span></span><br><span class="line">	<span class="keyword">private</span> String address; <span class="comment">//收货人地址</span></span><br><span class="line">	<span class="keyword">private</span> String name; <span class="comment">//收货人姓名</span></span><br><span class="line">	<span class="keyword">private</span> String telephone; <span class="comment">//收货人电话</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// private String uid;</span></span><br><span class="line">	<span class="comment">// 1.程序对象和对象发生关系,而不是对象和对象的属性发生关系</span></span><br><span class="line">	<span class="comment">// 2.设计Order目的:让order携带订单上的数据向service,dao传递,user对象是可以携带更多的数据</span></span><br><span class="line">	<span class="keyword">private</span> User user;</span><br><span class="line">    </span><br><span class="line">	<span class="comment">// 程序中体现订单对象和订单项之间关系,我们再项目中的部分功能中有类似的需求:查询订单的同时还需要获取订单下所有的订单项</span></span><br><span class="line">	<span class="keyword">private</span> List&lt;OrderItem&gt; list = <span class="keyword">new</span> ArrayList&lt;OrderItem&gt;();</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getOid</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> oid;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOid</span><span class="params">(String oid)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.oid = oid;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Date <span class="title">getOrdertime</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> ordertime;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setOrdertime</span><span class="params">(Date ordertime)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.ordertime = ordertime;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getTotal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> total;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTotal</span><span class="params">(<span class="keyword">double</span> total)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.total = total;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getState</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> state;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setState</span><span class="params">(<span class="keyword">int</span> state)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.state = state;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getAddress</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> address;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAddress</span><span class="params">(String address)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.address = address;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> name;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.name = name;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getTelephone</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> telephone;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTelephone</span><span class="params">(String telephone)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.telephone = telephone;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> User <span class="title">getUser</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> user;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUser</span><span class="params">(User user)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.user = user;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List&lt;OrderItem&gt; <span class="title">getList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> list;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setList</span><span class="params">(List&lt;OrderItem&gt; list)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.list = list;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-2提交订单"><a href="#2-2提交订单" class="headerlink" title="2.2提交订单"></a>2.2提交订单</h5><h6 id="原理分析"><a href="#原理分析" class="headerlink" title="原理分析:"></a>原理分析:</h6><p><strong>保存订单:</strong></p>
+<p>为订单表中插入一行数据,描述本次交易,这行数据部分数据是通过程序赋予,部分数据来自购物车的,部分数据来自session中的用户</p>
+<p>oid:UUIDUtils     orderTime:new Date();     total: 从购物车获取</p>
+<p>state:1   address: null     name:null     telephone:null  uid:从session中的用户获取</p>
+<p><strong>保存订单项:</strong></p>
+<p>向订单项表中插入数据,描述当前订单的详细的购买信息,部分数据来自于购物车,部分数据需要通过程序赋予</p>
+<p>itemid: UUIDUtils     quantity:来自于购物车中的购物项</p>
+<p>total:来自于购物车中的购物项   pid:来自于购物车上的购物项下商品对象pid</p>
+<p>oid:来自于当前订单id  </p>
+<p><strong>提交订单时,订单以及订单项必须同时成功(事务)</strong></p>
+<h6 id="步骤实现-4"><a href="#步骤实现-4" class="headerlink" title="步骤实现:"></a>步骤实现:</h6><p>1.准备工作</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">  &lt;a</span><br><span class="line">href="$&#123;pageContext.request.contextPath&#125;/OrderServlet?method=saveOrder"&gt;&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+
+<p>2.OrderServlet__&gt;saveOrder    //确认用户登录状态       //创建订单对象,为订单对象赋值    //遍历购物项的同时,创建订单项      //调用业务层功能:保存订单    //清空购物车     //将订单放入request      //转发/jsp/order_info.jsp</p>
+<p>return “/jsp/order_info.jsp”;</p>
+<p>3.OrderService</p>
+<p>利用事务保存订单,订单项</p>
+<p>4.OrderDao</p>
+<p>5./jsp/order_info.jsp  获取到订单信息</p>
+<h6 id="OrderServlet"><a href="#OrderServlet" class="headerlink" title="OrderServlet:"></a>OrderServlet:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// saveOrder  将购物车中的信息以订单的形式保存</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">saveOrder</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">//确认用户登录状态</span></span><br><span class="line">		User user=(User)req.getSession().getAttribute(<span class="string">"loginUser"</span>);</span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">null</span>==user)&#123;</span><br><span class="line">			req.setAttribute(<span class="string">"msg"</span>, <span class="string">"请登录之后在下单"</span>);</span><br><span class="line">			<span class="keyword">return</span> <span class="string">"/jsp/info.jsp"</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//获取购物车</span></span><br><span class="line">		Cart cart=(Cart)req.getSession().getAttribute(<span class="string">"cart"</span>);</span><br><span class="line">		<span class="comment">//创建订单对象,为订单对象赋值</span></span><br><span class="line">		Order order=<span class="keyword">new</span> Order();</span><br><span class="line">		order.setOid(UUIDUtils.getCode());</span><br><span class="line">		order.setOrdertime(<span class="keyword">new</span> Date());</span><br><span class="line">		order.setTotal(cart.getTotal());</span><br><span class="line">		order.setState(<span class="number">1</span>);</span><br><span class="line">		order.setUser(user);</span><br><span class="line">		<span class="comment">//遍历购物项的同时,创建订单项,为订单项赋值</span></span><br><span class="line">		<span class="keyword">for</span> (CartItem item : cart.getCartItems()) &#123;</span><br><span class="line">			OrderItem orderItem=<span class="keyword">new</span> OrderItem();</span><br><span class="line">			orderItem.setItemid(UUIDUtils.getCode());</span><br><span class="line">			orderItem.setQuantity(item.getNum());</span><br><span class="line">			orderItem.setTotal(item.getSubTotal());</span><br><span class="line">			orderItem.setProduct(item.getProduct());</span><br><span class="line">			</span><br><span class="line">			<span class="comment">//设置当前的订单项属于哪个订单:程序的角度体检订单项和订单对应关系</span></span><br><span class="line">			orderItem.setOrder(order);</span><br><span class="line">			order.getList().add(orderItem);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//调用业务层功能:保存订单</span></span><br><span class="line">		OrderService orderService=<span class="keyword">new</span> OrderServiceImp();</span><br><span class="line">		<span class="comment">//将订单数据,用户的数据,订单下所有的订单项都传递到了service层</span></span><br><span class="line">		orderService.saveOrder(order);</span><br><span class="line">		<span class="comment">//清空购物车</span></span><br><span class="line">		cart.clearCart();</span><br><span class="line">		<span class="comment">//将订单放入request</span></span><br><span class="line">		req.setAttribute(<span class="string">"order"</span>, order);</span><br><span class="line">		<span class="comment">//转发/jsp/order_info.jsp</span></span><br><span class="line">		<span class="keyword">return</span> <span class="string">"/jsp/order_info.jsp"</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="OrderServiceImpl"><a href="#OrderServiceImpl" class="headerlink" title="OrderServiceImpl:"></a>OrderServiceImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">saveOrder</span><span class="params">(Order order)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		 * try &#123; JDBCUtils.startTransaction(); OrderDao orderDao = new OrderDaoImpl();</span></span><br><span class="line"><span class="comment">		 * orderDao.saveOrder(order); for (OrderItem item : order.getList()) &#123;</span></span><br><span class="line"><span class="comment">		 * orderDao.saveOrderItem(item); &#125; JDBCUtils.commitAndClose(); &#125; catch</span></span><br><span class="line"><span class="comment">		 * (Exception e) &#123; JDBCUtils.rollbackAndClose(); &#125;</span></span><br><span class="line"><span class="comment">		 */</span></span><br><span class="line">		Connection connection = <span class="keyword">null</span>;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">// 获取连接</span></span><br><span class="line">			connection = JDBCUtils.getConnection();</span><br><span class="line">			<span class="comment">// 开启事务</span></span><br><span class="line">			connection.setAutoCommit(<span class="keyword">false</span>);</span><br><span class="line">			<span class="comment">// 保存订单</span></span><br><span class="line">			orderDao.saveOrder(connection, order);</span><br><span class="line">			<span class="comment">// 保存订单项</span></span><br><span class="line">			<span class="keyword">for</span> (OrderItem item : order.getList()) &#123;</span><br><span class="line">				orderDao.saveOrderItem(connection, item);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// 提交</span></span><br><span class="line">			connection.commit();</span><br><span class="line"></span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			connection.rollback();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="OrderDaoImpl"><a href="#OrderDaoImpl" class="headerlink" title="OrderDaoImpl:"></a>OrderDaoImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">saveOrder</span><span class="params">(Connection connection, Order order)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String sql = <span class="string">"insert into orders values(?,?,?,?,?,?,?,?)"</span>;</span><br><span class="line">		QueryRunner queryRunner = <span class="keyword">new</span> QueryRunner();</span><br><span class="line">		Object[] params = &#123; order.getOid(), order.getOrdertime(), order.getTotal(), order.getState(),</span><br><span class="line">				order.getAddress(), order.getName(), order.getTelephone(), order.getUser().getUid() &#125;;</span><br><span class="line">		queryRunner.update(connection, sql, params);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">saveOrderItem</span><span class="params">(Connection connection, OrderItem item)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String sql = <span class="string">"insert into orderitem values(?,?,?,?,?)"</span>;</span><br><span class="line">		QueryRunner queryRunner = <span class="keyword">new</span> QueryRunner();</span><br><span class="line">		Object[] params = &#123; item.getItemid(), item.getQuantity(), item.getTotal(), item.getProduct().getPid(),</span><br><span class="line">				item.getOrder().getOid() &#125;;</span><br><span class="line">		queryRunner.update(connection, sql, params);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-3我的订单"><a href="#2-3我的订单" class="headerlink" title="2.3我的订单"></a>2.3我的订单</h5><h6 id="步骤实现-5"><a href="#步骤实现-5" class="headerlink" title="步骤实现:"></a>步骤实现:</h6><p>1.准备工作</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href="$&#123;pageContext.request.contextPath&#125;/OrderServlet?method=findMyOrdersWithPage&amp;num=1"&gt;我的订单&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+
+<p>2.OrderServlet__&gt;findMyOrdersWithPage      获取用户信息     获取当前页     调用业务层功能:查询当前用户订单信息,返回PageModel    将PageModel放入request     转发到/jsp/order_list.jsp</p>
+<p>3.OrderServiceImpl     //1.创建PageModel对象,目的:计算并且携带分页参数      //2.关联集合     //3.关联url</p>
+<p>4.OrderDaoImpl    利用MapListHandler封装多表查询结果    多表查询语句    BeanUtils自动填充数据</p>
+<p>5.实现/jsp/order_list.jsp 获取订单信息,完成响应</p>
+<p> PS: 遍历数据时,2个循环,大循环遍历订单,小循环遍历的是订单上的订单项</p>
+<h6 id="OrderServlet-1"><a href="#OrderServlet-1" class="headerlink" title="OrderServlet:"></a>OrderServlet:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">findMyOrdersWithPage</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 获取用户信息</span></span><br><span class="line">		User user = (User) request.getSession().getAttribute(<span class="string">"loginUser"</span>);</span><br><span class="line">		<span class="comment">// 获取当前页</span></span><br><span class="line">		<span class="keyword">int</span> curNum = Integer.parseInt(request.getParameter(<span class="string">"num"</span>));</span><br><span class="line">		<span class="comment">// 调用业务层功能:查询当前用户订单信息,返回PageModel</span></span><br><span class="line">		OrderService orderService = <span class="keyword">new</span> OrderServiceImpl();</span><br><span class="line">		<span class="comment">// select * from orders where uid=? limit ?,?</span></span><br><span class="line">		<span class="comment">// PageModel:1.分页参数 2.url 3.当前用户的当前页的订单(集合),每笔订单上对应的订单项,以及订单项对应的商品信息</span></span><br><span class="line">		PageModel pm = orderService.findMyOrdersWithPage(user, curNum);</span><br><span class="line">		<span class="comment">// 将PageMpdel放入request</span></span><br><span class="line">		request.setAttribute(<span class="string">"page"</span>, pm);</span><br><span class="line">		<span class="comment">// 转发</span></span><br><span class="line">		<span class="keyword">return</span> <span class="string">"jsp/order_list.jsp"</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="OrderServiceImpl-1"><a href="#OrderServiceImpl-1" class="headerlink" title="OrderServiceImpl:"></a>OrderServiceImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> PageModel <span class="title">findMyOrdersWithPage</span><span class="params">(User user, <span class="keyword">int</span> curNum)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 创建PageModel对象 目的:计算并携带分页参数</span></span><br><span class="line">		<span class="comment">//select count(*) from orders where uid=?</span></span><br><span class="line">		<span class="keyword">int</span> totalRecords=orderDao.getTotalRecords(user);</span><br><span class="line">		PageModel pm = <span class="keyword">new</span> PageModel(curNum, totalRecords, <span class="number">3</span>);</span><br><span class="line">		<span class="comment">// 关联集合  select* from orders where uid=? limit ?,?</span></span><br><span class="line">		List list=orderDao.findMyOrdersWithPage(user,pm.getStartIndex(),pm.getPageSize());</span><br><span class="line">		pm.setList(list);</span><br><span class="line">		<span class="comment">// 关联url</span></span><br><span class="line">		pm.setUrl(<span class="string">"OrderServlet?method=findMyOrdersWithPage"</span>);</span><br><span class="line">		<span class="keyword">return</span> pm;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="OrderDaoImpl-1"><a href="#OrderDaoImpl-1" class="headerlink" title="OrderDaoImpl:"></a>OrderDaoImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> List <span class="title">findMyOrdersWithPage</span><span class="params">(User user, <span class="keyword">int</span> startIndex, <span class="keyword">int</span> pageSize)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String sql = <span class="string">"select * from orders where uid=? limit ?,?"</span>;</span><br><span class="line">		QueryRunner queryRunner = <span class="keyword">new</span> QueryRunner(JDBCUtils.getDataSource());</span><br><span class="line">		List&lt;Order&gt; list = queryRunner.query(sql, <span class="keyword">new</span> BeanListHandler&lt;Order&gt;(Order<span class="class">.<span class="keyword">class</span>), <span class="title">user</span>.<span class="title">getUid</span>(), <span class="title">startIndex</span>,</span></span><br><span class="line"><span class="class">				<span class="title">pageSize</span>)</span>;</span><br><span class="line">		<span class="comment">// 遍历所有订单</span></span><br><span class="line">		<span class="keyword">for</span> (Order order : list) &#123;</span><br><span class="line">			<span class="comment">// 获取每笔订单oid</span></span><br><span class="line">			String oid = order.getOid();</span><br><span class="line">			sql = <span class="string">"select * from orderitem o,product p where o.pid=p.pid and oid=?"</span>;</span><br><span class="line">			List&lt;Map&lt;String, Object&gt;&gt; list2 = queryRunner.query(sql, <span class="keyword">new</span> MapListHandler(), oid);</span><br><span class="line">			<span class="comment">// 遍历list</span></span><br><span class="line">			<span class="keyword">for</span> (Map&lt;String, Object&gt; map : list2) &#123;</span><br><span class="line">				OrderItem orderItem = <span class="keyword">new</span> OrderItem();</span><br><span class="line">				Product product = <span class="keyword">new</span> Product();</span><br><span class="line">				<span class="comment">// 由于BeanUtils将字符串"1922-2-2"向user对象的setBirthday();方法传递参数有问题,手动向BeanUtils注册一个时间</span></span><br><span class="line">				<span class="comment">// 创建时间类型转换器</span></span><br><span class="line">				DateConverter dt = <span class="keyword">new</span> DateConverter();</span><br><span class="line">				<span class="comment">// 设置转换格式</span></span><br><span class="line">				dt.setPattern(<span class="string">"yyyy-MM-dd"</span>);</span><br><span class="line">				<span class="comment">// 注册转换器</span></span><br><span class="line">				ConvertUtils.register(dt, Date<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">				<span class="comment">// 将map中属于oderItem的数据自动填充到orderItem对象上</span></span><br><span class="line">				BeanUtils.populate(orderItem, map);</span><br><span class="line">				<span class="comment">// 将map中属于product的数据自动填充到product对象上</span></span><br><span class="line">				BeanUtils.populate(product, map);</span><br><span class="line">				<span class="comment">// 每个订单项和商品发生关联关系</span></span><br><span class="line">				orderItem.setProduct(product);</span><br><span class="line">				<span class="comment">// 每个订单项存入订单下的集合中</span></span><br><span class="line">				order.getList().add(orderItem);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> list;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getTotalRecords</span><span class="params">(User user)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String sql = <span class="string">"select count(*) from orders where uid=?"</span>;</span><br><span class="line">		QueryRunner queryRunner = <span class="keyword">new</span> QueryRunner(JDBCUtils.getDataSource());</span><br><span class="line">		Long num = (Long) queryRunner.query(sql, <span class="keyword">new</span> ScalarHandler(), user.getUid());</span><br><span class="line">		<span class="keyword">return</span> num.intValue();</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="JSP-1"><a href="#JSP-1" class="headerlink" title="JSP:"></a>JSP:</h6><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;c:forEach items=<span class="string">"$&#123;page.list &#125;"</span> <span class="keyword">var</span>=<span class="string">"order"</span>&gt;</span><br><span class="line">					&lt;tbody&gt;</span><br><span class="line">						&lt;tr <span class="class"><span class="keyword">class</span></span>=<span class="string">"success"</span>&gt;</span><br><span class="line">							&lt;th colspan=<span class="string">"5"</span>&gt;</span><br><span class="line">							订单编号:$&#123;order.oid &#125;</span><br><span class="line">							订单总金额:$&#123;order.total &#125;	</span><br><span class="line">							&lt;c:if test="$&#123;order.state==1 &#125;"&gt;&lt;a href="$&#123;pageContext.request.contextPath&#125;/OrderServlet?method=findOrderByOid&amp;oid=$&#123;order.oid&#125;"&gt;付款&lt;/a&gt;&lt;/c:if&gt;</span><br><span class="line">							&lt;c:if test="$&#123;order.state==2 &#125;"&gt;等待发货&lt;/c:if&gt;</span><br><span class="line">							&lt;c:if test="$&#123;order.state==3 &#125;"&gt;&lt;a href="#"&gt;确认收货&lt;/a&gt;&lt;/c:if&gt;</span><br><span class="line">							&lt;c:if test="$&#123;order.state==4 &#125;"&gt;&lt;a href="#"&gt;评价&lt;/a&gt;&lt;/c:if&gt;			</span><br><span class="line">							&lt;/th&gt;</span><br><span class="line">						&lt;/tr&gt;</span><br><span class="line">						&lt;tr <span class="class"><span class="keyword">class</span></span>=<span class="string">"warning"</span>&gt;</span><br><span class="line">							&lt;th&gt;图片&lt;/th&gt;</span><br><span class="line">							&lt;th&gt;商品&lt;/th&gt;</span><br><span class="line">							&lt;th&gt;价格&lt;/th&gt;</span><br><span class="line">							&lt;th&gt;数量&lt;/th&gt;</span><br><span class="line">							&lt;th&gt;小计&lt;/th&gt;</span><br><span class="line">						&lt;/tr&gt;</span><br><span class="line">						&lt;c:forEach items=<span class="string">"$&#123;order.list &#125;"</span> <span class="keyword">var</span>=<span class="string">"item"</span>&gt;</span><br><span class="line">						&lt;tr <span class="class"><span class="keyword">class</span></span>=<span class="string">"active"</span>&gt;</span><br><span class="line">							&lt;td width=<span class="string">"60"</span> width=<span class="string">"40%"</span>&gt;&lt;input type=<span class="string">"hidden"</span> name=<span class="string">"id"</span> value=<span class="string">"22"</span>&gt; &lt;img</span><br><span class="line">								src="$&#123;pageContext.request.contextPath&#125;/$&#123;item.product.pimage&#125;" width="70" height="60"&gt;&lt;/td&gt;</span><br><span class="line">							&lt;td width="30%"&gt;&lt;a target="_blank"&gt;$&#123;item.product.pname&#125;&lt;/a&gt;&lt;/td&gt;</span><br><span class="line">							&lt;td width="20%"&gt;￥$&#123;item.product.shop_price&#125;&lt;/td&gt;</span><br><span class="line">							&lt;td width="10%"&gt;$&#123;item.quantity &#125;&lt;/td&gt;</span><br><span class="line">							&lt;td width="15%"&gt;&lt;span class="subtotal"&gt;￥$&#123;item.total &#125;&lt;/span&gt;&lt;/td&gt;</span><br><span class="line">						&lt;/tr&gt;</span><br><span class="line">						&lt;/c:forEach&gt;</span><br><span class="line">					&lt;/tbody&gt;</span><br><span class="line">					&lt;/c:forEach&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-4订单详情"><a href="#2-4订单详情" class="headerlink" title="2.4订单详情"></a>2.4订单详情</h5><p>1.准备工作  order_list.jsp 修改连接</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href="$&#123;pageContext.request.contextPath&#125;/OrderServlet?method=findOrderByOid&amp;oid=$&#123;o.oid&#125;"&gt;付款&lt;/a&gt;</span><br></pre></td></tr></table></figure>
+
+<p>2.OrderServlet___&gt;findOrderByOid      获取到订单oid    调用业务层功能:根据订单编号查询订单信息   将订单放入request  转发到/jsp/order_info.jsp</p>
+<p>3.OrderService</p>
+<p>4.OrderDaoImpl   根据订单oid查询当前订单    根据订单oid查询订单下所有的订单项以及订单项关联的商品</p>
+<p>5./jsp/order_info.jsp   开发中:多个功能对应同一个JSP页面,为了提高代码复用率,所有的功能在向同一个   JSP页面转发的时候,向request存入相同的数据(属性名一致)     request.setAttribute(name,obj);</p>
+<h6 id="OrderServlet-2"><a href="#OrderServlet-2" class="headerlink" title="OrderServlet:"></a>OrderServlet:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">findOrderByOid</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="comment">// 获取订单编号oid</span></span><br><span class="line">		String oid = request.getParameter(<span class="string">"oid"</span>);</span><br><span class="line">		<span class="comment">// 调用业务层功能:根据订单编号查询订单信息</span></span><br><span class="line">		OrderService orderService = <span class="keyword">new</span> OrderServiceImpl();</span><br><span class="line">		Order order = orderService.findOrderByOid(oid);</span><br><span class="line">		<span class="comment">// 将订单放入request</span></span><br><span class="line">		request.setAttribute(<span class="string">"order"</span>, order);</span><br><span class="line">		<span class="keyword">return</span> <span class="string">"/jsp/order_info.jsp"</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="OrderServiceImpl-2"><a href="#OrderServiceImpl-2" class="headerlink" title="OrderServiceImpl:"></a>OrderServiceImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Order <span class="title">findOrderByOid</span><span class="params">(String oid)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> orderDao.findOrderByOid(oid);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="OrderDaoImpl-2"><a href="#OrderDaoImpl-2" class="headerlink" title="OrderDaoImpl:"></a>OrderDaoImpl:</h6><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Order <span class="title">findOrderByOid</span><span class="params">(String oid)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String sql = <span class="string">"select * from orders where oid=?"</span>;</span><br><span class="line">		QueryRunner queryRunner = <span class="keyword">new</span> QueryRunner(JDBCUtils.getDataSource());</span><br><span class="line">		Order order = queryRunner.query(sql, <span class="keyword">new</span> BeanHandler&lt;Order&gt;(Order<span class="class">.<span class="keyword">class</span>), <span class="title">oid</span>)</span>;</span><br><span class="line">		sql=<span class="string">"select * from orderitem o,product p where o.pid=p.pid and oid=?"</span>;</span><br><span class="line">		List&lt;Map&lt;String, Object&gt;&gt; list2 = queryRunner.query(sql, <span class="keyword">new</span> MapListHandler(), oid);</span><br><span class="line">		<span class="keyword">for</span> (Map&lt;String, Object&gt; map : list2) &#123;</span><br><span class="line">			OrderItem orderItem = <span class="keyword">new</span> OrderItem();</span><br><span class="line">			Product product = <span class="keyword">new</span> Product();</span><br><span class="line">			<span class="comment">// 由于BeanUtils将字符串"1922-2-2"向user对象的setBirthday();方法传递参数有问题,手动向BeanUtils注册一个时间</span></span><br><span class="line">			<span class="comment">// 创建时间类型转换器</span></span><br><span class="line">			DateConverter dt = <span class="keyword">new</span> DateConverter();</span><br><span class="line">			<span class="comment">// 设置转换格式</span></span><br><span class="line">			dt.setPattern(<span class="string">"yyyy-MM-dd"</span>);</span><br><span class="line">			<span class="comment">// 注册转换器</span></span><br><span class="line">			ConvertUtils.register(dt, Date<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">			<span class="comment">// 将map中属于oderItem的数据自动填充到orderItem对象上</span></span><br><span class="line">			BeanUtils.populate(orderItem, map);</span><br><span class="line">			<span class="comment">// 将map中属于product的数据自动填充到product对象上</span></span><br><span class="line">			BeanUtils.populate(product, map);</span><br><span class="line">			<span class="comment">// 每个订单项和商品发生关联关系</span></span><br><span class="line">			orderItem.setProduct(product);</span><br><span class="line">			<span class="comment">// 每个订单项存入订单下的集合中</span></span><br><span class="line">			order.getList().add(orderItem);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> order;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>请作者喝瓶肥宅快乐水</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/vxpay.jpg" alt="liuwy1998 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/alipay.jpg" alt="liuwy1998 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/项目/" rel="tag"><i class="fa fa-tag"></i> 项目</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/38014/" rel="prev" title="网上商城项目总结(一.用户模块)">
+      <i class="fa fa-chevron-left"></i> 网上商城项目总结(一.用户模块)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/48295/" rel="next" title="网上商城项目总结(二.商品分类和详情)">
+      网上商城项目总结(二.商品分类和详情) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-购物车"><span class="nav-text">1.购物车</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1抽取购物车模型"><span class="nav-text">1.1抽取购物车模型</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#步骤实现"><span class="nav-text">步骤实现:</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2添加商品到购物车"><span class="nav-text">1.2添加商品到购物车</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#步骤实现-1"><span class="nav-text">步骤实现:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#CartServlet"><span class="nav-text">CartServlet:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ProductServiceImpl"><span class="nav-text">ProductServiceImpl:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#ProductDaoImpl"><span class="nav-text">ProductDaoImpl:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#JSP"><span class="nav-text">JSP:</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3移除购物项"><span class="nav-text">1.3移除购物项</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#步骤实现-2"><span class="nav-text">步骤实现:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#CartServlet-1"><span class="nav-text">CartServlet:</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-4清空购物车"><span class="nav-text">1.4清空购物车</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#步骤实现-3"><span class="nav-text">步骤实现:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#CartServlet-2"><span class="nav-text">CartServlet:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-订单"><span class="nav-text">2.订单</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1订单模型抽取"><span class="nav-text">2.1订单模型抽取</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2提交订单"><span class="nav-text">2.2提交订单</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#原理分析"><span class="nav-text">原理分析:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#步骤实现-4"><span class="nav-text">步骤实现:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#OrderServlet"><span class="nav-text">OrderServlet:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#OrderServiceImpl"><span class="nav-text">OrderServiceImpl:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#OrderDaoImpl"><span class="nav-text">OrderDaoImpl:</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3我的订单"><span class="nav-text">2.3我的订单</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#步骤实现-5"><span class="nav-text">步骤实现:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#OrderServlet-1"><span class="nav-text">OrderServlet:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#OrderServiceImpl-1"><span class="nav-text">OrderServiceImpl:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#OrderDaoImpl-1"><span class="nav-text">OrderDaoImpl:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#JSP-1"><span class="nav-text">JSP:</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4订单详情"><span class="nav-text">2.4订单详情</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#OrderServlet-2"><span class="nav-text">OrderServlet:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#OrderServiceImpl-2"><span class="nav-text">OrderServiceImpl:</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#OrderDaoImpl-2"><span class="nav-text">OrderDaoImpl:</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="liuwy1998"
+      src="/../assets/img/head.jpg">
+  <p class="site-author-name" itemprop="name">liuwy1998</p>
+  <div class="site-description" itemprop="description">Java开发, 后端开发</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><span class="exturl" data-url="aHR0cDovL3d3dy5iZWlhbi5taWl0Lmdvdi5jbg==">皖ICP备19022525号 </span>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liuwy1998</span>
+</div><script color="0,137,108" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://tonymua.top/21309/',]
+      });
+      });
+  </script>
+
+</body>
+</html>

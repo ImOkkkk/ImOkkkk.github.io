@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: http://tonymua.top/sitemap.xml
+Sitemap: http://tonymua.top/baidusitemap.xml
