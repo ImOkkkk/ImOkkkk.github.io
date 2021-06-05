@@ -141,7 +141,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">54</span></a>
 
   </li>
         <li class="menu-item menu-item-about">
@@ -151,7 +151,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">28</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -211,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/1060/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/multithreading/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -225,7 +225,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/1060/" class="post-title-link" itemprop="url">top K问题的优化解法</a>
+            <a href="/multithreading/" class="post-title-link" itemprop="url">Java并发编程</a>
         </h2>
 
         <div class="post-meta">
@@ -236,6 +236,15 @@
               <span class="post-meta-item-text">发表于</span>
 
               <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/多线程/" itemprop="url" rel="index"><span itemprop="name">多线程</span></a>
+                </span>
             </span>
 
           
@@ -249,10 +258,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="top-K问题的优化解法"><a href="#top-K问题的优化解法" class="headerlink" title="top K问题的优化解法"></a>top K问题的优化解法</h3><p>​    在大规模数据处理中，经常会遇到的一类问题：在海量数据中找出出现频率最好的前k个数，或者从海量数据中找出最大的前k个数，这类问题通常被称为top K问题。例如，在搜索引擎中，统计搜索最热门的10个查询词；在歌曲库中统计下载最高的前10首歌等。</p>
+          <h3 id="1-多线程基础"><a href="#1-多线程基础" class="headerlink" title="1.多线程基础"></a>1.多线程基础</h3><h4 id="1-1-实现多线程的方法"><a href="#1-1-实现多线程的方法" class="headerlink" title="1.1 实现多线程的方法"></a>1.1 实现多线程的方法</h4><ol>
+<li><p>实现Runnable接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test_01</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"实现Runnable接口实现多线程"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/1060/#more" rel="contents">
+              <a class="btn" href="/multithreading/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -276,7 +290,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/36764/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/15205/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -290,7 +304,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/36764/" class="post-title-link" itemprop="url">SVN, AdminLTE</a>
+            <a href="/15205/" class="post-title-link" itemprop="url">Java常见小案例(不定时补充)</a>
         </h2>
 
         <div class="post-meta">
@@ -314,11 +328,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="1-SVN介绍"><a href="#1-SVN介绍" class="headerlink" title="1.SVN介绍"></a>1.SVN介绍</h4><p>​    SVN是Subversion的简称，是一个自由开源的版本控制系统。 Subversion将文件存放在中心版本库里，这个版本库很像一个普通的文件服务器，不同的是，它可以记录每一次文 件和目录的修改情况，这样就可以借此将数据恢复到以前的版本，并可以查看数据的更改细节早期版本控制使用的是CVS,后来SVN替代了CVS,随着android兴起，出现Git版本控制工具</p>
-<h5 id="1-1-SVN基本概念"><a href="#1-1-SVN基本概念" class="headerlink" title="1.1 SVN基本概念"></a>1.1 SVN基本概念</h5>
+          <h4 id="1-不死神兔问题-斐波那契数列"><a href="#1-不死神兔问题-斐波那契数列" class="headerlink" title="1.不死神兔问题(斐波那契数列)"></a>1.不死神兔问题(斐波那契数列)</h4><p>  有一对兔子,从出生后第三个月起每个月都生一对兔子,小兔子长到第三个月后每个月又生一对兔子.假如兔子都不死,第N个月有多少兔子?</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1 1 2 3 5 8 13 21  a[n]=a[n-1]+a[n-1-1]</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test_01</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"请输入月份:"</span>);</span><br><span class="line">		Scanner scanner=<span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">		<span class="keyword">int</span> n=scanner.nextInt();<span class="comment">//获取输入的整数</span></span><br><span class="line">		System.out.println(<span class="string">"第"</span>+n+<span class="string">"个月的兔子数为"</span>+function(n));</span><br><span class="line">		scanner.close();</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//返回兔子数量</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">function</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (n==<span class="number">1</span>||n==<span class="number">2</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> function(n-<span class="number">1</span>)+function(n-<span class="number">2</span>);<span class="comment">//递归</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/36764/#more" rel="contents">
+              <a class="btn" href="/15205/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -342,7 +356,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/10555/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/51576/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -356,7 +370,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/10555/" class="post-title-link" itemprop="url">SSM框架整合</a>
+            <a href="/51576/" class="post-title-link" itemprop="url">Java基础常见面试题</a>
         </h2>
 
         <div class="post-meta">
@@ -380,10 +394,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="1-SSM-整合"><a href="#1-SSM-整合" class="headerlink" title="1.SSM 整合"></a>1.SSM 整合</h4><h5 id="1-1-环境准备"><a href="#1-1-环境准备" class="headerlink" title="1.1 环境准备"></a>1.1 环境准备</h5><h6 id="1-1-1-导入坐标并建立依赖"><a href="#1-1-1-导入坐标并建立依赖" class="headerlink" title="1.1.1 导入坐标并建立依赖"></a>1.1.1 导入坐标并建立依赖</h6>
+          <p><strong>1.面向对象:</strong> 面向对象是一种思想，能让复杂问题简单化，程序员不需要了解具体的实现过程，只需要指挥对象去实现功能。如把需要洗的衣服交给洗衣机去洗.</p>
+<p><strong>多态:</strong> 允许不同类的对象对同一消息做出响应(发送消息就是函数调用)</p>
+<p><strong>2.封装继承多态举例:</strong></p>
+<ul>
+<li><p>封装：就像一个盒子，你不需要知道里面有什么东西，只知道它有那些用处就行  </p>
+</li>
+<li><p>继承：就像父子关系，儿子是父亲的继承  </p>
+</li>
+<li><p>多态：好比一个父亲有多个儿子，各个儿子有不同的特征</p>
+</li>
+</ul>
+<p><strong>3.Array与ArrayList的区别:</strong> </p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/10555/#more" rel="contents">
+              <a class="btn" href="/51576/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -407,7 +432,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/60716/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/HashMap/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -421,7 +446,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/60716/" class="post-title-link" itemprop="url">SSM整合后台管理项目总结(二.SSM权限操作(用户与角色))</a>
+            <a href="/HashMap/" class="post-title-link" itemprop="url">HashMap分析</a>
         </h2>
 
         <div class="post-meta">
@@ -432,6 +457,15 @@
               <span class="post-meta-item-text">发表于</span>
 
               <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/源码分析/" itemprop="url" rel="index"><span itemprop="name">源码分析</span></a>
+                </span>
             </span>
 
           
@@ -445,12 +479,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="1-Spring-Security概述"><a href="#1-Spring-Security概述" class="headerlink" title="1.Spring Security概述"></a>1.Spring Security概述</h4><h5 id="1-1-Spring-Security介绍"><a href="#1-1-Spring-Security介绍" class="headerlink" title="1.1 Spring Security介绍"></a>1.1 Spring Security介绍</h5><p>​    Spring Security 的前身是 Acegi Security ，是 Spring 项目组中用来提供安全认证服务的框架。 (<span class="exturl" data-url="aHR0cHM6Ly9wcm9qZWN0cy5zcHJpbmcuaW8vc3ByaW5nLXNlY3VyaXR5Lw==">https://projects.spring.io/spring-security/<i class="fa fa-external-link-alt"></i></span>) Spring Security 为基于J2EE企业应用软件提供了全面安全服务。特别 是使用领先的J2EE解决方案-Spring框架开发的企业软件项目。人们使用Spring Security有很多种原因，不过通常吸 引他们的是在J2EE Servlet规范或EJB规范中找不到典型企业应用场景的解决方案。 特别要指出的是他们不能再 WAR 或 EAR 级别进行移植。这样，如果你更换服务器环境，就要，在新的目标环境进行大量的工作，对你的应用 系统进行重新配 置安全。使用Spring Security 解决了这些问题，也为你提供很多有用的，完全可以指定的其他安 全特性。 安全包括两个主要操作。 </p>
-<p>​        “认证”，是为用户建立一个他所声明的主体。主题一般式指用户，设备或可以在你系 统中执行动作的其他系 统。 </p>
-<p>​        “授权”指的是一个用户能否在你的应用中执行某个操作，在到达授权判断之前，身份的主题已经由 身份验证 过程建立了。</p>
+          <h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h3><p>HashMap位于<code>java.util</code>包中，HashMap基于Map接口实现，元素以<strong>键值对</strong>的方式存储，并且允许使用null键和null值，因为key不允许重复，因此只能有一个键为null,另外HashMap不能保证放入元素的顺序，它是<strong>无序</strong>的，和放入的顺序并不能相同。HashMap是<strong>线程不安全</strong>的。它的底层为哈希表结构（链表散列：<strong>数组+链表</strong>）实现，结合数组和链表的优点。JDK1.8之后，当链表长度超过 <strong>8</strong> 时，<strong>链表转换为红黑树</strong>。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/60716/#more" rel="contents">
+              <a class="btn" href="/HashMap/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -474,7 +506,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/40021/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/12318/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -488,7 +520,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/40021/" class="post-title-link" itemprop="url">SSM整合后台管理项目总结(三.AOP日志)</a>
+            <a href="/12318/" class="post-title-link" itemprop="url">Git入门(二)</a>
         </h2>
 
         <div class="post-meta">
@@ -512,10 +544,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="1-基于AOP日志处理"><a href="#1-基于AOP日志处理" class="headerlink" title="1.基于AOP日志处理"></a>1.基于AOP日志处理</h4><h5 id="创建切面类处理日志"><a href="#创建切面类处理日志" class="headerlink" title="创建切面类处理日志"></a>创建切面类处理日志</h5><p><strong>LogAop</strong></p>
+          <h3 id="1-远程仓库"><a href="#1-远程仓库" class="headerlink" title="1.远程仓库"></a>1.远程仓库</h3><h4 id="1-1-添加远程库"><a href="#1-1-添加远程库" class="headerlink" title="1.1 添加远程库"></a>1.1 添加远程库</h4><p>​    现在我们已经在本地创建了一个Git仓库，又想让其他人来协作开发，此时就可以把本地仓库同步到远程仓库，同时还增加了本地仓库的一个备份。</p>
+<p>常用的远程仓库就是github：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL++8jOaOpeS4i+adpeaIkeS7rOa8lOekuuWmguS9leWwhuacrOWcsOS7o+eggeWQjOatpeWIsGdpdGh1YuOAgg==">https://github.com/，接下来我们演示如何将本地代码同步到github。<i class="fa fa-external-link-alt"></i></span></p>
+<h5 id="1-1-1-在github上创建仓库"><a href="#1-1-1-在github上创建仓库" class="headerlink" title="1.1.1 在github上创建仓库"></a>1.1.1 在github上创建仓库</h5>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/40021/#more" rel="contents">
+              <a class="btn" href="/12318/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -538,7 +572,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/9/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/11/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -606,7 +640,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-count">54</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -619,7 +653,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

@@ -141,7 +141,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">54</span></a>
 
   </li>
         <li class="menu-item menu-item-about">
@@ -151,7 +151,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">28</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -211,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/42236/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/SpringCloudAlibaba/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -225,7 +225,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/42236/" class="post-title-link" itemprop="url">学成在线(十一.ElasticSearch(一))</a>
+            <a href="/SpringCloudAlibaba/" class="post-title-link" itemprop="url">Sping Cloud Alibaba</a>
         </h2>
 
         <div class="post-meta">
@@ -236,6 +236,15 @@
               <span class="post-meta-item-text">发表于</span>
 
               <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/微服务/" itemprop="url" rel="index"><span itemprop="name">微服务</span></a>
+                </span>
             </span>
 
           
@@ -249,25 +258,19 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-ElasticSearch介绍"><a href="#1-ElasticSearch介绍" class="headerlink" title="1.ElasticSearch介绍"></a>1.ElasticSearch介绍</h3><h4 id="1-1-介绍"><a href="#1-1-介绍" class="headerlink" title="1.1 介绍"></a>1.1 介绍</h4><p>​    ElasticSearch是一个基于<span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS9MdWNlbmUvNjc1MzMwMg==">Lucene<i class="fa fa-external-link-alt"></i></span>的搜索服务器。它提供了一个分布式多用户能力的全文搜索引擎，基于RESTful web接口。Elasticsearch是用Java语言开发的，并作为Apache许可条款下的开放源码发布，是一种流行的企业级搜索引擎。ElasticSearch用于<span class="exturl" data-url="aHR0cHM6Ly9iYWlrZS5iYWlkdS5jb20vaXRlbS/kupHorqHnrpcvOTk2OTM1Mw==">云计算<i class="fa fa-external-link-alt"></i></span>中，能够达到实时搜索，稳定，可靠，快速，安装使用方便。官方客户端在Java、.NET（C#）、PHP、Python、Apache Groovy、Ruby和许多其他语言中都是可用的。根据DB-Engines的排名显示，Elasticsearch是最受欢迎的企业搜索引擎，其次是Apache Solr，也是基于Lucene。</p>
-<p>官方网址：<span class="exturl" data-url="aHR0cHM6Ly93d3cuZWxhc3RpYy5jby9jbi9wcm9kdWN0cy9lbGFzdGljc2VhcmNo">https://www.elastic.co/cn/products/elasticsearch<i class="fa fa-external-link-alt"></i></span><br>Github：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2VsYXN0aWMvZWxhc3RpY3NlYXJjaA==">https://github.com/elastic/elasticsearch<i class="fa fa-external-link-alt"></i></span></p>
-<ul>
-<li><p>总结</p>
-<ol>
-<li>ElasticSearch是一个基于Lucene的<strong>高扩展</strong>的<strong>分布式</strong>搜索服务器，支持<strong>开箱即用</strong>。</li>
-<li>ElasticSearch隐藏了Lucene的复杂性，对外提供<strong>Restful接口</strong>来操作索引、搜索。</li>
-</ol>
+          <h3 id="1-主要功能"><a href="#1-主要功能" class="headerlink" title="1.主要功能"></a>1.主要功能</h3><ul>
+<li><p>服务限流降级</p>
 </li>
-<li><p>突出优点</p>
-<ol>
-<li>扩展性好，可部署上百台服务器集群，处理PB级数据。</li>
-<li>近实时的去索引数据、搜索数据。</li>
-</ol>
+<li><p>服务注册与发现</p>
 </li>
-</ul>
+<li><p>分布式配置管理</p>
+</li>
+<li><p>消息驱动能力</p>
+</li>
+<li><p>分布式事务</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/42236/#more" rel="contents">
+              <a class="btn" href="/SpringCloudAlibaba/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -291,7 +294,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/22867/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/SpringCloud_02/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -305,7 +308,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/22867/" class="post-title-link" itemprop="url">学成在线(十.课程预览, 课程发布)</a>
+            <a href="/SpringCloud_02/" class="post-title-link" itemprop="url">Sping Cloud组件扩展</a>
         </h2>
 
         <div class="post-meta">
@@ -316,6 +319,15 @@
               <span class="post-meta-item-text">发表于</span>
 
               <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/微服务/" itemprop="url" rel="index"><span itemprop="name">微服务</span></a>
+                </span>
             </span>
 
           
@@ -329,12 +341,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-课程预览技术方案"><a href="#1-课程预览技术方案" class="headerlink" title="1.课程预览技术方案"></a>1.课程预览技术方案</h3><h4 id="1-1-需求分析"><a href="#1-1-需求分析" class="headerlink" title="1.1 需求分析"></a>1.1 需求分析</h4><p>课程预览是为了保证课程发布后的正确性，通过课程预览可以直观的通过课程详情页面看到课程的信息是否正确， 通过课程预览看到的页面内容和课程发布后的页面内容是一致的。</p>
-<h4 id="1-2-课程详情页面技术方案"><a href="#1-2-课程详情页面技术方案" class="headerlink" title="1.2 课程详情页面技术方案"></a>1.2 课程详情页面技术方案</h4><p>课程预览所浏览到的页面就是课程详情页面，需要先确定课程详情页面的技术方案后方可确定课程预览的技术方 案。 </p>
-<h5 id="1-2-1-技术需求"><a href="#1-2-1-技术需求" class="headerlink" title="1.2.1 技术需求"></a>1.2.1 技术需求</h5>
+          <h3 id="1-Apollo"><a href="#1-Apollo" class="headerlink" title="1.Apollo"></a>1.Apollo</h3><p>统一管理配置信息，增强配置管理的服务能力。<br><img data-src="../../../../assets/img/CgotOV28B1WAF4S2AACIYGiePW0196.png" alt><br>使用配置中心管理配置后，可以将配置信息从项目转移到配置中心，一般一个项目会有一个唯一的标识ID，通过这个ID从配置中心获取对应的配置内容。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/22867/#more" rel="contents">
+              <a class="btn" href="/SpringCloud_02/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -358,7 +368,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/35259/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/SpringCloud_01/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -372,7 +382,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/35259/" class="post-title-link" itemprop="url">学成在线(六.页面发布, 课程管理)</a>
+            <a href="/SpringCloud_01/" class="post-title-link" itemprop="url">Sping Cloud相关组件了解</a>
         </h2>
 
         <div class="post-meta">
@@ -383,6 +393,15 @@
               <span class="post-meta-item-text">发表于</span>
 
               <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/微服务/" itemprop="url" rel="index"><span itemprop="name">微服务</span></a>
+                </span>
             </span>
 
           
@@ -396,10 +415,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-页面发布"><a href="#1-页面发布" class="headerlink" title="1.页面发布"></a>1.页面发布</h3><h4 id="1-1-技术方案"><a href="#1-1-技术方案" class="headerlink" title="1.1 技术方案"></a>1.1 技术方案</h4><p>本项目使用MQ实现页面发布的技术方案如下：</p>
+          <h3 id="1-Eureka"><a href="#1-Eureka" class="headerlink" title="1.Eureka"></a>1.Eureka</h3><p>如果需要实现完整的服务注册与服务发现的功能，我们需要有注册中心来统一存储和管理服务信息，应用程序需要将自身的信息注册到注册中心，也就是服务提供者和服务消费者的信息。整个过程中包含的操作有<strong>注册、拉取、心跳、剔除</strong>等动作。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/35259/#more" rel="contents">
+              <a class="btn" href="/SpringCloud_01/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -423,7 +442,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/63452/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/redisfive/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -437,7 +456,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/63452/" class="post-title-link" itemprop="url">学成在线(八.课程图片管理)</a>
+            <a href="/redisfive/" class="post-title-link" itemprop="url">Redis五种数据类型的底层结构</a>
         </h2>
 
         <div class="post-meta">
@@ -448,6 +467,15 @@
               <span class="post-meta-item-text">发表于</span>
 
               <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
+                </span>
             </span>
 
           
@@ -461,10 +489,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-上传图片开发"><a href="#1-上传图片开发" class="headerlink" title="1.上传图片开发"></a>1.上传图片开发</h3><h4 id="1-1-需求分析"><a href="#1-1-需求分析" class="headerlink" title="1.1 需求分析"></a>1.1 需求分析</h4><p>在很多系统都有上传图片/上传文件的需求，比如：上传课程图片、上传课程资料、上传用户头像等，为了提供系 统的<strong>可重用性</strong>专门设立文件系统服务承担图片/文件的管理，文件系统服务实现对文件的上传、删除、查询等功能 进行管理。<br>各各子系统不再开发上传文件的请求，<strong>各各子系统通过文件系统服务进行文件的上传、删除等操作</strong>。文件系统服务 最终会将文件存储到fastDSF文件系统中。<br>下图是各各子系统与文件系统服务之间的关系：</p>
+          <p>RedisObject:  </p>
+<p>Redis 中只有一个 K，一个 V。其中 K 绝对是字符串对象，而 V 可以是 String、List、Hash、Set、ZSet 任意一种。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/63452/#more" rel="contents">
+              <a class="btn" href="/redisfive/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -488,7 +517,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/54337/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/27273/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -502,7 +531,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/54337/" class="post-title-link" itemprop="url">学成在线(五.消息中间件RabbitMQ)</a>
+            <a href="/27273/" class="post-title-link" itemprop="url">Redis</a>
         </h2>
 
         <div class="post-meta">
@@ -526,11 +555,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-页面发布"><a href="#1-页面发布" class="headerlink" title="1.页面发布"></a>1.页面发布</h3><h4 id="1-1-需求分析"><a href="#1-1-需求分析" class="headerlink" title="1.1 需求分析"></a>1.1 需求分析</h4><p><img data-src="../../../../assets/img/205338.jpg" alt></p>
-<p><strong>业务流程</strong>如下：</p>
+          <h3 id="1-Redis概述"><a href="#1-Redis概述" class="headerlink" title="1.Redis概述"></a>1.Redis概述</h3><p>redis是一款高性能的NOSQL系列的非关系型数据库</p>
+<h4 id="1-1-什么是NoSQL"><a href="#1-1-什么是NoSQL" class="headerlink" title="1.1 什么是NoSQL"></a>1.1 什么是NoSQL</h4><p>​    NoSQL(NoSQL = Not Only SQL)，意即“不仅仅是SQL”，是一项全新的数据库理念，泛指非关系型的数据库。<br>​    随着互联网web2.0网站的兴起，传统的关系数据库在应付web2.0网站，特别是超大规模和高并发的SNS类型的web2.0纯动态网站已经显得力不从心，暴露了很多难以克服的问题，而非关系型的数据库则由于其本身的特点得到了非常迅速的发展。NoSQL数据库的产生就是为了<strong>解决大规模数据集和多重数据种类</strong>带来的挑战，尤其是大数据应用难题。</p>
+<h5 id="1-1-1-NOSQL和关系型数据库比较"><a href="#1-1-1-NOSQL和关系型数据库比较" class="headerlink" title="1.1.1 NOSQL和关系型数据库比较"></a>1.1.1 NOSQL和关系型数据库比较</h5>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/54337/#more" rel="contents">
+              <a class="btn" href="/27273/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -553,7 +583,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -621,7 +651,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-count">54</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -634,7 +664,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

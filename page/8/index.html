@@ -141,7 +141,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">54</span></a>
 
   </li>
         <li class="menu-item menu-item-about">
@@ -151,7 +151,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">28</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -211,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/32706/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/35847/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -225,7 +225,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/32706/" class="post-title-link" itemprop="url">学成在线(二.CMS前端开发)</a>
+            <a href="/35847/" class="post-title-link" itemprop="url">Redis, Nginx常见面试题</a>
         </h2>
 
         <div class="post-meta">
@@ -249,11 +249,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-CMS前端页面查询开发"><a href="#1-CMS前端页面查询开发" class="headerlink" title="1.CMS前端页面查询开发"></a>1.CMS前端页面查询开发</h3><h4 id="1-1-Api调用"><a href="#1-1-Api调用" class="headerlink" title="1.1 Api调用"></a>1.1 Api调用</h4><h5 id="1-1-1-Api方法定义"><a href="#1-1-1-Api方法定义" class="headerlink" title="1.1.1 Api方法定义"></a>1.1.1 Api方法定义</h5><p>在cms模块的api目录定义cms.js， 在cms.js中定义如下js方法，此方法实现http请求服务端页面查询接口</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> http <span class="keyword">from</span> <span class="string">'@/base/api/public'</span></span><br><span class="line"><span class="comment">/*页面列表*/</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> page_list = <span class="function">(<span class="params">page,size,params</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">//params为json格式</span></span><br><span class="line">  <span class="comment">//使用querystring将json对象转成key/value串</span></span><br><span class="line">  <span class="keyword">return</span> http.requestQuickGet(<span class="string">'/cms/page/list/'</span>+page+<span class="string">'/'</span>+size+<span class="string">'/?'</span>+querys)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <h3 id="1-Redis常见面试题"><a href="#1-Redis常见面试题" class="headerlink" title="1.Redis常见面试题"></a>1.Redis常见面试题</h3><h4 id="1-1-为什么使用redis"><a href="#1-1-为什么使用redis" class="headerlink" title="1.1 为什么使用redis"></a>1.1 为什么使用redis</h4><ol>
+<li><p><strong>性能</strong>: 我们在碰到需要执行耗时特别久，且结果不频繁变动的SQL，就特别适合将运行结果放入缓存。这样，后面的请求就去缓存中读取，使得请求能够迅速响应。</p>
+</li>
+<li><p><strong>并发</strong>: 在大并发的情况下，所有的请求直接访问数据库，数据库会出现连接异常。这个时候，就需要使用redis做一个缓冲操作，让请求先访问到redis，而不是直接访问数据库。</p>
+</li>
+</ol>
+<h4 id="1-2-使用redis有什么缺点"><a href="#1-2-使用redis有什么缺点" class="headerlink" title="1.2 使用redis有什么缺点"></a>1.2 使用redis有什么缺点</h4><ol>
+<li>缓存和数据库双写一致性问题</li>
+<li>缓存雪崩问题</li>
+<li>缓存击穿问题</li>
+<li>缓存的并发竞争问题</li>
+</ol>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/32706/#more" rel="contents">
+              <a class="btn" href="/35847/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -277,7 +287,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/56946/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/25938/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -291,7 +301,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/56946/" class="post-title-link" itemprop="url">学成在线(九.Eureka, Feign)</a>
+            <a href="/25938/" class="post-title-link" itemprop="url">Oracle(二)</a>
         </h2>
 
         <div class="post-meta">
@@ -315,13 +325,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-Eureka注册中心"><a href="#1-Eureka注册中心" class="headerlink" title="1.Eureka注册中心"></a>1.Eureka注册中心</h3><h4 id="1-1-需求分析"><a href="#1-1-需求分析" class="headerlink" title="1.1 需求分析"></a>1.1 需求分析</h4><p>在前后端分离架构中，服务层被拆分成了很多的微服务，微服务的信息如何管理？Spring Cloud中提供<strong>服务注册中 心来管理微服务信息</strong>。</p>
-<ul>
-<li>为什么要用注册中心？<br>(1) 微服务数量众多，要进行远程调用就需要知道服务端的ip地址和端口，注册中心帮助我们<strong>管理这些服务的ip和端口</strong>。<br>(2) 微服务会实时上报自己的状态，注册中心统一<strong>管理这些微服务的状态</strong>，将存在问题的服务踢出服务列表，客户端获取到可用的服务进行调用。</li>
-</ul>
+          <h4 id="1-视图"><a href="#1-视图" class="headerlink" title="1.视图"></a>1.视图</h4><p>视图就是封装了一条复杂查询的语句。<br>语法 1.：CREATE VIEW 视图名称 AS 子查询 </p>
+<p>如果视图已经存在我们可以使用语法 2 来创建视图，这样已有的视图会被覆盖。 </p>
+<p>语法 2：CREATE OR REPLACE VIEW 视图名称 AS 子查询 </p>
+<p>我们可以设置视图为只读。<br>语法 3：CREATE OR REPLACE VIEW 视图名称 AS 子查询 WITH READ ONLY </p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/56946/#more" rel="contents">
+              <a class="btn" href="/25938/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -345,7 +355,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/13890/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/42486/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -359,7 +369,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/13890/" class="post-title-link" itemprop="url">学成在线(三.CMS页面管理开发, 异常处理)</a>
+            <a href="/42486/" class="post-title-link" itemprop="url">Oracle(一)</a>
         </h2>
 
         <div class="post-meta">
@@ -383,10 +393,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-自定义条件查询"><a href="#1-自定义条件查询" class="headerlink" title="1.自定义条件查询"></a>1.自定义条件查询</h3><h4 id="1-1-需求分析"><a href="#1-1-需求分析" class="headerlink" title="1.1 需求分析"></a>1.1 需求分析</h4><p>在页面输入查询条件，查询符合条件的页面信息。<br>查询条件如下：<br>站点Id：精确匹配<br>模板Id：精确匹配<br>页面别名：模糊匹配<br>……</p>
+          <h4 id="1-oracle介绍"><a href="#1-oracle介绍" class="headerlink" title="1.oracle介绍"></a>1.oracle介绍</h4><p>​    ORACLE 数据库系统是美国ORACLE 公司（甲骨文）提供的以分布式数据库为核心的一组软件产品，是目前最流行的客户/服务器(CLIENT/SERVER)或 B/S体系结构的数据库之一。比如SilverStream 就是基于数据库的一种中间件。ORACLE数据库是目前世界上使用最为广泛的数据库管理系统，作为一个通用的数据库系统，它具有完整的数据管理功能；作为一个关系数据库，它是一个完备关系的产品；作为分布式数据库它实现了分布式处理功能。但它的所有知识，只要在一种机型上学习了 ORACLE知识，便能在各种类型的机器上使用它。 </p>
+<h4 id="2-Oracle体系结构"><a href="#2-Oracle体系结构" class="headerlink" title="2.Oracle体系结构"></a>2.Oracle体系结构</h4>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/13890/#more" rel="contents">
+              <a class="btn" href="/42486/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -410,7 +421,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/20521/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/28604/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -424,7 +435,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/20521/" class="post-title-link" itemprop="url">学成在线(七.课程管理)</a>
+            <a href="/28604/" class="post-title-link" itemprop="url">Mybatis框架(二)</a>
         </h2>
 
         <div class="post-meta">
@@ -448,11 +459,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-我的课程"><a href="#1-我的课程" class="headerlink" title="1.我的课程"></a>1.我的课程</h3><h4 id="1-1-需求分析"><a href="#1-1-需求分析" class="headerlink" title="1.1 需求分析"></a>1.1 需求分析</h4><p>课程添加完成后可通过我的课程进入课程修改页面，此页面显示我的课程列表，可分页查询。</p>
-<p>上边的查询要实现分页、会存在多表关联查询，所以建议使用mybatis实现我的课程查询。 </p>
+          <h4 id="1-Mybatis-的输出结果封装"><a href="#1-Mybatis-的输出结果封装" class="headerlink" title="1.Mybatis 的输出结果封装"></a>1.Mybatis 的输出结果封装</h4><h5 id="1-1-resultType-配置结果类型"><a href="#1-1-resultType-配置结果类型" class="headerlink" title="1.1 resultType 配置结果类型"></a>1.1 resultType 配置结果类型</h5><p>​    resultType 属性可以指定结果集的类型，它支持基本类型和实体类类型。 我们在前面的 CRUD 案例中已经对此属性进行过应用了。 需要注意的是，它和 parameterType 一样，如果注册过类型别名的，可以直接使用别名。没有注册过的必须 使用全限定类名。例如：我们的实体类此时必须是全限定类名（今天最后一个章节会讲解如何配置实体类的别名） 同时，当是实体类名称是，还有一个要求，实体类中的属性名称必须和查询语句中的列名保持一致，否则无法 实现封装。 </p>
+<h5 id="1-2-resultMap-结果类型"><a href="#1-2-resultMap-结果类型" class="headerlink" title="1.2 resultMap 结果类型"></a>1.2 resultMap 结果类型</h5><p>​    resultMap 标签可以建立查询的列名和实体类的属性名称不一致时建立对应关系。从而实现封装。 在 select 标签中使用 resultMap 属性指定引用即可。同时 resultMap 可以实现将查询结果映射为复杂类 型的 pojo，比如在查询结果映射对象中包括 pojo 和 list 实现一对一查询和一对多查询。 </p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/20521/#more" rel="contents">
+              <a class="btn" href="/28604/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -476,7 +487,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/42599/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/65310/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -490,7 +501,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/42599/" class="post-title-link" itemprop="url">学成在线(一.CMS服务端开发)</a>
+            <a href="/65310/" class="post-title-link" itemprop="url">Mybatis框架(三)</a>
         </h2>
 
         <div class="post-meta">
@@ -514,11 +525,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-CMS需求分析"><a href="#1-CMS需求分析" class="headerlink" title="1.CMS需求分析"></a>1.CMS需求分析</h3><h4 id="1-1-什么是CMS"><a href="#1-1-什么是CMS" class="headerlink" title="1.1 什么是CMS"></a>1.1 什么是CMS</h4><p>(1) CMS是什么 ？ CMS （Content Management System）即<strong>内容管理系统</strong>，不同的项目对CMS的定位不同，比如：一个在线教育网站，有些公司认为CMS系统是对所有的课程资源进行管理，而在早期网站刚开始盛行时很多公司的业务是网站制作，当时对CMS的定位是创建网站，即<strong>对网站的页面、图片等静态资源进行管理</strong>。<br>(2) CMS有哪些类型？<br>  上边也谈到每个公司对每个项目的CMS定位不同，CMS基本上分为：<strong>针对后台数据内容的管理、针对前端页面的 管理、针对样式风格的管理等</strong> 。比如：一个给企业做网站的公司，其CMS系统主要是网站页面管理及样式风格的 管理。</p>
-<p>(3) 本项目CMS的定位是什么？ 本项目作为一个大型的在线教育平台，对CMS系统的定位是对各各网站（子站点）页面的管理，主要<strong>管理运营需要而经常变动的页面，从而实现根据运营需要快速进行页面开发、上线的需求</strong>。</p>
+          <h4 id="1-Mybatis-注解开发"><a href="#1-Mybatis-注解开发" class="headerlink" title="1. Mybatis 注解开发"></a>1. Mybatis 注解开发</h4><h5 id="1-1-mybatis-的常用注解说明"><a href="#1-1-mybatis-的常用注解说明" class="headerlink" title="1.1 mybatis 的常用注解说明"></a>1.1 mybatis 的常用注解说明</h5><p>@Insert:实现新增</p>
+<p>@Update:实现更新 </p>
+<p>@Delete:实现删除 </p>
+<p>@Select:实现查询 </p>
+<p>@Result:实现结果集封装 </p>
+<p>@Results:可以与@Result 一起使用，封装多个结果集 </p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/42599/#more" rel="contents">
+              <a class="btn" href="/65310/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -541,7 +556,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -609,7 +624,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-count">54</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -622,7 +637,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

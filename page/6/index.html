@@ -141,7 +141,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">54</span></a>
 
   </li>
         <li class="menu-item menu-item-about">
@@ -151,7 +151,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">28</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -211,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/8151/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/22356/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -225,7 +225,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/8151/" class="post-title-link" itemprop="url">学成在线(四.页面静态化)</a>
+            <a href="/22356/" class="post-title-link" itemprop="url">SpringMVC框架(一)</a>
         </h2>
 
         <div class="post-meta">
@@ -249,11 +249,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-页面静态化需求"><a href="#1-页面静态化需求" class="headerlink" title="1.页面静态化需求"></a>1.页面静态化需求</h3><p>(1) 为什么要进行页面管理？<br>  本项目cms系统的功能就是根据运营需要，对门户等子系统的部分页面进行管理，从而<strong>实现快速根据用户需求修改页面内容并上线的需求</strong>。</p>
-<p>(2) 如何修改页面的内容？<br> 在开发中修改页面内容是需要人工编写html及JS文件，<strong>CMS系统是通过程序自动化的对页面内容进行修改，通过页面静态化技术生成html页面</strong>。 </p>
+          <h4 id="1-SpringMVC的基本概念"><a href="#1-SpringMVC的基本概念" class="headerlink" title="1.SpringMVC的基本概念"></a>1.SpringMVC的基本概念</h4><h5 id="1-1-关于三层架构和MVC"><a href="#1-1-关于三层架构和MVC" class="headerlink" title="1.1 关于三层架构和MVC"></a>1.1 关于三层架构和MVC</h5><h6 id="1-1-1-三层架构"><a href="#1-1-1-三层架构" class="headerlink" title="1.1.1 三层架构"></a>1.1.1 三层架构</h6><p>​    我们的开发架构一般都是基于两种形式，一种是 C/S 架构，也就是客户端/服务器，另一种是 B/S 架构，也就 是浏览器服务器。在 JavaEE 开发中，几乎全都是基于 B/S架构的开发。那么在 B/S架构中，系统标准的三层架构 包括：表现层、业务层、持久层。三层架构在我们的实际开发中使用的非常多，所以我们课程中的案例也都是基于<br>三层架构设计的。 </p>
+<p>​    三层架构中，每一层各司其职，接下来我们就说说每层都负责哪些方面： </p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/8151/#more" rel="contents">
+              <a class="btn" href="/22356/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -277,7 +277,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/HLS/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/50010/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -291,7 +291,215 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/HLS/" class="post-title-link" itemprop="url">学成在线(十四.在线学习HLS)</a>
+            <a href="/50010/" class="post-title-link" itemprop="url">SpringCloud框架(二)(微服务)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="1-Hystrix"><a href="#1-Hystrix" class="headerlink" title="1.Hystrix"></a>1.Hystrix</h4><h5 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1 简介"></a>1.1 简介</h5><p>Hystrix是Netflix公司的一款组件。</p>
+<p>主页：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL05ldGZsaXgvSHlzdHJpeC8=">https://github.com/Netflix/Hystrix/<i class="fa fa-external-link-alt"></i></span></p>
+<p>Hystix是Netflix开源的一个延迟和容错库，用于隔离访问远程服务、第三方库，防止出现级联失败。</p>
+<h5 id="1-2-雪崩问题"><a href="#1-2-雪崩问题" class="headerlink" title="1.2 雪崩问题"></a>1.2 雪崩问题</h5><p>​    微服务中，服务间调用关系错综复杂，一个请求，可能需要调用多个微服务接口才能实现，会形成非常复杂的调用链路.</p>
+<p>一次业务请求，需要调用A、P、H、I四个服务，这四个服务又可能调用其它服务。</p>
+<p>​    如果此时，某个服务出现异常, 请求阻塞，用户不会得到响应，则tomcat的这个线程不会释放，于是越来越多的用户请求到来，越来越多的线程会阻塞服务器支持的线程和并发数有限，请求一直阻塞，会导致服务器资源耗尽，从而导致所有其它服务都不可用，形成雪崩效应。</p>
+<p>Hystix解决雪崩问题的手段有两个：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/50010/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/52552/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="liuwy1998">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuwy1998 BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/52552/" class="post-title-link" itemprop="url">SpringCloud框架(一)(微服务)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="1-系统架构演变"><a href="#1-系统架构演变" class="headerlink" title="1.系统架构演变"></a>1.系统架构演变</h4><p>​    随着互联网的发展，网站应用的规模不断扩大。需求的激增，带来的是技术上的压力。系统架构也因此不断的演进、升级、迭代。从单一应用，到垂直拆分，到分布式服务，到SOA，以及现在火热的微服务架构，还有在Google带领下来势汹涌的Service Mesh。我们到底是该乘坐微服务的船只驶向远方，还是偏安一隅得过且过？</p>
+<p>其实生活不止眼前的苟且，还有诗和远方。所以我们今天就回顾历史，看一看系统架构演变的历程；把握现在，学习现在最火的技术架构；展望未来，争取成为一名优秀的Java工程师。</p>
+<p>今天主要介绍的是<strong>微服务架构</strong></p>
+<p><strong>微服务</strong></p>
+<p>​    SOA，英文翻译过来是面向服务。微服务，似乎也是服务，都是对系统进行拆分。因此两者非常容易混淆，但其实却有一些差别：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/52552/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/58845/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="liuwy1998">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuwy1998 BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/58845/" class="post-title-link" itemprop="url">SpringBoot框架</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="1-了解SpringBoot"><a href="#1-了解SpringBoot" class="headerlink" title="1. 了解SpringBoot"></a>1. 了解SpringBoot</h4><h5 id="1-1-什么是SpringBoot"><a href="#1-1-什么是SpringBoot" class="headerlink" title="1.1 什么是SpringBoot"></a>1.1 什么是SpringBoot</h5><p>​    用一些固定的方式来构建生产级别的spring应用。Spring Boot 推崇约定大于配置的方式以便于你能够尽可能快速的启动并运行程序。</p>
+<p>​    其实人们把Spring Boot 称为搭建程序的<code>脚手架</code>。其最主要作用就是帮我们快速的构建庞大的spring项目，并且尽可能的减少一切xml配置，做到开箱即用，迅速上手，让我们关注与业务而非配置。</p>
+<h5 id="1-2-为什么要学习SpringBoot"><a href="#1-2-为什么要学习SpringBoot" class="headerlink" title="1.2 为什么要学习SpringBoot"></a>1.2 为什么要学习SpringBoot</h5><p>​    Spring Boot 简化了基于Spring的应用开发，只需要“run”就能创建一个独立的、生产级别的Spring应用。Spring Boot为Spring平台及第三方库提供开箱即用的设置（提供默认设置，存放默认配置的包就是启动器），这样我们就可以简单的开始。多数Spring Boot应用只需要很少的Spring配置。</p>
+<h5 id="1-3-SpringBoot的特点"><a href="#1-3-SpringBoot的特点" class="headerlink" title="1.3 SpringBoot的特点"></a>1.3 SpringBoot的特点</h5><p>Spring Boot 主要目标是：</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/58845/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/spring_aop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="liuwy1998">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuwy1998 BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/spring_aop/" class="post-title-link" itemprop="url">Spring AOP</a>
         </h2>
 
         <div class="post-meta">
@@ -309,7 +517,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/项目/" itemprop="url" rel="index"><span itemprop="name">项目</span></a>
+                  <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
                 </span>
             </span>
 
@@ -324,240 +532,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-在线学习需求分析"><a href="#1-在线学习需求分析" class="headerlink" title="1.在线学习需求分析"></a>1.在线学习需求分析</h3><h4 id="1-1-需求描述"><a href="#1-1-需求描述" class="headerlink" title="1.1 需求描述"></a>1.1 需求描述</h4><p>学成在线作为在线教育网站，提供多种学习形式，包括：录播、直播、图文、社群等，学生登录进入学习中心即可 在线学习，本章节将开发录播课程的在线学习功能，需求如下：</p>
-<ol>
-<li>学生可以在windows浏览器上在线观看视频。 </li>
-<li>播放器具有快进、快退、暂停等基本功能。</li>
-<li>学生可以方便切换章节进行学习。</li>
-</ol>
-<ul>
-<li>什么是录播课程？<br>录播课程就是提供录制好课程视频，供用户在线点播，反复学习。</li>
-<li>课程视频如何管理？<br><strong>媒资管理系统</strong>专门来管理课程视频，用户视频文件上传到媒资系统，并对视频进行编码处理</li>
-</ul>
+          <h3 id="1-AOP概述"><a href="#1-AOP概述" class="headerlink" title="1.AOP概述"></a>1.AOP概述</h3><h4 id="1-1-什么是AOP？"><a href="#1-1-什么是AOP？" class="headerlink" title="1.1 什么是AOP？"></a>1.1 什么是AOP？</h4><p>AOP(Aspect Oriented Programming 面向切面编程)，通过<strong>预编译</strong>方式和<strong>运行期动态代理</strong>实现程序功能的统一维护的一种技术。利用AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的<strong>耦合度降低</strong>，提高程序的<strong>可重用性</strong>，同时提高了<strong>开发的效率</strong>。<br>常用于日志记录，性能统计，安全控制，事务处理，异常处理等等。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/HLS/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/Media_Manager/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/../assets/img/head.jpg">
-      <meta itemprop="name" content="liuwy1998">
-      <meta itemprop="description" content="Java开发, 后端开发">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liuwy1998 BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/Media_Manager/" class="post-title-link" itemprop="url">学成在线(十五.媒资管理)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/项目/" itemprop="url" rel="index"><span itemprop="name">项目</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1-视频处理"><a href="#1-视频处理" class="headerlink" title="1.视频处理"></a>1.视频处理</h3><h4 id="1-1-需求分析"><a href="#1-1-需求分析" class="headerlink" title="1.1 需求分析"></a>1.1 需求分析</h4><p>原始视频通常需要经过编码处理，生成m3u8和ts文件方可基于HLS协议播放视频。通常用户上传原始视频，系统自动处理成标准格式，系统对用户上传的视频<strong>自动编码</strong>、<strong>转换</strong>，最终生成m3u8文件和ts文件，处理流程如下：</p>
-<ol>
-<li>用户上传视频成功</li>
-<li>系统对上传成功的视频自动开始编码处理</li>
-<li>用户查看视频处理结果，没有处理成功的视频用户可在管理界面再次触发处理</li>
-<li>视频处理完成将视频地址及处理结果保存到数据库</li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/Media_Manager/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/2642/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/../assets/img/head.jpg">
-      <meta itemprop="name" content="liuwy1998">
-      <meta itemprop="description" content="Java开发, 后端开发">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liuwy1998 BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2642/" class="post-title-link" itemprop="url">学成在线(十二.ElasticSearch(二))</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1-索引管理"><a href="#1-索引管理" class="headerlink" title="1.索引管理"></a>1.索引管理</h3><h4 id="1-1-搭建工程"><a href="#1-1-搭建工程" class="headerlink" title="1.1 搭建工程"></a>1.1 搭建工程</h4><h5 id="1-1-1-ES客户端"><a href="#1-1-1-ES客户端" class="headerlink" title="1.1.1 ES客户端"></a>1.1.1 ES客户端</h5><p>ES提供多种不同的客户端：</p>
-<ol>
-<li><p>TransportClient</p>
-<p>ES提供的传统客户端，官方计划8.0版本删除此客户端。 </p>
-</li>
-<li><p>RestClient</p>
-<p>RestClient是官方推荐使用的，它包括两种：Java Low Level REST Client和 Java High Level REST Client。 ES在6.0之后提供 Java High Level REST Client， 两种客户端官方更推荐使用 Java High Level REST Client，不过当前它还处于完善中，有些功能还没有。<br>本教程准备采用 Java High Level REST Client，如果它有不支持的功能，则使用Java Low Level REST Client。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2642/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/64679/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/../assets/img/head.jpg">
-      <meta itemprop="name" content="liuwy1998">
-      <meta itemprop="description" content="Java开发, 后端开发">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liuwy1998 BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/64679/" class="post-title-link" itemprop="url">学成在线(十三.课程搜索)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1-课程搜索需求分析"><a href="#1-课程搜索需求分析" class="headerlink" title="1.课程搜索需求分析"></a>1.课程搜索需求分析</h3><h4 id="1-1-需求分析"><a href="#1-1-需求分析" class="headerlink" title="1.1 需求分析"></a>1.1 需求分析</h4><ol>
-<li>根据分类搜索课程信息。</li>
-<li>根据关键字搜索课程信息，搜索方式为全文检索，关键字需要匹配课程的名称、 课程内容。 </li>
-<li>根据难度等级搜索课程。 </li>
-<li>搜索结点分页显示。 </li>
-</ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/64679/#more" rel="contents">
+              <a class="btn" href="/spring_aop/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -580,7 +558,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -648,7 +626,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-count">54</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -661,7 +639,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

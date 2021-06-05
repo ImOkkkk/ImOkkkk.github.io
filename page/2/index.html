@@ -141,7 +141,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">54</span></a>
 
   </li>
         <li class="menu-item menu-item-about">
@@ -151,7 +151,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">28</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -211,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/21309/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/deployment/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -225,143 +225,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/21309/" class="post-title-link" itemprop="url">网上商城项目总结(三.购物车与订单)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="1-购物车"><a href="#1-购物车" class="headerlink" title="1.购物车"></a>1.购物车</h4><h5 id="1-1抽取购物车模型"><a href="#1-1抽取购物车模型" class="headerlink" title="1.1抽取购物车模型"></a>1.1抽取购物车模型</h5><h6 id="步骤实现"><a href="#步骤实现" class="headerlink" title="步骤实现:"></a>步骤实现:</h6><p><strong>购物项</strong>:(图片路径,商品名称,商品价格,这类商品购买的数量,这类商品总价小计)</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CartItem</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> Product product;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> num;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">double</span> subTotal;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">CartItem</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">CartItem</span><span class="params">(Product product, <span class="keyword">int</span> num, <span class="keyword">double</span> subTotal)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">super</span>();</span><br><span class="line">		<span class="keyword">this</span>.product = product;</span><br><span class="line">		<span class="keyword">this</span>.num = num;</span><br><span class="line">		<span class="keyword">this</span>.subTotal = subTotal;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Product <span class="title">getProduct</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> product;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setProduct</span><span class="params">(Product product)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.product = product;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getNum</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> num;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setNum</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.num = num;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">getSubTotal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> product.getShop_price() * num;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setSubTotal</span><span class="params">(<span class="keyword">double</span> subTotal)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.subTotal = subTotal;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/21309/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/38014/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/../assets/img/head.jpg">
-      <meta itemprop="name" content="liuwy1998">
-      <meta itemprop="description" content="Java开发, 后端开发">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liuwy1998 BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/38014/" class="post-title-link" itemprop="url">网上商城项目总结(一.用户模块)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1-注册"><a href="#1-注册" class="headerlink" title="1.注册"></a>1.注册</h3><h4 id="1-1用户注册-通用servlet"><a href="#1-1用户注册-通用servlet" class="headerlink" title="1.1用户注册(通用servlet)"></a>1.1用户注册(通用servlet)</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;a href="$&#123;pageContext.request.contextPath&#125;/UserServlet?method=userRegister"&gt;注册&lt;/a&gt;</span><br></pre></td></tr></table></figure>
-
-<h5 id="通用servlet"><a href="#通用servlet" class="headerlink" title="通用servlet:"></a>通用servlet:</h5><h6 id="原理"><a href="#原理" class="headerlink" title="原理:"></a>原理:</h6><p>   从客户端向服务端发起请求,每次都要传递额外的键值对的数据method=””, 服务端获取到method对应的内容之后,通过判断不同的内容调用不同的功能.</p>
-<h6 id="从客户端向服务端发起请求-调用功能方式"><a href="#从客户端向服务端发起请求-调用功能方式" class="headerlink" title="从客户端向服务端发起请求,调用功能方式:"></a>从客户端向服务端发起请求,调用功能方式:</h6><p>1.通过表单向服务端发起请求     2.通过链接向服务端发起请     3.Ajax向服务端发起请求</p>
-<h5 id="步骤实现"><a href="#步骤实现" class="headerlink" title="步骤实现:"></a>步骤实现:</h5><p>1.准备工作   /jsp/regist.jsp 设置表单各种属性 action method </p>
-<p>2.UserServlet__&gt;userRegist  接收表单参数  调用业务层注册功能   注册成功,向用户邮箱发送信息,跳转到提示页面   注册失败,跳转到提示页面</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/38014/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/ThreadPool/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/../assets/img/head.jpg">
-      <meta itemprop="name" content="liuwy1998">
-      <meta itemprop="description" content="Java开发, 后端开发">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liuwy1998 BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/ThreadPool/" class="post-title-link" itemprop="url">线程池</a>
+            <a href="/deployment/" class="post-title-link" itemprop="url">微信公众号开发(五)部署项目到阿里云服务器</a>
         </h2>
 
         <div class="post-meta">
@@ -379,7 +243,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/多线程/" itemprop="url" rel="index"><span itemprop="name">多线程</span></a>
+                  <a href="/categories/项目/" itemprop="url" rel="index"><span itemprop="name">项目</span></a>
                 </span>
             </span>
 
@@ -394,83 +258,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h3><h4 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h4><p><img data-src="../../../../assets/img/11183270.jpg" alt></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/ThreadPool/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/20904/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/../assets/img/head.jpg">
-      <meta itemprop="name" content="liuwy1998">
-      <meta itemprop="description" content="Java开发, 后端开发">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="liuwy1998 BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/20904/" class="post-title-link" itemprop="url">微服务项目总结(四.Spring Data Elasticsearch)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="Spring-Data-Elasticsearch"><a href="#Spring-Data-Elasticsearch" class="headerlink" title="Spring Data Elasticsearch"></a>Spring Data Elasticsearch</h3><p>Elasticsearch提供的Java客户端有一些不太方便的地方：</p>
-<ul>
-<li>很多地方需要拼接Json字符串，在java中拼接字符串有多恐怖你应该懂的</li>
-<li>需要自己把对象序列化为json存储</li>
-<li>查询到结果也需要自己反序列化为对象</li>
+          <h3 id="1-准备工作"><a href="#1-准备工作" class="headerlink" title="1.准备工作"></a>1.准备工作</h3><ul>
+<li>可以正常运行提供服务的项目</li>
+<li>一台云服务器</li>
 </ul>
-<p>Spring提供的套件：Spring Data Elasticsearch。</p>
-<h4 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h4><p>Spring Data Elasticsearch是Spring Data项目下的一个子模块。</p>
-<p>查看 Spring Data的官网：<span class="exturl" data-url="aHR0cDovL3Byb2plY3RzLnNwcmluZy5pby9zcHJpbmctZGF0YS8=">http://projects.spring.io/spring-data/<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="2-项目打包"><a href="#2-项目打包" class="headerlink" title="2.项目打包"></a>2.项目打包</h3><p>首先将我们在IDEA下的项目进行打包，这边基于的是maven项目的打包。<br>点击菜单栏 File → Project Structure → Artifacts 添加一个jar</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/20904/#more" rel="contents">
+              <a class="btn" href="/deployment/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -494,7 +289,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/15426/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/39972/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -508,7 +303,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/15426/" class="post-title-link" itemprop="url">微服务项目总结(十一.购物车)</a>
+            <a href="/39972/" class="post-title-link" itemprop="url">微信公众号开发(二)自动回复功能实现简单的天气查询</a>
         </h2>
 
         <div class="post-meta">
@@ -532,10 +327,220 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-搭建购物车服务"><a href="#1-搭建购物车服务" class="headerlink" title="1.搭建购物车服务"></a>1.搭建购物车服务</h3><h4 id="1-1-创建module"><a href="#1-1-创建module" class="headerlink" title="1.1 创建module"></a>1.1 创建module</h4><h4 id="1-2-pom依赖"><a href="#1-2-pom依赖" class="headerlink" title="1.2 pom依赖"></a>1.2 pom依赖</h4>
+          <h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p>微信公众平台服务器配置通过后，就能进行下面的开发啦</p>
+<blockquote>
+<p>首先可以查看官方的说明文档：<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXJzLndlaXhpbi5xcS5jb20vZG9jL29mZmlhY2NvdW50L0dldHRpbmdfU3RhcnRlZC9PdmVydmlldy5odG1s">https://developers.weixin.qq.com/doc/offiaccount/Getting_Started/Overview.html<i class="fa fa-external-link-alt"></i></span></p>
+</blockquote>
+<p>普通消息的类型分为7种：</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/15426/#more" rel="contents">
+              <a class="btn" href="/39972/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/12221/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="liuwy1998">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuwy1998 BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/12221/" class="post-title-link" itemprop="url">微信公众号开发(三)快递信息查询</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="1-快递查询API"><a href="#1-快递查询API" class="headerlink" title="1.快递查询API"></a>1.快递查询API</h3><p>这里使用的是阿里云全国快递物流查询-快递查询接口:<span class="exturl" data-url="aHR0cHM6Ly9tYXJrZXQuYWxpeXVuLmNvbS9wcm9kdWN0cy81NjkyODAwNC9jbWFwaTAyMTg2My5odG1s">https://market.aliyun.com/products/56928004/cmapi021863.html<i class="fa fa-external-link-alt"></i></span></p>
+<p>该接口支持只通过快递运单号查询物流信息, 不需要在额外设置参数. 该种方式95%能自动识别, 填写查询速度会更快, 已经满足一般开发的需求, 并能极大方便开发者的使用.</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/12221/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/38103/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="liuwy1998">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuwy1998 BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/38103/" class="post-title-link" itemprop="url">微信公众号开发(一)开发者接入微信公众号</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="微信公众号开发-一-开发者接入微信公众号"><a href="#微信公众号开发-一-开发者接入微信公众号" class="headerlink" title="微信公众号开发(一)开发者接入微信公众号"></a>微信公众号开发(一)开发者接入微信公众号</h4><h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p>该文章基于<code>JDK1.8</code>  <code>springboot2.1.7.RELEASE</code>环境</p>
+<p>实现开发者第一次接入微信公众号后台的需求</p>
+<h3 id="2-准备工作"><a href="#2-准备工作" class="headerlink" title="2.准备工作"></a>2.准备工作</h3><h4 id="2-1-进入微信公众平台注册账号"><a href="#2-1-进入微信公众平台注册账号" class="headerlink" title="2.1 进入微信公众平台注册账号"></a>2.1 进入微信公众平台注册账号</h4><blockquote>
+<p><span class="exturl" data-url="aHR0cHM6Ly9tcC53ZWl4aW4ucXEuY29tLw==">https://mp.weixin.qq.com/<i class="fa fa-external-link-alt"></i></span></p>
+</blockquote>
+<p>个人用户建议注册订阅号</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/38103/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/14808/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="liuwy1998">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuwy1998 BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/14808/" class="post-title-link" itemprop="url">常用设计模式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Java 中一般认为有23种设计模式, 下面介绍几种常见的设计模式。总体来说设计模式分为三大类： </p>
+<ul>
+<li>创建型模式, 共5五种：<strong>工厂方法模式</strong>、<strong>抽象工厂模式</strong>、<strong>单例模式</strong>、建造者模式、原型模式。 </li>
+<li>结构型模式，共7种：<strong>适配器模式</strong>、<strong>装饰器模式</strong>、代理模式、外观模式、桥接模式、组合模式、享元模式。 </li>
+<li>行为型模式，共11种：策略模式、模板方法模式、<strong>观察者模式</strong>、迭代子模式、责任链模式、命令模式、备忘录模式、状态模式、访问者模式、中介者模式、解释器模式。</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/14808/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -558,7 +563,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -626,7 +631,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-count">54</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -639,7 +644,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
