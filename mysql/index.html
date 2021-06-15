@@ -47,7 +47,7 @@
 <meta property="og:site_name" content="liuwy1998 BLOG">
 <meta property="og:description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-06-09T15:03:52.693Z">
+<meta property="og:updated_time" content="2021-06-15T15:06:07.934Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL">
 <meta name="twitter:description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
@@ -416,6 +416,23 @@
 <p>当相邻两个页由于删除了数据，利用率很低之后，会将数据页做合并。</p>
 <p>自增主键：NOT NULL PRIMARY KEY AUTO_INCREMENT。每次插入一条新纪录，都是追加操作，都不涉及挪动记录，也不会触发叶子节点的分裂。</p>
 <p>由于每个非主键索引的叶子节点上都是主键的值。如果用身份证号做主键，那么每个二级索引的叶子节点占用约２０个字节，而如果用整形做主键，则只需要４个字节。主键长度越小，普通索引的叶子节点就越小，普通索引占用的空间也就越小。</p>
+<p><strong>覆盖索引</strong></p>
+<p><img data-src="../../../../assets/img/ds224929.png" alt></p>
+<p>如果执行的语句是 select ID from T where k between 3 and 5，这时只需要查 ID 的值，而 ID 的值已经在 k 索引树上了，因此可以直接提供查询结果，不需要回表。</p>
+<p><strong>最左前缀原则</strong></p>
+<p><img data-src="../../../../assets/img/rrr225205.png" alt></p>
+<p>索引项是按照索引定义里面出现的字段顺序排序的。当查询所有名字是”张三”的人时，可以快速定位到ID4，然后向后遍历。</p>
+<p>不只是索引的全部定义，只要满足最左前缀，就可以利用索引来加速检索。这个最左前缀可以是联合索引的最左N个字段，也可以是字符串索引的最左M个字符。</p>
+<p>如果通过调整顺序，可以少维护一个索引，那么往往优先考虑这个顺序。</p>
+<p><strong>索引下推</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tuser <span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'张 %'</span> <span class="keyword">and</span> age=<span class="number">10</span> <span class="keyword">and</span> ismale=<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>MySQL5.6之前，只能从ID3开始一个个回表，到主键索引上找出数据行，再对比字段值。</p>
+<p>MySQL5.6之后引入索引下推优化，可以在索引遍历过程中，对索引中包含的字段先做判断，直接过滤掉不满足条件的数据，减少回表次数。</p>
+<p>无索引下推：回表4次</p>
+<p><img data-src="../../../../assets/img/625230314.png" alt></p>
+<p>有索引下推：在(name，age)索引内部就判断了age是否等于10，对于不等于10的记录，直接判断并跳过，只需回表2次。</p>
+<p><img data-src="../../../../assets/img/156230553.png" alt></p>
 
     </div>
 
