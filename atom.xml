@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://tonymua.top/"/>
-  <updated>2021-06-15T15:06:07.934Z</updated>
+  <updated>2021-06-20T13:48:51.466Z</updated>
   <id>http://tonymua.top/</id>
   
   <author>
@@ -15,6 +15,39 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>计算机网络</title>
+    <link href="http://tonymua.top/computernetwork/"/>
+    <id>http://tonymua.top/computernetwork/</id>
+    <published>2021-06-15T14:42:33.436Z</published>
+    <updated>2021-06-20T13:48:51.466Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="1-TCP-为什么握手是-3-次、挥手是-4-次？"><a href="#1-TCP-为什么握手是-3-次、挥手是-4-次？" class="headerlink" title="1.TCP 为什么握手是 3 次、挥手是 4 次？"></a>1.TCP 为什么握手是 3 次、挥手是 4 次？</h3><ul><li>如果一个Host主动向另一个Host发起连接，称为SYN，请求同步；</li><li>如果一个Host主动断开请求，称为FIN，请求完成；</li><li>如果一个Host给另一个Host发送数据，称为PSH，数据推送。</li></ul><a id="more"></a><img data-src="../assets/img/image-20210620162355901.png" alt="image-20210620162355901" style="zoom:67%;"><img data-src="../assets/img/image-20210620162420844.png" alt="image-20210620162420844" style="zoom:67%;"><p>TCP是一个双工协议，建立连接的时候，连接双方都需要向对方发送SYN和ACK。握手阶段没有繁琐的工作，因此一方向另一方发起同步(SYN)之后，另一方可以将自己的ACK和SYN打包作为一条消息回复，因此是3次握手。</p><p>挥手阶段，双方都可能有未完成的工作。收到挥手请求的一方，必须马上响应(ACK)，表示收到了挥手请求。最后等所有工作结束，再发送请求中断连接(FIN)，因此是4次挥手。</p><h3 id="2-TCP协议是如何恢复数据的顺序，TCP拆包和粘包的作用是什么？"><a href="#2-TCP协议是如何恢复数据的顺序，TCP拆包和粘包的作用是什么？" class="headerlink" title="2.TCP协议是如何恢复数据的顺序，TCP拆包和粘包的作用是什么？"></a>2.TCP协议是如何恢复数据的顺序，TCP拆包和粘包的作用是什么？</h3><p>TCP拆包：将任务拆分处理，降低整体任务出错的概率，以及减小底层网络处理的压力。拆包过程中需要保证数据经过网络传输，又能恢复到原始的顺序。TCP利用发送字节数(Sequence Number)和接收字节数(Acknowledgement Number)的唯一性来确定封包之间的顺序关系(无论是Seq还是ACK，都是针对对方而言的。是对方发送的数据和对方接受的数据)。粘包是为了防止数据量过小，导致大量的传输，而将多个TCP段合并成一个发送。</p><p><img data-src="../assets/img/image-20210620150902311.png" alt="image-20210620150902311.png"></p><h3 id="3-滑动窗口和流速控制"><a href="#3-滑动窗口和流速控制" class="headerlink" title="3.滑动窗口和流速控制"></a>3.滑动窗口和流速控制</h3><p>深绿色：已经收到了ACK的段    浅绿色：发送了，但是没有收到ACK的段    白色：没有发送的段    紫色：暂时不能发送的段。</p><ol><li><p>有两个封包到达，标记为绿色。</p><p><img data-src="../assets/img/image-20210620161423153.png" alt="image-20210620161423153"></p></li><li><p>滑动窗口可以向右滑动</p><p><img data-src="../assets/img/image-20210620161910667.png" alt></p></li></ol><p><strong>重传</strong></p><ol><li><p>如果部分数据没能收到ACK，如段4迟迟没有收到ACK。</p><p><img data-src="../assets/img/image-20210620162206747.png" alt="image-20210620162206747"></p></li><li><p>此时滑动窗口只能右移一个位置</p><p><img data-src="../assets/img/image-20210620162314291.png" alt="image-20210620162314291"></p><p>如果段4重传成功(接收到ACK)，那么窗口就会继续右移。如果段4发送失败，还是没能收到ACK，那么接收方也会抛弃段5、6、7。这样从段4开始之后的数据都需要重发。</p></li></ol><p><strong>快速重传</strong></p><p>例如段1、2、4到了，但是3没到。接收方可以发送多次3的ACK(不发段4的ACK)。如果发送方收到多个3的ACK，就会重发段3。这和超时重发不同，是一种催促机制，接收方希望催促发送方尽快补全某个TCP段。</p><p>实际操作中，每个TCP段的大小不同，限制数量会让接收方的缓冲区不好操作，因此实际操作中滑动窗口的大小单位是字节数。</p><p><strong>总结</strong></p><p>滑动窗口是TCP协议控制可靠性的核心。发送方将数据拆包，变成多个分组。然后将数据放入一个拥有滑动窗口的数组，依次发出，仍然遵循先入先出的顺序，但是窗口中的分组会一次性发送。窗口中序号最大的分组如果收到ACK，窗口就会发生滑动；如果有分组为收到ACK，则会滑动到该窗口。</p><p>在多次传输中，网络的平均延迟往往是相对固定的，这样TCP协议可以通过<strong>发送方和接收方协商窗口大小控制流速</strong>。</p><h3 id="4-TCP和UDP的区别"><a href="#4-TCP和UDP的区别" class="headerlink" title="4.TCP和UDP的区别"></a>4.TCP和UDP的区别</h3><p><strong>UDP</strong></p><p>UDP，目标是在传输层提供直接发送报文的能力。Datagram是数据传输的最小单位，UDP协议不会帮助拆分数据，它的目标只有一个，就是能发送报文。</p><p>UDP的可靠性仅仅就是通过Checksum保证。如果一个数据封包Datagram发生了数据损坏，UDP可以通过Checksum纠错或者修复。</p><p><strong>UDP与TCP的区别</strong></p><ol><li><p>目的差异</p><p>TCP：提供可靠的网络传输。</p><p>UDP：提供报文交换能力基础上尽可能的简化协议。</p></li><li><p>可靠性差异</p><p>TCP：可靠，收到的数据会进行排序。</p><p>UDP：不可靠，只管发送数据包。</p></li><li><p>连接vs无连接</p><p>TCP：面向连接，会有握手的过程，传输数据必须先建立连接。</p><p>UDP：无连接协议，数据随时都可以发送，只提供发送封包的能力。</p></li><li><p>流控技术</p><p>TCP在发送缓冲区中存储数据，并在接收缓冲区中接收数据，如果接收缓冲区已满，接收方无法处理更多数据，并将其丢弃。UDP没有提供类似的能力。</p></li><li><p>传输速度</p><p>UDP协议简化，封包小，没有连接、可靠性检查等，因此单纯从速度上讲，UDP更快。</p></li><li><p>理论上，任何一个用TCP协议构造的成熟应用层协议，都可以UDP重构。想要把网络优化到极致，就会用UDP作为底层技术，然后在UDP基础上解决可靠性。</p><p>TCP场景：</p><ul><li>远程控制(SSH)</li><li>File Transfer Protocol(FTP)</li><li>邮件(SMTP、IMAP等)</li><li>点对点文件传输(微信等)</li></ul><p>UDP场景</p><ul><li>网络游戏</li><li>音视频传输</li><li>DNS</li><li>ping</li><li>直播</li></ul><p>模糊地带</p><ul><li>HTTP(目前以TCP为主)</li><li>文件传输</li></ul></li></ol><p>TCP最核心的价值就是提供封装好的一套解决可靠性的优秀方案。UDP最核心的价值是灵活、轻量、传输速度快。场景不同选择不同。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;1-TCP-为什么握手是-3-次、挥手是-4-次？&quot;&gt;&lt;a href=&quot;#1-TCP-为什么握手是-3-次、挥手是-4-次？&quot; class=&quot;headerlink&quot; title=&quot;1.TCP 为什么握手是 3 次、挥手是 4 次？&quot;&gt;&lt;/a&gt;1.TCP 为什么握手是 3 次、挥手是 4 次？&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;如果一个Host主动向另一个Host发起连接，称为SYN，请求同步；&lt;/li&gt;
+&lt;li&gt;如果一个Host主动断开请求，称为FIN，请求完成；&lt;/li&gt;
+&lt;li&gt;如果一个Host给另一个Host发送数据，称为PSH，数据推送。&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+      <category term="计算机网络" scheme="http://tonymua.top/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+    
+      <category term="计算机网络" scheme="http://tonymua.top/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="HTTP" scheme="http://tonymua.top/tags/HTTP/"/>
+    
+      <category term="TCP" scheme="http://tonymua.top/tags/TCP/"/>
+    
+      <category term="UDP" scheme="http://tonymua.top/tags/UDP/"/>
+    
+  </entry>
   
   <entry>
     <title>MySQL</title>
@@ -472,37 +505,6 @@
     
     
       <category term="框架" scheme="http://tonymua.top/tags/%E6%A1%86%E6%9E%B6/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>SQL执行慢分析及SQL语句优化</title>
-    <link href="http://tonymua.top/31546/"/>
-    <id>http://tonymua.top/31546/</id>
-    <published>2021-05-08T13:19:59.176Z</published>
-    <updated>2020-04-29T02:44:37.936Z</updated>
-    
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="1-SQL语句执行速度慢"><a href="#1-SQL语句执行速度慢" class="headerlink" title="1.SQL语句执行速度慢"></a>1.SQL语句执行速度慢</h3><p>一个SQL语句执行的速度很慢, 分两种情况讨论:</p><ul><li><p>大多数情况下很正常, 偶尔很慢, 则有如下原因:</p><ol><li>数据库在刷新脏页</li><li>执行的时候, 遇到锁, 如表锁, 行锁</li></ol></li><li><p>一直执行很慢, 则有如下原因</p></li></ul><a id="more"></a><ol><li>没有用上索引: 例如该字段没有索引, 由于对字段进行运算, 函数操作导致无法使用索引<ol start="2"><li>数据库选错了索引</li></ol></li></ol><h3 id="2-SQL语句的优化"><a href="#2-SQL语句的优化" class="headerlink" title="2.SQL语句的优化"></a>2.SQL语句的优化</h3><ol><li><p>设置合适的字段属性</p><p> 字段的长度越小, 占用的内存越小, 性能就越好; 例如,中国的手机号码为11位, vachar的长度设置为11位即可</p></li><li><p>使用join语法</p><p>join语法分为内连接, 左(外)连接, 右(外)连接</p></li><li><p>尽量少使用select *</p><p>select *会进行全表查询, 消耗的性能较大</p></li><li><p>在查找唯一一条数据的时候, 使用limit 1, 在查找到数据的时候会终止查找</p></li><li><p>使用limit分页</p></li><li><p>尽量少使用排序order by, order by DESC, order by ASC</p></li><li><p>避免进行类型转换</p></li><li><p>使用索引</p><ul><li><p>优点: 加快索引速度</p></li><li><p>缺点: 创建索引和维护索引需要耗费时间和精力</p><p>​          索引需要占用空间</p><p>​          进行数据的增删改查时需要动态维护索引</p></li></ul></li></ol>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;1-SQL语句执行速度慢&quot;&gt;&lt;a href=&quot;#1-SQL语句执行速度慢&quot; class=&quot;headerlink&quot; title=&quot;1.SQL语句执行速度慢&quot;&gt;&lt;/a&gt;1.SQL语句执行速度慢&lt;/h3&gt;&lt;p&gt;一个SQL语句执行的速度很慢, 分两种情况讨论:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;大多数情况下很正常, 偶尔很慢, 则有如下原因:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;数据库在刷新脏页&lt;/li&gt;
-&lt;li&gt;执行的时候, 遇到锁, 如表锁, 行锁&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;一直执行很慢, 则有如下原因&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-    
-    </summary>
-    
-    
-    
-      <category term="面试" scheme="http://tonymua.top/tags/%E9%9D%A2%E8%AF%95/"/>
     
   </entry>
   
