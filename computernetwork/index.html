@@ -47,7 +47,7 @@
 <meta property="og:site_name" content="liuwy1998 BLOG">
 <meta property="og:description" content="1.TCP 为什么握手是 3 次、挥手是 4 次？ 如果一个Host主动向另一个Host发起连接，称为SYN，请求同步； 如果一个Host主动断开请求，称为FIN，请求完成； 如果一个Host给另一个Host发送数据，称为PSH，数据推送。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-06-20T13:48:51.466Z">
+<meta property="og:updated_time" content="2021-06-22T15:03:50.577Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="计算机网络">
 <meta name="twitter:description" content="1.TCP 为什么握手是 3 次、挥手是 4 次？ 如果一个Host主动向另一个Host发起连接，称为SYN，请求同步； 如果一个Host主动断开请求，称为FIN，请求完成； 如果一个Host给另一个Host发送数据，称为PSH，数据推送。">
@@ -280,11 +280,11 @@
 <p>TCP是一个双工协议，建立连接的时候，连接双方都需要向对方发送SYN和ACK。握手阶段没有繁琐的工作，因此一方向另一方发起同步(SYN)之后，另一方可以将自己的ACK和SYN打包作为一条消息回复，因此是3次握手。</p>
 <p>挥手阶段，双方都可能有未完成的工作。收到挥手请求的一方，必须马上响应(ACK)，表示收到了挥手请求。最后等所有工作结束，再发送请求中断连接(FIN)，因此是4次挥手。</p>
 <h3 id="2-TCP协议是如何恢复数据的顺序，TCP拆包和粘包的作用是什么？"><a href="#2-TCP协议是如何恢复数据的顺序，TCP拆包和粘包的作用是什么？" class="headerlink" title="2.TCP协议是如何恢复数据的顺序，TCP拆包和粘包的作用是什么？"></a>2.TCP协议是如何恢复数据的顺序，TCP拆包和粘包的作用是什么？</h3><p>TCP拆包：将任务拆分处理，降低整体任务出错的概率，以及减小底层网络处理的压力。拆包过程中需要保证数据经过网络传输，又能恢复到原始的顺序。TCP利用发送字节数(Sequence Number)和接收字节数(Acknowledgement Number)的唯一性来确定封包之间的顺序关系(无论是Seq还是ACK，都是针对对方而言的。是对方发送的数据和对方接受的数据)。粘包是为了防止数据量过小，导致大量的传输，而将多个TCP段合并成一个发送。</p>
-<p><img data-src="../assets/img/image-20210620150902311.png" alt="image-20210620150902311.png"></p>
+<p><img data-src="../assets/img/image-20210620150902311.png" alt></p>
 <h3 id="3-滑动窗口和流速控制"><a href="#3-滑动窗口和流速控制" class="headerlink" title="3.滑动窗口和流速控制"></a>3.滑动窗口和流速控制</h3><p>深绿色：已经收到了ACK的段    浅绿色：发送了，但是没有收到ACK的段    白色：没有发送的段    紫色：暂时不能发送的段。</p>
 <ol>
 <li><p>有两个封包到达，标记为绿色。</p>
-<p><img data-src="../assets/img/image-20210620161423153.png" alt="image-20210620161423153"></p>
+<p><img data-src="../assets/img/image-20210620161423153.png" alt></p>
 </li>
 <li><p>滑动窗口可以向右滑动</p>
 <p><img data-src="../assets/img/image-20210620161910667.png" alt></p>
@@ -293,10 +293,10 @@
 <p><strong>重传</strong></p>
 <ol>
 <li><p>如果部分数据没能收到ACK，如段4迟迟没有收到ACK。</p>
-<p><img data-src="../assets/img/image-20210620162206747.png" alt="image-20210620162206747"></p>
+<p><img data-src="../assets/img/image-20210620162206747.png" alt></p>
 </li>
 <li><p>此时滑动窗口只能右移一个位置</p>
-<p><img data-src="../assets/img/image-20210620162314291.png" alt="image-20210620162314291"></p>
+<p><img data-src="../assets/img/image-20210620162314291.png" alt></p>
 <p>如果段4重传成功(接收到ACK)，那么窗口就会继续右移。如果段4发送失败，还是没能收到ACK，那么接收方也会抛弃段5、6、7。这样从段4开始之后的数据都需要重发。</p>
 </li>
 </ol>
@@ -353,6 +353,57 @@
 </li>
 </ol>
 <p>TCP最核心的价值就是提供封装好的一套解决可靠性的优秀方案。UDP最核心的价值是灵活、轻量、传输速度快。场景不同选择不同。</p>
+<h3 id="5-IPv4"><a href="#5-IPv4" class="headerlink" title="5.IPv4"></a>5.IPv4</h3><p>IP协议自身不能不能保证可靠性(数据无损的到达目的地)。</p>
+<p>IP协议接收IP协议上方的Host-To-Host协议传来的数据，然后进行拆分，这个能力叫做分片。然后IP协议为每个片段增加一个IP头，组成一个IP封包。之后，IP协议调用底层的局域网(数据链路层)传送数据。最后IP协议通过寻址和路由最终将封包送达目的地。</p>
+<p>延迟：指1bit数据从网络的一个终端传送到另一个终端需要的时间。<br>吞吐量：单位时间内可以传输的平均数据量。如bit/s(bps)。<br>丢包率：指发出去的封包没有到达目的地的比例。</p>
+<p><strong>IPv4地址</strong><br>4个8喂排列而成，总共可以编址43亿个地址。<br>如103.16.3.1</p>
+<p><img data-src="../assets/img/23223038.png" alt></p>
+<p><strong>寻址与路由的区别</strong></p>
+<p>寻址就是通过地址找设备，比如根据地址找到一个公寓。在 IPv4 协议中，寻址找到的是一个设备所在的位置。路由的本质是路径的选择，就好像知道地址，但是到了每个十字路口，还需要选择具体的路径。</p>
+<p>所以，要做路由，就必须理解地址，也就是借助寻址的能力。找到最终的设备又要借助路由在每个节点选择数据传输的线路。因此，路由和寻址相辅相成。</p>
+<h3 id="6-IPv6"><a href="#6-IPv6" class="headerlink" title="6.IPv6"></a>6.IPv6</h3><p><strong>相似点</strong></p>
+<p>工作原理与IPv4类似，分成切片、增加封包头、路由(寻址)几个阶段。</p>
+<p><strong>不同点</strong></p>
+<ul>
+<li><p>IPv6地址</p>
+<p>IPv4的地址是4个8位，总共32位，如103.28.7.35，每一个是8位，用0-255的数字表示；IPv6的地址是8个16位，总共128位，如0123:4567:89ab:cdef:0123:4567:89ab:cdef，通常用16进制表示。</p>
+</li>
+<li><p>IPv6的寻址</p>
+<ul>
+<li><p>全局单播</p>
+<p>将消息从一个设备传到另一个设备，和IPv4的发送/接收数据大同小异。IPv6地址太多，因此不需要子网掩码，而是直接将IPv6的地址分区即可。</p>
+</li>
+<li><p>本地单播</p>
+<p>在局域网中，实现设备到设备的通信。本地单播必须以fe80开头，类似IPv4中以127开头。</p>
+</li>
+<li><p>分组多播</p>
+<p>将消息发送给多个接收者。</p>
+</li>
+<li><p>任意播</p>
+<p>将消息发送给多个接收方，并选择一条最优的路径。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>IPv6和IPv4的兼容</strong></p>
+<ul>
+<li><p>一个IPv6的客户端想访问IPv4的服务器</p>
+<p><img data-src="../assets/img/gfgfdg225213.png" alt></p>
+<ol>
+<li>客户端通过DNS64服务器查询AAAA记录。(DNS64：一种解决IPv4和IPv6兼容问题的DNS服务，会把IPv4和IPv6地址同时返回)</li>
+<li>DNS64服务器返回含IPv4地址的AAAA记录。</li>
+<li>客户端将对应的IPv4地址请求发送给一个NAT64路由器。</li>
+<li>NAT64路由器将IPv6地址转换为IPv4地址，从而访问IPv4网络，并收集结果。</li>
+<li>消息返回客户端。</li>
+</ol>
+</li>
+<li><p>两个IPv6网络被IPv4隔离</p>
+<p><img data-src="../assets/img/iij225838.png" alt></p>
+<p>隧道的本质就是在两个IPv6的网络出口网关处，实现一段地址转换的程序。</p>
+</li>
+</ul>
+<p><strong>Tunnel是什么？</strong></p>
+<p>Tunnel就是隧道，两个网络，用隧道连接，位于两个网络中的设备通信，都可以使用这个隧道。隧道是两个网络间用程序定义的一种通道。具体来说，如果两个IPv6网络被IPv4分隔开，那么两个IPv6网络的出口处(和IPv4的网关处)就可以用程序(或硬件)实现一个隧道，方便两个网络中设备的通信。</p>
 
     </div>
 
@@ -457,7 +508,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-TCP-为什么握手是-3-次、挥手是-4-次？"><span class="nav-text">1.TCP 为什么握手是 3 次、挥手是 4 次？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-TCP协议是如何恢复数据的顺序，TCP拆包和粘包的作用是什么？"><span class="nav-text">2.TCP协议是如何恢复数据的顺序，TCP拆包和粘包的作用是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-滑动窗口和流速控制"><span class="nav-text">3.滑动窗口和流速控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-TCP和UDP的区别"><span class="nav-text">4.TCP和UDP的区别</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-TCP-为什么握手是-3-次、挥手是-4-次？"><span class="nav-text">1.TCP 为什么握手是 3 次、挥手是 4 次？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-TCP协议是如何恢复数据的顺序，TCP拆包和粘包的作用是什么？"><span class="nav-text">2.TCP协议是如何恢复数据的顺序，TCP拆包和粘包的作用是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-滑动窗口和流速控制"><span class="nav-text">3.滑动窗口和流速控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-TCP和UDP的区别"><span class="nav-text">4.TCP和UDP的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-IPv4"><span class="nav-text">5.IPv4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-IPv6"><span class="nav-text">6.IPv6</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
