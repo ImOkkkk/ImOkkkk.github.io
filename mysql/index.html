@@ -47,7 +47,7 @@
 <meta property="og:site_name" content="liuwy1998 BLOG">
 <meta property="og:description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-06-28T15:06:05.043Z">
+<meta property="og:updated_time" content="2021-06-29T14:58:59.905Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL">
 <meta name="twitter:description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
@@ -495,6 +495,33 @@
 <p>虽然名字叫做change buffer，实际上它是可以持久化的数据，change buffer在内存中有拷贝，也会被写入磁盘中。</p>
 <p>将change buffer中操作应用到原数据页，得到最新结果的过程称为merge。除了访问这个数据页会触发merge外，系统有后台线程会定期merge。在数据库正常关闭(shutdown)的过程中，也会执行merge操作。</p>
 <p>对于唯一索引，比如插入(4,400)这个记录，需要先判断表中是否存在k=4的记录，而这必须要将数据页读入到内存才能判断。如果已经读入内存了，直接更新内存即可，没必要再使用change buffer。因此，唯一索引的更新不能使用change buffer。</p>
+<p>innodb_change_buffer_max_size: 50    表示change buffer的大小最多只能占用buffer pool的50%。</p>
+<p>插入(4,400)：</p>
+<ul>
+<li>更新的目标页在内存中<ul>
+<li>唯一索引：找到3和5之间的位置，判断没有冲突，插入值。</li>
+<li>普通索引：找到3和5之间的位置，插入值。</li>
+</ul>
+</li>
+<li>更新的目标页不在内存中<ul>
+<li>唯一索引：将数据页读入内存，判断没有冲突，插入值。</li>
+<li>普通索引：将更新记录在change buffer。</li>
+</ul>
+</li>
+</ul>
+<p><strong>change buffer的使用场景</strong><br>因为merge的时候是真正进行数据更新的时刻，而change buffer的主要目的就是将记录的变更动作缓存下来，所以在一个数据页做merge之前，change buffer记录的变更越多，收益越大。即适合于<strong>写多读少</strong>的场景。</p>
+<p><strong>change buffer和redo log</strong><br>insert into t(id,k) values (id1,k1)(id2,k2);<br>假设当前 k 索引树的状态，查找到位置后，k1 所在的数据页在内存 (InnoDB<br>buffer pool) 中，k2 所在的数据页不在内存中。</p>
+<ol>
+<li>Page1在内存中，直接更新内存。</li>
+<li>Page2不在内存中，将更新记录在change buffer。</li>
+<li>将上述两个动作记录在redo log。</li>
+</ol>
+<p>select * from t where k in (k1, k2)</p>
+<ol>
+<li>读Page1时，直接从内存返回。</li>
+<li>读Page2时，需要把Page2从磁盘读入内存，然后应用change buffer里的操作记录，生成一个正确的版本并返回结果。</li>
+</ol>
+<p>redo log主要节省的是随机写磁盘的IO消耗(转为顺序写)，而change buffer主要节省的是随机读磁盘的IO消耗。</p>
 
     </div>
 
