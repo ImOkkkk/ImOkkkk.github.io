@@ -47,7 +47,7 @@
 <meta property="og:site_name" content="liuwy1998 BLOG">
 <meta property="og:description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-06-29T14:58:59.905Z">
+<meta property="og:updated_time" content="2021-07-05T14:11:49.245Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL">
 <meta name="twitter:description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
@@ -522,6 +522,27 @@
 <li>读Page2时，需要把Page2从磁盘读入内存，然后应用change buffer里的操作记录，生成一个正确的版本并返回结果。</li>
 </ol>
 <p>redo log主要节省的是随机写磁盘的IO消耗(转为顺序写)，而change buffer主要节省的是随机读磁盘的IO消耗。</p>
+<h4 id="1-9-MySQL为什么有的时候会选错索引？"><a href="#1-9-MySQL为什么有的时候会选错索引？" class="headerlink" title="1.9 MySQL为什么有的时候会选错索引？"></a>1.9 MySQL为什么有的时候会选错索引？</h4><p><strong>优化器的逻辑</strong></p>
+<p>扫描行数、是否使用临时表、是否排序等因素。</p>
+<p>一个索引上不同的值越多(基数)，这个索引的区分度就越好。</p>
+<p><strong>MySQL是怎样得到索引的基数的？</strong></p>
+<p>采样统计：InnoDB默认会选择N个数据页，统计这些页面上的不同值，得到一个平均值，然后乘以这个索引的页面数，就得到这个索引的基数。而数据表是会持续更新的，索引统计信息也需要同步改变。所以，当变更的数据行超过1/M的时候，会自动触发重新做一次索引统计。</p>
+<p>innodb_stats_persistent:<br>on：统计信息会持久存储，默认N是20，M是10。<br>off：统计信息只存储在内存中，默认N是8，M是16。</p>
+<p>analyze table t：重新统计索引信息</p>
+<p><strong>索引选择异常和处理</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t <span class="keyword">where</span> a <span class="keyword">between</span> <span class="number">1</span> <span class="keyword">and</span> <span class="number">1000</span> <span class="keyword">and</span> b betwwen <span class="number">50000</span> <span class="keyword">and</span> <span class="number">100000</span> <span class="keyword">order</span> <span class="keyword">by</span> b <span class="keyword">limit</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>采用force index强行选择一个索引</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t <span class="keyword">force</span> <span class="keyword">index</span>(a) <span class="keyword">where</span> a <span class="keyword">between</span> <span class="number">1</span> <span class="keyword">and</span> <span class="number">1000</span> <span class="keyword">and</span> b <span class="keyword">between</span> <span class="number">50000</span> <span class="keyword">and</span> <span class="number">100000</span> <span class="keyword">order</span> <span class="keyword">by</span> b <span class="keyword">limit</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改语句，引导MySQL使用期望的索引</p>
+<p>“order by b limit 1”改成”order by b,a limit 1”，语义逻辑相同。之前优化器选择索引b，因为它认为使用索引b可以避免排序(b本身就是索引，不需要再次进行排序，只需要遍历)，所以即使扫描行数多，也判定为代价更小。”order by b,a”，意味着使用这两个索引都需要排序，因此，扫描行数成了影响索引选择的主要条件，于是，此时优化器选择了只需要扫描1000行的索引a。</p>
+<p>但这种优化方法并不通用。</p>
+</li>
+<li><p>新建一个更合适的索引，来提供给优化器做选择，或者删除掉误用的索引</p>
+</li>
+</ol>
 
     </div>
 
@@ -627,7 +648,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-基础篇"><span class="nav-text">1.基础篇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-一条SQL查询语句是如何执行的？"><span class="nav-text">1.1 一条SQL查询语句是如何执行的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-日志系统：一条SQL更新语句是如何执行的"><span class="nav-text">1.2 日志系统：一条SQL更新语句是如何执行的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-事务隔离"><span class="nav-text">1.3 事务隔离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-索引"><span class="nav-text">1.4 索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-全局锁和表锁"><span class="nav-text">1.5 全局锁和表锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-行锁"><span class="nav-text">1.6 行锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-事务到底是隔离的还是不隔离的？"><span class="nav-text">1.7 事务到底是隔离的还是不隔离的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-8-普通索引和唯一索引该如何选择？"><span class="nav-text">1.8 普通索引和唯一索引该如何选择？</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-基础篇"><span class="nav-text">1.基础篇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-一条SQL查询语句是如何执行的？"><span class="nav-text">1.1 一条SQL查询语句是如何执行的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-日志系统：一条SQL更新语句是如何执行的"><span class="nav-text">1.2 日志系统：一条SQL更新语句是如何执行的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-事务隔离"><span class="nav-text">1.3 事务隔离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-索引"><span class="nav-text">1.4 索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-全局锁和表锁"><span class="nav-text">1.5 全局锁和表锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-行锁"><span class="nav-text">1.6 行锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-事务到底是隔离的还是不隔离的？"><span class="nav-text">1.7 事务到底是隔离的还是不隔离的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-8-普通索引和唯一索引该如何选择？"><span class="nav-text">1.8 普通索引和唯一索引该如何选择？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-9-MySQL为什么有的时候会选错索引？"><span class="nav-text">1.9 MySQL为什么有的时候会选错索引？</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
