@@ -47,7 +47,7 @@
 <meta property="og:site_name" content="liuwy1998 BLOG">
 <meta property="og:description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-07-06T14:51:00.407Z">
+<meta property="og:updated_time" content="2021-07-08T14:50:42.625Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL">
 <meta name="twitter:description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
@@ -578,6 +578,35 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(ditstinct <span class="keyword">left</span>(emial,<span class="number">4</span>)) <span class="keyword">as</span> L4,<span class="keyword">count</span>(ditstinct <span class="keyword">left</span>(emial,<span class="number">5</span>)) <span class="keyword">as</span> L5,<span class="keyword">count</span>(ditstinct <span class="keyword">left</span>(emial,<span class="number">6</span>)) <span class="keyword">as</span> L6,<span class="keyword">count</span>(ditstinct <span class="keyword">left</span>(emial,<span class="number">7</span>)) <span class="keyword">as</span> L7 <span class="keyword">from</span> SUser</span><br></pre></td></tr></table></figure>
 
 <p>使用前缀索引很可能损失区分度，所以需要预先设定一个可以接收的损失比例，比如 5%。然后，在返回的 L4~L7 中，找出不小于 L * 95% 的值，假设这里 L6、L7都满足，你就可以选择前缀长度为 6。</p>
+<p><strong>前缀索引对覆盖索引的影响</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span>,email <span class="keyword">from</span> SUser <span class="keyword">where</span> email=<span class="string">'zhangssxyz@xxx.com’;</span></span><br></pre></td></tr></table></figure>
+
+<p>与前面例子中的SQL语句相比，这个语句只要求返回id和email字段。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span>,<span class="keyword">name</span>,email <span class="keyword">from</span> SUser <span class="keyword">where</span> email=<span class="string">'zhangssxyz@xxx.com’;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果使用index1(即email整个字符串的索引结构)的话，可以利用覆盖索引，从index1查到结果后直接就返回了，不需要回表；而如果使用index2(即email(6)索引结构)的话，就不得不回到ID索引再去判断email的值。</p>
+<p>即使将index2的定义修改为email(18)的前缀索引，这时候虽然index2已经包含了所有的信息，但InnoDB还是要回到id索引再查一下，因为系统并不确定前缀索引的定义是否截断了完整信息。</p>
+<p><strong>其他方式</strong></p>
+<ol>
+<li><p>使用倒序存储</p>
+<p>如果存储身份证号的时候把它倒过来存，每次查询的时候，可以这样写：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> field_list <span class="keyword">from</span> t <span class="keyword">where</span> id_card = <span class="keyword">reverse</span>(<span class="string">'input_id_card_string'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用hash字段</p>
+<p>可以在表上再创建一个整数字段，来保存身份证的校验码，同时在这个字段上创建索引。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> t <span class="keyword">add</span> id_card_crc <span class="built_in">int</span> <span class="keyword">unsigned</span>, <span class="keyword">add</span> <span class="keyword">index</span>(id_card_crc)</span><br></pre></td></tr></table></figure>
+
+<p>每次插入新记录的时候，都同时用crc32()这个函数得到校验码填到这个新字段。由于校验码可能会冲突，所以查询语句where部分要判断id_card的值是否精确相同。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> field_list <span class="keyword">from</span> t <span class="keyword">where</span> id_card_crc=<span class="keyword">crc32</span>(<span class="string">'input_id_card_string'</span>) <span class="keyword">and</span> id_card=<span class="string">'input_id_card_string'</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p><strong>使用倒序存储和使用 hash 字段的异同点</strong></p>
+<ol>
+<li>倒叙存储方式在主键索引上，不会消耗额外的存储空间，而hash字段方法需要增加一个字段。</li>
+<li>倒序方式每次写和读的时候，都需要额外调一次reverse函数，而hash字段需要额外调一次crc32()函数，单纯从计算复杂度来看，reverse函数额外消耗的CPU资源会更小。</li>
+<li>hash字段方式的查询性能相对更加稳定，因为crc32()算出来的值虽然有冲突的概率，但概率非常小，可以认为每次查询平均扫描行数接近1，而倒序存储方式毕竟还是前缀索引的方式，即还是会增加扫描行数。</li>
+</ol>
 
     </div>
 
