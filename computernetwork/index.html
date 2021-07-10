@@ -47,7 +47,7 @@
 <meta property="og:site_name" content="liuwy1998 BLOG">
 <meta property="og:description" content="1.TCP 为什么握手是 3 次、挥手是 4 次？ 如果一个Host主动向另一个Host发起连接，称为SYN，请求同步； 如果一个Host主动断开请求，称为FIN，请求完成； 如果一个Host给另一个Host发送数据，称为PSH，数据推送。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-06-28T14:36:23.505Z">
+<meta property="og:updated_time" content="2021-07-10T14:10:32.525Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="计算机网络">
 <meta name="twitter:description" content="1.TCP 为什么握手是 3 次、挥手是 4 次？ 如果一个Host主动向另一个Host发起连接，称为SYN，请求同步； 如果一个Host主动断开请求，称为FIN，请求完成； 如果一个Host给另一个Host发送数据，称为PSH，数据推送。">
@@ -404,8 +404,40 @@
 </ul>
 <p><strong>Tunnel是什么？</strong></p>
 <p>Tunnel就是隧道，两个网络，用隧道连接，位于两个网络中的设备通信，都可以使用这个隧道。隧道是两个网络间用程序定义的一种通道。具体来说，如果两个IPv6网络被IPv4分隔开，那么两个IPv6网络的出口处(和IPv4的网关处)就可以用程序(或硬件)实现一个隧道，方便两个网络中设备的通信。</p>
-<h3 id="7-常见问题"><a href="#7-常见问题" class="headerlink" title="7.常见问题"></a>7.常见问题</h3><h4 id="7-1-一台内存8G左右的服务器，理论上可以同时维护多少个连接？"><a href="#7-1-一台内存8G左右的服务器，理论上可以同时维护多少个连接？" class="headerlink" title="7.1 一台内存8G左右的服务器，理论上可以同时维护多少个连接？"></a>7.1 一台内存8G左右的服务器，理论上可以同时维护多少个连接？</h4><p>TCP连接上限受限于机器的内存，假设一个TCP连接需要占用的最小内存是8k(发送、接收缓存各4k，当然还要考虑socket描述符等)，那么最大连接数为：8 * 1024 * 1024 / 8 = 1048576个，即约为100w个TCP长连接。<br>但是如果单机建立太多的连接，会报<code>Cant assign requested address</code>的异常，这是因为客户端连接服务端时，操作系统要为每个客户端分配一个端口号，端口号会更快用尽。</p>
-<h4 id="7-2-127-0-0-1，localhost，0-0-0-0-有什么不同？"><a href="#7-2-127-0-0-1，localhost，0-0-0-0-有什么不同？" class="headerlink" title="7.2 127.0.0.1，localhost，0.0.0.0 有什么不同？"></a>7.2 127.0.0.1，localhost，0.0.0.0 有什么不同？</h4><p>127.0.0.1：本地回环地址，发送到loopback上的数据会被转发到本地应用。</p>
+<h3 id="7-BIO、NIO和AIO有什么区别？"><a href="#7-BIO、NIO和AIO有什么区别？" class="headerlink" title="7.BIO、NIO和AIO有什么区别？"></a>7.BIO、NIO和AIO有什么区别？</h3><p>BIO接口设计会直接导致当前线程阻塞。NIO的设计不会触发当前线程的阻塞。AIO为I/O提供了异步的能力，也就是将I/o的响应程序放到一个独立的时间线上去执行。但是通常AIO的提供者还会提供异步编程模型，就是实现一种对异步计算封装的数据结构，并且将异步计算同步回主线的能力。</p>
+<p>通常情况下，这3种API都会伴随I/O多路复用。如果底层用红黑树管理注册的文件描述符和事件，可以在很小的开销内由内核将I/O消息发送给指定的线程。另外，还可以使用DMA、内存映射等方式优化I/O。</p>
+<h3 id="8-怎样实现RPC框架？"><a href="#8-怎样实现RPC框架？" class="headerlink" title="8.怎样实现RPC框架？"></a>8.怎样实现RPC框架？</h3><ol>
+<li><p>调用约定和命名</p>
+<p>远程调用一个函数，命名空间+类名+方法名    IP、端口</p>
+</li>
+<li><p>注册和发现</p>
+<p>调用的时候，需要根据字符串(命名)去获取IP和端口(机器和服务)</p>
+<ul>
+<li><p>Redis hash</p>
+<p>注册：上线一个服务时，用Redis的hash对象存储它和它对应的IP地址+端口列表。</p>
+<p>发现：根据RPC服务的名称(命名空间+类名+方法名)查找到提供服务的IP + 端口清单并指定某个 IP + 端口(提供服务)</p>
+<p>不足：所有RPC调用着都去Redis查询，压力较大，增加缓存，缓存和注册表之间数据不一致。</p>
+</li>
+<li><p>Zookeeper提供订阅，让RPC调用者订阅到服务地址的变更，及时更新自己的缓存。</p>
+</li>
+</ul>
+</li>
+<li><p>多路复用</p>
+<p>提升吞吐量：1.顺序传输  2.切片传输。</p>
+</li>
+<li><p>负载均衡</p>
+<p>负载均衡可以看作发现模块的一个子组件，请求到达RPC的网关(或某个路由程序)后，发现组件会提供服务对应的所有实例(IP+端口)，然后负载均衡算法会指定其中一个响应请求。</p>
+</li>
+<li><p>可用性和容灾</p>
+<ul>
+<li>当一个服务实例崩溃的时候，发现模块及时从注册表中删除这个服务实例。</li>
+<li>注册表和RPC调用者之间存在不一致现象，而且注册表的更新本身也可能滞后。如确认一个服务有没有崩溃，可能需要一个心跳程序持续请求这个服务，调用到一个不存在或崩溃的服务，需要自己重新发现组件申请新的服务实例(地址+端口)。</li>
+<li>临时访问量剧增，需要扩容的场景，上线更多的容器，并且去注册。</li>
+</ul>
+</li>
+</ol>
+<h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><h4 id="1-一台内存8G左右的服务器，理论上可以同时维护多少个连接？"><a href="#1-一台内存8G左右的服务器，理论上可以同时维护多少个连接？" class="headerlink" title="1.一台内存8G左右的服务器，理论上可以同时维护多少个连接？"></a>1.一台内存8G左右的服务器，理论上可以同时维护多少个连接？</h4><p>TCP连接上限受限于机器的内存，假设一个TCP连接需要占用的最小内存是8k(发送、接收缓存各4k，当然还要考虑socket描述符等)，那么最大连接数为：8 * 1024 * 1024 / 8 = 1048576个，即约为100w个TCP长连接。<br>但是如果单机建立太多的连接，会报<code>Cant assign requested address</code>的异常，这是因为客户端连接服务端时，操作系统要为每个客户端分配一个端口号，端口号会更快用尽。</p>
+<h4 id="2-127-0-0-1，localhost，0-0-0-0-有什么不同？"><a href="#2-127-0-0-1，localhost，0-0-0-0-有什么不同？" class="headerlink" title="2.127.0.0.1，localhost，0.0.0.0 有什么不同？"></a>2.127.0.0.1，localhost，0.0.0.0 有什么不同？</h4><p>127.0.0.1：本地回环地址，发送到loopback上的数据会被转发到本地应用。</p>
 <p>localhost：指代本地计算机，用于访问绑定在loopback上的服务。localhost是一个主机名，不仅可以指向IPv4的本地回环地址，也可以指向IPv6的本地回环地址[::1]。</p>
 <p>0.0.0.0：一个特殊的目的IP地址，称作不可路由IP地址，它的用途会被特殊规定。通常情况下，当把一个服务绑定到0.0.0.0，相当于把服务绑定到任意的IP地址。比如一台服务器上有多个网卡，不同网卡连接不同的网络，如果服务绑定到0.0.0.0就可以保证服务在多个IP地址上都可以用。</p>
 
@@ -512,7 +544,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-TCP-为什么握手是-3-次、挥手是-4-次？"><span class="nav-text">1.TCP 为什么握手是 3 次、挥手是 4 次？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-TCP协议是如何恢复数据的顺序，TCP拆包和粘包的作用是什么？"><span class="nav-text">2.TCP协议是如何恢复数据的顺序，TCP拆包和粘包的作用是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-滑动窗口和流速控制"><span class="nav-text">3.滑动窗口和流速控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-TCP和UDP的区别"><span class="nav-text">4.TCP和UDP的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-IPv4"><span class="nav-text">5.IPv4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-IPv6"><span class="nav-text">6.IPv6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-常见问题"><span class="nav-text">7.常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-1-一台内存8G左右的服务器，理论上可以同时维护多少个连接？"><span class="nav-text">7.1 一台内存8G左右的服务器，理论上可以同时维护多少个连接？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-127-0-0-1，localhost，0-0-0-0-有什么不同？"><span class="nav-text">7.2 127.0.0.1，localhost，0.0.0.0 有什么不同？</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-TCP-为什么握手是-3-次、挥手是-4-次？"><span class="nav-text">1.TCP 为什么握手是 3 次、挥手是 4 次？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-TCP协议是如何恢复数据的顺序，TCP拆包和粘包的作用是什么？"><span class="nav-text">2.TCP协议是如何恢复数据的顺序，TCP拆包和粘包的作用是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-滑动窗口和流速控制"><span class="nav-text">3.滑动窗口和流速控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-TCP和UDP的区别"><span class="nav-text">4.TCP和UDP的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-IPv4"><span class="nav-text">5.IPv4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-IPv6"><span class="nav-text">6.IPv6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-BIO、NIO和AIO有什么区别？"><span class="nav-text">7.BIO、NIO和AIO有什么区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-怎样实现RPC框架？"><span class="nav-text">8.怎样实现RPC框架？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见问题"><span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-一台内存8G左右的服务器，理论上可以同时维护多少个连接？"><span class="nav-text">1.一台内存8G左右的服务器，理论上可以同时维护多少个连接？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-127-0-0-1，localhost，0-0-0-0-有什么不同？"><span class="nav-text">2.127.0.0.1，localhost，0.0.0.0 有什么不同？</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
