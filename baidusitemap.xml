@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://tonymua.top/mysql/</loc>
+    <lastmod>2021-07-11</lastmod>
+  </url>  <url>
     <loc>http://tonymua.top/computernetwork/</loc>
     <lastmod>2021-07-10</lastmod>
-  </url>  <url>
-    <loc>http://tonymua.top/mysql/</loc>
-    <lastmod>2021-07-08</lastmod>
   </url>  <url>
     <loc>http://tonymua.top/multithreading/</loc>
     <lastmod>2021-06-13</lastmod>
