@@ -47,7 +47,7 @@
 <meta property="og:site_name" content="liuwy1998 BLOG">
 <meta property="og:description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-07-13T14:56:08.161Z">
+<meta property="og:updated_time" content="2021-07-17T07:24:13.090Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL">
 <meta name="twitter:description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
@@ -709,6 +709,59 @@
 </li>
 </ul>
 <p>效率：count(字段)&lt;count(主键id)&lt;count(1)≈count(*)</p>
+<h4 id="2-7-“order-by”是如何工作的？"><a href="#2-7-“order-by”是如何工作的？" class="headerlink" title="2.7 “order by”是如何工作的？"></a>2.7 “order by”是如何工作的？</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`t`</span> (</span><br><span class="line"><span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line"><span class="string">`city`</span> <span class="built_in">varchar</span>(<span class="number">16</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line"><span class="string">`name`</span> <span class="built_in">varchar</span>(<span class="number">16</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line"><span class="string">`age`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line"><span class="string">`addr`</span> <span class="built_in">varchar</span>(<span class="number">128</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</span><br><span class="line"><span class="keyword">KEY</span> <span class="string">`city`</span> (<span class="string">`city`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> city,<span class="keyword">name</span>,age <span class="keyword">from</span> t <span class="keyword">where</span> city=<span class="string">'杭州'</span> <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">name</span> <span class="keyword">limit</span> <span class="number">1000</span>;</span><br></pre></td></tr></table></figure>
+
+<p> <strong>全字段排序</strong><img data-src="../assets/img/image-20210714220341145.png" alt></p>
+<p>Extra：”Using filesort”表示需要排序，MySQL会给每个线程分配一块内存用于排序，称为sort_buffer。</p>
+<p><img data-src="../assets/img/220736.png" alt></p>
+<ol>
+<li>初始化sort_buffer，确定放入name、city、age三个字段；</li>
+<li>从索引city找到第一个满足city=’杭州’条件的主键id，即图中的ID_X；</li>
+<li>到主键id索引取出整行，取name、city、age三个字段的值，存入sort_buffer中；</li>
+<li>从索引city取下一个记录的主键id；</li>
+<li>重复步骤3、4直到city的值不满足查询条件为止，对应的主键id也就是图中的ID_Y；</li>
+<li>对sort_buffer中的数据按照字段name快速排序；</li>
+<li>按照排序结果取前1000行返回给客户端。</li>
+</ol>
+<p>sort_buffer_size：MySQl为排序开辟的内存的大小。如果要排序的数据量小于sort_buffer_size，排序就在内存中完成，否则利用磁盘临时文件辅助排序(外部排序。</p>
+<p>外部排序一般使用归并算法，即将要排序的数据分成12份，每一份单独排序后，将这12个有序文件再合并成一个有序的大文件。如果sort_buffer_size超过了需要排序的数据量的大小，number_of_tmp_files就是0，sort_buffer_size越小，需要分成的份数越多，number_of_tmp_files的值就越大。</p>
+<p>只对原表的数据读了一遍，剩下的操作都是在sort_buffer或临时文件中执行，但如果要查询返回的字段特别多，则需要分成很多临时文件，排序性能很差。</p>
+<p><strong>rowid排序</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> max_length_for_sort_data = <span class="number">16</span></span><br></pre></td></tr></table></figure>
+
+<p>如果单行的长度超过这个值，MySQL就认为单行太大，需要换个算法(city、name、age这3个字段的定义总长度36)。新的算法放入sort_buffer的字段，只要排序的列(即name字段)和主键id。</p>
+<ol>
+<li>初始化sort_buffer，确定放入两个字段，即name和id；</li>
+<li>从索引city找到第一个满足city=’杭州’条件的主键id，即图中的ID_X；</li>
+<li>到主键id索引取出整行，取name、id字段，存入sort_buffer中；</li>
+<li>从索引city取下一个记录的主键id；</li>
+<li>重复步骤3、4直到city的值不满足查询条件为止，对应的主键id也就是图中的ID_Y；</li>
+<li>对sort_buffer中的数据按照字段name快速排序；</li>
+<li>遍历排序结果，取前1000行，并按照id的值回到原表取出city、name和age三个字段返回给客户端。</li>
+</ol>
+<p>rowid多访问了一次表t的主键索引，即步骤7。</p>
+<p><strong>如果内存够，就要多利用内存，尽量减少磁盘访问。</strong></p>
+<p>MySQL之所以要生成临时表并且在临时表上做排序操作，是因为原来的数据都是无序的。</p>
+<p><strong>联合索引</strong></p>
+<p>如在这张表上创建一个city和name的联合索引：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> t <span class="keyword">add</span> <span class="keyword">index</span> city_user(city,<span class="keyword">name</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="../assets/img/ds50223.png" alt></p>
+<ol>
+<li>从索引(city,name)找到第一个满足city=’杭州’条件的主键id；</li>
+<li>到主键id索引取出整行，取name、city、age三个字段的值，作为结果集的一部分直接返回；</li>
+<li>从索引(city,name)取下一个记录主键id；</li>
+<li>重复步骤2、3，直到查到第1000条记录，或者是不满足city=’杭州’时循环结束。</li>
+</ol>
+<p><strong>覆盖索引</strong></p>
+<p>覆盖索引上的信息足够满足查询请求，不需要再回到主键索引上取数据。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> t <span class="keyword">add</span> <span class="keyword">index</span> city_user_age(city,<span class="keyword">name</span>,age)</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>从索引(city,name,age)找到第一个满足city=’杭州’条件的记录，取出其中的city、name和age这3个字段的值，作为结果集的一部分直接返回；</li>
+<li>从索引(city,name,age)取下一个记录，同样取出这3个字段的值，作为结果集的一部分直接返回；</li>
+<li>重复执行步骤2，直到查到第1000条记录，或者是不满足city=’杭州’时循环结束。</li>
+</ol>
 
     </div>
 
@@ -814,7 +867,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-基础篇"><span class="nav-text">1.基础篇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-一条SQL查询语句是如何执行的？"><span class="nav-text">1.1 一条SQL查询语句是如何执行的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-日志系统：一条SQL更新语句是如何执行的"><span class="nav-text">1.2 日志系统：一条SQL更新语句是如何执行的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-事务隔离"><span class="nav-text">1.3 事务隔离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-索引"><span class="nav-text">1.4 索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-全局锁和表锁"><span class="nav-text">1.5 全局锁和表锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-行锁"><span class="nav-text">1.6 行锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-事务到底是隔离的还是不隔离的？"><span class="nav-text">1.7 事务到底是隔离的还是不隔离的？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-实践篇"><span class="nav-text">2.实践篇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-普通索引和唯一索引该如何选择？"><span class="nav-text">2.1 普通索引和唯一索引该如何选择？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-MySQL为什么有的时候会选错索引？"><span class="nav-text">2.2 MySQL为什么有的时候会选错索引？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-怎么给字符串字段加索引？"><span class="nav-text">2.3 怎么给字符串字段加索引？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-为啥SQL语句偶尔会变”慢”？"><span class="nav-text">2.4 为啥SQL语句偶尔会变”慢”？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-为什么表数据删掉一半，表文件大小不变？"><span class="nav-text">2.5 为什么表数据删掉一半，表文件大小不变？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-count-的实现方式"><span class="nav-text">2.6 count(*)的实现方式</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-基础篇"><span class="nav-text">1.基础篇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-一条SQL查询语句是如何执行的？"><span class="nav-text">1.1 一条SQL查询语句是如何执行的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-日志系统：一条SQL更新语句是如何执行的"><span class="nav-text">1.2 日志系统：一条SQL更新语句是如何执行的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-事务隔离"><span class="nav-text">1.3 事务隔离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-索引"><span class="nav-text">1.4 索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-全局锁和表锁"><span class="nav-text">1.5 全局锁和表锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-行锁"><span class="nav-text">1.6 行锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-事务到底是隔离的还是不隔离的？"><span class="nav-text">1.7 事务到底是隔离的还是不隔离的？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-实践篇"><span class="nav-text">2.实践篇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-普通索引和唯一索引该如何选择？"><span class="nav-text">2.1 普通索引和唯一索引该如何选择？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-MySQL为什么有的时候会选错索引？"><span class="nav-text">2.2 MySQL为什么有的时候会选错索引？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-怎么给字符串字段加索引？"><span class="nav-text">2.3 怎么给字符串字段加索引？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-为啥SQL语句偶尔会变”慢”？"><span class="nav-text">2.4 为啥SQL语句偶尔会变”慢”？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-为什么表数据删掉一半，表文件大小不变？"><span class="nav-text">2.5 为什么表数据删掉一半，表文件大小不变？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-count-的实现方式"><span class="nav-text">2.6 count(*)的实现方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-7-“order-by”是如何工作的？"><span class="nav-text">2.7 “order by”是如何工作的？</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
