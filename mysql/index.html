@@ -40,14 +40,14 @@
   </script>
 
   <meta name="description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
-<meta name="keywords" content="MySQL,数据库">
+<meta name="keywords" content="数据库,MySQL">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL">
 <meta property="og:url" content="http://tonymua.top/mysql/index.html">
 <meta property="og:site_name" content="liuwy1998 BLOG">
 <meta property="og:description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-07-19T14:46:24.489Z">
+<meta property="og:updated_time" content="2021-07-22T14:45:03.747Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL">
 <meta name="twitter:description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
@@ -770,10 +770,63 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> tradelog <span class="keyword">where</span> <span class="keyword">month</span>(t_modified)=<span class="number">7</span>;</span><br></pre></td></tr></table></figure>
 
 <p>下面是t_modified索引的示意图，方框上面的数字就是month()函数对应的值。<img data-src="../assets/img/dd223828.png" alt></p>
-<p>B+树的快速定位能力来源于同一层兄弟节点的有序性，对索引字段做函数操作，可能会破环索引值的有序性，因此优化器决定放弃走树搜索功能，导致全索引扫描(并不是放弃这个索引)。</p>
+<p>B+树的快速定位能力来源于同一层兄弟节点的有序性，<strong>对索引字段做函数操作，可能会破环索引值的有序性，因此优化器决定放弃走树搜索功能，导致全索引扫描(并不是放弃这个索引)。</strong></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> tradelog <span class="keyword">where</span>(t_modified &gt;=<span class="string">'2016-7-1'</span> <span class="keyword">and</span> t_modified &lt;<span class="string">'2016-7-1'</span>) <span class="keyword">or</span> (t_modified &gt;=<span class="string">'2017-7-1'</span> <span class="keyword">and</span> t_modified &lt;<span class="string">'2017-7-1'</span>) <span class="keyword">or</span> (t_modified &gt;=<span class="string">'2018-7-1'</span> <span class="keyword">and</span> t_modified &lt;<span class="string">'2018-7-1'</span>)</span><br></pre></td></tr></table></figure>
 </li>
 <li><p><strong>隐式类型转换</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tradelog <span class="keyword">where</span> tradeid=<span class="number">110717</span>;</span><br></pre></td></tr></table></figure>
+
+<p>tradeid的字段类型是varchar(32)，而输入的参数是整形，需要做类型转换。</p>
+<p><strong>字符串和数字作比较：将字符串转换成数字</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tradelog <span class="keyword">where</span> <span class="keyword">CAST</span>(tradeid <span class="keyword">AS</span> signed <span class="built_in">int</span>) = <span class="number">110717</span>;</span><br></pre></td></tr></table></figure>
+
+<p>因此触发：对索引字段做函数操作，优化器会放弃走树搜索功能。</p>
+</li>
+<li><p><strong>隐式字符编码转换</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`trade_detail`</span> (</span><br><span class="line"><span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line"><span class="string">`tradeid`</span> <span class="built_in">varchar</span>(<span class="number">32</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line"><span class="string">`trade step`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>, <span class="comment">/* 操作步骤 */</span></span><br><span class="line"><span class="string">`step_info`</span> <span class="built_in">varchar</span>(<span class="number">32</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>, <span class="comment">/* 步骤信息 */</span></span><br><span class="line">PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</span><br><span class="line"><span class="keyword">KEY</span> <span class="string">`tradeid`</span> (<span class="string">`tradeid`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tradelog <span class="keyword">values</span>(<span class="number">1</span>, <span class="string">'aaaaaaaa'</span>, <span class="number">1000</span>, <span class="keyword">now</span>());</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tradelog <span class="keyword">values</span>(<span class="number">2</span>, <span class="string">'aaaaaaab'</span>, <span class="number">1000</span>, <span class="keyword">now</span>());</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tradelog <span class="keyword">values</span>(<span class="number">3</span>, <span class="string">'aaaaaaac'</span>, <span class="number">1000</span>, <span class="keyword">now</span>());</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> trade_detail <span class="keyword">values</span>(<span class="number">1</span>, <span class="string">'aaaaaaaa'</span>, <span class="number">1</span>, <span class="string">'add'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> trade_detail <span class="keyword">values</span>(<span class="number">2</span>, <span class="string">'aaaaaaaa'</span>, <span class="number">2</span>, <span class="string">'update'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> trade_detail <span class="keyword">values</span>(<span class="number">3</span>, <span class="string">'aaaaaaaa'</span>, <span class="number">3</span>, <span class="string">'commit'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> trade_detail <span class="keyword">values</span>(<span class="number">4</span>, <span class="string">'aaaaaaab'</span>, <span class="number">1</span>, <span class="string">'add'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> trade_detail <span class="keyword">values</span>(<span class="number">5</span>, <span class="string">'aaaaaaab'</span>, <span class="number">2</span>, <span class="string">'update'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> trade_detail <span class="keyword">values</span>(<span class="number">6</span>, <span class="string">'aaaaaaab'</span>, <span class="number">3</span>, <span class="string">'update again'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> trade_detail <span class="keyword">values</span>(<span class="number">7</span>, <span class="string">'aaaaaaab'</span>, <span class="number">4</span>, <span class="string">'commit'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> trade_detail <span class="keyword">values</span>(<span class="number">8</span>, <span class="string">'aaaaaaac'</span>, <span class="number">1</span>, <span class="string">'add'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> trade_detail <span class="keyword">values</span>(<span class="number">9</span>, <span class="string">'aaaaaaac'</span>, <span class="number">2</span>, <span class="string">'update'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> trade_detail <span class="keyword">values</span>(<span class="number">10</span>, <span class="string">'aaaaaaac'</span>, <span class="number">3</span>, <span class="string">'update again'</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> trade_detail <span class="keyword">values</span>(<span class="number">11</span>, <span class="string">'aaaaaaac'</span>, <span class="number">4</span>, <span class="string">'commit'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>查询id=2的交易的所有操作步骤信息：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> d.* <span class="keyword">from</span> tradelog l,trade_detail d <span class="keyword">where</span> d.tradeid=l.tradeid <span class="keyword">and</span> l.id=<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img data-src="../assets/img/image-20210722215222511.png" alt></p>
+<ol>
+<li>优化器会先在交易记录表tradelog上查到id=2的行，这个步骤使用了主键索引，row=1表示只扫描一行；</li>
+<li>第2行key=NULL，表示没用上交易详情表trade_detail上的tradeid索引，进行了全表扫描。</li>
+</ol>
+<p>从tradelog表中取tradeid字段，再去trade_detail表里查询匹配字段。因此，tradelog称为驱动表，把trade_detail表称为被驱动表，把tradeid称为关联字段。</p>
+<p><img data-src="../assets/img/image-20210722222051685.png" alt></p>
+<ol>
+<li>根据id在tradelog表中找到L2这一行；</li>
+<li>从L2中取出tradeid字段的值；</li>
+<li>根据tradeid值到trade_detail表中查找条件匹配的行。explain的结果里面第二行的key=NULL表示的就是，这个过程就是通过遍历主键索引的方式，一个个的判断tradeid的值是否匹配。</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> trade_detail <span class="keyword">where</span> tradeid=$L2.tradeid.value</span><br></pre></td></tr></table></figure>
+
+<p>$L2.tradeid.value的字符集就是utf8mb4，字符集utf8mb4是utf8的超集，两个不同类型的字符串比较时，MySQL会把utf8字符串转成utf8mb4字符集再做比较。所以需要将被驱动数据表里的字段一个一个转成utf8mb4，再与L2比较，类似于：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> trade_detail <span class="keyword">where</span> <span class="keyword">CONVERT</span>(tradeid <span class="keyword">USING</span> uth8mb4)=$L2.tradeid.value</span><br></pre></td></tr></table></figure>
+
+<p>再次触发了：对索引字段做函数操作，优化器会放弃走树搜索功能。</p>
+<p><strong>连接过程中要求在被驱动表的索引字段上加函数操作，是直接导致对被驱动表做全表扫描的原因。</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">operator</span> <span class="keyword">from</span> tradelog <span class="keyword">where</span> traideid =$R4.tradeid.value;</span><br></pre></td></tr></table></figure>
+
+<p>改写为：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">operator</span> <span class="keyword">from</span> tradelog <span class="keyword">where</span> traideid =<span class="keyword">CONVERT</span>($R4.tradeid.value <span class="keyword">USING</span> utf8mb4);</span><br></pre></td></tr></table></figure>
+
+<p>CONVERT函数加在输入参数上，可以用上被驱动表的tradeid索引。</p>
+<p><strong>优化：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> d.* <span class="keyword">from</span> tradelog l, trade_detail d <span class="keyword">where</span> d.tradeid=l.tradeid <span class="keyword">and</span> l.id=<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>把trade_detail表上的tradeid字段的字符集也改成utf8mb4</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> trade_detail <span class="keyword">modify</span> tradeid <span class="built_in">varchar</span>(<span class="number">32</span>) <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> utf8mb4 <span class="keyword">default</span> <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改sql语句，主动把l.tradeid转成utf8，避免了被驱动表上的字符编码转换。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> d.* <span class="keyword">from</span> tradelog l,trade_detail d <span class="keyword">where</span> d.tradeid=<span class="keyword">CONVERT</span>(l.trade.id <span class="keyword">USING</span> utf8) <span class="keyword">on</span> l.id=<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
 </li>
 </ol>
 
@@ -806,8 +859,8 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
               <a href="/tags/数据库/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+              <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
           </div>
 
         
