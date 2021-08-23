@@ -47,7 +47,7 @@
 <meta property="og:site_name" content="ImOkkkk BLOG">
 <meta property="og:description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-08-10T14:36:24.638Z">
+<meta property="og:updated_time" content="2021-08-23T14:52:49.162Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL">
 <meta name="twitter:description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
@@ -951,6 +951,61 @@
 </ol>
 <p>删除数据的时候尽量加limit，不仅可以控制删除数据的条数，让操作更安全，还可减小加锁的范围。</p>
 <p>next-key lock实际上是由间隙锁加行锁实现的。</p>
+<h4 id="2-12-应急提高性能的方法"><a href="#2-12-应急提高性能的方法" class="headerlink" title="2.12 应急提高性能的方法"></a>2.12 应急提高性能的方法</h4><ul>
+<li><p><strong>短连接风暴</strong></p>
+<p>如果使用的是短链接，业务高峰期，连接数暴增。MySQL建立连接成本很高(网络连接3次握手、登录权限判断和获得这个连接的读写权限)。</p>
+<p>数据库处理不及时；机器负载较高时，处理现有请求耗时变长，每个连接保持的时间也更长；连接数上限：max_connections，超过这个值时，会拒绝接下来的连接请求，并报错提示”Too many connections”。</p>
+<ul>
+<li><p><strong>先处理掉那些占着连接但不工作的线程</strong></p>
+<p>max_connections，只要连着就占用一个计数位置。kill connection处理掉不需要保持的连接；设置wait_tineout参数(一个线程空闲wait_timeout这么多秒以后，就会被MySQL直接断开连接)。</p>
+<blockquote>
+<p>优先断开事务外空闲太久的连接，如果这样还不够，再考虑断开事务内的空闲太久的连接。(从 information_schema.innodb_trx 查询事务状态)</p>
+</blockquote>
+<p>kill connection + id，一个客户端处于sleep状态，它的连接被服务端主动断开，这个客户端并不会马上知道。直到客户端在发起下一个请求的时候，才会收到报错”ERROR 2013 (HY000): Lost connection to<br>MySQL server during query”。</p>
+</li>
+<li><p><strong>减少连接过程的消耗</strong></p>
+<p>让数据库跳过权限验证阶段，重启数据库，并使用-skip-grant-tables参数启动，整个MySQL会跳过所有的权限验证，包括连接过程和语句执行过程，<strong>风险极高</strong>。</p>
+<blockquote>
+<p>MySQL8.0，如果启用-skip-grant-tables参数，MySQL会默认把-skip-networking参数打开，表示数据库只能被本地的客户端连接。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p><strong>慢查询性能问题</strong></p>
+<p>引发慢查询的可能：</p>
+<ol>
+<li>索引没有设计好</li>
+<li>SQL语句没写好</li>
+<li>MySQL选错索引</li>
+</ol>
+<ul>
+<li><p><strong>索引没有设计好</strong></p>
+<p>紧急创建索引，MySQL5.6之后，创建索引支持Online DDL，直接执行alter table语句。</p>
+<ol>
+<li>在备库B上执行set sql_log_bin=off，即不写binlog，然后执行alter table语句加上索引；</li>
+<li>执行主备切换；</li>
+<li>这时候主库是B，备库是A。在A上执行set sql_bin_log=off，然后执行alter table语句加上索引。</li>
+</ol>
+</li>
+<li><p><strong>SQL语句没写好</strong></p>
+<p>MySQL5.7之后提供了query_rewrite功能，可以把输入的一种语句改写成另外一种模式。</p>
+<p>如语句被错误地写成了 <code>select * from t where id + 1 = 10000</code>，可以通过下面的<br>方式，增加一个语句改写规则。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into query_rewrite.rewrite_rules(pattern, replacement, pattern_database) values ("select * from t where id + 1 = ?", "select * from t where id = ? - 1", "db1");</span><br><span class="line"></span><br><span class="line"><span class="keyword">call</span> query_rewrite.flush_rewrite_rules();</span><br><span class="line"><span class="comment">-- 这个存储过程，让插入的新规则生效，即"查询重写"</span></span><br></pre></td></tr></table></figure>
+
+<p><img data-src="../assets/img/image-20210823224604330.png" alt></p>
+</li>
+<li><p><strong>MySQL选错索引</strong></p>
+<p>使用查询重写功能，给原来的语句加上force index。</p>
+</li>
+</ul>
+<p>通过以下方式，预先发现问题：</p>
+<ol>
+<li>上线前，在测试环境，把慢查询日志(show log)打开，并把long_query_time设为0。(确保每个语句都会被记录入慢查询日志)</li>
+<li>在测试表里插入线上数据，进行回归测试。</li>
+<li>观察慢查询日志里每类语句的输出，特别留意Rows_examined(每次执行过程中实际扫描的记录数)字段是否与预期一致。</li>
+</ol>
+</li>
+</ul>
 
     </div>
 
@@ -1056,7 +1111,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-基础篇"><span class="nav-text">1.基础篇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-一条SQL查询语句是如何执行的？"><span class="nav-text">1.1 一条SQL查询语句是如何执行的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-日志系统：一条SQL更新语句是如何执行的"><span class="nav-text">1.2 日志系统：一条SQL更新语句是如何执行的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-事务隔离"><span class="nav-text">1.3 事务隔离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-索引"><span class="nav-text">1.4 索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-全局锁和表锁"><span class="nav-text">1.5 全局锁和表锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-行锁"><span class="nav-text">1.6 行锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-事务到底是隔离的还是不隔离的？"><span class="nav-text">1.7 事务到底是隔离的还是不隔离的？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-实践篇"><span class="nav-text">2.实践篇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-普通索引和唯一索引该如何选择？"><span class="nav-text">2.1 普通索引和唯一索引该如何选择？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-MySQL为什么有的时候会选错索引？"><span class="nav-text">2.2 MySQL为什么有的时候会选错索引？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-怎么给字符串字段加索引？"><span class="nav-text">2.3 怎么给字符串字段加索引？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-为啥SQL语句偶尔会变”慢”？"><span class="nav-text">2.4 为啥SQL语句偶尔会变”慢”？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-为什么表数据删掉一半，表文件大小不变？"><span class="nav-text">2.5 为什么表数据删掉一半，表文件大小不变？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-count-的实现方式"><span class="nav-text">2.6 count(*)的实现方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-7-“order-by”是如何工作的？"><span class="nav-text">2.7 “order by”是如何工作的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-8-为什么这些SQL语句逻辑相同，但性能差异巨大"><span class="nav-text">2.8 为什么这些SQL语句逻辑相同，但性能差异巨大</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-9-为什么我只查一行的语句，也执行这么慢？"><span class="nav-text">2.9 为什么我只查一行的语句，也执行这么慢？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-10-幻读"><span class="nav-text">2.10 幻读</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-11-next-key-lock"><span class="nav-text">2.11 next-key lock</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-基础篇"><span class="nav-text">1.基础篇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-一条SQL查询语句是如何执行的？"><span class="nav-text">1.1 一条SQL查询语句是如何执行的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-日志系统：一条SQL更新语句是如何执行的"><span class="nav-text">1.2 日志系统：一条SQL更新语句是如何执行的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-事务隔离"><span class="nav-text">1.3 事务隔离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-索引"><span class="nav-text">1.4 索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-全局锁和表锁"><span class="nav-text">1.5 全局锁和表锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-行锁"><span class="nav-text">1.6 行锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-事务到底是隔离的还是不隔离的？"><span class="nav-text">1.7 事务到底是隔离的还是不隔离的？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-实践篇"><span class="nav-text">2.实践篇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-普通索引和唯一索引该如何选择？"><span class="nav-text">2.1 普通索引和唯一索引该如何选择？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-MySQL为什么有的时候会选错索引？"><span class="nav-text">2.2 MySQL为什么有的时候会选错索引？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-怎么给字符串字段加索引？"><span class="nav-text">2.3 怎么给字符串字段加索引？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-为啥SQL语句偶尔会变”慢”？"><span class="nav-text">2.4 为啥SQL语句偶尔会变”慢”？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-为什么表数据删掉一半，表文件大小不变？"><span class="nav-text">2.5 为什么表数据删掉一半，表文件大小不变？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-count-的实现方式"><span class="nav-text">2.6 count(*)的实现方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-7-“order-by”是如何工作的？"><span class="nav-text">2.7 “order by”是如何工作的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-8-为什么这些SQL语句逻辑相同，但性能差异巨大"><span class="nav-text">2.8 为什么这些SQL语句逻辑相同，但性能差异巨大</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-9-为什么我只查一行的语句，也执行这么慢？"><span class="nav-text">2.9 为什么我只查一行的语句，也执行这么慢？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-10-幻读"><span class="nav-text">2.10 幻读</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-11-next-key-lock"><span class="nav-text">2.11 next-key lock</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-12-应急提高性能的方法"><span class="nav-text">2.12 应急提高性能的方法</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
