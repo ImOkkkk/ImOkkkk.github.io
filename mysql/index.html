@@ -40,14 +40,14 @@
   </script>
 
   <meta name="description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
-<meta name="keywords" content="MySQL,数据库">
+<meta name="keywords" content="数据库,MySQL">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL">
 <meta property="og:url" content="http://tonymua.top/mysql/index.html">
 <meta property="og:site_name" content="ImOkkkk BLOG">
 <meta property="og:description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-09-15T15:06:46.138Z">
+<meta property="og:updated_time" content="2021-10-10T14:51:09.645Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL">
 <meta name="twitter:description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
@@ -1100,6 +1100,66 @@
 <li>将sync_binlog设置为大于1的值(常见的为100-1000)。风险：主机断电时会丢binlog日志。</li>
 <li>将innodb_flush_log_at_trx_commit设置为2。风险：主机断电时会丢binlog日志。(不建议设置成 0。因为把这个参数设置成 0，表示 redo log 只保存在内存中，这样的话 MySQL 本身异常重启也会丢数据，风险太大。而 redo log 写到文件系统的 page cache 的速度也是很快的，所以将这个参数设置成 2 跟设置成 0 其实性能差不多，但这样做 MySQL 异常重启时就不会丢数据了，相比之下风险会更小。)</li>
 </ol>
+<h4 id="2-14-MySQL是怎么保证主备一致的"><a href="#2-14-MySQL是怎么保证主备一致的" class="headerlink" title="2.14 MySQL是怎么保证主备一致的"></a>2.14 MySQL是怎么保证主备一致的</h4><p><strong>MySQL主备的基本原理</strong></p>
+<p><img data-src="../assets/img/image-20211008220747983.png" alt></p>
+<p>客户端的读写都直接访问节点A，而节点B是A的备库，只是将A的更新都同步过来，到本地执行。需要切换的时候，就切换成状态2。这时客户端读写访问节点B，而节点A是B的备库。</p>
+<p>备库虽然没有被直接访问，但仍建议设为只读(readonly)模式：</p>
+<ol>
+<li>有时一些运营类的查询语句会放到备库上查询，设置为只读可以防止误操作；</li>
+<li>防止切换逻辑有bug，如切换过程中出现双写，造成主备不一致；</li>
+<li>可以通过readonly状态，判断节点的角色。</li>
+</ol>
+<p><code>readonly状态，怎么与主库保持同步更新？</code></p>
+<p>readonly设置对超级(super)权限用户是无效的，而用于同步更新的线程，就拥有超级权限。</p>
+<p><img data-src="../assets/img/image-20211008222439618.png" alt="节点A到B的内部流程"></p>
+<p>备库B跟主库A之间维持了一个长连接，主库A内部有一个线程，专门服务备库B的这个长连接。</p>
+<p>一个事务日志同步的完整过程：</p>
+<ol>
+<li>在备库B上通过chang master命令，设置主库A的IP、端口、用户名、密码，以及从哪个位置开始请求binlog，这个位置包含文件名和日志偏移量。</li>
+<li>在备库上执行start slave命令，这时候备库会启动两个线程，就是图中的io_thread(主要负责与主库建立连接)和sql_thread。</li>
+<li>主库A校验完用户名、密码后，开始按照备库B传过来的位置，从本地读取binlog，发给B；</li>
+<li>备库B拿到binlog之后，写到本地文件，称为中转日志(ready log)；</li>
+<li>sql_thread读取中转日志，解析出日志里的命令，并执行。</li>
+</ol>
+<blockquote>
+<p>多线程复制方案的引入，sql_thread演化成了多个线程。</p>
+</blockquote>
+<p><strong>binlog的三种格式对比</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> t <span class="keyword">where</span> a&gt;=<span class="number">4</span> <span class="keyword">and</span> t_modified&lt;=<span class="string">'2018-11-10'</span> <span class="keyword">limit</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>statement</p>
+<p>记录到binlog里的语句原文，在主库执行时，用的是索引a，而在备库执行时，却用了索引t_modified，可能会造成主备不一致。</p>
+</li>
+<li><p>row</p>
+<p>row格式的binlog里没有了SQL语句原文，而是替换成了两个event：Table_map(用于说明接下来操作的表)和Delete_rows(用于定义删除的行为)</p>
+</li>
+<li><p>mixed</p>
+<p>因为有些statement格式的binlog可能会导致主备不一致，所以要使用row格式。但row格式，很占空间。如一个delete语句删掉10万行数据，用statement的话就是一个SQL语句被记录到binlog中，占用几十个字节的空间。但如果是row格式，就要把这 10 万条记录都写到 binlog 中。这样做，不仅会占用更大的空间，同时写 binlog 也要耗费 IO 资源，影响执行速度。</p>
+<p>mixed格式：<strong>MySQL会自己判断这条SQL语句是否可能引起主备不一致，如果有可能，就用row格式，否则就用statement格式。(线上至少应该把 binlog 的格式设置为 mixed)</strong></p>
+</li>
+</ol>
+<p><strong>恢复数据</strong></p>
+<p>现在越来越多场景要求把MySQL的binlog格式设为row，如<code>恢复数据</code>。</p>
+<p>binlog恢复数据的标准做法：用mysqlbinlog工具解析出来，然后把解析结果整个发给MySQL执行，例如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqlbinlog master.000001  <span class="comment">--start-position=2738 --stop-position=2942 | mysql -h127.0.0.1 -P13000 -u$user -p$pwd;</span></span><br></pre></td></tr></table></figure>
+
+<p>含义：将master.00001文件里面从2738字节到第2973字节中间这段内容解析出来，放到MySQL去执行。</p>
+<p><strong>循环复制问题</strong></p>
+<p><img data-src="../assets/img/image-20211010224052755.png" alt="MySQL 主备切换流程 -- 双 M 结构"></p>
+<p>双M结构和M-S结构，其实区别只是多了一条线，即：节点A和B之间总是互为主备关系，这样在切换的时候就不用再修改主备关系。</p>
+<p>但如果业务逻辑在A上更新了一条语句，然后再把生成的 binlog 发给节点 B，节点 B 执行完这条更新语句后也会生成 binlog。（建议把参数 log_slave_updates 设置为 on，表示备库执行 relay log 后生成 binlog）。那么，如果节点 A 同时是节点 B 的备库，相当于又把节点 B 新生成的 binlog 拿过来执行了一次，然后节点 A 和 B 间，会不断地循环执行这个更新语句，也就是循环复制了。</p>
+<ol>
+<li>规定两个库的 server id 必须不同，如果相同，则它们之间不能设定为主备关系；</li>
+<li>一个备库接到 binlog 并在重放的过程中，生成与原 binlog 的 server id 相同的新的binlog；</li>
+<li>每个库在收到从自己的主库发过来的日志后，先判断 server id，如果跟自己的相同，表示这个日志是自己生成的，就直接丢弃这个日志。</li>
+</ol>
+<p>日志执行流程：</p>
+<ol>
+<li>从节点A更新的事务，binlog里面记的都是A的server id；</li>
+<li>传到节点B执行一次后，节点B生成的binlog的server id也是A的server id；</li>
+<li>再传回给节点A，A判断这个server id与自己的相同，就不会再处理这个日志。所以，死循环就断掉了。</li>
+</ol>
 
     </div>
 
@@ -1130,8 +1190,8 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
               <a href="/tags/数据库/" rel="tag"><i class="fa fa-tag"></i> 数据库</a>
+              <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
           </div>
 
         
@@ -1205,7 +1265,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-基础篇"><span class="nav-text">1.基础篇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-一条SQL查询语句是如何执行的？"><span class="nav-text">1.1 一条SQL查询语句是如何执行的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-日志系统：一条SQL更新语句是如何执行的"><span class="nav-text">1.2 日志系统：一条SQL更新语句是如何执行的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-事务隔离"><span class="nav-text">1.3 事务隔离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-索引"><span class="nav-text">1.4 索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-全局锁和表锁"><span class="nav-text">1.5 全局锁和表锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-行锁"><span class="nav-text">1.6 行锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-事务到底是隔离的还是不隔离的？"><span class="nav-text">1.7 事务到底是隔离的还是不隔离的？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-实践篇"><span class="nav-text">2.实践篇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-普通索引和唯一索引该如何选择？"><span class="nav-text">2.1 普通索引和唯一索引该如何选择？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-MySQL为什么有的时候会选错索引？"><span class="nav-text">2.2 MySQL为什么有的时候会选错索引？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-怎么给字符串字段加索引？"><span class="nav-text">2.3 怎么给字符串字段加索引？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-为啥SQL语句偶尔会变”慢”？"><span class="nav-text">2.4 为啥SQL语句偶尔会变”慢”？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-为什么表数据删掉一半，表文件大小不变？"><span class="nav-text">2.5 为什么表数据删掉一半，表文件大小不变？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-count-的实现方式"><span class="nav-text">2.6 count(*)的实现方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-7-“order-by”是如何工作的？"><span class="nav-text">2.7 “order by”是如何工作的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-8-为什么这些SQL语句逻辑相同，但性能差异巨大"><span class="nav-text">2.8 为什么这些SQL语句逻辑相同，但性能差异巨大</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-9-为什么我只查一行的语句，也执行这么慢？"><span class="nav-text">2.9 为什么我只查一行的语句，也执行这么慢？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-10-幻读"><span class="nav-text">2.10 幻读</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-11-next-key-lock"><span class="nav-text">2.11 next-key lock</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-12-应急提高性能的方法"><span class="nav-text">2.12 应急提高性能的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-13-MySQL是如何保证数据不丢失的"><span class="nav-text">2.13 MySQL是如何保证数据不丢失的</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-基础篇"><span class="nav-text">1.基础篇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-一条SQL查询语句是如何执行的？"><span class="nav-text">1.1 一条SQL查询语句是如何执行的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-日志系统：一条SQL更新语句是如何执行的"><span class="nav-text">1.2 日志系统：一条SQL更新语句是如何执行的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-事务隔离"><span class="nav-text">1.3 事务隔离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-索引"><span class="nav-text">1.4 索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-全局锁和表锁"><span class="nav-text">1.5 全局锁和表锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-行锁"><span class="nav-text">1.6 行锁</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-事务到底是隔离的还是不隔离的？"><span class="nav-text">1.7 事务到底是隔离的还是不隔离的？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-实践篇"><span class="nav-text">2.实践篇</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-普通索引和唯一索引该如何选择？"><span class="nav-text">2.1 普通索引和唯一索引该如何选择？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-MySQL为什么有的时候会选错索引？"><span class="nav-text">2.2 MySQL为什么有的时候会选错索引？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-怎么给字符串字段加索引？"><span class="nav-text">2.3 怎么给字符串字段加索引？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-为啥SQL语句偶尔会变”慢”？"><span class="nav-text">2.4 为啥SQL语句偶尔会变”慢”？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-5-为什么表数据删掉一半，表文件大小不变？"><span class="nav-text">2.5 为什么表数据删掉一半，表文件大小不变？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-count-的实现方式"><span class="nav-text">2.6 count(*)的实现方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-7-“order-by”是如何工作的？"><span class="nav-text">2.7 “order by”是如何工作的？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-8-为什么这些SQL语句逻辑相同，但性能差异巨大"><span class="nav-text">2.8 为什么这些SQL语句逻辑相同，但性能差异巨大</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-9-为什么我只查一行的语句，也执行这么慢？"><span class="nav-text">2.9 为什么我只查一行的语句，也执行这么慢？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-10-幻读"><span class="nav-text">2.10 幻读</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-11-next-key-lock"><span class="nav-text">2.11 next-key lock</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-12-应急提高性能的方法"><span class="nav-text">2.12 应急提高性能的方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-13-MySQL是如何保证数据不丢失的"><span class="nav-text">2.13 MySQL是如何保证数据不丢失的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-14-MySQL是怎么保证主备一致的"><span class="nav-text">2.14 MySQL是怎么保证主备一致的</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
