@@ -47,7 +47,7 @@
 <meta property="og:site_name" content="ImOkkkk BLOG">
 <meta property="og:description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-12-05T15:02:32.182Z">
+<meta property="og:updated_time" content="2021-12-06T14:50:16.507Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL">
 <meta name="twitter:description" content="1.基础篇1.1 一条SQL查询语句是如何执行的？  Server层 连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。">
@@ -1209,6 +1209,34 @@
 </ol>
 <p>不可用时间：步骤2到步骤5，步骤3耗费时间(步骤1保证步骤3尽可能短)。</p>
 <p><strong>可用性优先策略</strong></p>
+<p>步骤4、5调整到最开始执行，及不等主备数据同步，直接把连接切到备库B，并且让备库B可以读写。</p>
+<p>几乎没有不可用时间，可能出现数据不一致。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`t`</span> (</span><br><span class="line"><span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">unsigned</span> <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line"><span class="string">`c`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">unsigned</span> <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span>;</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t(c) <span class="keyword">values</span>(<span class="number">1</span>),(<span class="number">2</span>),(<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+
+<p>继续执行：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t(c) <span class="keyword">values</span>(<span class="number">4</span>);</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t(c) <span class="keyword">values</span>(<span class="number">5</span>);</span><br></pre></td></tr></table></figure>
+
+<p>假设，现在主库上有大量的更新，导致主备延迟5秒。在插入一条c=4的语句后，发起了主备切换。</p>
+<p><img data-src="../assets/img/image-20211206223345522.png" alt="可用性优先策略，且binlog_format=mixed"></p>
+<ol>
+<li><p>步骤2中，主库A执行完insert语句，插入一行数据(4,4)，之后开始进行主备切换；</p>
+</li>
+<li><p>步骤3中，由于主备之间有5秒延迟，所以备库B还未应用”插入c=4”这个中转日志，就开始接收”插入c=5”的命令；</p>
+</li>
+<li><p>步骤4中，备库B插入了一行数据(4,5)，并且把这个binlog发给主库A；</p>
+</li>
+<li><p>步骤 5 中，备库B执行”插入 c=4”这个中转日志，插入了一行数据(5,4)。而直接在备库B执行的”插入 c=5”这个语句，传到主库 A，就插入了一行新数据((5,5)。</p>
+<p>主库A和备库B上出现了两行不一致的数据。</p>
+</li>
+</ol>
+<p>可用优先策略，设置bnlog_format=row会怎样？</p>
+<p>row格式在记录binlog的时候，会记录新插入的行的所有字段值，最后只会有一行不一致，两边的主备同步的应用线程会报错 duplicate key error 并停止。备库 B 的 (5,4) 和主库 A 的 (5,5) 这两行数据，都不会被对方执行。</p>
+<p><img data-src="../assets/img/image-20211206224759317.png" alt="可用优先策略，且binlog_format=row"></p>
+<p>结论：</p>
+<ol>
+<li>使用 row 格式的 binlog 时，数据不一致的问题更容易被发现。</li>
+<li>主备切换的可用性优先策略会导致数据不一致。</li>
+</ol>
 
     </div>
 
