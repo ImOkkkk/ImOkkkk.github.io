@@ -141,7 +141,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">56</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">29</span></a>
 
   </li>
         <li class="menu-item menu-item-about">
@@ -151,7 +151,7 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">33</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">31</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
@@ -211,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/30297/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/multithreading/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -225,7 +225,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/30297/" class="post-title-link" itemprop="url">Spring框架(一)</a>
+            <a href="/multithreading/" class="post-title-link" itemprop="url">Java并发编程</a>
         </h2>
 
         <div class="post-meta">
@@ -236,6 +236,15 @@
               <span class="post-meta-item-text">发表于</span>
 
               <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/多线程/" itemprop="url" rel="index"><span itemprop="name">多线程</span></a>
+                </span>
             </span>
 
           
@@ -249,11 +258,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="1-Spring概述"><a href="#1-Spring概述" class="headerlink" title="1. Spring概述"></a>1. Spring概述</h4><h5 id="1-1-spring-是什么"><a href="#1-1-spring-是什么" class="headerlink" title="1.1 spring 是什么"></a>1.1 spring 是什么</h5><p>​    Spring是分层的 Java SE/EE应用 full-stack 轻量级开源框架，以 IoC（Inverse Of Control： 反转控制）和 AOP（Aspect Oriented Programming：面向切面编程）为内核，提供了展现层 Spring MVC 和持久层 Spring JDBC 以及业务层事务管理等众多的企业级应用技术，还能整合开源世界众多 著名的第三方框架和类库，逐渐成为使用最多的Java EE 企业应用开源框架。 </p>
-<h5 id="1-2-spring-的优势"><a href="#1-2-spring-的优势" class="headerlink" title="1.2 spring 的优势"></a>1.2 spring 的优势</h5><p><strong>方便解耦，简化开发</strong>  </p>
+          <h3 id="1-多线程基础"><a href="#1-多线程基础" class="headerlink" title="1.多线程基础"></a>1.多线程基础</h3><h4 id="1-1-实现多线程的方法"><a href="#1-1-实现多线程的方法" class="headerlink" title="1.1 实现多线程的方法"></a>1.1 实现多线程的方法</h4><ol>
+<li><p>实现Runnable接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test_01</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"实现Runnable接口实现多线程"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/30297/#more" rel="contents">
+              <a class="btn" href="/multithreading/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -277,7 +290,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/38896/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/HashMap/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -291,7 +304,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/38896/" class="post-title-link" itemprop="url">SpringMVC框架(二)</a>
+            <a href="/HashMap/" class="post-title-link" itemprop="url">HashMap分析</a>
         </h2>
 
         <div class="post-meta">
@@ -302,6 +315,15 @@
               <span class="post-meta-item-text">发表于</span>
 
               <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/源码分析/" itemprop="url" rel="index"><span itemprop="name">源码分析</span></a>
+                </span>
             </span>
 
           
@@ -315,11 +337,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="1-响应数据和结果视图"><a href="#1-响应数据和结果视图" class="headerlink" title="1. 响应数据和结果视图"></a>1. 响应数据和结果视图</h4><h5 id="1-1-返回值分类"><a href="#1-1-返回值分类" class="headerlink" title="1.1 返回值分类"></a>1.1 返回值分类</h5><h6 id="1-1-1-字符串-String"><a href="#1-1-1-字符串-String" class="headerlink" title="1.1.1 字符串(String)"></a>1.1.1 字符串(String)</h6><p>​    controller 方法返回字符串可以指定逻辑视图名，通过视图解析器解析为物理视图地址。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//    返回值类型为String</span></span><br><span class="line">  <span class="meta">@RequestMapping</span>(<span class="string">"/testString"</span>)</span><br><span class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">testString</span><span class="params">(Model model)</span> </span>&#123;</span><br><span class="line">      System.out.println(<span class="string">"testString方法执行了"</span>);</span><br><span class="line">      <span class="comment">//模拟从数据库中查询User对象</span></span><br><span class="line">      User user = <span class="keyword">new</span> User();</span><br><span class="line">      user.setUsername(<span class="string">"test"</span>);</span><br><span class="line">      user.setPassword(<span class="string">"123"</span>);</span><br><span class="line">      user.setAge(<span class="number">12</span>);</span><br><span class="line"></span><br><span class="line">      model.addAttribute(<span class="string">"user"</span>, user);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+          <h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h3><p>HashMap位于<code>java.util</code>包中，HashMap基于Map接口实现，元素以<strong>键值对</strong>的方式存储，并且允许使用null键和null值，因为key不允许重复，因此只能有一个键为null,另外HashMap不能保证放入元素的顺序，它是<strong>无序</strong>的，和放入的顺序并不能相同。HashMap是<strong>线程不安全</strong>的。它的底层为哈希表结构（链表散列：<strong>数组+链表</strong>）实现，结合数组和链表的优点。JDK1.8之后，当链表长度超过 <strong>8</strong> 时，<strong>链表转换为红黑树</strong>。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/38896/#more" rel="contents">
+              <a class="btn" href="/HashMap/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -343,7 +364,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/22356/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/git_shell/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -357,7 +378,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/22356/" class="post-title-link" itemprop="url">SpringMVC框架(一)</a>
+            <a href="/git_shell/" class="post-title-link" itemprop="url">Git</a>
         </h2>
 
         <div class="post-meta">
@@ -368,6 +389,15 @@
               <span class="post-meta-item-text">发表于</span>
 
               <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
+                </span>
             </span>
 
           
@@ -381,11 +411,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="1-SpringMVC的基本概念"><a href="#1-SpringMVC的基本概念" class="headerlink" title="1.SpringMVC的基本概念"></a>1.SpringMVC的基本概念</h4><h5 id="1-1-关于三层架构和MVC"><a href="#1-1-关于三层架构和MVC" class="headerlink" title="1.1 关于三层架构和MVC"></a>1.1 关于三层架构和MVC</h5><h6 id="1-1-1-三层架构"><a href="#1-1-1-三层架构" class="headerlink" title="1.1.1 三层架构"></a>1.1.1 三层架构</h6><p>​    我们的开发架构一般都是基于两种形式，一种是 C/S 架构，也就是客户端/服务器，另一种是 B/S 架构，也就 是浏览器服务器。在 JavaEE 开发中，几乎全都是基于 B/S架构的开发。那么在 B/S架构中，系统标准的三层架构 包括：表现层、业务层、持久层。三层架构在我们的实际开发中使用的非常多，所以我们课程中的案例也都是基于<br>三层架构设计的。 </p>
-<p>​    三层架构中，每一层各司其职，接下来我们就说说每层都负责哪些方面： </p>
+          <h3 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h3><h4 id="1-创建版本库"><a href="#1-创建版本库" class="headerlink" title="1.创建版本库"></a>1.创建版本库</h4><ol>
+<li>git init    把这个目录变成Git可以管理的仓库</li>
+<li>git add readme.md    把文件添加到仓库</li>
+<li>git commit -m “wrote a readme file”    <code>-m</code>后面输入的是本次提交的说明
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/22356/#more" rel="contents">
+              <a class="btn" href="/git_shell/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -409,7 +441,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/50010/">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/11205/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -423,7 +455,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/50010/" class="post-title-link" itemprop="url">SpringCloud框架(二)(微服务)</a>
+            <a href="/11205/" class="post-title-link" itemprop="url">Docker入门</a>
         </h2>
 
         <div class="post-meta">
@@ -447,85 +479,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h4 id="1-Hystrix"><a href="#1-Hystrix" class="headerlink" title="1.Hystrix"></a>1.Hystrix</h4><h5 id="1-1-简介"><a href="#1-1-简介" class="headerlink" title="1.1 简介"></a>1.1 简介</h5><p>Hystrix是Netflix公司的一款组件。</p>
-<p>主页：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL05ldGZsaXgvSHlzdHJpeC8=">https://github.com/Netflix/Hystrix/<i class="fa fa-external-link-alt"></i></span></p>
-<p>Hystix是Netflix开源的一个延迟和容错库，用于隔离访问远程服务、第三方库，防止出现级联失败。</p>
-<h5 id="1-2-雪崩问题"><a href="#1-2-雪崩问题" class="headerlink" title="1.2 雪崩问题"></a>1.2 雪崩问题</h5><p>​    微服务中，服务间调用关系错综复杂，一个请求，可能需要调用多个微服务接口才能实现，会形成非常复杂的调用链路.</p>
-<p>一次业务请求，需要调用A、P、H、I四个服务，这四个服务又可能调用其它服务。</p>
-<p>​    如果此时，某个服务出现异常, 请求阻塞，用户不会得到响应，则tomcat的这个线程不会释放，于是越来越多的用户请求到来，越来越多的线程会阻塞服务器支持的线程和并发数有限，请求一直阻塞，会导致服务器资源耗尽，从而导致所有其它服务都不可用，形成雪崩效应。</p>
-<p>Hystix解决雪崩问题的手段有两个：</p>
+          <h3 id="1-Docker简介"><a href="#1-Docker简介" class="headerlink" title="1.Docker简介"></a>1.Docker简介</h3><h4 id="1-1-什么是虚拟化"><a href="#1-1-什么是虚拟化" class="headerlink" title="1.1 什么是虚拟化"></a>1.1 什么是虚拟化</h4><p>​    在计算机中，虚拟化（英语：Virtualization）是一种<strong>资源管理技术</strong>，是<strong>将计算机的各种实体资源，如服务器、网络、内存及存储等，予以抽象、转换后呈现出来，打破实体结构间的不可切割的障碍，使用户可以比原本的组态更好的方式来应用这些资源</strong>。这些资源的新虚拟部份是不受现有资源的架设方式，地域或物理组态所限制。一般所指的虚拟化资源包括计算能力和资料存储。</p>
+<p>​    在实际的生产环境中，虚拟化技术主要用来<strong>解决高性能的物理硬件产能过剩和老的旧的硬件产能过低的重组重用，透明化底层物理硬件，从而最大化的利用物理硬件对资源充分利用</strong></p>
+<p>虚拟化技术种类很多，例如：软件虚拟化、硬件虚拟化、内存虚拟化、网络虚拟化(vip)、桌面虚拟化、服务虚拟化、虚拟机等等。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/50010/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://tonymua.top/52552/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/../assets/img/head.jpg">
-      <meta itemprop="name" content="ImOkkkk">
-      <meta itemprop="description" content="Java开发, 后端开发">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ImOkkkk BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/52552/" class="post-title-link" itemprop="url">SpringCloud框架(一)(微服务)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="1-系统架构演变"><a href="#1-系统架构演变" class="headerlink" title="1.系统架构演变"></a>1.系统架构演变</h4><p>​    随着互联网的发展，网站应用的规模不断扩大。需求的激增，带来的是技术上的压力。系统架构也因此不断的演进、升级、迭代。从单一应用，到垂直拆分，到分布式服务，到SOA，以及现在火热的微服务架构，还有在Google带领下来势汹涌的Service Mesh。我们到底是该乘坐微服务的船只驶向远方，还是偏安一隅得过且过？</p>
-<p>其实生活不止眼前的苟且，还有诗和远方。所以我们今天就回顾历史，看一看系统架构演变的历程；把握现在，学习现在最火的技术架构；展望未来，争取成为一名优秀的Java工程师。</p>
-<p>今天主要介绍的是<strong>微服务架构</strong></p>
-<p><strong>微服务</strong></p>
-<p>​    SOA，英文翻译过来是面向服务。微服务，似乎也是服务，都是对系统进行拆分。因此两者非常容易混淆，但其实却有一些差别：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/52552/#more" rel="contents">
+              <a class="btn" href="/11205/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -548,7 +507,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span>
   </nav>
 
 
@@ -616,7 +575,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">56</span>
+          <span class="site-state-item-count">29</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -629,7 +588,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -671,7 +630,7 @@
 <div class="copyright">
   
   &copy; 2019 – 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="heartbeat"></i>
   </span>
