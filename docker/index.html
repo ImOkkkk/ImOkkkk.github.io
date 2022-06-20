@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="bUCDF5pEQe">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=66522575" charset="UTF-8"></script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"tonymua.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Docker原理 Chroot 改变进程及其子进程外显的根目录，chroot设置根目录的程序，不能够对这个之外的文件进行访问，外部也不能读取、更改它的内容。  NameSpace 对内核资源进行隔离，容器中的进程只可以访问当前容器命名空间的资源(进程ID，主机名、用户、文件名等)。  Cgroup 限制隔离进程的资源使用(CPU、内存、磁盘、网络等)。   核心概念容器的5种状态初建、运行、停止、">
+<meta name="keywords" content="Docker,Kubernetes,云原生">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker+Kubernetes">
+<meta property="og:url" content="http://tonymua.top/docker/index.html">
+<meta property="og:site_name" content="ImOkkkk BLOG">
+<meta property="og:description" content="Docker原理 Chroot 改变进程及其子进程外显的根目录，chroot设置根目录的程序，不能够对这个之外的文件进行访问，外部也不能读取、更改它的内容。  NameSpace 对内核资源进行隔离，容器中的进程只可以访问当前容器命名空间的资源(进程ID，主机名、用户、文件名等)。  Cgroup 限制隔离进程的资源使用(CPU、内存、磁盘、网络等)。   核心概念容器的5种状态初建、运行、停止、">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2022-06-20T06:30:48.538Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Docker+Kubernetes">
+<meta name="twitter:description" content="Docker原理 Chroot 改变进程及其子进程外显的根目录，chroot设置根目录的程序，不能够对这个之外的文件进行访问，外部也不能读取、更改它的内容。  NameSpace 对内核资源进行隔离，容器中的进程只可以访问当前容器命名空间的资源(进程ID，主机名、用户、文件名等)。  Cgroup 限制隔离进程的资源使用(CPU、内存、磁盘、网络等)。   核心概念容器的5种状态初建、运行、停止、">
+
+<link rel="canonical" href="http://tonymua.top/docker/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Docker+Kubernetes | ImOkkkk BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="ImOkkkk BLOG" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ImOkkkk BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">When they go low,we go high.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">28</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">34</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">13</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://tonymua.top/docker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="ImOkkkk">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ImOkkkk BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker+Kubernetes
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-06-20 14:22:51" itemprop="dateCreated datePublished" datetime="2022-06-20T14:22:51+08:00">2022-06-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/云原生/" itemprop="url" rel="index"><span itemprop="name">云原生</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h1><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><ol>
+<li><p><strong>Chroot</strong></p>
+<p>改变进程及其子进程外显的根目录，chroot设置根目录的程序，不能够对这个之外的文件进行访问，外部也不能读取、更改它的内容。</p>
+</li>
+<li><p><strong>NameSpace</strong></p>
+<p>对内核资源进行隔离，容器中的进程只可以访问当前容器命名空间的资源(进程ID，主机名、用户、文件名等)。</p>
+</li>
+<li><p><strong>Cgroup</strong></p>
+<p>限制隔离进程的资源使用(CPU、内存、磁盘、网络等)。</p>
+</li>
+</ol>
+<h2 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h2><h3 id="容器的5种状态"><a href="#容器的5种状态" class="headerlink" title="容器的5种状态"></a>容器的5种状态</h3><p>初建、运行、停止、暂停、删除。</p>
+<p><img data-src="../assets/img/image-20220413161321391.png" alt></p>
+<h3 id="Docker客户端"><a href="#Docker客户端" class="headerlink" title="Docker客户端"></a>Docker客户端</h3><p>与服务端交互：</p>
+<ol>
+<li>Docker命令</li>
+<li>REST API</li>
+<li>SDK</li>
+</ol>
+<h3 id="Docker服务端"><a href="#Docker服务端" class="headerlink" title="Docker服务端"></a>Docker服务端</h3><p>dockerd(Docker Daemon)：负责响应和处理来自客户端的请求，然后将其转化为具体操作。</p>
+<p>containerd：通过containerd-shim启动并管理runC</p>
+<p>runC：用来运行容器的轻量级工具</p>
+<h3 id="docker-attach-exec"><a href="#docker-attach-exec" class="headerlink" title="docker attach/exec"></a>docker attach/exec</h3><p>docker attach：给一个正在运行的容器分配了stdin、stdout、stderr，所有终端窗口同(显示一样的内容；同时阻塞)，使用exit退出时原容器也会退出，可以使用Ctrl+C。</p>
+<p>docker exec：相当于fork了一个和容器相同NameSpace的进程。</p>
+<h2 id="镜像与容器的区别"><a href="#镜像与容器的区别" class="headerlink" title="镜像与容器的区别"></a>镜像与容器的区别</h2><p>docker image inspect &lt; image &gt; 查看镜像分层</p>
+<p><strong>镜像中的层都是只读的，容器在镜像上多了一个读写层。</strong></p>
+<p>docker commit 可以基于运行时的容器生成新的镜像，将读写层数据写到新的镜像中。</p>
+<p><strong>所有写入或修改运行时容器的数据都存储在读写层，当容器停止运行时，读写层的数据也会同时删除掉。</strong></p>
+<p>写时复制：因为镜像层的数据是只读的，所以我们运行同一个镜像的多个容器副本时，可以共享镜像存储层，节省磁盘。</p>
+<h2 id="文件系统"><a href="#文件系统" class="headerlink" title="文件系统"></a>文件系统</h2><h3 id="AUFS"><a href="#AUFS" class="headerlink" title="AUFS"></a>AUFS</h3><p><img data-src="../assets/img/image-20220429133157063.png" alt></p>
+<p>将镜像层(只读)组织成多个目录(branch)，运行时容器文件作为一层容器层(读写)覆盖在镜像层之上，最后通过联合挂载技术呈现。</p>
+<p><strong>联合挂载：</strong>同一个挂载点同时挂载多个文件系统，将挂载点的源目录与挂载内容进行整合，使得最终可见的文件系统将会包含整合之后的各层文件和目录。</p>
+<h3 id="OverlayFS"><a href="#OverlayFS" class="headerlink" title="OverlayFS"></a>OverlayFS</h3><p><img data-src="../assets/img/image-20220429141408096.png" alt></p>
+<p>将镜像层(只读)称为lowerdir，容器层(读写)称为upperdir，最后联合挂载为mergedir，在容器上的改动，在upperdir、mergeddir中都会体现。</p>
+<h2 id="Docker网络"><a href="#Docker网络" class="headerlink" title="Docker网络"></a>Docker网络</h2><h3 id="docker0网桥"><a href="#docker0网桥" class="headerlink" title="docker0网桥"></a>docker0网桥</h3><p><img data-src="../assets/img/image-20220524114018238.png" alt></p>
+<p>启动Docker Daemon进程之后，会多出一个docker0的网卡，连接容器网段和宿主机网段，IP: 172.17.0.1/16(可修改)。</p>
+<h3 id="iptables"><a href="#iptables" class="headerlink" title="iptables"></a>iptables</h3><p>Docker会在宿主机系统上增加一些iptables规则，用来管理Docker容器与容器之间及外界的通信。</p>
+<ul>
+<li>外界访问Docker是通过iptables做DNAT实现的，DNAT将SNAT中的Source转成Destiantion，表示目的地址转换。</li>
+</ul>
+<h2 id="网络模式"><a href="#网络模式" class="headerlink" title="网络模式"></a>网络模式</h2><ul>
+<li><p><strong>bridge模式</strong></p>
+<p>默认网络模式，所有Docker容器连接到docker0网桥或自定义网桥上，所有的Docker容器处于同一个子网。</p>
+</li>
+<li><p><strong>host模式</strong></p>
+<p>Docker容器和宿主机使用同一个网络协议栈(同一个network namespace)，和宿主机共享网卡、IP、端口等信息。性能更好，但没做网络隔离。</p>
+</li>
+<li><p><strong>overlay模式</strong></p>
+<p>在多个Docker Daemon之间创建一个分布式网络，允许容器之间加密通讯，需要处理容器之间和主机之间的网络包。</p>
+</li>
+<li><p>macvlan模式</p>
+<p>网卡虚拟化技术，可以在同一个物理网卡上虚拟出多个网卡，通过不同的Mac地址在数据链路层进行网络数据的转发。</p>
+</li>
+<li><p>none模式</p>
+<p>除了自带的IO网卡(loopback 127.0.0.1)外没有其它任何网卡、IP等信息，需要自己添加网卡。</p>
+</li>
+</ul>
+<h2 id="容器间网络通信：link"><a href="#容器间网络通信：link" class="headerlink" title="容器间网络通信：link"></a>容器间网络通信：link</h2><p>将新创建出来的Docker容器与已有的容器之间创建一个安全通道来做数据交互。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -e MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 --name mysql mysql:latest</span><br><span class="line">docker run --name busybox --link mysql:mysql busybox:latest </span><br><span class="line"><span class="meta">#</span><span class="bash">--link name or id:<span class="built_in">alias</span>，第一个参数是目标容器的名字或者ID，第二个<span class="built_in">alias</span>相当于在busybox Docker容器中访问MySQL Docker容器的host。</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>host文件修改</p>
+<p>容器/etc/hosts文件中多了一条<code>172.17.0.2 mysql e47e603ffb17</code>记录</p>
+</li>
+<li><p>环境变量</p>
+<p>通过link建立连接之后，会在接收容器额外设置一些环境变量保存源容器的信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">/ # env | grep MYSQL</span><br><span class="line">MYSQL_PORT_33060_TCP=tcp://172.17.0.2:33060</span><br><span class="line">MYSQL_ENV_MYSQL_MAJOR=8.0</span><br><span class="line">MYSQL_PORT_3306_TCP_ADDR=172.17.0.2</span><br><span class="line">MYSQL_ENV_MYSQL_ROOT_PASSWORD=123456</span><br><span class="line">MYSQL_ENV_GOSU_VERSION=1.7</span><br><span class="line">MYSQL_PORT_3306_TCP_PORT=3306</span><br><span class="line">MYSQL_PORT_3306_TCP_PROTO=tcp</span><br><span class="line">MYSQL_PORT_33060_TCP_ADDR=172.17.0.2</span><br><span class="line">MYSQL_PORT=tcp://172.17.0.2:3306</span><br><span class="line">MYSQL_PORT_3306_TCP=tcp://172.17.0.2:3306</span><br><span class="line">MYSQL_PORT_33060_TCP_PORT=33060</span><br><span class="line">MYSQL_ENV_MYSQL_VERSION=8.0.19-1debian9</span><br><span class="line">MYSQL_PORT_33060_TCP_PROTO=tcp</span><br><span class="line">MYSQL_NAME=/busybox/mysql</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Docker数据存储模式"><a href="#Docker数据存储模式" class="headerlink" title="Docker数据存储模式"></a>Docker数据存储模式</h2><h2 id="Volumes"><a href="#Volumes" class="headerlink" title="Volumes"></a>Volumes</h2><p>Volume会把文件存储在宿主机的指定位置(Linux：/var/lib/docker/volumes/)，这些文件只能由Docker进程修改。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@VM-4-5-centos ~]# docker volume create my-vol</span><br><span class="line">my-vol</span><br><span class="line">[root@VM-4-5-centos ~]# docker run -d --name test -v my-vol:/data nginx:latest</span><br><span class="line">[root@VM-4-5-centos ~]# docker run -d --name test --mount type=volume,src=myvol,target=/data nginx:latest</span><br></pre></td></tr></table></figure>
+
+<p>-v/–volume：volume的名字(匿名可忽略):容器内的挂载点</p>
+<p>type=volume,src=&lt; VOLUME-NAME&gt;,dst=&lt; CONTAINER-PATH&gt;,volume-driver=local</p>
+<h2 id="bind-mounts"><a href="#bind-mounts" class="headerlink" title="bind mounts"></a>bind mounts</h2><p>可以将文件存储到宿主机的任意位置，而且别的应用程序也可以修改。</p>
+<h2 id="tmpfs"><a href="#tmpfs" class="headerlink" title="tmpfs"></a>tmpfs</h2><p>只支持linux，只会将数据存储在宿主机的内存中，并不会落盘，容器停止，数据就会被清除。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -it --name test --mount type=tmpfs,target=/data,tmpfs-mode=1770 nginx:latest</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>tmpfs-size：指定tmpfs的大小，默认不受限制，单位byte</li>
+<li>tmpfs-mode：Linux系统的文件模式，默认1777，任何用户都可以写</li>
+</ul>
+<h2 id="为什么说Docker是单进程模型？"><a href="#为什么说Docker是单进程模型？" class="headerlink" title="为什么说Docker是单进程模型？"></a>为什么说Docker是单进程模型？</h2><p>不管是在容器还是虚拟机中都有一个1号进程(容器：entrypoint启动进程；虚拟机：systemd进程)，然后其它进程都是1号进程的子进程，或子进程的子进程等等。</p>
+<h3 id="回收子进程资源"><a href="#回收子进程资源" class="headerlink" title="回收子进程资源"></a>回收子进程资源</h3><ol>
+<li>父进程通过系统调用wait()或waitpid()来等待子进程结束，从而回收子进程的资源；</li>
+<li>异步：子进程结束之后向父进程发送SIGCCHILD信号，基于此父进程注册一个SIGCHILD信号的处理函数进行子进程的资源回收。</li>
+</ol>
+<h3 id="僵尸进程"><a href="#僵尸进程" class="headerlink" title="僵尸进程"></a>僵尸进程</h3><p>子进程先于父进程退出，并且父进程没有对子进程残留的资源进行回收，就会产生僵尸进程。</p>
+<h3 id="孤儿进程"><a href="#孤儿进程" class="headerlink" title="孤儿进程"></a>孤儿进程</h3><p>父进程先于子进程退出，产生孤儿进程。虚拟机会将孤儿进程的父进程设置为1号进程即systemd进程，然后由systemd对孤儿进程的资源进行回收，而容器的1号进程为entrypoint启动进程，无法处理。</p>
+<p><strong>如何避免？</strong></p>
+<p>Kubernetes：可以将多个容器编排到一个pod里，共享同一个Linux NameSpace，本质是k8s实例化出一个pause镜像，其它容器加入这个镜像实例化出的NameSpace实现NameSpace共享。</p>
+<p>pod中的1号进程变成了pause，其它容器的entrypoint变成了1号进程的子进程。</p>
+<h1 id="Kubernetes"><a href="#Kubernetes" class="headerlink" title="Kubernetes"></a>Kubernetes</h1>
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>请作者喝瓶肥宅快乐水</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/vxpay.jpg" alt="ImOkkkk 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/alipay.jpg" alt="ImOkkkk 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Docker/" rel="tag"><i class="fa fa-tag"></i> Docker</a>
+              <a href="/tags/Kubernetes/" rel="tag"><i class="fa fa-tag"></i> Kubernetes</a>
+              <a href="/tags/云原生/" rel="tag"><i class="fa fa-tag"></i> 云原生</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/computernetwork/" rel="prev" title="计算机网络">
+      <i class="fa fa-chevron-left"></i> 计算机网络
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Docker"><span class="nav-text">Docker</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#核心概念"><span class="nav-text">核心概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#容器的5种状态"><span class="nav-text">容器的5种状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker客户端"><span class="nav-text">Docker客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker服务端"><span class="nav-text">Docker服务端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-attach-exec"><span class="nav-text">docker attach/exec</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#镜像与容器的区别"><span class="nav-text">镜像与容器的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件系统"><span class="nav-text">文件系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AUFS"><span class="nav-text">AUFS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OverlayFS"><span class="nav-text">OverlayFS</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker网络"><span class="nav-text">Docker网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#docker0网桥"><span class="nav-text">docker0网桥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#iptables"><span class="nav-text">iptables</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络模式"><span class="nav-text">网络模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容器间网络通信：link"><span class="nav-text">容器间网络通信：link</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker数据存储模式"><span class="nav-text">Docker数据存储模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Volumes"><span class="nav-text">Volumes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bind-mounts"><span class="nav-text">bind mounts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tmpfs"><span class="nav-text">tmpfs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么说Docker是单进程模型？"><span class="nav-text">为什么说Docker是单进程模型？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#回收子进程资源"><span class="nav-text">回收子进程资源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#僵尸进程"><span class="nav-text">僵尸进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#孤儿进程"><span class="nav-text">孤儿进程</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kubernetes"><span class="nav-text">Kubernetes</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ImOkkkk"
+      src="/../assets/img/head.jpg">
+  <p class="site-author-name" itemprop="name">ImOkkkk</p>
+  <div class="site-description" itemprop="description">Java开发, 后端开发</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">34</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <a href="https://beian.miit.gov.cn/" target="_blank">皖ICP备19022525号-1</a>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ImOkkkk</span>
+</div><script color="0,137,108" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://tonymua.top/docker/',]
+      });
+      });
+  </script>
+
+</body>
+</html>

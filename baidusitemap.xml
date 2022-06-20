@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://tonymua.top/docker/</loc>
+    <lastmod>2022-06-20</lastmod>
+  </url>  <url>
     <loc>http://tonymua.top/mysql/</loc>
-    <lastmod>2021-12-06</lastmod>
+    <lastmod>2022-06-20</lastmod>
   </url>  <url>
     <loc>http://tonymua.top/computernetwork/</loc>
     <lastmod>2021-07-10</lastmod>
@@ -49,13 +52,7 @@
     <loc>http://tonymua.top/shell_tree/</loc>
     <lastmod>2020-05-01</lastmod>
   </url>  <url>
-    <loc>http://tonymua.top/38008/</loc>
-    <lastmod>2020-04-29</lastmod>
-  </url>  <url>
     <loc>http://tonymua.top/65346/</loc>
-    <lastmod>2020-04-29</lastmod>
-  </url>  <url>
-    <loc>http://tonymua.top/11205/</loc>
     <lastmod>2020-04-29</lastmod>
   </url>  <url>
     <loc>http://tonymua.top/39972/</loc>
