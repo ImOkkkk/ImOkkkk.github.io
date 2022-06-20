@@ -39,18 +39,18 @@
     var CONFIG = {"hostname":"tonymua.top","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Docker原理 Chroot 改变进程及其子进程外显的根目录，chroot设置根目录的程序，不能够对这个之外的文件进行访问，外部也不能读取、更改它的内容。  NameSpace 对内核资源进行隔离，容器中的进程只可以访问当前容器命名空间的资源(进程ID，主机名、用户、文件名等)。  Cgroup 限制隔离进程的资源使用(CPU、内存、磁盘、网络等)。   核心概念容器的5种状态初建、运行、停止、">
+  <meta name="description" content="Docker原理 Chroot 改变进程及其子进程外显的根目录，chroot设置根目录的程序，不能够对这个之外的文件进行访问，外部也不能读取、更改它的内容。  NameSpace 对内核资源进行隔离，容器中的进程只可以访问当前容器命名空间的资源(进程ID，主机名、用户、文件名等)。  Cgroup 限制隔离进程的资源使用(CPU、内存、磁盘、网络等)。">
 <meta name="keywords" content="Docker,Kubernetes,云原生">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker+Kubernetes">
 <meta property="og:url" content="http://tonymua.top/docker/index.html">
 <meta property="og:site_name" content="ImOkkkk BLOG">
-<meta property="og:description" content="Docker原理 Chroot 改变进程及其子进程外显的根目录，chroot设置根目录的程序，不能够对这个之外的文件进行访问，外部也不能读取、更改它的内容。  NameSpace 对内核资源进行隔离，容器中的进程只可以访问当前容器命名空间的资源(进程ID，主机名、用户、文件名等)。  Cgroup 限制隔离进程的资源使用(CPU、内存、磁盘、网络等)。   核心概念容器的5种状态初建、运行、停止、">
+<meta property="og:description" content="Docker原理 Chroot 改变进程及其子进程外显的根目录，chroot设置根目录的程序，不能够对这个之外的文件进行访问，外部也不能读取、更改它的内容。  NameSpace 对内核资源进行隔离，容器中的进程只可以访问当前容器命名空间的资源(进程ID，主机名、用户、文件名等)。  Cgroup 限制隔离进程的资源使用(CPU、内存、磁盘、网络等)。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2022-06-20T06:30:48.538Z">
+<meta property="og:updated_time" content="2022-06-20T06:34:49.556Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker+Kubernetes">
-<meta name="twitter:description" content="Docker原理 Chroot 改变进程及其子进程外显的根目录，chroot设置根目录的程序，不能够对这个之外的文件进行访问，外部也不能读取、更改它的内容。  NameSpace 对内核资源进行隔离，容器中的进程只可以访问当前容器命名空间的资源(进程ID，主机名、用户、文件名等)。  Cgroup 限制隔离进程的资源使用(CPU、内存、磁盘、网络等)。   核心概念容器的5种状态初建、运行、停止、">
+<meta name="twitter:description" content="Docker原理 Chroot 改变进程及其子进程外显的根目录，chroot设置根目录的程序，不能够对这个之外的文件进行访问，外部也不能读取、更改它的内容。  NameSpace 对内核资源进行隔离，容器中的进程只可以访问当前容器命名空间的资源(进程ID，主机名、用户、文件名等)。  Cgroup 限制隔离进程的资源使用(CPU、内存、磁盘、网络等)。">
 
 <link rel="canonical" href="http://tonymua.top/docker/">
 
@@ -277,6 +277,8 @@
 <p>限制隔离进程的资源使用(CPU、内存、磁盘、网络等)。</p>
 </li>
 </ol>
+<a id="more"></a>
+
 <h2 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h2><h3 id="容器的5种状态"><a href="#容器的5种状态" class="headerlink" title="容器的5种状态"></a>容器的5种状态</h3><p>初建、运行、停止、暂停、删除。</p>
 <p><img data-src="../assets/img/image-20220413161321391.png" alt></p>
 <h3 id="Docker客户端"><a href="#Docker客户端" class="headerlink" title="Docker客户端"></a>Docker客户端</h3><p>与服务端交互：</p>
