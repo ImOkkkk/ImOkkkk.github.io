@@ -5,9 +5,9 @@
   <subtitle>When they go low,we go high.</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://tonymua.top/"/>
-  <updated>2022-06-20T06:34:49.556Z</updated>
-  <id>http://tonymua.top/</id>
+  <link href="https://imokkkk.github.io/"/>
+  <updated>2022-06-27T02:20:42.064Z</updated>
+  <id>https://imokkkk.github.io/</id>
   
   <author>
     <name>ImOkkkk</name>
@@ -17,9 +17,38 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>一个Java对象的大小怎么计算？</title>
+    <link href="https://imokkkk.github.io/javaobjectsize/"/>
+    <id>https://imokkkk.github.io/javaobjectsize/</id>
+    <published>2022-06-27T02:20:37.207Z</published>
+    <updated>2022-06-27T02:20:42.064Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="一个Java对象的大小怎么计算？"><a href="#一个Java对象的大小怎么计算？" class="headerlink" title="一个Java对象的大小怎么计算？"></a>一个Java对象的大小怎么计算？</h2><p><strong>对象头+实例数据+对其填充</strong></p><p><strong>对象头</strong></p><ol><li>MarkWord：用于存储对象运行时的数据，如hashCode、锁状态标志、GC分代年龄等。<strong>64位操作系统占8字节，32位操作系统占4字节。</strong></li><li>对象元数据指针(kclass)：对象指向类的指针，虚拟机通过这个指针来确定这个对象是哪一个类的实例。<strong>开启压缩指针占4字节，未开启占8字节。</strong></li><li>数组长度：<strong>只有数组对象才有，占4字节。</strong></li></ol><a id="more"></a><p><strong>实例数据</strong></p><p>实例数据可能包括两种：</p><ol><li><p>8种基本数据类型</p><table><thead><tr><th>类型</th><th>占用空间</th></tr></thead><tbody><tr><td>boolean</td><td>1</td></tr><tr><td>byte</td><td>1</td></tr><tr><td>char</td><td>2</td></tr><tr><td>short</td><td>2</td></tr><tr><td>int</td><td>4</td></tr><tr><td>float</td><td>4</td></tr><tr><td>long</td><td>8</td></tr><tr><td>double</td><td>8</td></tr><tr><td>Reference</td><td>4</td></tr></tbody></table></li><li><p>对象</p></li></ol><p><strong>对其填充(Padding)</strong></p><p>Java对象内存起始地址必须为8的整数倍，即Java对象大小必须为8的整数倍。当对象头+实例数据大小不为8的整数倍时，将会使用对其填充。</p><p>如64位，开启压缩指针的虚拟机上new Object()实际大小：</p><p>Mark Word(8B) + kclass(4B) + Padding(4B) = 16B</p><p><strong>例子</strong></p><ol><li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Mark Word(8B) + kclass(4B) + i(4B) = 16B</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Object1</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li><li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Mark Word(8B) + kclass(4B) + i(4B) + j(4B) + s(4B) + b(1B) + c(2B) + Padding(5B) = 32B</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ObjectSizeTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> j;</span><br><span class="line">    <span class="keyword">private</span> String s;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> b;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">char</span> c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li><li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// HotSpot创建的对象的字段会默认按从长到短，引用排最后排序：long/double --&gt; int/float --&gt; short/char --&gt; byte/boolean --&gt;Reference</span></span><br><span class="line"><span class="comment">//Mark Word(8B) + kclass(4B) + i1(4B) + i2(4B) + b1(1B) + b2(1B) + b3(1B) + Padding(1B) + s(4B) + obj(4B) = 32B</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ObjectSizeTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String s; <span class="comment">// 4</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> i1; <span class="comment">// 4</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">byte</span> b1; <span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">byte</span> b2; <span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> i2;<span class="comment">// 4</span></span><br><span class="line">    <span class="keyword">private</span> Object obj; <span class="comment">//4</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">byte</span> b3;  <span class="comment">// 1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;一个Java对象的大小怎么计算？&quot;&gt;&lt;a href=&quot;#一个Java对象的大小怎么计算？&quot; class=&quot;headerlink&quot; title=&quot;一个Java对象的大小怎么计算？&quot;&gt;&lt;/a&gt;一个Java对象的大小怎么计算？&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;对象头+实例数据+对其填充&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;对象头&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;MarkWord：用于存储对象运行时的数据，如hashCode、锁状态标志、GC分代年龄等。&lt;strong&gt;64位操作系统占8字节，32位操作系统占4字节。&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;对象元数据指针(kclass)：对象指向类的指针，虚拟机通过这个指针来确定这个对象是哪一个类的实例。&lt;strong&gt;开启压缩指针占4字节，未开启占8字节。&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;数组长度：&lt;strong&gt;只有数组对象才有，占4字节。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+    
+    </summary>
+    
+    
+      <category term="JVM" scheme="https://imokkkk.github.io/categories/JVM/"/>
+    
+    
+      <category term="JVM" scheme="https://imokkkk.github.io/tags/JVM/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Docker+Kubernetes</title>
-    <link href="http://tonymua.top/docker/"/>
-    <id>http://tonymua.top/docker/</id>
+    <link href="https://imokkkk.github.io/docker/"/>
+    <id>https://imokkkk.github.io/docker/</id>
     <published>2022-06-20T06:22:51.218Z</published>
     <updated>2022-06-20T06:34:49.556Z</updated>
     
@@ -42,21 +71,21 @@
     </summary>
     
     
-      <category term="云原生" scheme="http://tonymua.top/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/"/>
+      <category term="云原生" scheme="https://imokkkk.github.io/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/"/>
     
     
-      <category term="Docker" scheme="http://tonymua.top/tags/Docker/"/>
+      <category term="Docker" scheme="https://imokkkk.github.io/tags/Docker/"/>
     
-      <category term="Kubernetes" scheme="http://tonymua.top/tags/Kubernetes/"/>
+      <category term="Kubernetes" scheme="https://imokkkk.github.io/tags/Kubernetes/"/>
     
-      <category term="云原生" scheme="http://tonymua.top/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/"/>
+      <category term="云原生" scheme="https://imokkkk.github.io/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/"/>
     
   </entry>
   
   <entry>
     <title>计算机网络</title>
-    <link href="http://tonymua.top/computernetwork/"/>
-    <id>http://tonymua.top/computernetwork/</id>
+    <link href="https://imokkkk.github.io/computernetwork/"/>
+    <id>https://imokkkk.github.io/computernetwork/</id>
     <published>2021-06-15T14:42:33.436Z</published>
     <updated>2021-07-10T14:10:32.525Z</updated>
     
@@ -73,23 +102,23 @@
     </summary>
     
     
-      <category term="计算机网络" scheme="http://tonymua.top/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+      <category term="计算机网络" scheme="https://imokkkk.github.io/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
     
     
-      <category term="计算机网络" scheme="http://tonymua.top/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+      <category term="计算机网络" scheme="https://imokkkk.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
     
-      <category term="HTTP" scheme="http://tonymua.top/tags/HTTP/"/>
+      <category term="HTTP" scheme="https://imokkkk.github.io/tags/HTTP/"/>
     
-      <category term="TCP" scheme="http://tonymua.top/tags/TCP/"/>
+      <category term="TCP" scheme="https://imokkkk.github.io/tags/TCP/"/>
     
-      <category term="UDP" scheme="http://tonymua.top/tags/UDP/"/>
+      <category term="UDP" scheme="https://imokkkk.github.io/tags/UDP/"/>
     
   </entry>
   
   <entry>
     <title>MySQL</title>
-    <link href="http://tonymua.top/mysql/"/>
-    <id>http://tonymua.top/mysql/</id>
+    <link href="https://imokkkk.github.io/mysql/"/>
+    <id>https://imokkkk.github.io/mysql/</id>
     <published>2021-06-06T08:06:55.156Z</published>
     <updated>2022-06-20T06:28:14.931Z</updated>
     
@@ -105,19 +134,19 @@
     </summary>
     
     
-      <category term="数据库" scheme="http://tonymua.top/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+      <category term="数据库" scheme="https://imokkkk.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
     
     
-      <category term="MySQL" scheme="http://tonymua.top/tags/MySQL/"/>
+      <category term="MySQL" scheme="https://imokkkk.github.io/tags/MySQL/"/>
     
-      <category term="数据库" scheme="http://tonymua.top/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+      <category term="数据库" scheme="https://imokkkk.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
     
   </entry>
   
   <entry>
     <title>代理模式(JDK Proxy与CGLIB Proxy)</title>
-    <link href="http://tonymua.top/proxymode/"/>
-    <id>http://tonymua.top/proxymode/</id>
+    <link href="https://imokkkk.github.io/proxymode/"/>
+    <id>https://imokkkk.github.io/proxymode/</id>
     <published>2021-05-23T14:15:34.269Z</published>
     <updated>2021-05-23T14:36:45.692Z</updated>
     
@@ -135,17 +164,17 @@
     </summary>
     
     
-      <category term="Spring" scheme="http://tonymua.top/categories/Spring/"/>
+      <category term="Spring" scheme="https://imokkkk.github.io/categories/Spring/"/>
     
     
-      <category term="代理模式" scheme="http://tonymua.top/tags/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/"/>
+      <category term="代理模式" scheme="https://imokkkk.github.io/tags/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/"/>
     
   </entry>
   
   <entry>
     <title>计算机网络与网络编程</title>
-    <link href="http://tonymua.top/65346/"/>
-    <id>http://tonymua.top/65346/</id>
+    <link href="https://imokkkk.github.io/65346/"/>
+    <id>https://imokkkk.github.io/65346/</id>
     <published>2021-05-08T13:19:59.249Z</published>
     <updated>2020-04-29T02:44:38.098Z</updated>
     
@@ -160,14 +189,14 @@
     
     
     
-      <category term="javase" scheme="http://tonymua.top/tags/javase/"/>
+      <category term="javase" scheme="https://imokkkk.github.io/tags/javase/"/>
     
   </entry>
   
   <entry>
     <title>线程池</title>
-    <link href="http://tonymua.top/ThreadPool/"/>
-    <id>http://tonymua.top/ThreadPool/</id>
+    <link href="https://imokkkk.github.io/ThreadPool/"/>
+    <id>https://imokkkk.github.io/ThreadPool/</id>
     <published>2021-05-08T13:19:59.242Z</published>
     <updated>2020-11-03T12:25:05.495Z</updated>
     
@@ -180,19 +209,19 @@
     </summary>
     
     
-      <category term="多线程" scheme="http://tonymua.top/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
+      <category term="多线程" scheme="https://imokkkk.github.io/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
     
     
-      <category term="多线程" scheme="http://tonymua.top/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
+      <category term="多线程" scheme="https://imokkkk.github.io/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
     
-      <category term="并发编程" scheme="http://tonymua.top/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
+      <category term="并发编程" scheme="https://imokkkk.github.io/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title>微信公众号开发(四)处理语音消息</title>
-    <link href="http://tonymua.top/35386/"/>
-    <id>http://tonymua.top/35386/</id>
+    <link href="https://imokkkk.github.io/35386/"/>
+    <id>https://imokkkk.github.io/35386/</id>
     <published>2021-05-08T13:19:59.224Z</published>
     <updated>2020-04-29T02:44:38.015Z</updated>
     
@@ -207,14 +236,14 @@
     
     
     
-      <category term="tool" scheme="http://tonymua.top/tags/tool/"/>
+      <category term="tool" scheme="https://imokkkk.github.io/tags/tool/"/>
     
   </entry>
   
   <entry>
     <title>微信公众号开发(五)部署项目到阿里云服务器</title>
-    <link href="http://tonymua.top/deployment/"/>
-    <id>http://tonymua.top/deployment/</id>
+    <link href="https://imokkkk.github.io/deployment/"/>
+    <id>https://imokkkk.github.io/deployment/</id>
     <published>2021-05-08T13:19:59.223Z</published>
     <updated>2020-05-28T02:18:40.540Z</updated>
     
@@ -231,21 +260,21 @@
     </summary>
     
     
-      <category term="项目" scheme="http://tonymua.top/categories/%E9%A1%B9%E7%9B%AE/"/>
+      <category term="项目" scheme="https://imokkkk.github.io/categories/%E9%A1%B9%E7%9B%AE/"/>
     
     
-      <category term="项目部署" scheme="http://tonymua.top/tags/%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/"/>
+      <category term="项目部署" scheme="https://imokkkk.github.io/tags/%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/"/>
     
-      <category term="Spring Boot" scheme="http://tonymua.top/tags/Spring-Boot/"/>
+      <category term="Spring Boot" scheme="https://imokkkk.github.io/tags/Spring-Boot/"/>
     
-      <category term="微信公众号" scheme="http://tonymua.top/tags/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7/"/>
+      <category term="微信公众号" scheme="https://imokkkk.github.io/tags/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7/"/>
     
   </entry>
   
   <entry>
     <title>微信公众号开发(二)自动回复功能实现简单的天气查询</title>
-    <link href="http://tonymua.top/39972/"/>
-    <id>http://tonymua.top/39972/</id>
+    <link href="https://imokkkk.github.io/39972/"/>
+    <id>https://imokkkk.github.io/39972/</id>
     <published>2021-05-08T13:19:59.221Z</published>
     <updated>2020-04-29T02:44:38.058Z</updated>
     
@@ -263,14 +292,14 @@
     
     
     
-      <category term="tool" scheme="http://tonymua.top/tags/tool/"/>
+      <category term="tool" scheme="https://imokkkk.github.io/tags/tool/"/>
     
   </entry>
   
   <entry>
     <title>微信公众号开发(三)快递信息查询</title>
-    <link href="http://tonymua.top/12221/"/>
-    <id>http://tonymua.top/12221/</id>
+    <link href="https://imokkkk.github.io/12221/"/>
+    <id>https://imokkkk.github.io/12221/</id>
     <published>2021-05-08T13:19:59.220Z</published>
     <updated>2020-04-29T02:44:38.057Z</updated>
     
@@ -285,14 +314,14 @@
     
     
     
-      <category term="tool" scheme="http://tonymua.top/tags/tool/"/>
+      <category term="tool" scheme="https://imokkkk.github.io/tags/tool/"/>
     
   </entry>
   
   <entry>
     <title>微信公众号开发(一)开发者接入微信公众号</title>
-    <link href="http://tonymua.top/38103/"/>
-    <id>http://tonymua.top/38103/</id>
+    <link href="https://imokkkk.github.io/38103/"/>
+    <id>https://imokkkk.github.io/38103/</id>
     <published>2021-05-08T13:19:59.218Z</published>
     <updated>2020-04-29T02:44:38.014Z</updated>
     
@@ -311,14 +340,14 @@
     
     
     
-      <category term="tool" scheme="http://tonymua.top/tags/tool/"/>
+      <category term="tool" scheme="https://imokkkk.github.io/tags/tool/"/>
     
   </entry>
   
   <entry>
     <title>常用设计模式</title>
-    <link href="http://tonymua.top/14808/"/>
-    <id>http://tonymua.top/14808/</id>
+    <link href="https://imokkkk.github.io/14808/"/>
+    <id>https://imokkkk.github.io/14808/</id>
     <published>2021-05-08T13:19:59.217Z</published>
     <updated>2020-04-29T02:44:38.055Z</updated>
     
@@ -337,14 +366,14 @@
     
     
     
-      <category term="javase" scheme="http://tonymua.top/tags/javase/"/>
+      <category term="javase" scheme="https://imokkkk.github.io/tags/javase/"/>
     
   </entry>
   
   <entry>
     <title>四种常见的排序算法</title>
-    <link href="http://tonymua.top/23116/"/>
-    <id>http://tonymua.top/23116/</id>
+    <link href="https://imokkkk.github.io/23116/"/>
+    <id>https://imokkkk.github.io/23116/</id>
     <published>2021-05-08T13:19:59.192Z</published>
     <updated>2020-04-29T02:44:38.011Z</updated>
     
@@ -359,14 +388,14 @@
     
     
     
-      <category term="面试" scheme="http://tonymua.top/tags/%E9%9D%A2%E8%AF%95/"/>
+      <category term="面试" scheme="https://imokkkk.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
     
   </entry>
   
   <entry>
     <title>使用tree命令导出文件夹/文件的目录树</title>
-    <link href="http://tonymua.top/shell_tree/"/>
-    <id>http://tonymua.top/shell_tree/</id>
+    <link href="https://imokkkk.github.io/shell_tree/"/>
+    <id>https://imokkkk.github.io/shell_tree/</id>
     <published>2021-05-08T13:19:59.188Z</published>
     <updated>2020-05-01T13:37:12.901Z</updated>
     
@@ -380,17 +409,17 @@
     </summary>
     
     
-      <category term="shell" scheme="http://tonymua.top/categories/shell/"/>
+      <category term="shell" scheme="https://imokkkk.github.io/categories/shell/"/>
     
     
-      <category term="tool" scheme="http://tonymua.top/tags/tool/"/>
+      <category term="tool" scheme="https://imokkkk.github.io/tags/tool/"/>
     
   </entry>
   
   <entry>
     <title>Vue开发常用命令</title>
-    <link href="http://tonymua.top/Vue_shell/"/>
-    <id>http://tonymua.top/Vue_shell/</id>
+    <link href="https://imokkkk.github.io/Vue_shell/"/>
+    <id>https://imokkkk.github.io/Vue_shell/</id>
     <published>2021-05-08T13:19:59.186Z</published>
     <updated>2020-05-28T06:27:34.810Z</updated>
     
@@ -409,17 +438,17 @@
     </summary>
     
     
-      <category term="前端" scheme="http://tonymua.top/categories/%E5%89%8D%E7%AB%AF/"/>
+      <category term="前端" scheme="https://imokkkk.github.io/categories/%E5%89%8D%E7%AB%AF/"/>
     
     
-      <category term="Vue" scheme="http://tonymua.top/tags/Vue/"/>
+      <category term="Vue" scheme="https://imokkkk.github.io/tags/Vue/"/>
     
   </entry>
   
   <entry>
     <title>top K问题的优化解法</title>
-    <link href="http://tonymua.top/1060/"/>
-    <id>http://tonymua.top/1060/</id>
+    <link href="https://imokkkk.github.io/1060/"/>
+    <id>https://imokkkk.github.io/1060/</id>
     <published>2021-05-08T13:19:59.185Z</published>
     <updated>2020-04-29T02:44:38.006Z</updated>
     
@@ -433,14 +462,14 @@
     
     
     
-      <category term="算法" scheme="http://tonymua.top/tags/%E7%AE%97%E6%B3%95/"/>
+      <category term="算法" scheme="https://imokkkk.github.io/tags/%E7%AE%97%E6%B3%95/"/>
     
   </entry>
   
   <entry>
     <title>SQL执行慢分析及SQL语句优化</title>
-    <link href="http://tonymua.top/31546/"/>
-    <id>http://tonymua.top/31546/</id>
+    <link href="https://imokkkk.github.io/31546/"/>
+    <id>https://imokkkk.github.io/31546/</id>
     <published>2021-05-08T13:19:59.176Z</published>
     <updated>2020-04-29T02:44:37.936Z</updated>
     
@@ -464,14 +493,14 @@
     
     
     
-      <category term="面试" scheme="http://tonymua.top/tags/%E9%9D%A2%E8%AF%95/"/>
+      <category term="面试" scheme="https://imokkkk.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
     
   </entry>
   
   <entry>
     <title>Spring AOP</title>
-    <link href="http://tonymua.top/spring_aop/"/>
-    <id>http://tonymua.top/spring_aop/</id>
+    <link href="https://imokkkk.github.io/spring_aop/"/>
+    <id>https://imokkkk.github.io/spring_aop/</id>
     <published>2021-05-08T13:19:59.159Z</published>
     <updated>2020-08-19T06:47:53.564Z</updated>
     
@@ -484,21 +513,21 @@
     </summary>
     
     
-      <category term="Spring" scheme="http://tonymua.top/categories/Spring/"/>
+      <category term="Spring" scheme="https://imokkkk.github.io/categories/Spring/"/>
     
     
-      <category term="Spring" scheme="http://tonymua.top/tags/Spring/"/>
+      <category term="Spring" scheme="https://imokkkk.github.io/tags/Spring/"/>
     
-      <category term="AOP" scheme="http://tonymua.top/tags/AOP/"/>
+      <category term="AOP" scheme="https://imokkkk.github.io/tags/AOP/"/>
     
-      <category term="面向切面编程" scheme="http://tonymua.top/tags/%E9%9D%A2%E5%90%91%E5%88%87%E9%9D%A2%E7%BC%96%E7%A8%8B/"/>
+      <category term="面向切面编程" scheme="https://imokkkk.github.io/tags/%E9%9D%A2%E5%90%91%E5%88%87%E9%9D%A2%E7%BC%96%E7%A8%8B/"/>
     
   </entry>
   
   <entry>
     <title>Sping Cloud Alibaba</title>
-    <link href="http://tonymua.top/SpringCloudAlibaba/"/>
-    <id>http://tonymua.top/SpringCloudAlibaba/</id>
+    <link href="https://imokkkk.github.io/SpringCloudAlibaba/"/>
+    <id>https://imokkkk.github.io/SpringCloudAlibaba/</id>
     <published>2021-05-08T13:19:59.157Z</published>
     <updated>2021-03-17T14:58:25.266Z</updated>
     
@@ -520,37 +549,12 @@
     </summary>
     
     
-      <category term="微服务" scheme="http://tonymua.top/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+      <category term="微服务" scheme="https://imokkkk.github.io/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
     
     
-      <category term="微服务" scheme="http://tonymua.top/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+      <category term="微服务" scheme="https://imokkkk.github.io/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
     
-      <category term="Spring Cloud" scheme="http://tonymua.top/tags/Spring-Cloud/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Sping Cloud组件扩展</title>
-    <link href="http://tonymua.top/SpringCloud_02/"/>
-    <id>http://tonymua.top/SpringCloud_02/</id>
-    <published>2021-05-08T13:19:59.156Z</published>
-    <updated>2021-03-17T14:13:35.253Z</updated>
-    
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="1-Apollo"><a href="#1-Apollo" class="headerlink" title="1.Apollo"></a>1.Apollo</h3><p>统一管理配置信息，增强配置管理的服务能力。<br><img data-src="../../../../assets/img/CgotOV28B1WAF4S2AACIYGiePW0196.png" alt><br>使用配置中心管理配置后，可以将配置信息从项目转移到配置中心，一般一个项目会有一个唯一的标识ID，通过这个ID从配置中心获取对应的配置内容。</p><a id="more"></a><ol><li>拉取<br>项目在启动的时候通过配置中心拉取配置信息。</li><li>推送<br>在配置中心修改配置后，可以实时地推送给客户端进行更新。</li></ol><p>解决的问题：每个节点都要重启、格式不规范、容易被错改、没有历史记录、安全性不高</p><h4 id="1-1-主要功能"><a href="#1-1-主要功能" class="headerlink" title="1.1 主要功能"></a>1.1 主要功能</h4><ul><li>统一管理不同环境、不同集群的配置</li><li>配置修改实时生效，即热发布功能</li><li>版本发布管理</li><li>灰度发布</li><li>权限管理、发布审核、操作审计</li><li>提供Java和.Net原生客户端，轻松集成、操作简单</li><li>提供开放平台API</li><li>部署简单</li></ul><p><strong>Apollo 和 Spring Cloud Config 对比</strong><br><img data-src="../../../../assets/img/CgoB5l28B1WASOkYAAA7y7Kuj4o675.png" alt></p><h4 id="1-2-概念介绍"><a href="#1-2-概念介绍" class="headerlink" title="1.2 概念介绍"></a>1.2 概念介绍</h4><ul><li><p>应用<br>应用指项目，标识用appId来指定，Spring Boot项目中建议直接配置在application.yml中。</p></li><li><p>环境<br>Apollo客户端在运行时除了需要知道项目当前的身份标识，还需要知道当前项目对应的环境，从而根据环境去配置中心获取对应的配置。可以通过Java System Property或配置文件指定，目前支持的环境有Local、DEV、FAT(测试环境)、UAT(集成环境)、PRO(生产环境)。</p></li><li><p>集群<br>不同的集群可以有不同的配置文件，可以通过Java System Property或配置文件来指定。</p></li><li><p>命名空间<br>可以用来对配置做分类，不同类型的配置存放在不同的命名空间中，如数据库配置文件、消息队列配置、业务相关配置等。命名空间还可以让多个项目共用一份配置，如Redis集群。</p></li><li><p>权限控制</p></li></ul><h4 id="1-3-架构设计"><a href="#1-3-架构设计" class="headerlink" title="1.3 架构设计"></a>1.3 架构设计</h4><p><img data-src="../../../../assets/img/CgoB5l28B1eAT_QKAAIrr-cSeiQ864.png" alt></p><ul><li><p>Config Service<br>服务于Client对配置的操作，提供配置的查询、更新接口(基于Http long polling)</p></li><li><p>Admin Service<br>服务于后台Portal(Web管理端)，提供配置管理接口</p></li><li><p>Meta Server<br><strong>Meta Server是对Eureka的一个封装，提供了HTTP接口获取Admin Service和Config Service的服务信息。</strong>部署时和Config Service是在一个JVM进程中的，所以IP、端口和Config Service一致。</p></li><li><p>Eureka<br>用于提供服务注册和发现，Config Service和Admin Service都会向Eureka注册服务。Eureka在部署时和Config Service在一个JVM进程中，即<strong>Config Service包含了Meta Server和Eureka</strong>。</p></li><li><p>Portal<br>后台Web界面管理配置，通过Meta Server获取Admin Service服务列表(IP+Port)进行配置的管理，客户端做负载均衡。</p></li><li><p>Cilent<br>Apollo提供的客户端，用于项目中对配置的获取、更新。<strong>通过Meta Server获取Config Service服务列表</strong>(IP+Port)进行配置的管理，客户端内做负载均衡。</p></li></ul><p><strong>工作流程：</strong></p><ol><li>注册、续约、取消，也就是服务注册的操作，Config Service和Admin Service都会注册到Eureka中。</li><li>服务发现的逻辑，Client需要指定所有的Config Service，Portal需要知道所有的Admin Service，然后才能发起对应的操作。查找服务列表是通过负载进行转发到Meta Server.</li><li>Meta Server去Eureka中获取对应的服务列表。</li><li>当获取到对应的服务信息后，就可以直接发起远程调用了。</li></ol><p><strong>推送设计：</strong><br><img data-src="../../../../assets/img/CgotOV28B1eAVl80AADzD_Lkc-w754.png" alt><br>在Portal中进行配置的编辑和发布操作后，Portal会调用Admin Service提供的接口进行发布操作。Admin Service收到请求后，发送ReleaseMessage给各个Config Service，通知Config Service配置发生了变化。Config Service收到ReleaseMessage后，通知对应的客户端，基于HTTP长连接实现。</p><p><strong>消息设计：</strong><br><img data-src="../../../../assets/img/CgoB5l28B1iAJa9tAACfTre4O3g300.png" alt><br>ReleaseMessage消息是通过MySQL实现了一个简单的消息队列。Admin Service在配置发布后会往ReleaseMessage表插入一条消息记录，Config Service会启动一个线程定时扫描ReleaseMessage表，去查看是否有新的消息记录。Config Service发现有新的消息记录，那么就会通知所有的消息监听器，消息监听器得到配置发布的信息后，则会通知对应的客户端。</p><p><strong>客户端设计：</strong><br><img data-src="../../../../assets/img/CgotOV28B1iAHJTnAAFK5jsOc0Q150.png" alt><br>客户端和服务端保持了一个长连接，编译配置的实时更新推送。定时拉取配置是客户端本地的一个定时任务，默认5分钟1次，也可以通过在运行时指定System Property:apollo.refreshInterval来进行覆盖，单位是分钟，采用推送+定时拉取的方式就等于双保险。客户端从Apollo配置中心服务端获取到应用的最新配置后，会保存在内存中。客户端会把从服务取到的配置在本地文件系统中缓存一份，当服务或网络不可用时可以使用本地配置，也就是本地开发模式env=Local。</p><h3 id="2-分布式链路跟踪"><a href="#2-分布式链路跟踪" class="headerlink" title="2.分布式链路跟踪"></a>2.分布式链路跟踪</h3><p><img data-src="../../../../assets/img/CgotOV3TXSmAClJKAAGdgZ3eA9U538.png" alt><br>分布式链路跟踪的关键在于如何将请求经过的服务节点都关联起来。</p><h4 id="2-1-核心概念"><a href="#2-1-核心概念" class="headerlink" title="2.1 核心概念"></a>2.1 核心概念</h4><ul><li><p>Span<br>基本工作单元，如发送RPC请求是一个新的Span、发送HTTP请求是一个新的Span、内部方法调用也是一个新的Span。</p></li><li><p>Trace<br>一次分布式调用的链路信息，每次调用链路信息都会在请求入口处生成一个TraceId。</p></li><li><p>Annotation<br>用于记录事件的信息。在Annotation中会有CS、SR、SS、CR这些信息。</p></li><li><p>CS<br>Client Sent，客户端发送一个请求，这个Annotation表示Span的开始。</p></li><li><p>SR<br>Server Received，服务端获得请求并开始处理，用SR的时间减去CS的时间即网络延迟时间。</p></li><li><p>SS<br>Server Sent，在请求处理完成时将响应发送回客户端，SR-SS，即服务端处理请求所需的时间。</p></li><li><p>CR<br>Client Recevied，表示Span结束，客户端从服务端收到响应，CR-CS，即全部时间。</p></li></ul><h4 id="2-2-请求追踪过程分解"><a href="#2-2-请求追踪过程分解" class="headerlink" title="2.2 请求追踪过程分解"></a>2.2 请求追踪过程分解</h4><p><img data-src="../../../../assets/img/CgoB5l3TXSqAAotuAARIqATiaa4975.png" alt></p><ol><li>当一个请求访问SERVICE1时，此时没有Trace和Span，会生成Trace和Span，如图所示生成Trace ID是X，Span ID是A。</li><li>接着SERVICE1请求SERVICE2，这是一次远程请求，会生成一个新的Span，Span ID为B，Trace ID不变还是X。Span B处于CS状态，当请求到达SERVICE2后，SERVICE2有内部操作，生成了一个新的Span，Span ID为C，Trace ID不变。</li><li>SERVICE2处理完后向SERVICE3发起请求，生成新的Span，Span ID为D，Span D处于CS状态，SERVICE3接收请求后，Span D处于RS状态，同时SERVICE内部操作也会生成新的Span，Span ID为E。</li><li>SERVICE3处理完后，需要将结果响应给调用方，此时Span D处于SS状态，当SERVICE2收到响应后，Span D处于CR状态。</li></ol><p>一次请求会经过多个服务，会产生多个Span，但Trace ID只有一个。</p><h4 id="2-3-Spring-Cloud-Sleuth"><a href="#2-3-Spring-Cloud-Sleuth" class="headerlink" title="2.3 Spring Cloud Sleuth"></a>2.3 Spring Cloud Sleuth</h4><ul><li>可以添加链路信息到日志中</li><li>链路数据可直接上报给Zipkin</li><li>内置了很多框架的埋点，如Zuul、Feign、Hystrix</li></ul><h4 id="2-4-Zipkin"><a href="#2-4-Zipkin" class="headerlink" title="2.4 Zipkin"></a>2.4 Zipkin</h4><p><img data-src="../../../../assets/img/CgotOV3TXSqAJOtrAAFNEaemXPk128.png" alt><br>收集数据、查询数据。</p><ul><li><p>Collector<br>Zipkin的数据收集器，进行数据验证、存储。</p></li><li><p>Storage<br>存储组件，Zipkin默认在内存中存储数据，数据落地的话支持ElasticSearch和MySQL。</p></li><li><p>Search<br>Zipkin的查询API，用于查找和检索数据，主要使用者为Web UI。</p></li><li><p>Web UI<br>提供可视化的操作界面，直观的查询链路跟踪数据。</p></li></ul><p>链路跟踪的信息会通过Transport传递给Zipkin的Collector，Transport支持的方式有HTTP和MQ进行传输。</p><h4 id="2-5-Sleuth关联整个请求链路日志"><a href="#2-5-Sleuth关联整个请求链路日志" class="headerlink" title="2.5 Sleuth关联整个请求链路日志"></a>2.5 Sleuth关联整个请求链路日志</h4><p>集成Spring Cloud Sleuth后，会在原始的日志加上一些链路的信息。</p><ul><li><p>application name<br>应用名称，即application.yml里的spring.application.name参数配置的属性。</p></li><li><p>traceId<br>为请求分配的唯一请求号，用来标识一条请求链路。</p></li><li><p>spanId<br>基本的工作单元，一个请求可以包含多个步骤，每个步骤有自己的Span ID，一次请求只有一个Trace ID和多个Span Id。</p></li><li><p>export<br>布尔类型，表示是否将该信息输出到Zipkin进行收集和展示。</p></li></ul><h4 id="2-6-使用技巧"><a href="#2-6-使用技巧" class="headerlink" title="2.6 使用技巧"></a>2.6 使用技巧</h4><ul><li><p>抽样采集数据<br>spring.sleuth.sampler.probability=10<br>请求次数：Zipkin数据条数=10：1</p></li><li><p>RabbitMQ代替HTTP发送调用链路数据<br>删除配置spring.zipkin.base-url，在启动Zipkin服务时指定RabbitMQ信息：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -DRABBIT_ADDRESSES=192.168.10.124:5672 -DRABBIT_USER=admin -DRABBIT_PASSWORD=123456 -jar zipkin.jar</span><br></pre></td></tr></table></figure></li><li><p>ElasticSearch存储调用链数据<br>启动Zipkin的时候指定存储类型为ES，指定ES的URL信息：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -DSTORAGE_TYPE=elasticsearch -DES_HOSTS=http://localhost:9200 -jar zipkin.jar</span><br></pre></td></tr></table></figure></li><li><p>手动埋点检测性能</p></li><li><p>Hystrix埋点分析</p></li></ul><h3 id="3-微服务安全认证"><a href="#3-微服务安全认证" class="headerlink" title="3.微服务安全认证"></a>3.微服务安全认证</h3><h4 id="3-1-常用的认证方式"><a href="#3-1-常用的认证方式" class="headerlink" title="3.1 常用的认证方式"></a>3.1 常用的认证方式</h4><ul><li><p>session<br>用户登陆后将信息存储在服务端，客户端通过cookie中的sessionId来标识对应的用户。</p><p>缺点：</p><ol><li>服务端需要保存每个用户的登录信息，如果用户量非常的，服务端的存储压力也会增大。</li><li>多节点时，通过负载均衡器进行转发，session可能会丢失。</li></ol><p>解决办法：<br>session复制，Nginx可以设置黏性Cookie来保证一个用户的请求只访问同一个节点；session集中存储，如存储在Redis中。</p></li><li><p>HTTP Basic Authentication<br>HTTP基本认证，客户端会在请求头中增加Authorization，Authorization是用户名和密码Base64加密后的内容，服务端获取Authorization Header中的用户名与密码进行验证。</p></li><li><p>Token<br>与HTTP Basic Authentication类似，与session不同，session只是一个key，会话信息存储在服务端。而Token中会存储用户的信息，然后通过加密算法进行加密，只有服务端才能解密，服务端拿到Token后进行解密获取用户信息。</p></li></ul><h4 id="3-2-JWT认证"><a href="#3-2-JWT认证" class="headerlink" title="3.2 JWT认证"></a>3.2 JWT认证</h4><p><strong>简介：</strong><br>JWT(JSON Web Token)<br>如用户登录时，基本思路就是用户提供用户名和密码给认证服务器，服务器验证用户提交信息的合法性；如果验证成功，会产生并返回一个Token，用户可以使用这个Token访问服务器上受保护的资源。</p><p>JWT由三部分构成：头部(Header)、消息体(Payload)、签名(Signature)</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">token = encodeBase64(header) + <span class="string">'.'</span> + encodeBase64(payload) + <span class="string">'.'</span> + encodeBase64(signature)</span><br></pre></td></tr></table></figure><p>头部信息：令牌类型、签名算法</p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123; <span class="attr">"alg"</span>: <span class="string">"HS256"</span>, <span class="attr">"typ"</span>: <span class="string">"JWT"</span> &#125;</span><br></pre></td></tr></table></figure><p>消息体：应用需要的信息，如用户的id</p><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">"id"</span>: <span class="string">"1234567890"</span>, <span class="attr">"name"</span>: <span class="string">"John Doe"</span>&#125;</span><br></pre></td></tr></table></figure><p>签名：用来判断消息在传递的路径上是否被篡改</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HMACSHA256( base64UrlEncode(header)  + <span class="string">"."</span> +  base64UrlEncode(payload), secret)</span><br></pre></td></tr></table></figure><p><strong>JWT认证流程：</strong><br><img data-src="../../../../assets/img/CgotOV3WUG2ARl98AAD_xcd-ElM857.png" alt><br>客户端需要调用服务端提供的认证接口来获取 Token。获取 Token 的流程如图所示，客户端会首先发起一个认证的请求到网关，网关会将请求转发到后端的用户服务中，在用户服务中验证身份后，就会根据用户的信息生成一个 Token 返回给客户端，这样客户端就获取了后面请求的通行证。然后，客户端会将获取的 Token 存储起来，在下次请求时带上这个 Token，一般会将 Token 放入请求头中进行传递。当请求到达网关后，会在网关中对 Token 进行校验，如果校验成功，则将该请求转发到后端的服务中，在转发时会将 Token 解析出的用户信息也一并带过去，这样在后端的服务中就不用再解析一遍 Token 获取的用户信息，这个操作统一在网关进行的。如果校验失败，那么就直接返回对应的结果给客户端，不会将请求进行转发。</p><p>在网关中，验证过滤器会对 /oauth/token 这个认证 API 进行放行，不进行验证。<br><strong>用户信息的全局传递扩展：</strong><br>不需要加参数，直接通过请求头进行传递，在服务内部通过ThreadLocal进行上下文传递。主要流程：从网关传递到后端服务，后端服务接受数据后存储到ThreadLocal中，服务会调用其它服务，如果用Feign调用可以利用Feign的拦截器传递数据，如果用RestTemplate的拦截器传递数据也一样。</p><h4 id="3-3-Token的使用"><a href="#3-3-Token的使用" class="headerlink" title="3.3 Token的使用"></a>3.3 Token的使用</h4><p><strong>Token注销</strong><br><img data-src="../../../../assets/img/CgoB5l3WUIGADfX2AAEhrMGcQDk308.png" alt><br>Token的有效期存储在Token本身中，只有解析出Token的信息，才能获取到Token的有效时间，不能修改。Token的有效期越短，安全性越高。还可以在用户退出登录时，进行Token的注销操作，如将注销的Token放入Redis中进行一层过滤，即在网关中验证Token有效性时先从Redis中判断Token是否存在，如果存在，直接拦截。Token放入Redis的过期时间一般会设置为Token剩余的有效时间。</p><p><strong>使用建议</strong></p><ul><li>设置较短(合理)的过期时间</li><li>注销的Token及时清除(放入Redis中做一层过滤)</li><li>监控Token的使用频率</li><li>核心功能敏感操作可以使用动态验证(验证码)</li><li>网络环境、浏览器信息等识别</li><li>加密密钥支持动态修改</li><li>加密密钥支持动态修改</li></ul><h4 id="3-4-内部服务之间的认证"><a href="#3-4-内部服务之间的认证" class="headerlink" title="3.4 内部服务之间的认证"></a>3.4 内部服务之间的认证</h4><p><img data-src="../../../../assets/img/CgotOV3WUJuAU4JXAAEXJfEgv9o814.png" alt></p><ol><li><p>IP白名单<br>如用户服务只能某些IP或IP段访问，IP白名单可以采用配置中心来存储，具备实时刷新的能力。</p></li><li><p>内部同样使用Token进行验证<br>服务在启动时就可以在统一的认证服务中申请Token，申请需要的认证信息可以放在配置中心。这样服务启动时就有了能够访问其他服务的Token，在调用时带上Token，被调用的服务中进行Token的校验。<br>对于Token的失效更新：</p><ol><li>在请求时如果返回的Token已经失效，那么可以重新获取Token后再发起调用，这种在并发量大时需要加锁，不然会发生同时申请多个Token的情况。</li><li>定时更新，如Token有效期1个小时，那么定时任务可以50分钟更新一次。</li></ol></li></ol>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;1-Apollo&quot;&gt;&lt;a href=&quot;#1-Apollo&quot; class=&quot;headerlink&quot; title=&quot;1.Apollo&quot;&gt;&lt;/a&gt;1.Apollo&lt;/h3&gt;&lt;p&gt;统一管理配置信息，增强配置管理的服务能力。&lt;br&gt;&lt;img data-src=&quot;../../../../assets/img/CgotOV28B1WAF4S2AACIYGiePW0196.png&quot; alt&gt;&lt;br&gt;使用配置中心管理配置后，可以将配置信息从项目转移到配置中心，一般一个项目会有一个唯一的标识ID，通过这个ID从配置中心获取对应的配置内容。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="微服务" scheme="http://tonymua.top/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
-    
-    
-      <category term="微服务" scheme="http://tonymua.top/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
-    
-      <category term="Spring Cloud" scheme="http://tonymua.top/tags/Spring-Cloud/"/>
+      <category term="Spring Cloud" scheme="https://imokkkk.github.io/tags/Spring-Cloud/"/>
     
   </entry>
   

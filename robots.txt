@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: http://tonymua.top/sitemap.xml
-Sitemap: http://tonymua.top/baidusitemap.xml
+Sitemap: https://imokkkk.github.io/sitemap.xml
+Sitemap: https://imokkkk.github.io/baidusitemap.xml
