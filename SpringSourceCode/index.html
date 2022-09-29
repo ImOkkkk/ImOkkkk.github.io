@@ -48,7 +48,7 @@
 <meta property="og:site_name" content="ImOkkkk BLOG">
 <meta property="og:description" content="Spring源码核心注解">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2022-09-22T08:16:50.534Z">
+<meta property="og:updated_time" content="2022-09-29T02:42:10.399Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring源码">
 <meta name="twitter:description" content="Spring源码核心注解">
@@ -528,6 +528,66 @@
 </ul>
 <p>@Bean是@Configuration，统一由ConfigurationClassParser#parse()处理；</p>
 <p>@Component这种组件统一由解析@ComponentScan的处理器的ComponentScanAnnotationParser(借助ClassPathBeanDefinitionScanner)。</p>
+<h2 id="Aware"><a href="#Aware" class="headerlink" title="Aware"></a>Aware</h2><p>有时需要感知到容器的存在，获取容器相关信息，Spring提供许多实现Aware接口的类，这些类主要是为了辅助Spring访问容器中的数据。</p>
+<p><img data-src="../assets/img/image-20220929100532369.png" alt></p>
+<h3 id="常见的Aware接口"><a href="#常见的Aware接口" class="headerlink" title="常见的Aware接口"></a>常见的Aware接口</h3><table>
+<thead>
+<tr>
+<th>类名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BeanNameAware</td>
+<td>获得容器中Bean名称</td>
+</tr>
+<tr>
+<td>BeanClassLoaderAware</td>
+<td>获得类加载器</td>
+</tr>
+<tr>
+<td>BeanFactoryAware</td>
+<td>获得Dean创建工厂</td>
+</tr>
+<tr>
+<td>EnvironmentAware</td>
+<td>获得环境变量</td>
+</tr>
+<tr>
+<td>EmbeddedValueResolverAware</td>
+<td>获得Spring容器加载的Properties文件属性值</td>
+</tr>
+<tr>
+<td>ResourceLoaderAware</td>
+<td>获得资源加载器</td>
+</tr>
+<tr>
+<td>ApplicationEventPublishAware</td>
+<td>获得应用事件发布器</td>
+</tr>
+<tr>
+<td>MessageSourceAware</td>
+<td>获得文本信息</td>
+</tr>
+<tr>
+<td>ApplicationContextAware</td>
+<td>获得当前应用上下文</td>
+</tr>
+</tbody></table>
+<h3 id="Aware调用链"><a href="#Aware调用链" class="headerlink" title="Aware调用链"></a>Aware调用链</h3><p><code>AbstractAutowireCapableBeanFactory#createBean()</code> ===&gt; <code>AbstractAutowireCapableBeanFactory#doCreateBean</code> ===&gt;<br><code>AbstractAutowireCapableBeanFactory#initializeBean()</code> ===&gt; <code>AbstractAutowireCapableBeanFactory#invokeAwareMethods</code> ===&gt; <code>AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInitialization</code> ===&gt; <code>ApplicationContextAwareProcessor#postProcessBeforeInitialization</code> ===&gt;  <code>ApplicationContextAwareProcessor#invokeAwareInterfaces</code></p>
+<h3 id="自定义Aware"><a href="#自定义Aware" class="headerlink" title="自定义Aware"></a>自定义Aware</h3><ol>
+<li><p>新建接口继承Aware</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyBeanNameAware</span> <span class="keyword">extends</span> <span class="title">Aware</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">setBeanName</span><span class="params">(String name)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新建一个BeanPostProcessor实现类，重新postProcessBeforeInitialization处理自定义的Aware</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyBeanNameAwareProcessor</span> <span class="keyword">implements</span> <span class="title">BeanPostProcessor</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> Object <span class="title">postProcessBeforeInitialization</span><span class="params">(Object bean, String beanName)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> BeansException </span>&#123;</span><br><span class="line">		<span class="keyword">if</span> (bean <span class="keyword">instanceof</span> MyBeanNameAware)&#123;</span><br><span class="line">			((MyBeanNameAware) bean).setBeanName(beanName);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> bean;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserService</span> <span class="keyword">implements</span> <span class="title">MyBeanNameAware</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> String beanName;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"test"</span> + <span class="string">"___"</span> + <span class="keyword">this</span>.beanName);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setBeanName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.beanName = name;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
 
     </div>
 
@@ -630,7 +690,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring源码"><span class="nav-text">Spring源码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#核心注解"><span class="nav-text">核心注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Resource-amp-ResourceLoader"><span class="nav-text">Resource&amp;ResourceLoader</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Resource"><span class="nav-text">Resource</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ResourceLoader"><span class="nav-text">ResourceLoader</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ApplicationContext-amp-BeanFactory"><span class="nav-text">ApplicationContext&amp;BeanFactory</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BeanFactory"><span class="nav-text">BeanFactory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ApplicationContext"><span class="nav-text">ApplicationContext</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ApplicationContext与BeanFactory的区别"><span class="nav-text">ApplicationContext与BeanFactory的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BeanDefinition"><span class="nav-text">BeanDefinition</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BeanDefinition-1"><span class="nav-text">BeanDefinition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抽象实现"><span class="nav-text">抽象实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子接口"><span class="nav-text">子接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展"><span class="nav-text">扩展</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring源码"><span class="nav-text">Spring源码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#核心注解"><span class="nav-text">核心注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Resource-amp-ResourceLoader"><span class="nav-text">Resource&amp;ResourceLoader</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Resource"><span class="nav-text">Resource</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ResourceLoader"><span class="nav-text">ResourceLoader</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ApplicationContext-amp-BeanFactory"><span class="nav-text">ApplicationContext&amp;BeanFactory</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BeanFactory"><span class="nav-text">BeanFactory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ApplicationContext"><span class="nav-text">ApplicationContext</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ApplicationContext与BeanFactory的区别"><span class="nav-text">ApplicationContext与BeanFactory的区别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BeanDefinition"><span class="nav-text">BeanDefinition</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BeanDefinition-1"><span class="nav-text">BeanDefinition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抽象实现"><span class="nav-text">抽象实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子接口"><span class="nav-text">子接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展"><span class="nav-text">扩展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Aware"><span class="nav-text">Aware</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的Aware接口"><span class="nav-text">常见的Aware接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Aware调用链"><span class="nav-text">Aware调用链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义Aware"><span class="nav-text">自定义Aware</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
