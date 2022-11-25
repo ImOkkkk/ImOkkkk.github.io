@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="baidu-site-verification" content="code-wyV34cCXc4" />
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="bUCDF5pEQe">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=66522575" charset="UTF-8"></script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"imokkkk.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="CAP理论&amp;amp;常用的分布式事务概览CAPCAP理论是分布式系统的重要理论，即一个分布式系统最多只能同时满足一致性(C: Consistency)、可用性(A: Availability)、分区容错性(Partition tolerance)这三项中的两项。 一致性 数据能一起变化，能让数据整齐划一。">
+<meta name="keywords" content="分布式,事务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CAP理论&amp;常用的分布式事务概览">
+<meta property="og:url" content="https://imokkkk.github.io/cpaandtransaction/index.html">
+<meta property="og:site_name" content="ImOkkkk BLOG">
+<meta property="og:description" content="CAP理论&amp;amp;常用的分布式事务概览CAPCAP理论是分布式系统的重要理论，即一个分布式系统最多只能同时满足一致性(C: Consistency)、可用性(A: Availability)、分区容错性(Partition tolerance)这三项中的两项。 一致性 数据能一起变化，能让数据整齐划一。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2022-11-25T02:27:56.979Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CAP理论&amp;常用的分布式事务概览">
+<meta name="twitter:description" content="CAP理论&amp;amp;常用的分布式事务概览CAPCAP理论是分布式系统的重要理论，即一个分布式系统最多只能同时满足一致性(C: Consistency)、可用性(A: Availability)、分区容错性(Partition tolerance)这三项中的两项。 一致性 数据能一起变化，能让数据整齐划一。">
+
+<link rel="canonical" href="https://imokkkk.github.io/cpaandtransaction/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>CAP理论&常用的分布式事务概览 | ImOkkkk BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="ImOkkkk BLOG" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ImOkkkk BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">When they go low,we go high.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">32</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">36</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">14</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/cpaandtransaction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="ImOkkkk">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ImOkkkk BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CAP理论&常用的分布式事务概览
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-11-25 10:27:49" itemprop="dateCreated datePublished" datetime="2022-11-25T10:27:49+08:00">2022-11-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/分布式/" itemprop="url" rel="index"><span itemprop="name">分布式</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="CAP理论-amp-常用的分布式事务概览"><a href="#CAP理论-amp-常用的分布式事务概览" class="headerlink" title="CAP理论&amp;常用的分布式事务概览"></a>CAP理论&amp;常用的分布式事务概览</h2><h3 id="CAP"><a href="#CAP" class="headerlink" title="CAP"></a>CAP</h3><p>CAP理论是分布式系统的重要理论，即一个分布式系统最多只能同时满足一致性(C: Consistency)、可用性(A: Availability)、分区容错性(Partition tolerance)这三项中的两项。</p>
+<p><strong>一致性</strong></p>
+<p>数据能一起变化，能让数据整齐划一。</p>
+<a id="more"></a>
+
+<p><strong>可用性</strong></p>
+<p>每一个非故障节点接收的任何请求，都能处理并返回响应结果。</p>
+<p><strong>分区容错性</strong></p>
+<p>分区：分布式系统中，节点之间通信出现了问题。</p>
+<p>如果出现了分区问题，系统仍然可以运行。</p>
+<h4 id="权衡"><a href="#权衡" class="headerlink" title="权衡"></a>权衡</h4><p>在分布式系统中，网络异常不可避免，所以<strong>P</strong>往往无法忽略，所以需要考虑在发生分区故障时，如何选择<strong>C</strong>和<strong>A</strong>。</p>
+<p><strong>CP</strong></p>
+<p>系统一旦发生分区故障后，允许系统停机或者长时间无响应，但系统每个节点总是会返回一致的数据。如：分布式协调系统Zookeeper、分布式存储系统Redis等，数据一致性是最基本的要求。</p>
+<p><strong>AP</strong></p>
+<p>如果系统发生分区故障后，依然可以访问系统，但是无法保证全局数据的一致性(舍弃数据的强一致性，退而求其次保证最终一致性)。如：Eureka</p>
+<p>CAP如何权衡和取舍没有好坏之分，需要根据不同的业务场景进行选择，适合的才是最好的。对于涉及到钱这种不能有任何差错的场景，数据强一致性是必须要保证的。对于其他场景，比较<strong>普遍的做法是选择可用性和分区容错性，舍弃强一致性，退而求其次使用最终一致性来保证数据的安全</strong>。</p>
+<h4 id="BASE"><a href="#BASE" class="headerlink" title="BASE"></a>BASE</h4><p>既然无法保证强一致性(Strong Consistency)，应用都可以根据自身的业务特点，采用适当的方式来使系统达到最终一致性(Eventual consistency)。</p>
+<p>BASE指基本可用(Basically Available)、软状态(Soft State)、最终一致性(Eventual Consistency)。</p>
+<p><strong>基本可用</strong></p>
+<p>分布式系统在出现故障时，允许损失部分可用性，即保证核心可用。</p>
+<ul>
+<li>电商大促，流量激增，部分用户可能会被引导到降级页面，服务层也可能提供降级服务；</li>
+<li>网络异常，接口响应从0.5s增加到2s。</li>
+</ul>
+<p><strong>软状态</strong></p>
+<p>允许系统存在中间状态，而该中间状态不会影响系统整体可用性。即允许系统在不同节点的数据副本之间进行数据同步的过程存在延时。如MySQL主从节点间的数据同步。</p>
+<p><strong>最终一致性</strong></p>
+<p>统保证最终数据能够达到一致，而不需要实时保证系统数据的强一致性。</p>
+<h3 id="常见分布式事务"><a href="#常见分布式事务" class="headerlink" title="常见分布式事务"></a>常见分布式事务</h3><p>分布式事务可以简单的理解为协调多个资源，达到共同提交或共同失败的效果，及分布式ACID。</p>
+<h4 id="两阶段提交-2PC"><a href="#两阶段提交-2PC" class="headerlink" title="两阶段提交(2PC)"></a>两阶段提交(2PC)</h4><p>分布式系统中，所有的节点虽然都可以知道自己执行后的状态，但无法知道其它节点执行后的状态，一个事务跨越多个系统时，需要引入一个协调者的组件来统一各个节点的执行结果是否提交。</p>
+<ol>
+<li><p>准备阶段</p>
+<p>协调者询问事务的参与者是否可以执行操作，并等待参与者响应，参与者会执行相应的事务操作并记录重做和回滚日志，所有执行成功的参与者向协调整发送<code>AGREEMENT</code> 或者 <code>ABORT</code> 表示执行操作的结果。</p>
+</li>
+<li><p>提交阶段</p>
+<p>当事务的所有参与者都决定提交事务时，协调者会向参与者发送 <code>COMMIT</code> 请求，参与者在完成操作并释放资源之后向协调者返回完成消息，协调者在收到所有参与者的完成消息时会结束整个事务；与之相反，当有参与者决定 <code>ABORT</code> 当前事务时，协调者会向事务的参与者发送回滚请求，参与者会根据之前执行操作时的<strong>回滚日志</strong>对操作进行回滚并向协调者发送完成的消息，在提交阶段，无论当前事务被提交还是回滚，所有的资源都会被释放并且事务也一定会结束。</p>
+</li>
+</ol>
+<p><strong>问题</strong></p>
+<ol>
+<li>阻塞；</li>
+<li>两阶段提交的执行过程中，如果协调者永久宕机，部分参与者将永远无法完成事务；整个事务不一致。</li>
+</ol>
+<h4 id="三阶段提交-3PC"><a href="#三阶段提交-3PC" class="headerlink" title="三阶段提交(3PC)"></a>三阶段提交(3PC)</h4><p>三阶段提交相较于二阶段提交引入了<code>超时机制</code>和<code>询问阶段</code>，如果协调者或者参与者在规定之间内没有接受到来自其它节点的响应，就会根据当前的状态选择提交或终止整个事务。</p>
+<p>3PC        2PC</p>
+<p>询问        准备</p>
+<p>准备        </p>
+<p>提交        提交</p>
+<p>3PC的询问阶段，对应的才是2PC的准备阶段，都是ASK参与者是否准备好了，但2PC的执行过程是阻塞的，一个资源在进入准备阶段之后，必须等所有的资源准备完毕后才能进入下一步，对全局一无所知。而3PC拆分出询问阶段，在确保所有参与者建康良好的情况下，才会发起真正的事务处理，在效率和容错性上更胜一筹。而且3PC在准备阶段，如果超时，就认为失败；在提交阶段如果超时还会继续执行下去。整个事务不会一直等待下去。</p>
+<p><strong>问题</strong></p>
+<p>准备与提交阶段不是原子的，与2PC一样，依然存在一致性问题。</p>
+<h4 id="TCC"><a href="#TCC" class="headerlink" title="TCC"></a>TCC</h4><p>补偿事务，为每一个操作，都准备一个确认动作和相应的补偿动作。</p>
+<ol>
+<li><p>try 尝试阶段</p>
+<p>尝试锁定资源；</p>
+</li>
+<li><p>confirm 确认阶段 </p>
+<p>尝试将锁定的资源提交；</p>
+</li>
+<li><p>cancel 取消阶段</p>
+<p>其中某个环节执行失败，发起事务取消动作。</p>
+</li>
+</ol>
+<p>如：资金转账：try就是冻结金额；confirm就是完成扣减；cancel就是解冻，只要对应的订单号是一直的，多次执行也不会有任何问题。</p>
+<p><strong>问题</strong></p>
+<p>需要编码实现，额外精力设计TCC逻辑。</p>
+<p><strong>框架</strong></p>
+<p>tcc-transaction、seata等。</p>
+<h4 id="SAGA"><a href="#SAGA" class="headerlink" title="SAGA"></a>SAGA</h4><p>很多业务场景下，只需要保证业务的最终一致性。SAGA通过消息来协调一系列的本地子事务，来保证最终一致性。</p>
+<p>与TCC相比，SAGA少了try，需要提供执行逻辑和补偿逻辑。在每一个本地事务中都会向集群中的其他服务发送一条的新的消息来触发下一个本地的事务；一旦本地的事务因为违反了业务逻辑而失败，那么就会立刻触发补偿逻辑来撤回之前本地事务造成的副作用。</p>
+<p><strong>问题</strong></p>
+<ol>
+<li>嵌套问题，SAGA只允许两层嵌套，层次过深的话，消息流转会太复杂；</li>
+<li>补偿操作无法保证执行成功，可以记录日志或人工参与；</li>
+<li>本地小事务不是同时提交的，执行过程中，会产生脏数据。</li>
+</ol>
+<p><strong>框架</strong></p>
+<p>seata</p>
+<h4 id="本地消息表"><a href="#本地消息表" class="headerlink" title="本地消息表"></a>本地消息表</h4><p>解决数据库事务和MQ之间的事务问题。</p>
+<p>有一个分布式事务，在正常落库之后，需要通过MQ来协调后续业务的执行。</p>
+<ol>
+<li>正常写入数据库；写入本地消息表(记录MQ消息处理状态，<code>发送中</code>和<code>已完成</code>)，此处使用<code>本地事务</code>；</li>
+<li>写入本地消息表成功后，异步发送MQ消息；</li>
+<li>后续业务订阅MQ消息，消费成功后，把执行成功的状态再通过MQ来发送。本地业务订阅这个执行状态，并把消息表中对应的记录状态，改为已完成；如果消费失败，则不做处理；</li>
+<li>存在一个定时任务，持续扫描本地消息表中，状态为<code>发送中</code>的消息(注意延时)，并再次把这些消息发送到MQ，重复2的过程。</li>
+</ol>
+<p><strong>问题</strong></p>
+<ol>
+<li>需要额外编码，与业务耦合；</li>
+<li>本地消息表需要写数据库，增加数据库压力。</li>
+</ol>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>实际中，普遍选用软事务，TCC、SAGA、本地消息表。SAGA应对长事务特别拿手，但隔离性稍差；TCC需要较多编码，适合少量的分布式事务流程；本地消息表应用场景有限，耦合业务不能复用。各有利弊，需要结合使用场景进行选择。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>请作者喝瓶肥宅快乐水</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/vxpay.jpg" alt="ImOkkkk 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/alipay.jpg" alt="ImOkkkk 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/分布式/" rel="tag"><i class="fa fa-tag"></i> 分布式</a>
+              <a href="/tags/事务/" rel="tag"><i class="fa fa-tag"></i> 事务</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/EnvironmentPostProcessor/" rel="prev" title="扩展EnvironmentPostProcessor从数据库加载配置项&spring.factories">
+      <i class="fa fa-chevron-left"></i> 扩展EnvironmentPostProcessor从数据库加载配置项&spring.factories
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CAP理论-amp-常用的分布式事务概览"><span class="nav-text">CAP理论&amp;常用的分布式事务概览</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CAP"><span class="nav-text">CAP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#权衡"><span class="nav-text">权衡</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BASE"><span class="nav-text">BASE</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见分布式事务"><span class="nav-text">常见分布式事务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#两阶段提交-2PC"><span class="nav-text">两阶段提交(2PC)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三阶段提交-3PC"><span class="nav-text">三阶段提交(3PC)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCC"><span class="nav-text">TCC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SAGA"><span class="nav-text">SAGA</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本地消息表"><span class="nav-text">本地消息表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ImOkkkk"
+      src="/../assets/img/head.jpg">
+  <p class="site-author-name" itemprop="name">ImOkkkk</p>
+  <div class="site-description" itemprop="description">Java开发, 后端开发</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <a href="https://beian.miit.gov.cn/" target="_blank">皖ICP备19022525号-1</a>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ImOkkkk</span>
+</div><script color="0,137,108" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://imokkkk.github.io/cpaandtransaction/',]
+      });
+      });
+  </script>
+
+</body>
+</html>

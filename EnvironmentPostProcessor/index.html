@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="baidu-site-verification" content="code-wyV34cCXc4" />
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="bUCDF5pEQe">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=66522575" charset="UTF-8"></script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"imokkkk.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="扩展EnvironmentPostProcessor从数据库加载配置项&amp;amp;spring.factories应用未接入配置中心时，一些配置项(如oss存储配置信息、邮件服务配置信息等)需要从其它数据源获取，下面以从数据库获取配置信息为例。 @Value既然需要通过从数据库中读取配置信息，那么先了解一下@Value的工作原理：">
+<meta name="keywords" content="源码,Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="扩展EnvironmentPostProcessor从数据库加载配置项&amp;spring.factories">
+<meta property="og:url" content="https://imokkkk.github.io/EnvironmentPostProcessor/index.html">
+<meta property="og:site_name" content="ImOkkkk BLOG">
+<meta property="og:description" content="扩展EnvironmentPostProcessor从数据库加载配置项&amp;amp;spring.factories应用未接入配置中心时，一些配置项(如oss存储配置信息、邮件服务配置信息等)需要从其它数据源获取，下面以从数据库获取配置信息为例。 @Value既然需要通过从数据库中读取配置信息，那么先了解一下@Value的工作原理：">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2022-11-25T02:27:38.625Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="扩展EnvironmentPostProcessor从数据库加载配置项&amp;spring.factories">
+<meta name="twitter:description" content="扩展EnvironmentPostProcessor从数据库加载配置项&amp;amp;spring.factories应用未接入配置中心时，一些配置项(如oss存储配置信息、邮件服务配置信息等)需要从其它数据源获取，下面以从数据库获取配置信息为例。 @Value既然需要通过从数据库中读取配置信息，那么先了解一下@Value的工作原理：">
+
+<link rel="canonical" href="https://imokkkk.github.io/EnvironmentPostProcessor/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>扩展EnvironmentPostProcessor从数据库加载配置项&spring.factories | ImOkkkk BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="ImOkkkk BLOG" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ImOkkkk BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">When they go low,we go high.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">32</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">36</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">14</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/EnvironmentPostProcessor/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="ImOkkkk">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ImOkkkk BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          扩展EnvironmentPostProcessor从数据库加载配置项&spring.factories
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-11-25 10:26:05" itemprop="dateCreated datePublished" datetime="2022-11-25T10:26:05+08:00">2022-11-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="扩展EnvironmentPostProcessor从数据库加载配置项-amp-spring-factories"><a href="#扩展EnvironmentPostProcessor从数据库加载配置项-amp-spring-factories" class="headerlink" title="扩展EnvironmentPostProcessor从数据库加载配置项&amp;spring.factories"></a>扩展EnvironmentPostProcessor从数据库加载配置项&amp;spring.factories</h2><p>应用未接入配置中心时，一些配置项(如oss存储配置信息、邮件服务配置信息等)需要从其它数据源获取，下面以从数据库获取配置信息为例。</p>
+<h3 id="Value"><a href="#Value" class="headerlink" title="@Value"></a>@Value</h3><p>既然需要通过从数据库中读取配置信息，那么先了解一下@Value的工作原理：</p>
+<a id="more"></a>
+
+<ol>
+<li><p>SpringBoot应用启动</p>
+<p><code>org.springframework.boot.SpringApplication#run(java.lang.Class&lt;?&gt;, java.lang.String...)</code> =&gt; </p>
+<p><code>org.springframework.boot.SpringApplication#run(java.lang.String...)</code> =&gt; </p>
+</li>
+<li><p>刷新Spring容器</p>
+<p><code>org.springframework.boot.SpringApplication#refreshContext</code> =&gt; </p>
+<p><code>org.springframework.context.support.AbstractApplicationContext#refresh</code></p>
+</li>
+<li><p>实例化Bean</p>
+<p><code>org.springframework.context.support.AbstractApplicationContext#finishBeanFactoryInitialization</code> =&gt; </p>
+<p><code>org.springframework.beans.factory.config.ConfigurableListableBeanFactory#preInstantiateSingletons</code>（实例化非懒加载的单例Bean) =&gt;</p>
+<p><code>org.springframework.beans.factory.support.AbstractBeanFactory#getBean(java.lang.String)</code> =&gt; </p>
+<p><code>org.springframework.beans.factory.support.AbstractBeanFactory#doGetBean</code> =&gt; </p>
+<p><code>org.springframework.beans.factory.support.AbstractBeanFactory#createBean</code> =&gt;</p>
+<p><code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean</code></p>
+</li>
+<li><p>属性填充</p>
+<p><code>org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#populateBean</code> =&gt;</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">populateBean</span><span class="params">(String beanName, RootBeanDefinition mbd, @Nullable BeanWrapper bw)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (bw == <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> (mbd.hasPropertyValues()) &#123;</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> BeanCreationException(</span><br><span class="line">					mbd.getResourceDescription(), beanName, <span class="string">"Cannot apply property values to null instance"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="comment">// Skip property population phase for null instance.</span></span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">   </span><br><span class="line">	<span class="keyword">if</span> (!mbd.isSynthetic() &amp;&amp; hasInstantiationAwareBeanPostProcessors()) &#123;</span><br><span class="line">		<span class="keyword">for</span> (InstantiationAwareBeanPostProcessor bp : getBeanPostProcessorCache().instantiationAware) &#123;</span><br><span class="line">			<span class="comment">//实例化后</span></span><br><span class="line">			<span class="keyword">if</span> (!bp.postProcessAfterInstantiation(bw.getWrappedInstance(), beanName)) &#123;</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">   </span><br><span class="line">	PropertyValues pvs = (mbd.hasPropertyValues() ? mbd.getPropertyValues() : <span class="keyword">null</span>);</span><br><span class="line">   </span><br><span class="line">	<span class="comment">//@Bean(autowire = Autowire.BY_NAME)</span></span><br><span class="line">	<span class="keyword">int</span> resolvedAutowireMode = mbd.getResolvedAutowireMode();</span><br><span class="line">	<span class="keyword">if</span> (resolvedAutowireMode == AUTOWIRE_BY_NAME || resolvedAutowireMode == AUTOWIRE_BY_TYPE) &#123;</span><br><span class="line">		MutablePropertyValues newPvs = <span class="keyword">new</span> MutablePropertyValues(pvs);</span><br><span class="line">		<span class="comment">// Add property values based on autowire by name if applicable.</span></span><br><span class="line">		<span class="keyword">if</span> (resolvedAutowireMode == AUTOWIRE_BY_NAME) &#123;</span><br><span class="line">			autowireByName(beanName, mbd, bw, newPvs);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// Add property values based on autowire by type if applicable.</span></span><br><span class="line">		<span class="keyword">if</span> (resolvedAutowireMode == AUTOWIRE_BY_TYPE) &#123;</span><br><span class="line">			autowireByType(beanName, mbd, bw, newPvs);</span><br><span class="line">		&#125;</span><br><span class="line">		pvs = newPvs;</span><br><span class="line">	&#125;</span><br><span class="line">   </span><br><span class="line">	<span class="keyword">boolean</span> hasInstAwareBpps = hasInstantiationAwareBeanPostProcessors();</span><br><span class="line">	<span class="keyword">boolean</span> needsDepCheck = (mbd.getDependencyCheck() != AbstractBeanDefinition.DEPENDENCY_CHECK_NONE);</span><br><span class="line">   </span><br><span class="line">	PropertyDescriptor[] filteredPds = <span class="keyword">null</span>;</span><br><span class="line">	<span class="keyword">if</span> (hasInstAwareBpps) &#123;</span><br><span class="line">		<span class="keyword">if</span> (pvs == <span class="keyword">null</span>) &#123;</span><br><span class="line">			pvs = mbd.getPropertyValues();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">for</span> (InstantiationAwareBeanPostProcessor bp : getBeanPostProcessorCache().instantiationAware) &#123;</span><br><span class="line">			<span class="comment">//依赖注入入口</span></span><br><span class="line">			<span class="comment">//@Autowired @Value：AutowiredAnnotationBeanPostProcessor @Resource：CommonAnnotationBeanPostProcessor</span></span><br><span class="line">			PropertyValues pvsToUse = bp.postProcessProperties(pvs, bw.getWrappedInstance(), beanName);</span><br><span class="line">			<span class="keyword">if</span> (pvsToUse == <span class="keyword">null</span>) &#123;</span><br><span class="line">				<span class="keyword">if</span> (filteredPds == <span class="keyword">null</span>) &#123;</span><br><span class="line">					filteredPds = filterPropertyDescriptorsForDependencyCheck(bw, mbd.allowCaching);</span><br><span class="line">				&#125;</span><br><span class="line">				pvsToUse = bp.postProcessPropertyValues(pvs, filteredPds, bw.getWrappedInstance(), beanName);</span><br><span class="line">				<span class="keyword">if</span> (pvsToUse == <span class="keyword">null</span>) &#123;</span><br><span class="line">					<span class="keyword">return</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			pvs = pvsToUse;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (needsDepCheck) &#123;</span><br><span class="line">		<span class="keyword">if</span> (filteredPds == <span class="keyword">null</span>) &#123;</span><br><span class="line">			filteredPds = filterPropertyDescriptorsForDependencyCheck(bw, mbd.allowCaching);</span><br><span class="line">		&#125;</span><br><span class="line">		checkDependencies(beanName, mbd, filteredPds, pvs);</span><br><span class="line">	&#125;</span><br><span class="line">   </span><br><span class="line">	<span class="keyword">if</span> (pvs != <span class="keyword">null</span>) &#123;</span><br><span class="line">		<span class="comment">// MergedBeanDefinitionPostProcessor.postProcessMergedBeanDefinition()会覆盖@Autowired</span></span><br><span class="line">		applyPropertyValues(beanName, mbd, bw, pvs);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor#postProcessProperties</code> =&gt; </p>
+<p><code>org.springframework.beans.factory.annotation.InjectionMetadata#inject</code> =&gt; </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">inject</span><span class="params">(Object target, @Nullable String beanName, @Nullable PropertyValues pvs)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">		Collection&lt;InjectedElement&gt; checkedElements = <span class="keyword">this</span>.checkedElements;</span><br><span class="line">		Collection&lt;InjectedElement&gt; elementsToIterate =</span><br><span class="line">				(checkedElements != <span class="keyword">null</span> ? checkedElements : <span class="keyword">this</span>.injectedElements);</span><br><span class="line">		<span class="keyword">if</span> (!elementsToIterate.isEmpty()) &#123;</span><br><span class="line">			<span class="keyword">for</span> (InjectedElement element : elementsToIterate) &#123;</span><br><span class="line">				<span class="comment">//遍历每个注入点进行依赖注入</span></span><br><span class="line">				<span class="comment">//Autowired：AutowiredAnnotationBeanPostProcessor.AutowiredFieldElement.inject</span></span><br><span class="line">				<span class="comment">//AutowiredAnnotationBeanPostProcessor.AutowiredMethodElement.inject</span></span><br><span class="line">				<span class="comment">//Resource：InjectionMetadata.InjectedElement.inject</span></span><br><span class="line">				element.inject(target, beanName, pvs);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.AutowiredFieldElement#resolveFieldValue</code> =&gt; </p>
+<p><code>org.springframework.beans.factory.support.DefaultListableBeanFactory#resolveDependency</code> =&gt; </p>
+<p><code>org.springframework.beans.factory.support.DefaultListableBeanFactory#doResolveDependency</code></p>
+</li>
+<li><p>处理@Value</p>
+<p><code>org.springframework.beans.factory.annotation.QualifierAnnotationAutowireCandidateResolver#findValue</code> </p>
+<p><code>org.springframework.beans.factory.support.AbstractBeanFactory#resolveEmbeddedValue</code> =&gt; </p>
+<p><img data-src="../assets/img/image-20221116112008529.png" alt></p>
+<p><code>org.springframework.context.support.PropertySourcesPlaceholderConfigurer#processProperties(org.springframework.beans.factory.config.ConfigurableListableBeanFactory, org.springframework.core.env.ConfigurablePropertyResolver)</code> (<strong>把所有的配置文件都变成了一个个propertysource对象，同时把environment对象也包装成了一个propertysource对象，并且一个个propertysource对象存储在了MutablePropertySources中。</strong>)</p>
+</li>
+</ol>
+<p>大致上来看，@Value解析，分为以下几步：</p>
+<ol>
+<li><p><code>org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor#postProcessMergedBeanDefinition</code> =&gt; </p>
+<p><code>org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor#findAutowiringMetadata</code> =&gt; </p>
+<p><code>org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor#buildAutowiringMetadata</code></p>
+<p>收集标注了@Value等注解的字段；</p>
+</li>
+<li><p><code>org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor#postProcessProperties</code>开始注入值；</p>
+</li>
+<li><p>注入过程中，从DefaultListableBeanFactory中遍历所有的embeddedValueResolver，这些embeddedValueResolvers是StringValueResolver，调用其resolveStringValue方法；</p>
+</li>
+<li><p>其中有一个PropertySourcesPlaceholderConfigurer类构造的StringValueResolver，调用它的resolveStringValue，最终从一个PropertySourcesPropertyResolver的propertySources中遍历所有的propertySource，其中就有Environment的propertySources，匹配到值后返回。</p>
+</li>
+</ol>
+<h3 id="EnvironmentPostProcessor"><a href="#EnvironmentPostProcessor" class="headerlink" title="EnvironmentPostProcessor"></a>EnvironmentPostProcessor</h3><p>从上面可以得出结论，在容器refresh之前，从数据库读取信息封装为MapPropertySource塞入Environment#Property即可。</p>
+<p>主要实现类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DatabaseEnvironmentPostProcessor</span> <span class="keyword">implements</span> <span class="title">EnvironmentPostProcessor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postProcessEnvironment</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">      ConfigurableEnvironment environment, SpringApplication application)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (environment.getPropertySources().contains(<span class="string">"databasePropertySources"</span>)) &#123;</span><br><span class="line">      <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 命令行参数</span></span><br><span class="line">    <span class="keyword">boolean</span> commandLineArgs = environment.getPropertySources().contains(<span class="string">"commandLineArgs"</span>);</span><br><span class="line">    <span class="keyword">if</span> (commandLineArgs) &#123;</span><br><span class="line">      environment</span><br><span class="line">          .getPropertySources()</span><br><span class="line">          .addBefore(<span class="string">"commandLineArgs"</span>, loadConfigurationFromDatabase(environment));</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (environment.getProperty(<span class="string">"spring.datasource.url"</span>) != <span class="keyword">null</span>) &#123;</span><br><span class="line">        environment.getPropertySources().addFirst(loadConfigurationFromDatabase(environment));</span><br><span class="line">        <span class="comment">// 设置激活的Profile</span></span><br><span class="line">        String activeProfile = environment.getProperty(<span class="string">"spring.profiles.active"</span>, <span class="string">"prd"</span>);</span><br><span class="line">        environment.addActiveProfile(activeProfile);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">private</span> PropertySource <span class="title">loadConfigurationFromDatabase</span><span class="params">(ConfigurableEnvironment environment)</span> </span>&#123;</span><br><span class="line">    String url = environment.getProperty(<span class="string">"spring.datasource.url"</span>);</span><br><span class="line">    String username = environment.getProperty(<span class="string">"spring.datasource.username"</span>);</span><br><span class="line">    String password = environment.getProperty(<span class="string">"spring.datasource.password"</span>);</span><br><span class="line">    String driverClassName = environment.getProperty(<span class="string">"spring.datasource.druid.driver-class-name"</span>);</span><br><span class="line">    Map&lt;String, ?&gt; configs =</span><br><span class="line">        <span class="keyword">new</span> DatabasePropertySourceLoader(url, username, password, driverClassName).load();</span><br><span class="line">    PropertySource propertySource =</span><br><span class="line">        <span class="keyword">new</span> MapPropertySource(<span class="string">"databasePropertySources"</span>, (Map&lt;String, Object&gt;) configs);</span><br><span class="line">    <span class="keyword">return</span> propertySource;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>spring.factories</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">org.springframework.boot.env.EnvironmentPostProcessor</span>=<span class="string">\</span></span><br><span class="line"><span class="attr">cn.imokkkk.env.DatabaseEnvironmentPostProcessor</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="spring-factories"><a href="#spring-factories" class="headerlink" title="spring.factories"></a>spring.factories</h4><p>Spring Factories是一种类似于Java SPI的机制，在resources/META-INF/spring.factories文件中配置接口的实现类名称(接口名称=实现类)，然后在程序中读取该配置文件并实例化，是spring-boot-starter-xxx的实现基础。</p>
+<p>为了实现从数据库读取配置信息的需求，显然需要在容器refresh之前完成从数据库读取并添加到<strong>环境变量</strong>中。</p>
+<p><strong>调用链路</strong></p>
+<ol>
+<li><p>从spring.factories加载ApplicationListener对应的监听器，并启动</p>
+<p><code>org.springframework.boot.SpringApplication#run(java.lang.String...)</code> =&gt; </p>
+<p><code>org.springframework.boot.SpringApplication#getRunListenersorg.springframework.boot.SpringApplication#run(java.lang.String...)</code> =&gt; <code>org.springframework.boot.SpringApplication#getSpringFactoriesInstances(java.lang.Class&lt;T&gt;, java.lang.Class&lt;?&gt;[], java.lang.Object...)</code> =&gt; <code>org.springframework.core.io.support.SpringFactoriesLoader#loadFactoryNames</code></p>
+</li>
+<li><p>发布ApplicationEnvironmentPreparedEvent</p>
+<p><code>org.springframework.boot.SpringApplication#prepareEnvironment</code> =&gt; </p>
+<p><code>org.springframework.boot.context.event.EventPublishingRunListener#environmentPrepared</code></p>
+</li>
+<li><p>监听到事件并执行</p>
+<p><code>org.springframework.context.event.SimpleApplicationEventMulticaster#invokeListener</code> =&gt;</p>
+<p><code>org.springframework.boot.context.config.ConfigFileApplicationListener#onApplicationEvent</code> =&gt; </p>
+<p><code>org.springframework.boot.context.config.ConfigFileApplicationListener#onApplicationEnvironmentPreparedEvent</code> =&gt; </p>
+<p><code>cn.imokkkk.env.DatabaseEnvironmentPostProcessor#postProcessEnvironment</code></p>
+</li>
+</ol>
+<blockquote>
+<p>sql语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt;CREATE TABLE `app_config`  (</span><br><span class="line">&gt;  `id` bigint(20) NOT NULL AUTO_INCREMENT,</span><br><span class="line">&gt;  `config_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,</span><br><span class="line">&gt;  `config_value` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,</span><br><span class="line">&gt;  `remark` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,</span><br><span class="line">&gt;  `is_halt` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,</span><br><span class="line">&gt;  PRIMARY KEY (`id`) USING BTREE</span><br><span class="line">&gt;) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>请作者喝瓶肥宅快乐水</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/vxpay.jpg" alt="ImOkkkk 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/alipay.jpg" alt="ImOkkkk 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/源码/" rel="tag"><i class="fa fa-tag"></i> 源码</a>
+              <a href="/tags/Spring/" rel="tag"><i class="fa fa-tag"></i> Spring</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/SpringSourceCode/" rel="prev" title="Spring源码">
+      <i class="fa fa-chevron-left"></i> Spring源码
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/cpaandtransaction/" rel="next" title="CAP理论&常用的分布式事务概览">
+      CAP理论&常用的分布式事务概览 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展EnvironmentPostProcessor从数据库加载配置项-amp-spring-factories"><span class="nav-text">扩展EnvironmentPostProcessor从数据库加载配置项&amp;spring.factories</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Value"><span class="nav-text">@Value</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EnvironmentPostProcessor"><span class="nav-text">EnvironmentPostProcessor</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#spring-factories"><span class="nav-text">spring.factories</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ImOkkkk"
+      src="/../assets/img/head.jpg">
+  <p class="site-author-name" itemprop="name">ImOkkkk</p>
+  <div class="site-description" itemprop="description">Java开发, 后端开发</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">36</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <a href="https://beian.miit.gov.cn/" target="_blank">皖ICP备19022525号-1</a>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ImOkkkk</span>
+</div><script color="0,137,108" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://imokkkk.github.io/EnvironmentPostProcessor/',]
+      });
+      });
+  </script>
+
+</body>
+</html>
