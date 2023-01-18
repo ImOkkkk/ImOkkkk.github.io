@@ -40,32 +40,33 @@
     var CONFIG = {"hostname":"imokkkk.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Java开发, 后端开发">
-<meta name="keywords" content="Java,后端,开发,博客,分享">
-<meta property="og:type" content="website">
-<meta property="og:title" content="ImOkkkk BLOG">
-<meta property="og:url" content="https://imokkkk.github.io/page/4/index.html">
+  <meta name="description" content="背景多个后端、前端开发时约定日期类型参数时未能统一，即存在2022-12-21 12:45:00，也存在2022/12/21 12:45:00。导致可以复用的接口，前端传参格式却不一样，前端改动的话，工作量比较大，所以在后端做格式兼容处理。">
+<meta name="keywords" content="Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring：自定义Converter实现参数转换">
+<meta property="og:url" content="https://imokkkk.github.io/springcustomconverter/index.html">
 <meta property="og:site_name" content="ImOkkkk BLOG">
-<meta property="og:description" content="Java开发, 后端开发">
+<meta property="og:description" content="背景多个后端、前端开发时约定日期类型参数时未能统一，即存在2022-12-21 12:45:00，也存在2022/12/21 12:45:00。导致可以复用的接口，前端传参格式却不一样，前端改动的话，工作量比较大，所以在后端做格式兼容处理。">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2023-01-18T06:09:20.658Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ImOkkkk BLOG">
-<meta name="twitter:description" content="Java开发, 后端开发">
+<meta name="twitter:title" content="Spring：自定义Converter实现参数转换">
+<meta name="twitter:description" content="背景多个后端、前端开发时约定日期类型参数时未能统一，即存在2022-12-21 12:45:00，也存在2022/12/21 12:45:00。导致可以复用的接口，前端传参格式却不一样，前端改动的话，工作量比较大，所以在后端做格式兼容处理。">
 
-<link rel="canonical" href="https://imokkkk.github.io/page/4/">
+<link rel="canonical" href="https://imokkkk.github.io/springcustomconverter/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>ImOkkkk BLOG - When they go low,we go high.</title>
+  <title>Spring：自定义Converter实现参数转换 | ImOkkkk BLOG</title>
   
 
 
@@ -206,13 +207,14 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/39972/">
+    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/springcustomconverter/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -224,10 +226,9 @@
       <meta itemprop="name" content="ImOkkkk BLOG">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/39972/" class="post-title-link" itemprop="url">微信公众号开发(二)自动回复功能实现简单的天气查询</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Spring：自定义Converter实现参数转换
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -236,10 +237,26 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+              <time title="创建时间：2023-01-18 13:51:18" itemprop="dateCreated datePublished" datetime="2023-01-18T13:51:18+08:00">2023-01-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
+                </span>
             </span>
 
           
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
 
         </div>
       </header>
@@ -250,310 +267,76 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p>微信公众平台服务器配置通过后，就能进行下面的开发啦</p>
-<blockquote>
-<p>首先可以查看官方的说明文档：<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXJzLndlaXhpbi5xcS5jb20vZG9jL29mZmlhY2NvdW50L0dldHRpbmdfU3RhcnRlZC9PdmVydmlldy5odG1s">https://developers.weixin.qq.com/doc/offiaccount/Getting_Started/Overview.html<i class="fa fa-external-link-alt"></i></span></p>
-</blockquote>
-<p>普通消息的类型分为7种：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/39972/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>多个后端、前端开发时约定日期类型参数时未能统一，即存在<code>2022-12-21 12:45:00</code>，也存在<code>2022/12/21 12:45:00</code>。导致可以复用的接口，前端传参格式却不一样，前端改动的话，工作量比较大，所以在后端做格式兼容处理。</p>
+<a id="more"></a>
+
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><ol>
+<li><p>项目中只有某些字段需要做兼容处理，新建一个注解，用于标识哪些字段需要做兼容处理。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Target</span>(&#123;ElementType.FIELD, ElementType.PARAMETER&#125;)</span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> BizDateAdapter &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>实现<code>ConditionalGenericConverter</code>接口，自定义匹配、转换逻辑。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BizDateConverter</span> <span class="keyword">implements</span> <span class="title">ConditionalGenericConverter</span> </span>&#123;</span><br><span class="line">    <span class="comment">//匹配逻辑</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">matches</span><span class="params">(TypeDescriptor sourceType, TypeDescriptor targetType)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> targetType.hasAnnotation(BizDateAdapter<span class="class">.<span class="keyword">class</span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Set&lt;ConvertiblePair&gt; <span class="title">getConvertibleTypes</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//转换逻辑</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">convert</span><span class="params">(Object source, TypeDescriptor sourceType, TypeDescriptor targetType)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (source != <span class="keyword">null</span> &amp;&amp; source <span class="keyword">instanceof</span> String) &#123;</span><br><span class="line">            Date date = DateUtil.parseDate(String.valueOf(source), <span class="string">"yyyy-MM-dd"</span>);</span><br><span class="line">            <span class="keyword">if</span> (date == <span class="keyword">null</span>)&#123;</span><br><span class="line">                date = DateUtil.parseDate(String.valueOf(source), <span class="string">"yyyy/MM/dd"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> date;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> source;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加自定义的转换器到容器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IWebMvcConfigurer</span> <span class="keyword">implements</span> <span class="title">WebMvcConfigurer</span> </span>&#123;</span><br><span class="line">    <span class="comment">//......</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addFormatters</span><span class="params">(FormatterRegistry registry)</span> </span>&#123;</span><br><span class="line">        registry.addConverter(<span class="keyword">new</span> BizDateConverter());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ApiResponse <span class="title">xxxxx</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">  @RequestParam(value = <span class="string">"userId"</span>, required = <span class="keyword">false</span>)</span> String userId,</span></span><br><span class="line"><span class="function">  @<span class="title">RequestParam</span><span class="params">(value = <span class="string">"bizDate"</span>)</span> @BizDateAdapter Date bizDate) </span>&#123;</span><br><span class="line">    <span class="comment">//......</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">xxxxx</span> </span>&#123;</span><br><span class="line">    <span class="meta">@BizDateAdapter</span></span><br><span class="line">    <span class="keyword">private</span> Date bizDate;</span><br><span class="line">    <span class="comment">//......</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+
     </div>
 
     
     
     
+        <div class="reward-container">
+  <div>请作者喝瓶肥宅快乐水</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/vxpay.jpg" alt="ImOkkkk 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/alipay.jpg" alt="ImOkkkk 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/12221/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/../assets/img/head.jpg">
-      <meta itemprop="name" content="ImOkkkk">
-      <meta itemprop="description" content="Java开发, 后端开发">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ImOkkkk BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
           
-            <a href="/12221/" class="post-title-link" itemprop="url">微信公众号开发(三)快递信息查询</a>
-        </h2>
+          <div class="post-tags">
+              <a href="/tags/Spring/" rel="tag"><i class="fa fa-tag"></i> Spring</a>
+          </div>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1-快递查询API"><a href="#1-快递查询API" class="headerlink" title="1.快递查询API"></a>1.快递查询API</h3><p>这里使用的是阿里云全国快递物流查询-快递查询接口:<span class="exturl" data-url="aHR0cHM6Ly9tYXJrZXQuYWxpeXVuLmNvbS9wcm9kdWN0cy81NjkyODAwNC9jbWFwaTAyMTg2My5odG1s">https://market.aliyun.com/products/56928004/cmapi021863.html<i class="fa fa-external-link-alt"></i></span></p>
-<p>该接口支持只通过快递运单号查询物流信息, 不需要在额外设置参数. 该种方式95%能自动识别, 填写查询速度会更快, 已经满足一般开发的需求, 并能极大方便开发者的使用.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/12221/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/38103/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/../assets/img/head.jpg">
-      <meta itemprop="name" content="ImOkkkk">
-      <meta itemprop="description" content="Java开发, 后端开发">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ImOkkkk BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/38103/" class="post-title-link" itemprop="url">微信公众号开发(一)开发者接入微信公众号</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="微信公众号开发-一-开发者接入微信公众号"><a href="#微信公众号开发-一-开发者接入微信公众号" class="headerlink" title="微信公众号开发(一)开发者接入微信公众号"></a>微信公众号开发(一)开发者接入微信公众号</h4><h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p>该文章基于<code>JDK1.8</code>  <code>springboot2.1.7.RELEASE</code>环境</p>
-<p>实现开发者第一次接入微信公众号后台的需求</p>
-<h3 id="2-准备工作"><a href="#2-准备工作" class="headerlink" title="2.准备工作"></a>2.准备工作</h3><h4 id="2-1-进入微信公众平台注册账号"><a href="#2-1-进入微信公众平台注册账号" class="headerlink" title="2.1 进入微信公众平台注册账号"></a>2.1 进入微信公众平台注册账号</h4><blockquote>
-<p><span class="exturl" data-url="aHR0cHM6Ly9tcC53ZWl4aW4ucXEuY29tLw==">https://mp.weixin.qq.com/<i class="fa fa-external-link-alt"></i></span></p>
-</blockquote>
-<p>个人用户建议注册订阅号</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/38103/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/dockermysqlmasterslave/" rel="prev" title="Docker部署主从MySQL">
+      <i class="fa fa-chevron-left"></i> Docker部署主从MySQL
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
   
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/14808/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/../assets/img/head.jpg">
-      <meta itemprop="name" content="ImOkkkk">
-      <meta itemprop="description" content="Java开发, 后端开发">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ImOkkkk BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/14808/" class="post-title-link" itemprop="url">常用设计模式</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Java 中一般认为有23种设计模式, 下面介绍几种常见的设计模式。总体来说设计模式分为三大类： </p>
-<ul>
-<li>创建型模式, 共5五种：<strong>工厂方法模式</strong>、<strong>抽象工厂模式</strong>、<strong>单例模式</strong>、建造者模式、原型模式。 </li>
-<li>结构型模式，共7种：<strong>适配器模式</strong>、<strong>装饰器模式</strong>、代理模式、外观模式、桥接模式、组合模式、享元模式。 </li>
-<li>行为型模式，共11种：策略模式、模板方法模式、<strong>观察者模式</strong>、迭代子模式、责任链模式、命令模式、备忘录模式、状态模式、访问者模式、中介者模式、解释器模式。</li>
-</ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/14808/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/23116/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/../assets/img/head.jpg">
-      <meta itemprop="name" content="ImOkkkk">
-      <meta itemprop="description" content="Java开发, 后端开发">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ImOkkkk BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/23116/" class="post-title-link" itemprop="url">四种常见的排序算法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1-冒泡排序"><a href="#1-冒泡排序" class="headerlink" title="1.冒泡排序"></a>1.冒泡排序</h3><p><strong>思想:</strong> 每一趟将待排序序列中最大元素移到最后，剩下的为新的待排序序列, 重复上述步骤直到排完所有元素。这只是冒泡排序的一种, 当然也可以从后往前排</p>
-<p><strong>平均时间复杂度:</strong> O(n^2)     </p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/23116/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
 
@@ -605,6 +388,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现"><span class="nav-text">实现</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -765,7 +549,7 @@
       quicklink({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'https://imokkkk.github.io/page/4/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://imokkkk.github.io/springcustomconverter/',]
       });
       });
   </script>
