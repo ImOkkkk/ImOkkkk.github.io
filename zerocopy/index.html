@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="baidu-site-verification" content="code-wyV34cCXc4" />
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="baidu-site-verification" content="bUCDF5pEQe">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=66522575" charset="UTF-8"></script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"imokkkk.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="什么是零拷贝？计算机操作时，CPU不需要先将数据从某处内存复制到另一个特定的区域，这种技术通常用于通过网络传输文件时节省CPU周期和内存带宽。  零拷贝技术可以减少数据拷贝和共享总线操作的次数，从而提高数据传输的效率； 零拷贝技术减少了用户进程地址空间和内核地址空间之间因为上下文切换而带来的开销。  并不是不需要拷贝，而是减少不必要的拷贝。 应用：Kafka、Netty、RocketMQ等。">
+<meta name="keywords" content="Netty,Kafka,NIO">
+<meta property="og:type" content="article">
+<meta property="og:title" content="零拷贝">
+<meta property="og:url" content="https://imokkkk.github.io/zerocopy/index.html">
+<meta property="og:site_name" content="ImOkkkk BLOG">
+<meta property="og:description" content="什么是零拷贝？计算机操作时，CPU不需要先将数据从某处内存复制到另一个特定的区域，这种技术通常用于通过网络传输文件时节省CPU周期和内存带宽。  零拷贝技术可以减少数据拷贝和共享总线操作的次数，从而提高数据传输的效率； 零拷贝技术减少了用户进程地址空间和内核地址空间之间因为上下文切换而带来的开销。  并不是不需要拷贝，而是减少不必要的拷贝。 应用：Kafka、Netty、RocketMQ等。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2023-03-31T09:30:18.415Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="零拷贝">
+<meta name="twitter:description" content="什么是零拷贝？计算机操作时，CPU不需要先将数据从某处内存复制到另一个特定的区域，这种技术通常用于通过网络传输文件时节省CPU周期和内存带宽。  零拷贝技术可以减少数据拷贝和共享总线操作的次数，从而提高数据传输的效率； 零拷贝技术减少了用户进程地址空间和内核地址空间之间因为上下文切换而带来的开销。  并不是不需要拷贝，而是减少不必要的拷贝。 应用：Kafka、Netty、RocketMQ等。">
+
+<link rel="canonical" href="https://imokkkk.github.io/zerocopy/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>零拷贝 | ImOkkkk BLOG</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="ImOkkkk BLOG" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ImOkkkk BLOG</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">When they go low,we go high.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">36</span></a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">41</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">15</span></a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/zerocopy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="ImOkkkk">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ImOkkkk BLOG">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          零拷贝
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-03-31 17:22:58" itemprop="dateCreated datePublished" datetime="2023-03-31T17:22:58+08:00">2023-03-31</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/操作系统/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="什么是零拷贝？"><a href="#什么是零拷贝？" class="headerlink" title="什么是零拷贝？"></a>什么是零拷贝？</h3><p>计算机操作时，CPU<strong>不需要先将数据从某处内存复制到另一个特定的区域</strong>，这种技术通常用于通过网络传输文件时<strong>节省CPU周期和内存带宽</strong>。</p>
+<ol>
+<li>零拷贝技术可以<strong>减少数据拷贝和共享总线操作的次数</strong>，从而提高数据传输的效率；</li>
+<li>零拷贝技术减少了<strong>用户进程地址空间和内核地址空间</strong>之间因为上下文切换而带来的开销。</li>
+</ol>
+<p>并不是不需要拷贝，而是减少不必要的拷贝。</p>
+<p>应用：Kafka、Netty、RocketMQ等。</p>
+<a id="more"></a>
+
+<h3 id="Linux的I-O机制与DMA"><a href="#Linux的I-O机制与DMA" class="headerlink" title="Linux的I/O机制与DMA"></a>Linux的I/O机制与DMA</h3><p>操作系统内存空间分为用户态和内核态，用户的应用程序无法直接操作硬件，需要通过内核空间进行操作转换，才能真正操作硬件。因此，<strong>应用程序需要与网卡、磁盘等硬件进行数据交互时，就需要在用户态和内核态之间来回复制数据。早期，这些操作由CPU负责，压力很大。</strong></p>
+<p><strong>DMA(直接内存存取)控制器，接管了数据读写请求，减少CPU的负担。</strong></p>
+<p>此时，IO读取，涉及两个过程：</p>
+<ol>
+<li>DMA等待数据准备好，把磁盘数据读取到操作系统内核缓冲区；</li>
+<li>用户进程，将内核缓冲区的数据copy到用户空间。</li>
+</ol>
+<h3 id="传统数据传送机制"><a href="#传统数据传送机制" class="headerlink" title="传统数据传送机制"></a>传统数据传送机制</h3><p>如：读取文件，再用socket发送出去，共2次DMA copy，2次CPU copy，4次上下文切换。</p>
+<ol>
+<li>用户进程调用read()，上下文从用户态转向内核态；</li>
+<li>将磁盘文件，DMA copy到操作系统内核缓冲区；</li>
+<li>将内核缓冲区的数据，CPU copy到应用程序的buffer，上下文从内核态转向用户态；</li>
+<li>用户进程调用write()，上下文从用户态转向内核态；</li>
+<li>将应用程序buffer中的数据，CPU copy到socket网络发送缓冲区(也属于操作系统内核缓冲区)；</li>
+<li>将socket buffer中的数据，DMA copy到网卡，进行网络传输，上下文从内核态切换回用户态。</li>
+</ol>
+<p>read()、write()换属于系统调用，每次调用涉及2次上下文切换。</p>
+<p><img data-src="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230331153118197.png" alt="image-20230331153118197"></p>
+<h3 id="Linux支持的零拷贝"><a href="#Linux支持的零拷贝" class="headerlink" title="Linux支持的零拷贝"></a>Linux支持的零拷贝</h3><h4 id="mmap内存映射"><a href="#mmap内存映射" class="headerlink" title="mmap内存映射"></a>mmap内存映射</h4><p><strong>直接将磁盘文件数据映射到内核缓冲区，这个映射的过程是基于 DMA 拷贝的，同时用户缓冲区是跟内核缓冲区共享一块映射数据的，建立共享映射之后，就不需要从内核缓冲区拷贝到用户缓冲区了。</strong>使用mmap代替read()，减少一次CPU拷贝，共2次DMA copy，1次CPU copy，4次上下文切换；</p>
+<ol>
+<li>用户进程调用mmap()，用户态转向内核态；</li>
+<li>磁盘中的数据与应用程序buffer映射，基于DMA copy，内核态转向用户态；</li>
+<li>用户进程调用write()，上下文从用户态转向内核态；</li>
+<li>将应用程序buffer中的数据，CPU copy到socket网络发送缓冲区；</li>
+<li>将socket buffer中的数据，DMA copy到网卡，进行网络传输，上下文从内核态转向用户态。</li>
+</ol>
+<p><img data-src="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230331154214104.png" alt="image-20230331154214104"></p>
+<h4 id="sendfile"><a href="#sendfile" class="headerlink" title="sendfile"></a>sendfile</h4><p>Linux从2.1支持sendfile</p>
+<p>调用sendfile()时，DMA将磁盘数据复制到操作系统内核缓冲区，然后直接将内核buffer中的<strong>数据长度和描述符</strong>直接拷贝到socket buffer。如果设备支持，无需CPU拷贝。共1(或0)次CPU拷贝，2次DMA拷贝，2次上下文切换。</p>
+<ol>
+<li>用户进程调用sendfile()，上下文从用户态转向内核态；</li>
+<li>将磁盘文件中的数据，DMA copy到操作系统内核缓冲区；</li>
+<li>将内核buffer中数据的长度和描述符，CPUcopy到socket buffer；(设备支持的话，此次CPU copy可以省略)</li>
+<li>将socket buffer中的数据，DMA copy到网卡，进行网络传输，从内核态转向用户态。</li>
+</ol>
+<p><img data-src="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230331155825079.png" alt="image-20230331155825079"></p>
+<h4 id="splice"><a href="#splice" class="headerlink" title="splice"></a>splice</h4><p>Linux从2.6.17支持splice</p>
+<p>数据从磁盘读取到操作系统内核缓冲区后，直接将其转成内核空间其他数据buffer，而不需要拷贝到用户空间。</p>
+<p><strong>从磁盘读取到内核 buffer 后，在内核空间直接与 socket buffer 建立 pipe管道</strong>。</p>
+<p>与sendfile()的区别：</p>
+<ol>
+<li>send file 0 CPU copy需要硬件支持，splice()不需要</li>
+</ol>
+<p><img data-src="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230331160122231.png" alt="image-20230331160122231"></p>
+<h3 id="Java支持的零拷贝"><a href="#Java支持的零拷贝" class="headerlink" title="Java支持的零拷贝"></a>Java支持的零拷贝</h3><p>Java支持内存映射mmap、sendfile。</p>
+<h4 id="NIO提供的内存映射MappedByteBuffer"><a href="#NIO提供的内存映射MappedByteBuffer" class="headerlink" title="NIO提供的内存映射MappedByteBuffer"></a>NIO提供的内存映射MappedByteBuffer</h4><p>NIO中的FileChanel.map()采用了内存映射方式，底层就是调用Linux mmap()实现的。</p>
+<p>适合读取大文件，同时也能对文件内容进行更改。</p>
+<h4 id="NIO-提供的-sendfile"><a href="#NIO-提供的-sendfile" class="headerlink" title="NIO 提供的 sendfile"></a>NIO 提供的 sendfile</h4><p>Java NIO 中提供的 FileChannel 拥有 transferTo 和 transferFrom 两个方法，可直接把FileChannel 中的数据拷贝到另外一个 Channel，或者直接把另外一个 Channel 中的数据拷贝到 FileChannel。该接口常被用于高效的网络 /文件的数据传输和大文件拷贝。</p>
+<h4 id="Kafka中的零拷贝"><a href="#Kafka中的零拷贝" class="headerlink" title="Kafka中的零拷贝"></a>Kafka中的零拷贝</h4><ol>
+<li>Producer生产的数据持久化到broker，broker采用mmap文件映射，实现顺序的快速写入；</li>
+<li>Consumer从broker读取数据，broker采用sendfile，将磁盘文件读到OS内核缓冲区后，直接转到socket buffer进行网络发送。</li>
+</ol>
+<h4 id="Netty中的零拷贝"><a href="#Netty中的零拷贝" class="headerlink" title="Netty中的零拷贝"></a>Netty中的零拷贝</h4><ol>
+<li><p>网络通信上，Netty接收和发送ByteBuffer采用DIRECT BUFFERS，使用堆外直接内存进行 Socket 读写，不需要进行字节缓冲区的二次拷贝。如果采用传统的堆内存进行Socket读写，JVM会将堆内存Buffer拷贝一份到直接内存中，然后才写入Socket中，相对于堆外直接内存，消息在发送过程中多了一次缓冲区的内存拷贝；</p>
+</li>
+<li><p>缓存操作上，Netty提供了CompositeByteBuf类，可以将多个ByteBuffer合并为一个逻辑上的ByteBuf，避免了各个ByteBuf之间的拷贝；</p>
+<p>通过 wrap 操作，我们可以将 byte[]数组、ByteBuf、 ByteBuffer 等包装成一个 NettyByteBuf 对象，进而避免了拷贝操作。<br>ByteBuf支持slice 操作，因此可以将ByteBuf分解为多个共享同一个存储区域的ByteBuf，避免了内存的拷贝。</p>
+</li>
+<li><p>文件传输上，Netty通过FileRegion包装的FileChannel.tranferTo实现文件传输，它可以直接将文件缓冲区的数据发送到目标Channel，避免了传统通过循环write方式导致的内存拷贝问题。</p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>请作者喝瓶肥宅快乐水</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/vxpay.jpg" alt="ImOkkkk 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/assets/img/alipay.jpg" alt="ImOkkkk 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Netty/" rel="tag"><i class="fa fa-tag"></i> Netty</a>
+              <a href="/tags/Kafka/" rel="tag"><i class="fa fa-tag"></i> Kafka</a>
+              <a href="/tags/NIO/" rel="tag"><i class="fa fa-tag"></i> NIO</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/springcustomconverter/" rel="prev" title="Spring：自定义Converter实现参数转换">
+      <i class="fa fa-chevron-left"></i> Spring：自定义Converter实现参数转换
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是零拷贝？"><span class="nav-text">什么是零拷贝？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux的I-O机制与DMA"><span class="nav-text">Linux的I/O机制与DMA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#传统数据传送机制"><span class="nav-text">传统数据传送机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux支持的零拷贝"><span class="nav-text">Linux支持的零拷贝</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mmap内存映射"><span class="nav-text">mmap内存映射</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sendfile"><span class="nav-text">sendfile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#splice"><span class="nav-text">splice</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java支持的零拷贝"><span class="nav-text">Java支持的零拷贝</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NIO提供的内存映射MappedByteBuffer"><span class="nav-text">NIO提供的内存映射MappedByteBuffer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NIO-提供的-sendfile"><span class="nav-text">NIO 提供的 sendfile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kafka中的零拷贝"><span class="nav-text">Kafka中的零拷贝</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Netty中的零拷贝"><span class="nav-text">Netty中的零拷贝</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="ImOkkkk"
+      src="/../assets/img/head.jpg">
+  <p class="site-author-name" itemprop="name">ImOkkkk</p>
+  <div class="site-description" itemprop="description">Java开发, 后端开发</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
+      </span>
+  </div>
+
+
+
+      </div>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        <a href="https://beian.miit.gov.cn/" target="_blank">皖ICP备19022525号-1</a>
+
+<div class="copyright">
+  
+  &copy; 2019 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="heartbeat"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ImOkkkk</span>
+</div><script color="0,137,108" opacity="0.5" zIndex="-1" count="99" src="https://cdn.jsdelivr.net/npm/canvas-nest.js@1/dist/canvas-nest.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'https://imokkkk.github.io/zerocopy/',]
+      });
+      });
+  </script>
+
+</body>
+</html>
