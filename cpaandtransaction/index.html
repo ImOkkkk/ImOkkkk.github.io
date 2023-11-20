@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="baidu-site-verification" content="code-wyV34cCXc4" />
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -34,24 +34,32 @@
     s.parentNode.insertBefore(bp, s);
 })();
 </script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtdeh55ucp");
+</script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"imokkkk.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="CAP理论&amp;amp;常用的分布式事务概览CAPCAP理论是分布式系统的重要理论，即一个分布式系统最多只能同时满足一致性(C: Consistency)、可用性(A: Availability)、分区容错性(Partition tolerance)这三项中的两项。 一致性 数据能一起变化，能让数据整齐划一。">
-<meta name="keywords" content="分布式,事务">
+  <meta name="description" content="CAP理论&amp;常用的分布式事务概览CAPCAP理论是分布式系统的重要理论，即一个分布式系统最多只能同时满足一致性(C: Consistency)、可用性(A: Availability)、分区容错性(Partition tolerance)这三项中的两项。 一致性 数据能一起变化，能让数据整齐划一。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CAP理论&amp;常用的分布式事务概览">
 <meta property="og:url" content="https://imokkkk.github.io/cpaandtransaction/index.html">
 <meta property="og:site_name" content="ImOkkkk BLOG">
-<meta property="og:description" content="CAP理论&amp;amp;常用的分布式事务概览CAPCAP理论是分布式系统的重要理论，即一个分布式系统最多只能同时满足一致性(C: Consistency)、可用性(A: Availability)、分区容错性(Partition tolerance)这三项中的两项。 一致性 数据能一起变化，能让数据整齐划一。">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2022-11-25T02:27:56.979Z">
+<meta property="og:description" content="CAP理论&amp;常用的分布式事务概览CAPCAP理论是分布式系统的重要理论，即一个分布式系统最多只能同时满足一致性(C: Consistency)、可用性(A: Availability)、分区容错性(Partition tolerance)这三项中的两项。 一致性 数据能一起变化，能让数据整齐划一。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-25T02:27:49.050Z">
+<meta property="article:modified_time" content="2022-11-25T02:27:56.979Z">
+<meta property="article:author" content="ImOkkkk">
+<meta property="article:tag" content="分布式">
+<meta property="article:tag" content="事务">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CAP理论&amp;常用的分布式事务概览">
-<meta name="twitter:description" content="CAP理论&amp;amp;常用的分布式事务概览CAPCAP理论是分布式系统的重要理论，即一个分布式系统最多只能同时满足一致性(C: Consistency)、可用性(A: Availability)、分区容错性(Partition tolerance)这三项中的两项。 一致性 数据能一起变化，能让数据整齐划一。">
 
 <link rel="canonical" href="https://imokkkk.github.io/cpaandtransaction/">
 
@@ -245,7 +253,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/分布式/" itemprop="url" rel="index"><span itemprop="name">分布式</span></a>
+                  <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">分布式</span></a>
                 </span>
             </span>
 
@@ -267,10 +275,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="CAP理论-amp-常用的分布式事务概览"><a href="#CAP理论-amp-常用的分布式事务概览" class="headerlink" title="CAP理论&amp;常用的分布式事务概览"></a>CAP理论&amp;常用的分布式事务概览</h2><h3 id="CAP"><a href="#CAP" class="headerlink" title="CAP"></a>CAP</h3><p>CAP理论是分布式系统的重要理论，即一个分布式系统最多只能同时满足一致性(C: Consistency)、可用性(A: Availability)、分区容错性(Partition tolerance)这三项中的两项。</p>
+        <h2 id="CAP理论-常用的分布式事务概览"><a href="#CAP理论-常用的分布式事务概览" class="headerlink" title="CAP理论&amp;常用的分布式事务概览"></a>CAP理论&amp;常用的分布式事务概览</h2><h3 id="CAP"><a href="#CAP" class="headerlink" title="CAP"></a>CAP</h3><p>CAP理论是分布式系统的重要理论，即一个分布式系统最多只能同时满足一致性(C: Consistency)、可用性(A: Availability)、分区容错性(Partition tolerance)这三项中的两项。</p>
 <p><strong>一致性</strong></p>
 <p>数据能一起变化，能让数据整齐划一。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <p><strong>可用性</strong></p>
 <p>每一个非故障节点接收的任何请求，都能处理并返回响应结果。</p>
@@ -311,10 +319,10 @@
 <li>两阶段提交的执行过程中，如果协调者永久宕机，部分参与者将永远无法完成事务；整个事务不一致。</li>
 </ol>
 <h4 id="三阶段提交-3PC"><a href="#三阶段提交-3PC" class="headerlink" title="三阶段提交(3PC)"></a>三阶段提交(3PC)</h4><p>三阶段提交相较于二阶段提交引入了<code>超时机制</code>和<code>询问阶段</code>，如果协调者或者参与者在规定之间内没有接受到来自其它节点的响应，就会根据当前的状态选择提交或终止整个事务。</p>
-<p>3PC        2PC</p>
-<p>询问        准备</p>
-<p>准备        </p>
-<p>提交        提交</p>
+<p>3PC		2PC</p>
+<p>询问		准备</p>
+<p>准备		</p>
+<p>提交		提交</p>
 <p>3PC的询问阶段，对应的才是2PC的准备阶段，都是ASK参与者是否准备好了，但2PC的执行过程是阻塞的，一个资源在进入准备阶段之后，必须等所有的资源准备完毕后才能进入下一步，对全局一无所知。而3PC拆分出询问阶段，在确保所有参与者建康良好的情况下，才会发起真正的事务处理，在效率和容错性上更胜一筹。而且3PC在准备阶段，如果超时，就认为失败；在提交阶段如果超时还会继续执行下去。整个事务不会一直等待下去。</p>
 <p><strong>问题</strong></p>
 <p>准备与提交阶段不是原子的，与2PC一样，依然存在一致性问题。</p>
@@ -389,8 +397,8 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/分布式/" rel="tag"><i class="fa fa-tag"></i> 分布式</a>
-              <a href="/tags/事务/" rel="tag"><i class="fa fa-tag"></i> 事务</a>
+              <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" rel="tag"><i class="fa fa-tag"></i> 分布式</a>
+              <a href="/tags/%E4%BA%8B%E5%8A%A1/" rel="tag"><i class="fa fa-tag"></i> 事务</a>
           </div>
 
         
@@ -464,7 +472,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CAP理论-amp-常用的分布式事务概览"><span class="nav-text">CAP理论&amp;常用的分布式事务概览</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CAP"><span class="nav-text">CAP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#权衡"><span class="nav-text">权衡</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BASE"><span class="nav-text">BASE</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见分布式事务"><span class="nav-text">常见分布式事务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#两阶段提交-2PC"><span class="nav-text">两阶段提交(2PC)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#三阶段提交-3PC"><span class="nav-text">三阶段提交(3PC)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCC"><span class="nav-text">TCC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SAGA"><span class="nav-text">SAGA</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本地消息表"><span class="nav-text">本地消息表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结"><span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CAP%E7%90%86%E8%AE%BA-%E5%B8%B8%E7%94%A8%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1%E6%A6%82%E8%A7%88"><span class="nav-text">CAP理论&amp;常用的分布式事务概览</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CAP"><span class="nav-text">CAP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%83%E8%A1%A1"><span class="nav-text">权衡</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BASE"><span class="nav-text">BASE</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1"><span class="nav-text">常见分布式事务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%A4%E9%98%B6%E6%AE%B5%E6%8F%90%E4%BA%A4-2PC"><span class="nav-text">两阶段提交(2PC)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E9%98%B6%E6%AE%B5%E6%8F%90%E4%BA%A4-3PC"><span class="nav-text">三阶段提交(3PC)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TCC"><span class="nav-text">TCC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SAGA"><span class="nav-text">SAGA</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E6%B6%88%E6%81%AF%E8%A1%A8"><span class="nav-text">本地消息表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -500,10 +508,10 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;6062172224&#x2F;"><i class="fab fa-weibo fa-fw"></i></span>
       </span>
       <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;tonymua"><i class="fab fa-github fa-fw"></i></span>
       </span>
       <span class="links-of-author-item">
         <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
@@ -583,9 +591,19 @@
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
-<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
 
 
 
@@ -603,7 +621,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 

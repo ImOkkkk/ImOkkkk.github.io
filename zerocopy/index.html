@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="baidu-site-verification" content="code-wyV34cCXc4" />
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -34,6 +34,13 @@
     s.parentNode.insertBefore(bp, s);
 })();
 </script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtdeh55ucp");
+</script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
@@ -41,17 +48,24 @@
   </script>
 
   <meta name="description" content="什么是零拷贝？计算机操作时，CPU不需要先将数据从某处内存复制到另一个特定的区域，这种技术通常用于通过网络传输文件时节省CPU周期和内存带宽。  零拷贝技术可以减少数据拷贝和共享总线操作的次数，从而提高数据传输的效率； 零拷贝技术减少了用户进程地址空间和内核地址空间之间因为上下文切换而带来的开销。  并不是不需要拷贝，而是减少不必要的拷贝。 应用：Kafka、Netty、RocketMQ等。">
-<meta name="keywords" content="Netty,Kafka,NIO">
 <meta property="og:type" content="article">
 <meta property="og:title" content="零拷贝">
 <meta property="og:url" content="https://imokkkk.github.io/zerocopy/index.html">
 <meta property="og:site_name" content="ImOkkkk BLOG">
 <meta property="og:description" content="什么是零拷贝？计算机操作时，CPU不需要先将数据从某处内存复制到另一个特定的区域，这种技术通常用于通过网络传输文件时节省CPU周期和内存带宽。  零拷贝技术可以减少数据拷贝和共享总线操作的次数，从而提高数据传输的效率； 零拷贝技术减少了用户进程地址空间和内核地址空间之间因为上下文切换而带来的开销。  并不是不需要拷贝，而是减少不必要的拷贝。 应用：Kafka、Netty、RocketMQ等。">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2023-03-31T09:30:18.415Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230331153118197.png">
+<meta property="og:image" content="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230331154214104.png">
+<meta property="og:image" content="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230331155825079.png">
+<meta property="og:image" content="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230331160122231.png">
+<meta property="article:published_time" content="2023-03-31T09:22:58.136Z">
+<meta property="article:modified_time" content="2023-03-31T09:30:18.415Z">
+<meta property="article:author" content="ImOkkkk">
+<meta property="article:tag" content="Netty">
+<meta property="article:tag" content="Kafka">
+<meta property="article:tag" content="NIO">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="零拷贝">
-<meta name="twitter:description" content="什么是零拷贝？计算机操作时，CPU不需要先将数据从某处内存复制到另一个特定的区域，这种技术通常用于通过网络传输文件时节省CPU周期和内存带宽。  零拷贝技术可以减少数据拷贝和共享总线操作的次数，从而提高数据传输的效率； 零拷贝技术减少了用户进程地址空间和内核地址空间之间因为上下文切换而带来的开销。  并不是不需要拷贝，而是减少不必要的拷贝。 应用：Kafka、Netty、RocketMQ等。">
+<meta name="twitter:image" content="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230331153118197.png">
 
 <link rel="canonical" href="https://imokkkk.github.io/zerocopy/">
 
@@ -245,7 +259,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/操作系统/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
+                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a>
                 </span>
             </span>
 
@@ -274,9 +288,9 @@
 </ol>
 <p>并不是不需要拷贝，而是减少不必要的拷贝。</p>
 <p>应用：Kafka、Netty、RocketMQ等。</p>
-<a id="more"></a>
+<span id="more"></span>
 
-<h3 id="Linux的I-O机制与DMA"><a href="#Linux的I-O机制与DMA" class="headerlink" title="Linux的I/O机制与DMA"></a>Linux的I/O机制与DMA</h3><p>操作系统内存空间分为用户态和内核态，用户的应用程序无法直接操作硬件，需要通过内核空间进行操作转换，才能真正操作硬件。因此，<strong>应用程序需要与网卡、磁盘等硬件进行数据交互时，就需要在用户态和内核态之间来回复制数据。早期，这些操作由CPU负责，压力很大。</strong></p>
+<h3 id="Linux的I-O机制与DMA"><a href="#Linux的I-O机制与DMA" class="headerlink" title="Linux的I&#x2F;O机制与DMA"></a>Linux的I&#x2F;O机制与DMA</h3><p>操作系统内存空间分为用户态和内核态，用户的应用程序无法直接操作硬件，需要通过内核空间进行操作转换，才能真正操作硬件。因此，<strong>应用程序需要与网卡、磁盘等硬件进行数据交互时，就需要在用户态和内核态之间来回复制数据。早期，这些操作由CPU负责，压力很大。</strong></p>
 <p><strong>DMA(直接内存存取)控制器，接管了数据读写请求，减少CPU的负担。</strong></p>
 <p>此时，IO读取，涉及两个过程：</p>
 <ol>
@@ -323,7 +337,7 @@
 <h3 id="Java支持的零拷贝"><a href="#Java支持的零拷贝" class="headerlink" title="Java支持的零拷贝"></a>Java支持的零拷贝</h3><p>Java支持内存映射mmap、sendfile。</p>
 <h4 id="NIO提供的内存映射MappedByteBuffer"><a href="#NIO提供的内存映射MappedByteBuffer" class="headerlink" title="NIO提供的内存映射MappedByteBuffer"></a>NIO提供的内存映射MappedByteBuffer</h4><p>NIO中的FileChanel.map()采用了内存映射方式，底层就是调用Linux mmap()实现的。</p>
 <p>适合读取大文件，同时也能对文件内容进行更改。</p>
-<h4 id="NIO-提供的-sendfile"><a href="#NIO-提供的-sendfile" class="headerlink" title="NIO 提供的 sendfile"></a>NIO 提供的 sendfile</h4><p>Java NIO 中提供的 FileChannel 拥有 transferTo 和 transferFrom 两个方法，可直接把FileChannel 中的数据拷贝到另外一个 Channel，或者直接把另外一个 Channel 中的数据拷贝到 FileChannel。该接口常被用于高效的网络 /文件的数据传输和大文件拷贝。</p>
+<h4 id="NIO-提供的-sendfile"><a href="#NIO-提供的-sendfile" class="headerlink" title="NIO 提供的 sendfile"></a>NIO 提供的 sendfile</h4><p>Java NIO 中提供的 FileChannel 拥有 transferTo 和 transferFrom 两个方法，可直接把FileChannel 中的数据拷贝到另外一个 Channel，或者直接把另外一个 Channel 中的数据拷贝到 FileChannel。该接口常被用于高效的网络 &#x2F;文件的数据传输和大文件拷贝。</p>
 <h4 id="Kafka中的零拷贝"><a href="#Kafka中的零拷贝" class="headerlink" title="Kafka中的零拷贝"></a>Kafka中的零拷贝</h4><ol>
 <li>Producer生产的数据持久化到broker，broker采用mmap文件映射，实现顺序的快速写入；</li>
 <li>Consumer从broker读取数据，broker采用sendfile，将磁盘文件读到OS内核缓冲区后，直接转到socket buffer进行网络发送。</li>
@@ -443,7 +457,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是零拷贝？"><span class="nav-text">什么是零拷贝？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux的I-O机制与DMA"><span class="nav-text">Linux的I/O机制与DMA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#传统数据传送机制"><span class="nav-text">传统数据传送机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux支持的零拷贝"><span class="nav-text">Linux支持的零拷贝</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mmap内存映射"><span class="nav-text">mmap内存映射</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sendfile"><span class="nav-text">sendfile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#splice"><span class="nav-text">splice</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java支持的零拷贝"><span class="nav-text">Java支持的零拷贝</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NIO提供的内存映射MappedByteBuffer"><span class="nav-text">NIO提供的内存映射MappedByteBuffer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NIO-提供的-sendfile"><span class="nav-text">NIO 提供的 sendfile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kafka中的零拷贝"><span class="nav-text">Kafka中的零拷贝</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Netty中的零拷贝"><span class="nav-text">Netty中的零拷贝</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E9%9B%B6%E6%8B%B7%E8%B4%9D%EF%BC%9F"><span class="nav-text">什么是零拷贝？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux%E7%9A%84I-O%E6%9C%BA%E5%88%B6%E4%B8%8EDMA"><span class="nav-text">Linux的I&#x2F;O机制与DMA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E7%BB%9F%E6%95%B0%E6%8D%AE%E4%BC%A0%E9%80%81%E6%9C%BA%E5%88%B6"><span class="nav-text">传统数据传送机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux%E6%94%AF%E6%8C%81%E7%9A%84%E9%9B%B6%E6%8B%B7%E8%B4%9D"><span class="nav-text">Linux支持的零拷贝</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#mmap%E5%86%85%E5%AD%98%E6%98%A0%E5%B0%84"><span class="nav-text">mmap内存映射</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sendfile"><span class="nav-text">sendfile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#splice"><span class="nav-text">splice</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E6%94%AF%E6%8C%81%E7%9A%84%E9%9B%B6%E6%8B%B7%E8%B4%9D"><span class="nav-text">Java支持的零拷贝</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NIO%E6%8F%90%E4%BE%9B%E7%9A%84%E5%86%85%E5%AD%98%E6%98%A0%E5%B0%84MappedByteBuffer"><span class="nav-text">NIO提供的内存映射MappedByteBuffer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NIO-%E6%8F%90%E4%BE%9B%E7%9A%84-sendfile"><span class="nav-text">NIO 提供的 sendfile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Kafka%E4%B8%AD%E7%9A%84%E9%9B%B6%E6%8B%B7%E8%B4%9D"><span class="nav-text">Kafka中的零拷贝</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Netty%E4%B8%AD%E7%9A%84%E9%9B%B6%E6%8B%B7%E8%B4%9D"><span class="nav-text">Netty中的零拷贝</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -479,10 +493,10 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;6062172224&#x2F;"><i class="fab fa-weibo fa-fw"></i></span>
       </span>
       <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;tonymua"><i class="fab fa-github fa-fw"></i></span>
       </span>
       <span class="links-of-author-item">
         <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
@@ -562,9 +576,19 @@
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
-<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
 
 
 
@@ -582,7 +606,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 

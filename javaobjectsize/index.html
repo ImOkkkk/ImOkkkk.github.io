@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="baidu-site-verification" content="code-wyV34cCXc4" />
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -34,6 +34,13 @@
     s.parentNode.insertBefore(bp, s);
 })();
 </script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtdeh55ucp");
+</script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
@@ -41,17 +48,17 @@
   </script>
 
   <meta name="description" content="一个Java对象的大小怎么计算？对象头+实例数据+对其填充 对象头  MarkWord：用于存储对象运行时的数据，如hashCode、锁状态标志、GC分代年龄等。64位操作系统占8字节，32位操作系统占4字节。 对象元数据指针(kclass)：对象指向类的指针，虚拟机通过这个指针来确定这个对象是哪一个类的实例。开启压缩指针占4字节，未开启占8字节。 数组长度：只有数组对象才有，占4字节。">
-<meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一个Java对象的大小怎么计算？">
 <meta property="og:url" content="https://imokkkk.github.io/javaobjectsize/index.html">
 <meta property="og:site_name" content="ImOkkkk BLOG">
 <meta property="og:description" content="一个Java对象的大小怎么计算？对象头+实例数据+对其填充 对象头  MarkWord：用于存储对象运行时的数据，如hashCode、锁状态标志、GC分代年龄等。64位操作系统占8字节，32位操作系统占4字节。 对象元数据指针(kclass)：对象指向类的指针，虚拟机通过这个指针来确定这个对象是哪一个类的实例。开启压缩指针占4字节，未开启占8字节。 数组长度：只有数组对象才有，占4字节。">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2022-06-27T02:20:42.064Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-06-27T02:20:37.207Z">
+<meta property="article:modified_time" content="2022-06-27T02:20:42.064Z">
+<meta property="article:author" content="ImOkkkk">
+<meta property="article:tag" content="JVM">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="一个Java对象的大小怎么计算？">
-<meta name="twitter:description" content="一个Java对象的大小怎么计算？对象头+实例数据+对其填充 对象头  MarkWord：用于存储对象运行时的数据，如hashCode、锁状态标志、GC分代年龄等。64位操作系统占8字节，32位操作系统占4字节。 对象元数据指针(kclass)：对象指向类的指针，虚拟机通过这个指针来确定这个对象是哪一个类的实例。开启压缩指针占4字节，未开启占8字节。 数组长度：只有数组对象才有，占4字节。">
 
 <link rel="canonical" href="https://imokkkk.github.io/javaobjectsize/">
 
@@ -274,7 +281,7 @@
 <li>对象元数据指针(kclass)：对象指向类的指针，虚拟机通过这个指针来确定这个对象是哪一个类的实例。<strong>开启压缩指针占4字节，未开启占8字节。</strong></li>
 <li>数组长度：<strong>只有数组对象才有，占4字节。</strong></li>
 </ol>
-<a id="more"></a>
+<span id="more"></span>
 
 <p><strong>实例数据</strong></p>
 <p>实例数据可能包括两种：</p>
@@ -331,15 +338,28 @@
 <p><strong>对其填充(Padding)</strong></p>
 <p>Java对象内存起始地址必须为8的整数倍，即Java对象大小必须为8的整数倍。当对象头+实例数据大小不为8的整数倍时，将会使用对其填充。</p>
 <p>如64位，开启压缩指针的虚拟机上new Object()实际大小：</p>
-<p>Mark Word(8B) + kclass(4B) + Padding(4B) = 16B</p>
+<p>Mark Word(8B) + kclass(4B) + Padding(4B) &#x3D; 16B</p>
 <p><strong>例子</strong></p>
 <ol>
-<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Mark Word(8B) + kclass(4B) + i(4B) = 16B</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Object1</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li><pre><code class="java">// Mark Word(8B) + kclass(4B) + i(4B) = 16B
+public class Object1&#123;
+    private int i;
+&#125;
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">2.</span> ```java</span><br><span class="line">   <span class="comment">// Mark Word(8B) + kclass(4B) + i(4B) + j(4B) + s(4B) + b(1B) + c(2B) + Padding(5B) = 32B</span></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ObjectSizeTest</span> &#123;</span><br><span class="line">       <span class="keyword">private</span> <span class="type">int</span> i;</span><br><span class="line">       <span class="keyword">private</span> <span class="type">int</span> j;</span><br><span class="line">       <span class="keyword">private</span> <span class="type">String</span> s;</span><br><span class="line">       <span class="keyword">private</span> <span class="type">boolean</span> b;</span><br><span class="line">       <span class="keyword">private</span> <span class="type">char</span> c;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+</code></pre>
 </li>
-<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Mark Word(8B) + kclass(4B) + i(4B) + j(4B) + s(4B) + b(1B) + c(2B) + Padding(5B) = 32B</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ObjectSizeTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> j;</span><br><span class="line">    <span class="keyword">private</span> String s;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> b;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">char</span> c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// HotSpot创建的对象的字段会默认按从长到短，引用排最后排序：long/double --&gt; int/float --&gt; short/char --&gt; byte/boolean --&gt;Reference</span></span><br><span class="line"><span class="comment">//Mark Word(8B) + kclass(4B) + i1(4B) + i2(4B) + b1(1B) + b2(1B) + b3(1B) + Padding(1B) + s(4B) + obj(4B) = 32B</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ObjectSizeTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String s; <span class="comment">// 4</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> i1; <span class="comment">// 4</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">byte</span> b1; <span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">byte</span> b2; <span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> i2;<span class="comment">// 4</span></span><br><span class="line">    <span class="keyword">private</span> Object obj; <span class="comment">//4</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">byte</span> b3;  <span class="comment">// 1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<li><pre><code class="java">// HotSpot创建的对象的字段会默认按从长到短，引用排最后排序：long/double --&gt; int/float --&gt; short/char --&gt; byte/boolean --&gt;Reference
+//Mark Word(8B) + kclass(4B) + i1(4B) + i2(4B) + b1(1B) + b2(1B) + b3(1B) + Padding(1B) + s(4B) + obj(4B) = 32B
+public class ObjectSizeTest &#123;
+    private String s; // 4
+    private int i1; // 4
+    private byte b1; // 1
+    private byte b2; // 1
+    private int i2;// 4
+    private Object obj; //4
+    private byte b3;  // 1
+&#125;
+</code></pre>
 </li>
 </ol>
 
@@ -446,7 +466,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一个Java对象的大小怎么计算？"><span class="nav-text">一个Java对象的大小怎么计算？</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%B8%AAJava%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%A4%A7%E5%B0%8F%E6%80%8E%E4%B9%88%E8%AE%A1%E7%AE%97%EF%BC%9F"><span class="nav-text">一个Java对象的大小怎么计算？</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -482,10 +502,10 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;6062172224&#x2F;"><i class="fab fa-weibo fa-fw"></i></span>
       </span>
       <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;tonymua"><i class="fab fa-github fa-fw"></i></span>
       </span>
       <span class="links-of-author-item">
         <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
@@ -565,9 +585,19 @@
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
-<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
 
 
 
@@ -585,7 +615,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 

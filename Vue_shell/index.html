@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="baidu-site-verification" content="code-wyV34cCXc4" />
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -34,6 +34,13 @@
     s.parentNode.insertBefore(bp, s);
 })();
 </script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtdeh55ucp");
+</script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
@@ -41,17 +48,17 @@
   </script>
 
   <meta name="description" content="1.创建vue脚手架项目   1vue init webpack 项目名  2.axios 安装axios 1npm install axios --save-dev  配置main.js中引入axios">
-<meta name="keywords" content="Vue">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue开发常用命令">
 <meta property="og:url" content="https://imokkkk.github.io/Vue_shell/index.html">
 <meta property="og:site_name" content="ImOkkkk BLOG">
 <meta property="og:description" content="1.创建vue脚手架项目   1vue init webpack 项目名  2.axios 安装axios 1npm install axios --save-dev  配置main.js中引入axios">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-05-28T06:27:34.810Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-08T13:19:59.186Z">
+<meta property="article:modified_time" content="2020-05-28T06:27:34.810Z">
+<meta property="article:author" content="ImOkkkk">
+<meta property="article:tag" content="Vue">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Vue开发常用命令">
-<meta name="twitter:description" content="1.创建vue脚手架项目   1vue init webpack 项目名  2.axios 安装axios 1npm install axios --save-dev  配置main.js中引入axios">
 
 <link rel="canonical" href="https://imokkkk.github.io/Vue_shell/">
 
@@ -245,7 +252,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/前端/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+                  <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
                 </span>
             </span>
 
@@ -267,38 +274,30 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h4 id="1-创建vue脚手架项目"><a href="#1-创建vue脚手架项目" class="headerlink" title="1.创建vue脚手架项目"></a>1.创建vue脚手架项目</h4>   <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue <span class="keyword">init</span> webpack 项目名</span><br></pre></td></tr></table></figure>
+        <h4 id="1-创建vue脚手架项目"><a href="#1-创建vue脚手架项目" class="headerlink" title="1.创建vue脚手架项目"></a>1.创建vue脚手架项目</h4>   <figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vue <span class="keyword">init</span> webpack 项目名</span><br></pre></td></tr></table></figure>
 
 <h4 id="2-axios"><a href="#2-axios" class="headerlink" title="2.axios"></a>2.axios</h4><ol>
 <li><p>安装axios</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install axios --save-dev</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>配置main.js中引入axios</p>
-<a id="more"></a>
+<span id="more"></span>
 
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">'axios'</span>;</span><br><span class="line"></span><br><span class="line">Vue.prototype.$http=axios;</span><br></pre></td></tr></table></figure>
-
-
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&#x27;axios&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">$http</span>=axios;</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
-<ol start="3">
-<li>使用axios<br>在需要发送异步请求的位置:<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.$http.get(</span><br><span class="line">        <span class="string">"url"</span></span><br><span class="line">      )</span><br><span class="line">      .then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">        </span><br><span class="line">      &#125;);</span><br></pre></td></tr></table></figure>
-
-</li>
+<li><p>使用axios<br>在需要发送异步请求的位置:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="property">$http</span>.<span class="title function_">get</span>(</span><br><span class="line">        <span class="string">&quot;url&quot;</span></span><br><span class="line">      )</span><br><span class="line">      .<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">        </span><br><span class="line">      &#125;);</span><br></pre></td></tr></table></figure></li>
 </ol>
 <h4 id="3-ElementUI"><a href="#3-ElementUI" class="headerlink" title="3.ElementUI"></a>3.ElementUI</h4><ol>
 <li><p>安装ElementUI</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i element-ui -S</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>配置main.js中引入ElementUI</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ElementUI <span class="keyword">from</span> <span class="string">'element-ui'</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">'element-ui/lib/theme-chalk/index.css'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在vue脚手架中使用elementui</span></span><br><span class="line">Vue.use(ElementUI)</span><br></pre></td></tr></table></figure>
-
-</li>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">ElementUI</span> <span class="keyword">from</span> <span class="string">&#x27;element-ui&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;element-ui/lib/theme-chalk/index.css&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在vue脚手架中使用elementui</span></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">ElementUI</span>)</span><br></pre></td></tr></table></figure></li>
 </ol>
 <h4 id="4-项目打包"><a href="#4-项目打包" class="headerlink" title="4.项目打包"></a>4.项目打包</h4><ol>
 <li><p>打包<br>在项目根目录中执行如下命令:</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure>
-
 <p><code>注意:vue脚手架打包的项目必须在服务器上运行不能直接双击运行</code></p>
 </li>
 <li><p>打包之后当前项目中变化<br>在打包之后项目中出现dist目录,dist目录就是vue脚手架项目生产目录或者说是直接部署目录</p>
@@ -413,7 +412,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-创建vue脚手架项目"><span class="nav-text">1.创建vue脚手架项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-axios"><span class="nav-text">2.axios</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-ElementUI"><span class="nav-text">3.ElementUI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-项目打包"><span class="nav-text">4.项目打包</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%88%9B%E5%BB%BAvue%E8%84%9A%E6%89%8B%E6%9E%B6%E9%A1%B9%E7%9B%AE"><span class="nav-text">1.创建vue脚手架项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-axios"><span class="nav-text">2.axios</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-ElementUI"><span class="nav-text">3.ElementUI</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E9%A1%B9%E7%9B%AE%E6%89%93%E5%8C%85"><span class="nav-text">4.项目打包</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -449,10 +448,10 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;6062172224&#x2F;"><i class="fab fa-weibo fa-fw"></i></span>
       </span>
       <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;tonymua"><i class="fab fa-github fa-fw"></i></span>
       </span>
       <span class="links-of-author-item">
         <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
@@ -532,9 +531,19 @@
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
-<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
 
 
 
@@ -552,7 +561,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 

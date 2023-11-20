@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="baidu-site-verification" content="code-wyV34cCXc4" />
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -34,24 +34,46 @@
     s.parentNode.insertBefore(bp, s);
 })();
 </script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtdeh55ucp");
+</script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"imokkkk.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Prometheus安装 下载：https://github.com/prometheus/prometheus/releases/download/v2.29.1/prometheus-2.29.1.linux-amd64.tar.gz  上传到服务器，解压">
-<meta name="keywords" content="Prometheus,Grafana,监控">
+  <meta name="description" content="Prometheus安装 下载：https:&#x2F;&#x2F;github.com&#x2F;prometheus&#x2F;prometheus&#x2F;releases&#x2F;download&#x2F;v2.29.1&#x2F;prometheus-2.29.1.linux-amd64.tar.gz  上传到服务器，解压">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Prometheus+Grafana 入门">
 <meta property="og:url" content="https://imokkkk.github.io/PrometheusAndGrafana/index.html">
 <meta property="og:site_name" content="ImOkkkk BLOG">
-<meta property="og:description" content="Prometheus安装 下载：https://github.com/prometheus/prometheus/releases/download/v2.29.1/prometheus-2.29.1.linux-amd64.tar.gz  上传到服务器，解压">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2023-06-26T09:17:46.206Z">
+<meta property="og:description" content="Prometheus安装 下载：https:&#x2F;&#x2F;github.com&#x2F;prometheus&#x2F;prometheus&#x2F;releases&#x2F;download&#x2F;v2.29.1&#x2F;prometheus-2.29.1.linux-amd64.tar.gz  上传到服务器，解压">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626160623740.png">
+<meta property="og:image" content="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626160844717.png">
+<meta property="og:image" content="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626161040923.png">
+<meta property="og:image" content="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626161206879.png">
+<meta property="og:image" content="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626161831120.png">
+<meta property="og:image" content="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626161924360.png">
+<meta property="og:image" content="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626162013671.png">
+<meta property="og:image" content="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626162111842.png">
+<meta property="og:image" content="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626162141717.png">
+<meta property="og:image" content="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626162517471.png">
+<meta property="og:image" content="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626162635909.png">
+<meta property="og:image" content="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626163026361.png">
+<meta property="article:published_time" content="2023-06-26T07:57:22.385Z">
+<meta property="article:modified_time" content="2023-06-26T09:17:46.206Z">
+<meta property="article:author" content="ImOkkkk">
+<meta property="article:tag" content="Prometheus">
+<meta property="article:tag" content="Grafana">
+<meta property="article:tag" content="监控">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Prometheus+Grafana 入门">
-<meta name="twitter:description" content="Prometheus安装 下载：https://github.com/prometheus/prometheus/releases/download/v2.29.1/prometheus-2.29.1.linux-amd64.tar.gz  上传到服务器，解压">
+<meta name="twitter:image" content="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626160623740.png">
 
 <link rel="canonical" href="https://imokkkk.github.io/PrometheusAndGrafana/">
 
@@ -245,7 +267,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/云原生/" itemprop="url" rel="index"><span itemprop="name">云原生</span></a>
+                  <a href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/" itemprop="url" rel="index"><span itemprop="name">云原生</span></a>
                 </span>
             </span>
 
@@ -271,27 +293,25 @@
 <li><p>下载：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3Byb21ldGhldXMvcHJvbWV0aGV1cy9yZWxlYXNlcy9kb3dubG9hZC92Mi4yOS4xL3Byb21ldGhldXMtMi4yOS4xLmxpbnV4LWFtZDY0LnRhci5neg==">https://github.com/prometheus/prometheus/releases/download/v2.29.1/prometheus-2.29.1.linux-amd64.tar.gz<i class="fa fa-external-link-alt"></i></span></p>
 </li>
 <li><p>上传到服务器，解压</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -xvzf prometheus-2.29.1.linux-amd64.tar.gz</span><br><span class="line">mv prometheus-2.29.1.linux-amd64 prometheus</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>安装node_exporter，下载：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3Byb21ldGhldXMvbm9kZV9leHBvcnRlci9yZWxlYXNlcy9kb3dubG9hZC92MS4zLjEvbm9kZV9leHBvcnRlci0xLjMuMS5saW51eC1hbWQ2NC50YXIuZ3o=">https://github.com/prometheus/node_exporter/releases/download/v1.3.1/node_exporter-1.3.1.linux-amd64.tar.gz<i class="fa fa-external-link-alt"></i></span></p>
 <p>上传到服务器，解压并启动</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tar -zvxf node_exporter-1.3.1.linux-amd64.tar.gz</span><br><span class="line">mv node_exporter-1.3.1.linux-amd64/  node_exporter</span><br><span class="line">nohup /usr/local/node_exporter/node_exporter &amp;</span><br><span class="line"><span class="meta">#</span><span class="bash">检查是否启动</span></span><br><span class="line">netstat -nltp |grep 9100</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tar -zvxf node_exporter-1.3.1.linux-amd64.tar.gz</span><br><span class="line">mv node_exporter-1.3.1.linux-amd64/  node_exporter</span><br><span class="line">nohup /usr/local/node_exporter/node_exporter &amp;</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">检查是否启动</span></span><br><span class="line">netstat -nltp |grep 9100</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>修改Prometheus配置文件prometheus.yml</p>
 <p><img data-src="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626160623740.png" alt="image-20230626160623740"></p>
 </li>
 <li><p>启动</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./prometheus --config.file="prometheus.yml" &amp;</span><br><span class="line"><span class="meta">#</span><span class="bash">检查是否启动</span></span><br><span class="line">ps -ef |grep prometheus</span><br></pre></td></tr></table></figure>
-
-</li>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./prometheus --config.file=&quot;prometheus.yml&quot; &amp;</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">检查是否启动</span></span><br><span class="line">ps -ef |grep prometheus</span><br></pre></td></tr></table></figure></li>
 </ol>
 <h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>访问地址：<span class="exturl" data-url="aHR0cDovLzE5Mi4xNjguMC4xNTM6OTA5MC8=">http://192.168.0.153:9090/<i class="fa fa-external-link-alt"></i></span></p>
 <h4 id="Targets"><a href="#Targets" class="headerlink" title="Targets"></a>Targets</h4><p><img data-src="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626160844717.png" alt="image-20230626160844717"></p>
-<p>点开 <span class="exturl" data-url="aHR0cDovLzE5Mi4xNjguMC4xNTM6OTEwMC9tZXRyaWNz77yM5bGV56S65ZCE56eN5oyH5qCH">http://192.168.0.153:9100/metrics，展示各种指标<i class="fa fa-external-link-alt"></i></span></p>
+<p>点开 <span class="exturl" data-url="aHR0cDovLzE5Mi4xNjguMC4xNTM6OTEwMC9tZXRyaWNzJUVGJUJDJThDJUU1JUIxJTk1JUU3JUE0JUJBJUU1JTkwJTg0JUU3JUE3JThEJUU2JThDJTg3JUU2JUEwJTg3">http://192.168.0.153:9100/metrics，展示各种指标<i class="fa fa-external-link-alt"></i></span></p>
 <p><img data-src="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626161040923.png" alt="image-20230626161040923"></p>
-<h4 id="Graph"><a href="#Graph" class="headerlink" title="Graph"></a>Graph</h4><p>上面的指标可以在这里以表格/折线图的形式查询</p>
+<h4 id="Graph"><a href="#Graph" class="headerlink" title="Graph"></a>Graph</h4><p>上面的指标可以在这里以表格&#x2F;折线图的形式查询</p>
 <p><img data-src="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626161206879.png" alt="image-20230626161206879"></p>
 <h2 id="Grafana"><a href="#Grafana" class="headerlink" title="Grafana"></a>Grafana</h2><h3 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h3><ol>
 <li><p>下载：<span class="exturl" data-url="aHR0cHM6Ly9kbC5ncmFmYW5hLmNvbS9vc3MvcmVsZWFzZS9ncmFmYW5hLTkuMi4zLmxpbnV4LWFtZDY0LnRhci5neg==">https://dl.grafana.com/oss/release/grafana-9.2.3.linux-amd64.tar.gz<i class="fa fa-external-link-alt"></i></span></p>
@@ -303,12 +323,10 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; /usr/lib/systemd/system/grafana-server.service &lt;&lt;EOF</span><br><span class="line">[Unit]</span><br><span class="line">Description=Grafana</span><br><span class="line">After=network.target</span><br><span class="line">[Service]</span><br><span class="line">Type=notify</span><br><span class="line">ExecStart=/usr/local/grafana/bin/grafana-server -homepath /usr/local/grafana</span><br><span class="line">Restart=on-failure</span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>启动</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable grafana-server.service</span><br><span class="line">systemctl start grafana-server.service</span><br></pre></td></tr></table></figure>
-
-</li>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable grafana-server.service</span><br><span class="line">systemctl start grafana-server.service</span><br></pre></td></tr></table></figure></li>
 </ol>
 <h3 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h3><p><span class="exturl" data-url="aHR0cDovLzE5Mi4xNjguMC4xNTM6MzAwMC8=">http://192.168.0.153:3000/<i class="fa fa-external-link-alt"></i></span></p>
-<p>默认账户/密码：admin/admin</p>
+<p>默认账户&#x2F;密码：admin&#x2F;admin</p>
 <ol>
 <li><p>配置数据源</p>
 <p><img data-src="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626161831120.png" alt="image-20230626161831120"></p>
@@ -326,7 +344,7 @@
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>io.micrometer<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>micrometer-registry-prometheus<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>增加配置</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">management.endpoints.web.exposure.include</span>=<span class="string">*</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">management.endpoints.web.exposure.include</span>=<span class="string">*</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>开放actuator endpoint</p>
 <p><img data-src="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626162517471.png" alt="image-20230626162517471"></p>
@@ -335,7 +353,7 @@
 <p><img data-src="https://pic-go-image.oss-cn-beijing.aliyuncs.com/pic/image-20230626162635909.png" alt="image-20230626162635909"></p>
 </li>
 <li><p>修改Prometheus配置</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">scrape_configs:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">"prometheus"</span></span><br><span class="line">    <span class="comment"># metrics_path defaults to '/metrics'</span></span><br><span class="line">    <span class="comment"># scheme defaults to 'http'.</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">["localhost:9090","192.168.0.153:9100"]</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">"data-fill"</span></span><br><span class="line">    <span class="attr">scrape_interval:</span> <span class="string">5s</span> <span class="comment">#每5s抓取一次</span></span><br><span class="line">    <span class="attr">metrics_path:</span> <span class="string">'/api/actuator/prometheus'</span>  <span class="comment">#抓取的数据url</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">targets:</span> <span class="string">["192.168.0.153:6868"]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">scrape_configs:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">&quot;prometheus&quot;</span></span><br><span class="line">    <span class="comment"># metrics_path defaults to &#x27;/metrics&#x27;</span></span><br><span class="line">    <span class="comment"># scheme defaults to &#x27;http&#x27;.</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">targets:</span> [<span class="string">&quot;localhost:9090&quot;</span>,<span class="string">&quot;192.168.0.153:9100&quot;</span>]</span><br><span class="line">  <span class="bullet">-</span> <span class="attr">job_name:</span> <span class="string">&quot;data-fill&quot;</span></span><br><span class="line">    <span class="attr">scrape_interval:</span> <span class="string">5s</span> <span class="comment">#每5s抓取一次</span></span><br><span class="line">    <span class="attr">metrics_path:</span> <span class="string">&#x27;/api/actuator/prometheus&#x27;</span>  <span class="comment">#抓取的数据url</span></span><br><span class="line">    <span class="attr">static_configs:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">targets:</span> [<span class="string">&quot;192.168.0.153:6868&quot;</span>]</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>导入Dashboard</p>
 <p>id：4701  <span class="exturl" data-url="aHR0cHM6Ly9ncmFmYW5hLmNvbS9ncmFmYW5hL2Rhc2hib2FyZHMvNDcwMS1qdm0tbWljcm9tZXRlci8=">https://grafana.com/grafana/dashboards/4701-jvm-micrometer/<i class="fa fa-external-link-alt"></i></span></p>
@@ -374,7 +392,7 @@
           <div class="post-tags">
               <a href="/tags/Prometheus/" rel="tag"><i class="fa fa-tag"></i> Prometheus</a>
               <a href="/tags/Grafana/" rel="tag"><i class="fa fa-tag"></i> Grafana</a>
-              <a href="/tags/监控/" rel="tag"><i class="fa fa-tag"></i> 监控</a>
+              <a href="/tags/%E7%9B%91%E6%8E%A7/" rel="tag"><i class="fa fa-tag"></i> 监控</a>
           </div>
 
         
@@ -445,7 +463,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Prometheus"><span class="nav-text">Prometheus</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Targets"><span class="nav-text">Targets</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Graph"><span class="nav-text">Graph</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Grafana"><span class="nav-text">Grafana</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-1"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-1"><span class="nav-text">使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#整合SpringBoot应用"><span class="nav-text">整合SpringBoot应用</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Prometheus"><span class="nav-text">Prometheus</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Targets"><span class="nav-text">Targets</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Graph"><span class="nav-text">Graph</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Grafana"><span class="nav-text">Grafana</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-1"><span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-1"><span class="nav-text">使用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E5%90%88SpringBoot%E5%BA%94%E7%94%A8"><span class="nav-text">整合SpringBoot应用</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -481,10 +499,10 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;6062172224&#x2F;"><i class="fab fa-weibo fa-fw"></i></span>
       </span>
       <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;tonymua"><i class="fab fa-github fa-fw"></i></span>
       </span>
       <span class="links-of-author-item">
         <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
@@ -564,9 +582,19 @@
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
-<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
 
 
 
@@ -584,7 +612,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 

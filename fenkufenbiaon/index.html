@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="baidu-site-verification" content="code-wyV34cCXc4" />
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -34,6 +34,13 @@
     s.parentNode.insertBefore(bp, s);
 })();
 </script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtdeh55ucp");
+</script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
@@ -41,17 +48,23 @@
   </script>
 
   <meta name="description" content="分库分表理论什么情况下需要分库分表？ MySQL单表容量大于1000万(BTREE索引树在3-5层之间)。 垂直切分垂直分库根据业务耦合性，将业务关联度低的不同表存储在不同的数据库。类似于”微服务”。">
-<meta name="keywords" content="MySQL,分库分表,ShardingSphere">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分库分表">
 <meta property="og:url" content="https://imokkkk.github.io/fenkufenbiaon/index.html">
 <meta property="og:site_name" content="ImOkkkk BLOG">
 <meta property="og:description" content="分库分表理论什么情况下需要分库分表？ MySQL单表容量大于1000万(BTREE索引树在3-5层之间)。 垂直切分垂直分库根据业务耦合性，将业务关联度低的不同表存储在不同的数据库。类似于”微服务”。">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2022-12-14T08:54:26.277Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://imokkkk.github.io/assets/img/image-20221201105517286.png">
+<meta property="og:image" content="https://imokkkk.github.io/assets/img/image-20221208152127526.png">
+<meta property="og:image" content="https://imokkkk.github.io/assets/img/image-20221214165028079.png">
+<meta property="article:published_time" content="2022-11-28T09:04:28.239Z">
+<meta property="article:modified_time" content="2022-12-14T08:54:26.277Z">
+<meta property="article:author" content="ImOkkkk">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="分库分表">
+<meta property="article:tag" content="ShardingSphere">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="分库分表">
-<meta name="twitter:description" content="分库分表理论什么情况下需要分库分表？ MySQL单表容量大于1000万(BTREE索引树在3-5层之间)。 垂直切分垂直分库根据业务耦合性，将业务关联度低的不同表存储在不同的数据库。类似于”微服务”。">
+<meta name="twitter:image" content="https://imokkkk.github.io/assets/img/image-20221201105517286.png">
 
 <link rel="canonical" href="https://imokkkk.github.io/fenkufenbiaon/">
 
@@ -245,7 +258,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/分布式/" itemprop="url" rel="index"><span itemprop="name">分布式</span></a>
+                  <a href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/" itemprop="url" rel="index"><span itemprop="name">分布式</span></a>
                 </span>
             </span>
 
@@ -270,7 +283,7 @@
         <h1 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h1><h2 id="理论"><a href="#理论" class="headerlink" title="理论"></a>理论</h2><p><strong>什么情况下需要分库分表？</strong></p>
 <p>MySQL单表容量大于1000万(BTREE索引树在3-5层之间)。</p>
 <h3 id="垂直切分"><a href="#垂直切分" class="headerlink" title="垂直切分"></a>垂直切分</h3><h4 id="垂直分库"><a href="#垂直分库" class="headerlink" title="垂直分库"></a>垂直分库</h4><p>根据业务耦合性，将业务关联度低的不同表存储在不同的数据库。类似于”微服务”。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h4 id="垂直分表"><a href="#垂直分表" class="headerlink" title="垂直分表"></a>垂直分表</h4><p>把一个表的多个字段拆分成多个表，一般按字段的冷热拆分，热字段一个表，冷字段一个表。</p>
 <p><strong>优点</strong></p>
@@ -295,7 +308,7 @@
 <li>跨库的join关联查询性能差。</li>
 </ol>
 <h3 id="数据分片规则"><a href="#数据分片规则" class="headerlink" title="数据分片规则"></a>数据分片规则</h3><h4 id="Hash取模"><a href="#Hash取模" class="headerlink" title="Hash取模"></a>Hash取模</h4><p>按照数据的某一特征（key）来计算哈希值，并将哈希值与系统中的节点建立映射关系，从而将哈希值不同的数据分布到不同的节点上。</p>
-<p>如选择id作为数据分片的key，n台实例，则取<code>id的hash值 % n</code>得到的结果就是数据所在实例。</p>
+<p>如选择id作为数据分片的key，n台实例，则取<code>id的hash值 % n </code>得到的结果就是数据所在实例。</p>
 <p><strong>优点</strong></p>
 <ol>
 <li>实现简单</li>
@@ -304,14 +317,14 @@
 <ol>
 <li>加入或者删除一个节点的时候，需要迁移大量的数据；</li>
 <li>很难解决数据不均衡的问题；</li>
-<li>如果查询条件中不带用于分片的key，那么需要查询所有分库，再在内存中合并数据，效率低，复杂度高/</li>
+<li>如果查询条件中不带用于分片的key，那么需要查询所有分库，再在内存中合并数据，效率低，复杂度高&#x2F;</li>
 </ol>
 <h4 id="范围分片"><a href="#范围分片" class="headerlink" title="范围分片"></a>范围分片</h4><p>按照关键值划分成不同的区间，每个物理节点负责一个或者多个区间。</p>
 <p>如id 0-10000数据位于实例1，10000-20000位于实例2…。</p>
 <p><strong>优点</strong></p>
 <ol>
-<li>单表/库大小可控；</li>
-<li>易于水平扩展，假如/删除实例时，无需对其它实例的数据迁移；</li>
+<li>单表&#x2F;库大小可控；</li>
+<li>易于水平扩展，假如&#x2F;删除实例时，无需对其它实例的数据迁移；</li>
 <li>易于范围查询。</li>
 </ol>
 <p><strong>缺点</strong></p>
@@ -347,7 +360,7 @@
 <p>当排序字段就是分片字段时，通过分片规则就比较容易定位到指定的分片；如果排序字段非分片字段，需要在不同的分片节点中将数据进行排序并返回，然后将不同分片返回的结果集进行汇总和再次排序。</p>
 </li>
 <li><p>全局主键</p>
-<p>雪花算法(时钟回拨问题)，百度<a href="https://github.com/baidu/uid-generator" target="_blank" rel="noopener"><strong>uid-generator</strong></a>，美团<strong><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL01laXR1YW4tRGlhbnBpbmcvTGVhZg==">Leaf<i class="fa fa-external-link-alt"></i></span></strong>、</p>
+<p>雪花算法(时钟回拨问题)，百度<a target="_blank" rel="noopener" href="https://github.com/baidu/uid-generator"><strong>uid-generator</strong></a>，美团**<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL01laXR1YW4tRGlhbnBpbmcvTGVhZg==">Leaf<i class="fa fa-external-link-alt"></i></span>**、</p>
 </li>
 </ol>
 <h2 id="ShardingShere"><a href="#ShardingShere" class="headerlink" title="ShardingShere"></a>ShardingShere</h2><p>ShardingSphere 是一款分布式的数据库生态系统， 可以将任意数据库转换为分布式数据库，并通过数据分片、弹性伸缩、加密等能力对原有数据库进行增强。</p>
@@ -403,7 +416,7 @@
 </li>
 <li><p>效果</p>
 <p>增删改操作主库，查询操作从库：</p>
-<p><img data-src="../assets/img/image-20221201105517286.png" alt></p>
+<p><img data-src="/../assets/img/image-20221201105517286.png"></p>
 </li>
 </ol>
 <p>详细的实现代码：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0ltT2tra2svc2hvcnQtbGluay1nZW5lcmF0b3IvdHJlZS9zaGFyZGluZ3NwaGVyZS1yZWFkLXdyaXRlLXNwbGl0dGluZw==">https://github.com/ImOkkkk/short-link-generator/tree/shardingsphere-read-write-splitting<i class="fa fa-external-link-alt"></i></span></p>
@@ -416,7 +429,7 @@
 </li>
 <li><p>效果</p>
 <p>批量插入3条数据：2条数据新增到主库的url0表，1条数据新增到url1表。</p>
-<p><img data-src="../assets/img/image-20221208152127526.png" alt></p>
+<p><img data-src="/../assets/img/image-20221208152127526.png"></p>
 </li>
 </ol>
 <p>详细的实现代码：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0ltT2tra2svc2hvcnQtbGluay1nZW5lcmF0b3IvdHJlZS9zaGFyZGluZ3NwaGVyZS1yZWFkLXdyaXRlLXNwbGl0dGluZy10YWJsZQ==">https://github.com/ImOkkkk/short-link-generator/tree/shardingsphere-read-write-splitting-table<i class="fa fa-external-link-alt"></i></span></p>
@@ -435,7 +448,7 @@
 <li>1条数据新增到ds1的url0表；</li>
 <li>1条数据新增到ds0的url0表。</li>
 </ul>
-<p><img data-src="../assets/img/image-20221214165028079.png" alt></p>
+<p><img data-src="/../assets/img/image-20221214165028079.png"></p>
 </li>
 </ol>
 </li>
@@ -472,7 +485,7 @@
           
           <div class="post-tags">
               <a href="/tags/MySQL/" rel="tag"><i class="fa fa-tag"></i> MySQL</a>
-              <a href="/tags/分库分表/" rel="tag"><i class="fa fa-tag"></i> 分库分表</a>
+              <a href="/tags/%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8/" rel="tag"><i class="fa fa-tag"></i> 分库分表</a>
               <a href="/tags/ShardingSphere/" rel="tag"><i class="fa fa-tag"></i> ShardingSphere</a>
           </div>
 
@@ -547,7 +560,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#分库分表"><span class="nav-text">分库分表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#理论"><span class="nav-text">理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#垂直切分"><span class="nav-text">垂直切分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#垂直分库"><span class="nav-text">垂直分库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#垂直分表"><span class="nav-text">垂直分表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#水平切分"><span class="nav-text">水平切分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#水平分库"><span class="nav-text">水平分库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#水平分表"><span class="nav-text">水平分表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据分片规则"><span class="nav-text">数据分片规则</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Hash取模"><span class="nav-text">Hash取模</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#范围分片"><span class="nav-text">范围分片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一致性Hash"><span class="nav-text">一致性Hash</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分库分表引入的问题"><span class="nav-text">分库分表引入的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ShardingShere"><span class="nav-text">ShardingShere</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ShardingSphere-JDBC"><span class="nav-text">ShardingSphere-JDBC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ShardingSphere-Proxy"><span class="nav-text">ShardingSphere-Proxy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结果归并"><span class="nav-text">结果归并</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实践"><span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ShardingSphere读写分离"><span class="nav-text">ShardingSphere读写分离</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker部署主从MySQL"><span class="nav-text">Docker部署主从MySQL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码实现"><span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ShardingSphere读写分离-单库分表"><span class="nav-text">ShardingSphere读写分离+单库分表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#代码实现-1"><span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ShardingSphere分库-分表"><span class="nav-text">ShardingSphere分库+分表</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8"><span class="nav-text">分库分表</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%90%86%E8%AE%BA"><span class="nav-text">理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9E%82%E7%9B%B4%E5%88%87%E5%88%86"><span class="nav-text">垂直切分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9E%82%E7%9B%B4%E5%88%86%E5%BA%93"><span class="nav-text">垂直分库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9E%82%E7%9B%B4%E5%88%86%E8%A1%A8"><span class="nav-text">垂直分表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B0%B4%E5%B9%B3%E5%88%87%E5%88%86"><span class="nav-text">水平切分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B0%B4%E5%B9%B3%E5%88%86%E5%BA%93"><span class="nav-text">水平分库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B0%B4%E5%B9%B3%E5%88%86%E8%A1%A8"><span class="nav-text">水平分表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E7%89%87%E8%A7%84%E5%88%99"><span class="nav-text">数据分片规则</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Hash%E5%8F%96%E6%A8%A1"><span class="nav-text">Hash取模</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8C%83%E5%9B%B4%E5%88%86%E7%89%87"><span class="nav-text">范围分片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E8%87%B4%E6%80%A7Hash"><span class="nav-text">一致性Hash</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8%E5%BC%95%E5%85%A5%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">分库分表引入的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ShardingShere"><span class="nav-text">ShardingShere</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ShardingSphere-JDBC"><span class="nav-text">ShardingSphere-JDBC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ShardingSphere-Proxy"><span class="nav-text">ShardingSphere-Proxy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E5%BD%92%E5%B9%B6"><span class="nav-text">结果归并</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5"><span class="nav-text">实践</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ShardingSphere%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB"><span class="nav-text">ShardingSphere读写分离</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Docker%E9%83%A8%E7%BD%B2%E4%B8%BB%E4%BB%8EMySQL"><span class="nav-text">Docker部署主从MySQL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ShardingSphere%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB-%E5%8D%95%E5%BA%93%E5%88%86%E8%A1%A8"><span class="nav-text">ShardingSphere读写分离+单库分表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0-1"><span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ShardingSphere%E5%88%86%E5%BA%93-%E5%88%86%E8%A1%A8"><span class="nav-text">ShardingSphere分库+分表</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -583,10 +596,10 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;6062172224&#x2F;"><i class="fab fa-weibo fa-fw"></i></span>
       </span>
       <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;tonymua"><i class="fab fa-github fa-fw"></i></span>
       </span>
       <span class="links-of-author-item">
         <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
@@ -666,9 +679,19 @@
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
-<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
 
 
 
@@ -686,7 +709,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="baidu-site-verification" content="code-wyV34cCXc4" />
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -34,24 +34,31 @@
     s.parentNode.insertBefore(bp, s);
 })();
 </script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtdeh55ucp");
+</script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"imokkkk.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":true,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"default"},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":true,"preload":true},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="1.MyBatis概述​    MyBatis 是一款优秀的持久层框架，它支持定制化 SQL、存储过程以及高级映射。MyBatis 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结果集。MyBatis 可以使用简单的 XML 或注解来配置和映射原生信息，将接口和 Java 的 POJOs(Plain Ordinary Java Object,普通的 Java对象)映射成数据库中的记录。 2">
-<meta name="keywords" content="面试">
+  <meta name="description" content="1.MyBatis概述​	MyBatis 是一款优秀的持久层框架，它支持定制化 SQL、存储过程以及高级映射。MyBatis 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结果集。MyBatis 可以使用简单的 XML 或注解来配置和映射原生信息，将接口和 Java 的 POJOs(Plain Ordinary Java Object,普通的 Java对象)映射成数据库中的记录。 2.SQ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MyBatis是如何防止SQL注入的">
 <meta property="og:url" content="https://imokkkk.github.io/16852/index.html">
 <meta property="og:site_name" content="ImOkkkk BLOG">
-<meta property="og:description" content="1.MyBatis概述​    MyBatis 是一款优秀的持久层框架，它支持定制化 SQL、存储过程以及高级映射。MyBatis 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结果集。MyBatis 可以使用简单的 XML 或注解来配置和映射原生信息，将接口和 Java 的 POJOs(Plain Ordinary Java Object,普通的 Java对象)映射成数据库中的记录。 2">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-04-29T02:44:37.934Z">
+<meta property="og:description" content="1.MyBatis概述​	MyBatis 是一款优秀的持久层框架，它支持定制化 SQL、存储过程以及高级映射。MyBatis 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结果集。MyBatis 可以使用简单的 XML 或注解来配置和映射原生信息，将接口和 Java 的 POJOs(Plain Ordinary Java Object,普通的 Java对象)映射成数据库中的记录。 2.SQ">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-05-08T13:19:59.141Z">
+<meta property="article:modified_time" content="2020-04-29T02:44:37.934Z">
+<meta property="article:author" content="ImOkkkk">
+<meta property="article:tag" content="面试">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MyBatis是如何防止SQL注入的">
-<meta name="twitter:description" content="1.MyBatis概述​    MyBatis 是一款优秀的持久层框架，它支持定制化 SQL、存储过程以及高级映射。MyBatis 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结果集。MyBatis 可以使用简单的 XML 或注解来配置和映射原生信息，将接口和 Java 的 POJOs(Plain Ordinary Java Object,普通的 Java对象)映射成数据库中的记录。 2">
 
 <link rel="canonical" href="https://imokkkk.github.io/16852/">
 
@@ -258,26 +265,26 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="1-MyBatis概述"><a href="#1-MyBatis概述" class="headerlink" title="1.MyBatis概述"></a>1.MyBatis概述</h3><p>​    MyBatis 是一款优秀的持久层框架，它支持定制化 SQL、存储过程以及高级映射。MyBatis 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结果集。MyBatis 可以使用简单的 XML 或注解来配置和映射原生信息，将接口和 Java 的 POJOs(Plain Ordinary Java Object,普通的 Java对象)映射成数据库中的记录。</p>
-<h3 id="2-SQL-注入攻击概述"><a href="#2-SQL-注入攻击概述" class="headerlink" title="2.SQL 注入攻击概述"></a>2.SQL 注入攻击概述</h3><a id="more"></a>
+        <h3 id="1-MyBatis概述"><a href="#1-MyBatis概述" class="headerlink" title="1.MyBatis概述"></a>1.MyBatis概述</h3><p>​	MyBatis 是一款优秀的持久层框架，它支持定制化 SQL、存储过程以及高级映射。MyBatis 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结果集。MyBatis 可以使用简单的 XML 或注解来配置和映射原生信息，将接口和 Java 的 POJOs(Plain Ordinary Java Object,普通的 Java对象)映射成数据库中的记录。</p>
+<h3 id="2-SQL-注入攻击概述"><a href="#2-SQL-注入攻击概述" class="headerlink" title="2.SQL 注入攻击概述"></a>2.SQL 注入攻击概述</h3><span id="more"></span>
 
-<p>​    SQL注入攻击，简称SQL攻击或注入攻击，是发生于应用程序之数据库层的安全漏洞。简而言之，是<strong>在输入的字符串之中注入SQL指令</strong>，在设计不良的程序当中忽略了检查，那么这些注入进去的指令就会被数据库服务器误认为是正常的SQL指令而运行，因此遭到破坏或是入侵。</p>
-<p>​    最常见的就是我们在应用程序中使用<strong>字符串联结方式组合 SQL 指令</strong>，有心之人就会写一些特殊的符号，恶意篡改原本的 SQL 语法的作用，达到注入攻击的目的。</p>
+<p>​	SQL注入攻击，简称SQL攻击或注入攻击，是发生于应用程序之数据库层的安全漏洞。简而言之，是<strong>在输入的字符串之中注入SQL指令</strong>，在设计不良的程序当中忽略了检查，那么这些注入进去的指令就会被数据库服务器误认为是正常的SQL指令而运行，因此遭到破坏或是入侵。</p>
+<p>​	最常见的就是我们在应用程序中使用<strong>字符串联结方式组合 SQL 指令</strong>，有心之人就会写一些特殊的符号，恶意篡改原本的 SQL 语法的作用，达到注入攻击的目的。</p>
 <p>举个例子:</p>
 <p>比如验证用户登录需要 username 和 password，编写的 SQL 语句如下：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> (<span class="keyword">name</span> = <span class="string">'"+ username +"'</span>) <span class="keyword">and</span> (pw = <span class="string">'"+ password +"'</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> (name <span class="operator">=</span> <span class="string">&#x27;&quot;+ username +&quot;&#x27;</span>) <span class="keyword">and</span> (pw <span class="operator">=</span> <span class="string">&#x27;&quot;+ password +&quot;&#x27;</span>);</span><br></pre></td></tr></table></figure>
 
 <p>username 和 password 字段被恶意填入</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username = "1' OR '1'='1";</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username <span class="operator">=</span> &quot;1&#x27; OR &#x27;1&#x27;=&#x27;1&quot;;</span><br></pre></td></tr></table></figure>
 
 <p>与</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">password = "1' OR '1'='1";</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">password <span class="operator">=</span> &quot;1&#x27; OR &#x27;1&#x27;=&#x27;1&quot;;</span><br></pre></td></tr></table></figure>
 
 <p>将导致原本的 SQL 字符串被填为：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> (<span class="keyword">name</span> = <span class="string">'1'</span> <span class="keyword">or</span> <span class="string">'1'</span>=<span class="string">'1'</span>) <span class="keyword">and</span> (pw = <span class="string">'1'</span> <span class="keyword">or</span> <span class="string">'1'</span>=<span class="string">'1'</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> (name <span class="operator">=</span> <span class="string">&#x27;1&#x27;</span> <span class="keyword">or</span> <span class="string">&#x27;1&#x27;</span><span class="operator">=</span><span class="string">&#x27;1&#x27;</span>) <span class="keyword">and</span> (pw <span class="operator">=</span> <span class="string">&#x27;1&#x27;</span> <span class="keyword">or</span> <span class="string">&#x27;1&#x27;</span><span class="operator">=</span><span class="string">&#x27;1&#x27;</span>);</span><br></pre></td></tr></table></figure>
 
 <p>实际上运行的 SQL 语句将变成：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">user</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">user</span>;</span><br></pre></td></tr></table></figure>
 
 <p>也就是不再需要 username 和 password 账密即达到登录的目的，结果不言而喻。</p>
 <h3 id="3-MyBatis-解决-SQL-注入问题"><a href="#3-MyBatis-解决-SQL-注入问题" class="headerlink" title="3.MyBatis 解决 SQL 注入问题"></a>3.MyBatis 解决 SQL 注入问题</h3><p><strong>#{}和${}的区别是什么？</strong></p>
@@ -286,20 +293,20 @@
 <p>（3）使用#{}可以有效的防止SQL注入，提高系统安全性。原因在于：预编译机制。<strong>预编译完成之后，SQL的结构已经固定，即便用户输入非法参数，也不会对SQL的结构产生影响，从而避免了潜在的安全风险。</strong></p>
 <p>（4）预编译是提前对SQL语句进行预编译，而其后注入的参数将不会再进行SQL编译。我们知道，SQL注入是发生在编译的过程中，因为恶意注入了某些特殊字符，最后被编译成了恶意的执行操作。而预编译机制则可以很好的防止SQL注入。</p>
 <p>　MyBatis框架作为一款半自动化的持久层框架，其SQL语句都要我们自己手动编写，这个时候当然需要防止SQL注入。其实，MyBatis的SQL是一个具有“<strong>输入+输出</strong>”的功能，类似于函数的结构，参考上面的两个例子。其中，parameterType表示了输入的参数类型，resultType表示了输出的参数类型。回应上文，如果我们想防止SQL注入，理所当然地要在输入参数上下功夫。上面代码中使用#的即输入参数在SQL中拼接的部分，传入参数后，打印出执行的SQL语句，会看到SQL是这样的：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">id</span>, username, <span class="keyword">password</span>, <span class="keyword">role</span> <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> username=? <span class="keyword">and</span> <span class="keyword">password</span>=?</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> id, username, password, role <span class="keyword">from</span> <span class="keyword">user</span> <span class="keyword">where</span> username<span class="operator">=</span>? <span class="keyword">and</span> password<span class="operator">=</span>?</span><br></pre></td></tr></table></figure>
 
 <p>　　不管输入什么参数，打印出的SQL都是这样的。这是因为MyBatis启用了<strong>预编译功能</strong>，在SQL执行前，会先将上面的SQL发送给数据库进行编译；执行时，直接使用编译好的SQL，替换占位符“?”就可以了。因为<strong>SQL注入只能对编译过程起作用</strong>，所以这样的方式就很好地避免了SQL注入的问题。</p>
 <p><strong>底层实现原理</strong></p>
-<p>​    MyBatis是如何做到SQL预编译的呢？其实在框架底层，是JDBC中的<strong>PreparedStatement</strong>类在起作用，PreparedStatement是我们很熟悉的Statement的子类，它的对象包含了编译好的SQL语句。这种“准备好”的方式不仅能提高安全性，而且在多次执行同一个SQL时，能够提高效率。原因是SQL已编译好，再次执行时无需再编译。</p>
+<p>​	MyBatis是如何做到SQL预编译的呢？其实在框架底层，是JDBC中的<strong>PreparedStatement</strong>类在起作用，PreparedStatement是我们很熟悉的Statement的子类，它的对象包含了编译好的SQL语句。这种“准备好”的方式不仅能提高安全性，而且在多次执行同一个SQL时，能够提高效率。原因是SQL已编译好，再次执行时无需再编译。</p>
 <p><strong>在使用MyBatis框架时，有以下场景极易产生SQL注入</strong></p>
 <ol>
-<li><p>SQL语句中的一些部分，例如<strong>order by字段</strong>、表名等，是<strong>无法使用预编译语句</strong>的。这种场景极易产生SQL注入。推荐开发在Java层面做映射，设置一个字段/表名数组，仅允许用户传入索引值。这样保证传入的字段或者表名都在白名单里面(<strong>手动过滤，添加白名单</strong>)。</p>
+<li><p>SQL语句中的一些部分，例如<strong>order by字段</strong>、表名等，是<strong>无法使用预编译语句</strong>的。这种场景极易产生SQL注入。推荐开发在Java层面做映射，设置一个字段&#x2F;表名数组，仅允许用户传入索引值。这样保证传入的字段或者表名都在白名单里面(<strong>手动过滤，添加白名单</strong>)。</p>
 </li>
 <li><p>like参数注入。使用如下SQL语句可防止SQL注入</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">like concat('%',<span class="comment">#&#123;title&#125;, '%')，</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">like</span> concat(<span class="string">&#x27;%&#x27;</span>,#&#123;title&#125;, <span class="string">&#x27;%&#x27;</span>)，</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>in之后参数的SQL注入。使用如下SQL语句可防止SQL注入</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">id in</span><br><span class="line">&lt;foreach collection="ids" item="item" open="("separator="," close=")"&gt;</span><br><span class="line"><span class="comment">#&#123;item&#125; </span></span><br><span class="line">&lt;/foreach&gt;</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">id <span class="keyword">in</span></span><br><span class="line"><span class="operator">&lt;</span>foreach collection<span class="operator">=</span>&quot;ids&quot; item<span class="operator">=</span>&quot;item&quot; <span class="keyword">open</span><span class="operator">=</span>&quot;(&quot;separator<span class="operator">=</span>&quot;,&quot; <span class="keyword">close</span><span class="operator">=</span>&quot;)&quot;<span class="operator">&gt;</span></span><br><span class="line">#&#123;item&#125; </span><br><span class="line"><span class="operator">&lt;</span><span class="operator">/</span>foreach<span class="operator">&gt;</span></span><br></pre></td></tr></table></figure></li>
 </ol>
 
     </div>
@@ -331,7 +338,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/面试/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
+              <a href="/tags/%E9%9D%A2%E8%AF%95/" rel="tag"><i class="fa fa-tag"></i> 面试</a>
           </div>
 
         
@@ -405,7 +412,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-MyBatis概述"><span class="nav-text">1.MyBatis概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-SQL-注入攻击概述"><span class="nav-text">2.SQL 注入攻击概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-MyBatis-解决-SQL-注入问题"><span class="nav-text">3.MyBatis 解决 SQL 注入问题</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-MyBatis%E6%A6%82%E8%BF%B0"><span class="nav-text">1.MyBatis概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-SQL-%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB%E6%A6%82%E8%BF%B0"><span class="nav-text">2.SQL 注入攻击概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-MyBatis-%E8%A7%A3%E5%86%B3-SQL-%E6%B3%A8%E5%85%A5%E9%97%AE%E9%A2%98"><span class="nav-text">3.MyBatis 解决 SQL 注入问题</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -441,10 +448,10 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;6062172224&#x2F;"><i class="fab fa-weibo fa-fw"></i></span>
       </span>
       <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;tonymua"><i class="fab fa-github fa-fw"></i></span>
       </span>
       <span class="links-of-author-item">
         <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
@@ -524,9 +531,19 @@
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
-<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
 
 
 
@@ -544,7 +561,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 

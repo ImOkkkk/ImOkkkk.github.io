@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="baidu-site-verification" content="code-wyV34cCXc4" />
-<meta name="generator" content="Hexo 3.9.0">
+<meta name="generator" content="Hexo 7.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -34,6 +34,13 @@
     s.parentNode.insertBefore(bp, s);
 })();
 </script>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "jtdeh55ucp");
+</script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
@@ -41,17 +48,27 @@
   </script>
 
   <meta name="description" content="1.JRE、JDK JRE：Java的运行时环境，JVM的标准加上实现的一大堆基础类库。 JDK：包含JRE，还提供了一些小工具，如Javac、Java、Jar。  2.JVM">
-<meta name="keywords" content="JVM,垃圾回收,GC">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JVM&amp;垃圾回收">
 <meta property="og:url" content="https://imokkkk.github.io/jvmAndgc/index.html">
 <meta property="og:site_name" content="ImOkkkk BLOG">
 <meta property="og:description" content="1.JRE、JDK JRE：Java的运行时环境，JVM的标准加上实现的一大堆基础类库。 JDK：包含JRE，还提供了一些小工具，如Javac、Java、Jar。  2.JVM">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2021-04-07T14:48:19.865Z">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://imokkkk.github.io/assets/img/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B(JDK8).png">
+<meta property="og:image" content="https://imokkkk.github.io/assets/img/CgqCHl9ZjveAemjoAAB4J1dCVDo17.jpeg">
+<meta property="og:image" content="https://imokkkk.github.io/assets/img/Cgq2xl4cQNeAG0ECAAA_CbVCY1M014.png">
+<meta property="og:image" content="https://imokkkk.github.io/assets/img/Cgq2xl4heqWAZMlOAAA-Cqk2QcM143.png">
+<meta property="og:image" content="https://imokkkk.github.io/assets/img/Cgq2xl4lQuiAHhjjAAAr3JIdyLA146.jpg">
+<meta property="og:image" content="https://imokkkk.github.io/assets/img/Cgq2xl4lQuiAM7ZPAABnAlb8gZ8269.jpg">
+<meta property="og:image" content="https://imokkkk.github.io/assets/img/CgpOIF4lSamARPiHAABC8ugXMK8124.jpg">
+<meta property="article:published_time" content="2021-05-08T13:19:59.138Z">
+<meta property="article:modified_time" content="2021-04-07T14:48:19.865Z">
+<meta property="article:author" content="ImOkkkk">
+<meta property="article:tag" content="JVM">
+<meta property="article:tag" content="垃圾回收">
+<meta property="article:tag" content="GC">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JVM&amp;垃圾回收">
-<meta name="twitter:description" content="1.JRE、JDK JRE：Java的运行时环境，JVM的标准加上实现的一大堆基础类库。 JDK：包含JRE，还提供了一些小工具，如Javac、Java、Jar。  2.JVM">
+<meta name="twitter:image" content="https://imokkkk.github.io/assets/img/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B(JDK8).png">
 
 <link rel="canonical" href="https://imokkkk.github.io/jvmAndgc/">
 
@@ -271,18 +288,18 @@
 <li>JRE：Java的运行时环境，JVM的标准加上实现的一大堆基础类库。</li>
 <li>JDK：包含JRE，还提供了一些小工具，如Javac、Java、Jar。</li>
 </ul>
-<h4 id="2-JVM"><a href="#2-JVM" class="headerlink" title="2.JVM"></a>2.JVM</h4><a id="more"></a>
+<h4 id="2-JVM"><a href="#2-JVM" class="headerlink" title="2.JVM"></a>2.JVM</h4><span id="more"></span>
 
-<p><img data-src="../../../../assets/img/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B(JDK8).png" alt></p>
+<p><img data-src="/../../../../assets/img/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B(JDK8).png"></p>
 <h4 id="3-类的加载过程"><a href="#3-类的加载过程" class="headerlink" title="3.类的加载过程"></a>3.类的加载过程</h4><ul>
 <li><p>加载<br>将外部的.class文件加载到方法区。</p>
 </li>
 <li><p>验证<br>不能将任何的.class文件都加载，不符合规范的将抛出java.lang.VerifyError错误。(如低版本的JVM无法加载一些高版本的类库)</p>
 </li>
 <li><p>准备<br>为一些类变量分配内存，并将其初始化为默认值。此时，实例对象还没有分配内存，所以这些动作是在方法区上进行的。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">code-snippet <span class="number">1</span>：</span><br><span class="line">     <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">         <span class="comment">//类变量</span></span><br><span class="line">         <span class="keyword">static</span> <span class="keyword">int</span> a ;</span><br><span class="line">         <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">             System.out.println(a);</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">a:<span class="number">0</span></span><br><span class="line">code-snippet <span class="number">2</span>：</span><br><span class="line"> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">         <span class="comment">//局部变量</span></span><br><span class="line">         <span class="keyword">int</span> a ;</span><br><span class="line">         System.out.println(a);</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line">编译错误</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">code-snippet <span class="number">1</span>：</span><br><span class="line">     <span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line">         <span class="comment">//类变量</span></span><br><span class="line">         <span class="keyword">static</span> <span class="type">int</span> a ;</span><br><span class="line">         <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">             System.out.println(a);</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">a:<span class="number">0</span></span><br><span class="line">code-snippet <span class="number">2</span>：</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line">     <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">         <span class="comment">//局部变量</span></span><br><span class="line">         <span class="type">int</span> a ;</span><br><span class="line">         System.out.println(a);</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line">编译错误</span><br></pre></td></tr></table></figure>
 
-<p><strong>类变量有两次赋初始值的过程：1.准备阶段，赋予初始值(也可以是指定值)    2.初始化阶段，赋予程序员指定的值</strong></p>
+<p><strong>类变量有两次赋初始值的过程：1.准备阶段，赋予初始值(也可以是指定值)	2.初始化阶段，赋予程序员指定的值</strong></p>
 <p><strong>局部变量不存在准备阶段，如果没有赋予初始值就不能使用</strong></p>
 </li>
 <li><p>解析<br>将符号引用替换成直接引用<br>符号引用：一种定义，可以是任何字面上的含义<br>直接引用：直接指向目标的指针、相对变量，直接引用的对象都存在于内存中</p>
@@ -294,7 +311,7 @@
 </ul>
 </li>
 <li><p>初始化<br>初始化成员变量</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">     <span class="keyword">static</span> <span class="keyword">int</span> a = <span class="number">0</span> ;</span><br><span class="line">     <span class="keyword">static</span> &#123;</span><br><span class="line">         a = <span class="number">1</span>;</span><br><span class="line">         b = <span class="number">1</span>;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">static</span> <span class="keyword">int</span> b = <span class="number">0</span>;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">         System.out.println(a); <span class="comment">//a:1</span></span><br><span class="line">         System.out.println(b);	<span class="comment">//b:0</span></span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line">     <span class="keyword">static</span> <span class="type">int</span> <span class="variable">a</span> <span class="operator">=</span> <span class="number">0</span> ;</span><br><span class="line">     <span class="keyword">static</span> &#123;</span><br><span class="line">         a = <span class="number">1</span>;</span><br><span class="line">         b = <span class="number">1</span>;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">static</span> <span class="type">int</span> <span class="variable">b</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">     <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">         System.out.println(a); <span class="comment">//a:1</span></span><br><span class="line">         System.out.println(b);	<span class="comment">//b:0</span></span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 
 <ol>
 <li>static语句块只能访问到定义在static语句块之前的变量</li>
@@ -311,12 +328,12 @@
 </ol>
 </li>
 </ul>
-<h4 id="4-clinit和init"><a href="#4-clinit和init" class="headerlink" title="4.clinit和init"></a>4.clinit和init</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">     <span class="keyword">static</span> &#123;</span><br><span class="line">         System.out.println(<span class="string">"1"</span>);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="title">A</span><span class="params">()</span></span>&#123;</span><br><span class="line">         System.out.println(<span class="string">"2"</span>);</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">         <span class="keyword">static</span>&#123;</span><br><span class="line">         System.out.println(<span class="string">"a"</span>);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="title">B</span><span class="params">()</span></span>&#123;</span><br><span class="line">         System.out.println(<span class="string">"b"</span>);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">         A ab = <span class="keyword">new</span> B();</span><br><span class="line">         ab = <span class="keyword">new</span> B();</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//	1</span></span><br><span class="line"><span class="comment">//	a</span></span><br><span class="line"><span class="comment">//	2</span></span><br><span class="line"><span class="comment">//	b</span></span><br><span class="line"><span class="comment">//	2</span></span><br><span class="line"><span class="comment">//	b</span></span><br></pre></td></tr></table></figure>
+<h4 id="4-clinit和init"><a href="#4-clinit和init" class="headerlink" title="4.clinit和init"></a>4.clinit和init</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">A</span> &#123;</span><br><span class="line">     <span class="keyword">static</span> &#123;</span><br><span class="line">         System.out.println(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">public</span> <span class="title function_">A</span><span class="params">()</span>&#123;</span><br><span class="line">         System.out.println(<span class="string">&quot;2&quot;</span>);</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">B</span> <span class="keyword">extends</span> <span class="title class_">A</span> &#123;</span><br><span class="line">         <span class="keyword">static</span>&#123;</span><br><span class="line">         System.out.println(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">public</span> <span class="title function_">B</span><span class="params">()</span>&#123;</span><br><span class="line">         System.out.println(<span class="string">&quot;b&quot;</span>);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span>&#123;</span><br><span class="line">         <span class="type">A</span> <span class="variable">ab</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">B</span>();</span><br><span class="line">         ab = <span class="keyword">new</span> <span class="title class_">B</span>();</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//	1</span></span><br><span class="line"><span class="comment">//	a</span></span><br><span class="line"><span class="comment">//	2</span></span><br><span class="line"><span class="comment">//	b</span></span><br><span class="line"><span class="comment">//	2</span></span><br><span class="line"><span class="comment">//	b</span></span><br></pre></td></tr></table></figure>
 
-<p>  <img data-src="../../../../assets/img/CgqCHl9ZjveAemjoAAB4J1dCVDo17.jpeg" alt></p>
+<p>  <img data-src="/../../../../assets/img/CgqCHl9ZjveAemjoAAB4J1dCVDo17.jpeg"></p>
 <p>static字段和static代码块属于类，在类的初始化阶段就被执行，类的信息存放在方法区，同一个类加载器只有一份，所以上面的<strong>static只会执行一次</strong>，对应clinit方法。</p>
 <p>对象初始化，在new一个新对象时，会调用构造方法来初始化对象的属性，对应<strong>init，每次新建对象都会执行</strong>。</p>
-<h4 id="5-双亲委派机制"><a href="#5-双亲委派机制" class="headerlink" title="5.双亲委派机制"></a>5.双亲委派机制</h4><p><img data-src="../../../../assets/img/Cgq2xl4cQNeAG0ECAAA_CbVCY1M014.png" alt><br>除了顶层的启动类加载器以外，其余的类加载器，在加载之前，都会委派给其父加载器进行加载。这样一层层向上传递，直到祖先们都无法胜任，它才会真正的加载。</p>
+<h4 id="5-双亲委派机制"><a href="#5-双亲委派机制" class="headerlink" title="5.双亲委派机制"></a>5.双亲委派机制</h4><p><img data-src="/../../../../assets/img/Cgq2xl4cQNeAG0ECAAA_CbVCY1M014.png"><br>除了顶层的启动类加载器以外，其余的类加载器，在加载之前，都会委派给其父加载器进行加载。这样一层层向上传递，直到祖先们都无法胜任，它才会真正的加载。</p>
 <h4 id="6-引用级别"><a href="#6-引用级别" class="headerlink" title="6.引用级别"></a>6.引用级别</h4><ul>
 <li><p>强引用<br>当内存空间不足时，JVM抛出OutOfMemoryError。即使程序异常终止，这种对象也不会被回收，是最普通最强硬的一种存在，只有在和GC Roots断绝关系时才会被消灭掉。</p>
 </li>
@@ -327,7 +344,7 @@
 <li><p>虚引用<br>如果一个对象仅持有虚引用，那么它就和没有任何引用一样，在任何时候都可能被垃圾回收。虚引用主要用来跟踪对象被垃圾回收的活动。虚引用必须和引用队列联合使用，当垃圾回收准备回收一个对象时，如果发现它还有虚引用，就会在回收对象之前，把这个虚引用加入到与之关联的引用队列中。</p>
 </li>
 </ul>
-<h4 id="7-典型OOM场景"><a href="#7-典型OOM场景" class="headerlink" title="7.典型OOM场景"></a>7.典型OOM场景</h4><p><img data-src="../../../../assets/img/Cgq2xl4heqWAZMlOAAA-Cqk2QcM143.png" alt><br>除了程序计数器，其它区域都有可能会发生OOM，但最常见的还是发生在堆上。   </p>
+<h4 id="7-典型OOM场景"><a href="#7-典型OOM场景" class="headerlink" title="7.典型OOM场景"></a>7.典型OOM场景</h4><p><img data-src="/../../../../assets/img/Cgq2xl4heqWAZMlOAAA-Cqk2QcM143.png"><br>除了程序计数器，其它区域都有可能会发生OOM，但最常见的还是发生在堆上。   </p>
 <ul>
 <li>内存容量太小了，需要扩容，或者需要调整堆的空间</li>
 <li>错误的引用的方式，发生了内存泄漏。如线程池里的线程，在复用的情况下忘记清理ThreadLocal的内容。</li>
@@ -351,12 +368,12 @@
 </li>
 <li><p>分代收集<br>把死的快的对象所占区域，叫作年轻代。其他活的长的对象所占的区域，叫作老年代。</p>
 <ul>
-<li><p>年轻代：使用复制算法<br><img data-src="../../../../assets/img/Cgq2xl4lQuiAHhjjAAAr3JIdyLA146.jpg" alt><br>年轻代分为：一个伊甸园空间(Eden)，两个幸存者空间(Survivor)<br>当年轻代中的Eden区分配满的时候，就会触发年轻代的GC(Minoe GC)。</p>
+<li><p>年轻代：使用复制算法<br><img data-src="/../../../../assets/img/Cgq2xl4lQuiAHhjjAAAr3JIdyLA146.jpg"><br>年轻代分为：一个伊甸园空间(Eden)，两个幸存者空间(Survivor)<br>当年轻代中的Eden区分配满的时候，就会触发年轻代的GC(Minoe GC)。</p>
 <ol>
 <li><p>在Eden区执行了第一次GC之后，存活的对象会移动到其中一个Survivor区(from)</p>
 </li>
 <li><p>Eden再次GC，这时会采用复制算法，将Eden和from区一起清理。存活的对象会被复制到to区，接下来清空from区就可以了。</p>
-<p>Eden：from：to = 8：1：1    -XX:SurvivorRatio 默认为8</p>
+<p>Eden：from：to &#x3D; 8：1：1	-XX:SurvivorRatio 默认为8</p>
 <p>TLAB：JVM默认给每个线程开辟一个buffer区域来加速对象分配，这个buffer就放在Eden区。对象的分配优先在TLAB上分配，但通常TLAB很小，所以对象比较大时，会在Eden的共享区域进行分配。</p>
 </li>
 </ol>
@@ -376,7 +393,7 @@
 <li><p>动态对象年龄判定<br>有的垃圾回收算法，并不需要年龄达到15，会使用一些动态的计算方法，如幸存区中相同年龄对象大小的和大于幸存区的一半，大于或等于age的对象将直接进入老年代</p>
 </li>
 </ol>
-<p><img data-src="../../../../assets/img/Cgq2xl4lQuiAM7ZPAABnAlb8gZ8269.jpg" alt></p>
+<p><img data-src="/../../../../assets/img/Cgq2xl4lQuiAM7ZPAABnAlb8gZ8269.jpg"></p>
 <h4 id="10-垃圾回收器"><a href="#10-垃圾回收器" class="headerlink" title="10.垃圾回收器"></a>10.垃圾回收器</h4><ul>
 <li><p>年轻代垃圾收集器</p>
 <ol>
@@ -442,8 +459,8 @@
 <li>需要预留空间，用来收集”浮动垃圾”。</li>
 <li>使用更多的CPU资源。</li>
 </ol>
-<h4 id="14-G1"><a href="#14-G1" class="headerlink" title="14.G1"></a>14.G1</h4><p><img data-src="../../../../assets/img/CgpOIF4lSamARPiHAABC8ugXMK8124.jpg" alt></p>
-<p>G1也是有Eden区和Survivor区的概念的，但内存上不是连续的。小区域(Region)的大小是固定的，名字叫做小队区，小队区可以是Eden，也可以是Survivor，还可以是Old。Region大小（-XX:G1HeapRegionSize=<n>M)一致，为1M-32M字节间的一个2的幂指数。如果对象太大，大小超过Region 50%的对象，将会分配在Humongous Region。垃圾最多的小堆区，会被优先收集。<br>-XX:MaxGCPauseMills=10</n></p>
+<h4 id="14-G1"><a href="#14-G1" class="headerlink" title="14.G1"></a>14.G1</h4><p><img data-src="/../../../../assets/img/CgpOIF4lSamARPiHAABC8ugXMK8124.jpg"></p>
+<p>G1也是有Eden区和Survivor区的概念的，但内存上不是连续的。小区域(Region)的大小是固定的，名字叫做小队区，小队区可以是Eden，也可以是Survivor，还可以是Old。Region大小（-XX:G1HeapRegionSize&#x3D;<N>M)一致，为1M-32M字节间的一个2的幂指数。如果对象太大，大小超过Region 50%的对象，将会分配在Humongous Region。垃圾最多的小堆区，会被优先收集。<br>-XX:MaxGCPauseMills&#x3D;10</p>
 <h4 id="15-卡表与RSet"><a href="#15-卡表与RSet" class="headerlink" title="15.卡表与RSet"></a>15.卡表与RSet</h4><ul>
 <li><p>卡表<br>老年代被分成众多的卡页(一般是2的次幂)，卡表就是用于标记卡页状态的一个集合，每个卡表对应一个卡页。如果年轻代有对象分配，而且老年代有对象指向这个新对象，那么这个老年代对象所对应内存的卡页，就会标识为dirty，卡表只需要很小的存储空间就可以保留这些状态。垃圾回收时，就可以先读卡表，进行快速判断。</p>
 </li>
@@ -453,9 +470,9 @@
 <h4 id="16-G1回收过程"><a href="#16-G1回收过程" class="headerlink" title="16.G1回收过程"></a>16.G1回收过程</h4><ol>
 <li><p>年轻代回收<br>JVM启动时，G1会先准备好Eden区，程序在运行时不断创建到Eden区，当所有的Eden区满了，启动一次年轻代垃圾回收过程。年轻代是一个STW过程，它的跨代引用使用RSet来追溯，会一次回收掉年轻代的所有Region。</p>
 </li>
-<li><p>并发标记<br>当整个堆内存使用达到一定比例(-XX:InitatingHeapOccupancyPercent    默认45%)，启动并发标记阶段。为混合回收提供标记服务，类似CMS的垃圾回收过程。</p>
+<li><p>并发标记<br>当整个堆内存使用达到一定比例(-XX:InitatingHeapOccupancyPercent	默认45%)，启动并发标记阶段。为混合回收提供标记服务，类似CMS的垃圾回收过程。</p>
 </li>
-<li><p>混合回收<br>通过并发标记阶段，已经统计了老年代的垃圾占比，在Minor GC之后，如果占比达到阈值(-XX:G1HeapWastePercent    默认是堆大小的5%，该参数可以调整Mixed GC的频率)，下次就会触发混合回收。参数G1MixedGCCountTarget：一次并发标记之后，最多执行Mixed GC的次数。</p>
+<li><p>混合回收<br>通过并发标记阶段，已经统计了老年代的垃圾占比，在Minor GC之后，如果占比达到阈值(-XX:G1HeapWastePercent	默认是堆大小的5%，该参数可以调整Mixed GC的频率)，下次就会触发混合回收。参数G1MixedGCCountTarget：一次并发标记之后，最多执行Mixed GC的次数。</p>
 </li>
 </ol>
 
@@ -489,7 +506,7 @@
           
           <div class="post-tags">
               <a href="/tags/JVM/" rel="tag"><i class="fa fa-tag"></i> JVM</a>
-              <a href="/tags/垃圾回收/" rel="tag"><i class="fa fa-tag"></i> 垃圾回收</a>
+              <a href="/tags/%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" rel="tag"><i class="fa fa-tag"></i> 垃圾回收</a>
               <a href="/tags/GC/" rel="tag"><i class="fa fa-tag"></i> GC</a>
           </div>
 
@@ -564,7 +581,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-JRE、JDK"><span class="nav-text">1.JRE、JDK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-JVM"><span class="nav-text">2.JVM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-类的加载过程"><span class="nav-text">3.类的加载过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-clinit和init"><span class="nav-text">4.clinit和init</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-双亲委派机制"><span class="nav-text">5.双亲委派机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-引用级别"><span class="nav-text">6.引用级别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-典型OOM场景"><span class="nav-text">7.典型OOM场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-垃圾回收算法"><span class="nav-text">8.垃圾回收算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-对象如何进入老年代"><span class="nav-text">9.对象如何进入老年代</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-垃圾回收器"><span class="nav-text">10.垃圾回收器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-CMS回收过程"><span class="nav-text">11.CMS回收过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-内存碎片"><span class="nav-text">12.内存碎片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-CMS"><span class="nav-text">13.CMS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-G1"><span class="nav-text">14.G1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-卡表与RSet"><span class="nav-text">15.卡表与RSet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-G1回收过程"><span class="nav-text">16.G1回收过程</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-JRE%E3%80%81JDK"><span class="nav-text">1.JRE、JDK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-JVM"><span class="nav-text">2.JVM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E7%B1%BB%E7%9A%84%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B"><span class="nav-text">3.类的加载过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-clinit%E5%92%8Cinit"><span class="nav-text">4.clinit和init</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%9C%BA%E5%88%B6"><span class="nav-text">5.双亲委派机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-%E5%BC%95%E7%94%A8%E7%BA%A7%E5%88%AB"><span class="nav-text">6.引用级别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-%E5%85%B8%E5%9E%8BOOM%E5%9C%BA%E6%99%AF"><span class="nav-text">7.典型OOM场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95"><span class="nav-text">8.垃圾回收算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#9-%E5%AF%B9%E8%B1%A1%E5%A6%82%E4%BD%95%E8%BF%9B%E5%85%A5%E8%80%81%E5%B9%B4%E4%BB%A3"><span class="nav-text">9.对象如何进入老年代</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#10-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="nav-text">10.垃圾回收器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#11-CMS%E5%9B%9E%E6%94%B6%E8%BF%87%E7%A8%8B"><span class="nav-text">11.CMS回收过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#12-%E5%86%85%E5%AD%98%E7%A2%8E%E7%89%87"><span class="nav-text">12.内存碎片</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#13-CMS"><span class="nav-text">13.CMS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#14-G1"><span class="nav-text">14.G1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#15-%E5%8D%A1%E8%A1%A8%E4%B8%8ERSet"><span class="nav-text">15.卡表与RSet</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#16-G1%E5%9B%9E%E6%94%B6%E8%BF%87%E7%A8%8B"><span class="nav-text">16.G1回收过程</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -600,10 +617,10 @@
 </div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https://weibo.com/6062172224/"><i class="fab fa-weibo fa-fw"></i></span>
+        <span class="exturl" data-url="aHR0cHM6Ly93ZWliby5jb20vNjA2MjE3MjIyNC8=" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;6062172224&#x2F;"><i class="fab fa-weibo fa-fw"></i></span>
       </span>
       <span class="links-of-author-item">
-        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https://github.com/tonymua"><i class="fab fa-github fa-fw"></i></span>
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3RvbnltdWE=" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;tonymua"><i class="fab fa-github fa-fw"></i></span>
       </span>
       <span class="links-of-author-item">
         <span class="exturl" data-url="bWFpbHRvOmx3eTA4YUBmb3htYWlsLmNvbQ==" title="E-Mail → mailto:lwy08a@foxmail.com"><i class="fa fa-envelope fa-fw"></i></span>
@@ -683,9 +700,19 @@
   <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
 <script src="/js/schemes/pisces.js"></script>
-<script src="/js/next-boot.js"></script><script src="/js/bookmark.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
 
 
 
@@ -703,7 +730,9 @@
 
 
 
-  <script src="/js/local-search.js"></script>
+  
+<script src="/js/local-search.js"></script>
+
 
 
 
