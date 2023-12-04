@@ -621,8 +621,8 @@
 <li>直接在文件管理器中把没用的文件删了，或者用<code>rm</code>命令删除rm test.txt<br>从版本库中删除该文件，那就用命令<code>git rm</code>删掉，并且<code>git commit</code><br>git rm test.txt<br>git commit -m “remove test.txt”<br>删错了，因为版本库里还有，所以可以把误删的文件恢复到最新版本<br>git checkout – test.txt</li>
 </ol>
 <h4 id="7-远程仓库"><a href="#7-远程仓库" class="headerlink" title="7.远程仓库"></a>7.远程仓库</h4><ol>
-<li>添加远程库<br>在GitHub创建一个Git仓库<br>git remote add origin <span class="exturl" data-url="bWFpbHRvOiYjMTAzOyYjeDY5OyYjMTE2OyYjNjQ7JiMxMDM7JiMxMDU7JiN4NzQ7JiMxMDQ7JiMxMTc7JiM5ODsmI3gyZTsmI3g2MzsmIzExMTsmI3g2ZDs=">&#103;&#x69;&#116;&#64;&#103;&#105;&#x74;&#104;&#117;&#98;&#x2e;&#x63;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span>:xxxxxxxx    关联<br>git push -u origin master    把本地库的所有内容推送到远程库上</li>
-<li>从远程库克隆<br>git clone <span class="exturl" data-url="bWFpbHRvOiYjMTAzOyYjeDY5OyYjMTE2OyYjeDQwOyYjMTAzOyYjeDY5OyYjeDc0OyYjeDY4OyYjMTE3OyYjOTg7JiN4MmU7JiM5OTsmIzExMTsmI3g2ZDs=">&#103;&#x69;&#116;&#x40;&#103;&#x69;&#x74;&#x68;&#117;&#98;&#x2e;&#99;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span>:xxxxxxxxx</li>
+<li>添加远程库<br>在GitHub创建一个Git仓库<br>git remote add origin <span class="exturl" data-url="bWFpbHRvOiYjeDY3OyYjeDY5OyYjMTE2OyYjeDQwOyYjeDY3OyYjeDY5OyYjMTE2OyYjeDY4OyYjMTE3OyYjeDYyOyYjNDY7JiN4NjM7JiMxMTE7JiMxMDk7">&#x67;&#x69;&#116;&#x40;&#x67;&#x69;&#116;&#x68;&#117;&#x62;&#46;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span>:xxxxxxxx    关联<br>git push -u origin master    把本地库的所有内容推送到远程库上</li>
+<li>从远程库克隆<br>git clone <span class="exturl" data-url="bWFpbHRvOiYjeDY3OyYjMTA1OyYjeDc0OyYjeDQwOyYjeDY3OyYjMTA1OyYjMTE2OyYjeDY4OyYjeDc1OyYjeDYyOyYjNDY7JiN4NjM7JiMxMTE7JiMxMDk7">&#x67;&#105;&#x74;&#x40;&#x67;&#105;&#116;&#x68;&#x75;&#x62;&#46;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span>:xxxxxxxxx</li>
 </ol>
 <h4 id="8-分支管理"><a href="#8-分支管理" class="headerlink" title="8.分支管理"></a>8.分支管理</h4><ol>
 <li>创建与合并分支<br>git switch -c dev    创建dev分支，然后切换到dev分支<br>git branch    查看当前分支<br>修改readme.md    git add readme.md    git commit -m “branch test”<br>git switch master    切换回master分支<br>再查看readme.md文件，刚才添加的内容不见了！因为那个提交是在dev分支上，而master分支此刻的提交点并没有变。<br>git merge dev    把dev分支的工作成果合并到master分支上<br>git branch -d dev    删除dev分支</li>
@@ -1404,16 +1404,16 @@
 <ul>
 <li><p>如果使用的是index1(即email整个字符串的索引结构)</p>
 <ol>
-<li>从index1索引树找到满足索引值是‘<span class="exturl" data-url="bWFpbHRvOiYjeDdhOyYjeDY4OyYjOTc7JiN4NmU7JiMxMDM7JiMxMTU7JiMxMTU7JiMxMjA7JiN4Nzk7JiMxMjI7JiN4NDA7JiMxMjA7JiN4Nzg7JiN4Nzg7JiM0NjsmIzk5OyYjMTExOyYjeDZkOw==">&#x7a;&#x68;&#97;&#x6e;&#103;&#115;&#115;&#120;&#x79;&#122;&#x40;&#120;&#x78;&#x78;&#46;&#99;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span>‘的这条记录，取得ID2的值。</li>
+<li>从index1索引树找到满足索引值是‘<span class="exturl" data-url="bWFpbHRvOiYjeDdhOyYjMTA0OyYjOTc7JiN4NmU7JiMxMDM7JiN4NzM7JiMxMTU7JiN4Nzg7JiN4Nzk7JiMxMjI7JiN4NDA7JiMxMjA7JiMxMjA7JiMxMjA7JiN4MmU7JiM5OTsmIzExMTsmI3g2ZDs=">&#x7a;&#104;&#97;&#x6e;&#103;&#x73;&#115;&#x78;&#x79;&#122;&#x40;&#120;&#120;&#120;&#x2e;&#99;&#111;&#x6d;<i class="fa fa-external-link-alt"></i></span>‘的这条记录，取得ID2的值。</li>
 <li>到主键上查到主键值是ID2的行，判断email的值是正确的，将这条记录加入结果集。</li>
-<li>取 index1 索引树上刚刚查到的位置的下一条记录，发现已经不满足email&#x3D;‘<span class="exturl" data-url="bWFpbHRvOiYjeDdhOyYjeDY4OyYjOTc7JiN4NmU7JiMxMDM7JiN4NzM7JiN4NzM7JiN4Nzg7JiN4Nzk7JiMxMjI7JiM2NDsmI3g3ODsmI3g3ODsmIzEyMDsmI3gyZTsmIzk5OyYjMTExOyYjMTA5Ow==">&#x7a;&#x68;&#97;&#x6e;&#103;&#x73;&#x73;&#x78;&#x79;&#122;&#64;&#x78;&#x78;&#120;&#x2e;&#99;&#111;&#109;<i class="fa fa-external-link-alt"></i></span>’的条件了，循环结束。</li>
+<li>取 index1 索引树上刚刚查到的位置的下一条记录，发现已经不满足email&#x3D;‘<span class="exturl" data-url="bWFpbHRvOiYjMTIyOyYjeDY4OyYjeDYxOyYjMTEwOyYjeDY3OyYjMTE1OyYjMTE1OyYjMTIwOyYjeDc5OyYjeDdhOyYjNjQ7JiN4Nzg7JiMxMjA7JiMxMjA7JiN4MmU7JiN4NjM7JiN4NmY7JiN4NmQ7">&#122;&#x68;&#x61;&#110;&#x67;&#115;&#115;&#120;&#x79;&#x7a;&#64;&#x78;&#120;&#120;&#x2e;&#x63;&#x6f;&#x6d;<i class="fa fa-external-link-alt"></i></span>’的条件了，循环结束。</li>
 </ol>
 <p>这个过程中，只需要回主键索引取一次数据，所以系统认为只扫描了一行。</p>
 </li>
 <li><p>如果使用的是index2(即emai(6)索引结构)</p>
 <ol>
 <li>从 index2 索引树找到满足索引值是’zhangs’的记录，找到的第一个是 ID1；</li>
-<li>到主键上查到主键值是 ID1 的行，判断出 email 的值不是’<span class="exturl" data-url="bWFpbHRvOiYjeDdhOyYjeDY4OyYjeDYxOyYjMTEwOyYjeDY3OyYjeDczOyYjMTE1OyYjMTIwOyYjeDc5OyYjeDdhOyYjNjQ7JiMxMjA7JiN4Nzg7JiN4Nzg7JiN4MmU7JiN4NjM7JiMxMTE7JiMxMDk7">&#x7a;&#x68;&#x61;&#110;&#x67;&#x73;&#115;&#120;&#x79;&#x7a;&#64;&#120;&#x78;&#x78;&#x2e;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span>’，这行记录丢弃；</li>
+<li>到主键上查到主键值是 ID1 的行，判断出 email 的值不是’<span class="exturl" data-url="bWFpbHRvOiYjMTIyOyYjMTA0OyYjOTc7JiMxMTA7JiMxMDM7JiN4NzM7JiN4NzM7JiN4Nzg7JiN4Nzk7JiN4N2E7JiM2NDsmIzEyMDsmI3g3ODsmIzEyMDsmIzQ2OyYjeDYzOyYjeDZmOyYjMTA5Ow==">&#122;&#104;&#97;&#110;&#103;&#x73;&#x73;&#x78;&#x79;&#x7a;&#64;&#120;&#x78;&#120;&#46;&#x63;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span>’，这行记录丢弃；</li>
 <li>取 index2 上刚刚查到的位置的下一条记录，发现仍然是’zhangs’，取出 ID2，再到ID 索引上取整行然后判断，这次值对了，将这行记录加入结果集；</li>
 <li>重复上一步，直到在 idxe2 上取到的值不是’zhangs’时，循环结束。</li>
 </ol>
@@ -2080,6 +2080,60 @@
       </tags>
   </entry>
   <entry>
+    <title>SQL执行慢分析及SQL语句优化</title>
+    <url>/31546/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="1-SQL语句执行速度慢"><a href="#1-SQL语句执行速度慢" class="headerlink" title="1.SQL语句执行速度慢"></a>1.SQL语句执行速度慢</h3><p>一个SQL语句执行的速度很慢, 分两种情况讨论:</p>
+<ul>
+<li><p>大多数情况下很正常, 偶尔很慢, 则有如下原因:</p>
+<ol>
+<li>数据库在刷新脏页</li>
+<li>执行的时候, 遇到锁, 如表锁, 行锁</li>
+</ol>
+</li>
+<li><p>一直执行很慢, 则有如下原因</p>
+</li>
+</ul>
+<span id="more"></span>
+
+<ol>
+<li>没有用上索引: 例如该字段没有索引, 由于对字段进行运算, 函数操作导致无法使用索引</li>
+<li>数据库选错了索引</li>
+</ol>
+<h3 id="2-SQL语句的优化"><a href="#2-SQL语句的优化" class="headerlink" title="2.SQL语句的优化"></a>2.SQL语句的优化</h3><ol>
+<li><p>设置合适的字段属性</p>
+<p> 字段的长度越小, 占用的内存越小, 性能就越好; 例如,中国的手机号码为11位, vachar的长度设置为11位即可</p>
+</li>
+<li><p>使用join语法</p>
+<p>join语法分为内连接, 左(外)连接, 右(外)连接</p>
+</li>
+<li><p>尽量少使用select *</p>
+<p>select *会进行全表查询, 消耗的性能较大</p>
+</li>
+<li><p>在查找唯一一条数据的时候, 使用limit 1, 在查找到数据的时候会终止查找</p>
+</li>
+<li><p>使用limit分页</p>
+</li>
+<li><p>尽量少使用排序order by, order by DESC, order by ASC</p>
+</li>
+<li><p>避免进行类型转换</p>
+</li>
+<li><p>使用索引</p>
+<ul>
+<li><p>优点: 加快索引速度</p>
+</li>
+<li><p>缺点: 创建索引和维护索引需要耗费时间和精力</p>
+<p>​		  索引需要占用空间</p>
+<p>​		  进行数据的增删改查时需要动态维护索引</p>
+</li>
+</ul>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>面试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Redis五种数据类型的底层结构</title>
     <url>/redisfive/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>RedisObject:  </p>
@@ -2282,321 +2336,6 @@
       </categories>
       <tags>
         <tag>Redis</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SQL执行慢分析及SQL语句优化</title>
-    <url>/31546/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="1-SQL语句执行速度慢"><a href="#1-SQL语句执行速度慢" class="headerlink" title="1.SQL语句执行速度慢"></a>1.SQL语句执行速度慢</h3><p>一个SQL语句执行的速度很慢, 分两种情况讨论:</p>
-<ul>
-<li><p>大多数情况下很正常, 偶尔很慢, 则有如下原因:</p>
-<ol>
-<li>数据库在刷新脏页</li>
-<li>执行的时候, 遇到锁, 如表锁, 行锁</li>
-</ol>
-</li>
-<li><p>一直执行很慢, 则有如下原因</p>
-</li>
-</ul>
-<span id="more"></span>
-
-<ol>
-<li>没有用上索引: 例如该字段没有索引, 由于对字段进行运算, 函数操作导致无法使用索引</li>
-<li>数据库选错了索引</li>
-</ol>
-<h3 id="2-SQL语句的优化"><a href="#2-SQL语句的优化" class="headerlink" title="2.SQL语句的优化"></a>2.SQL语句的优化</h3><ol>
-<li><p>设置合适的字段属性</p>
-<p> 字段的长度越小, 占用的内存越小, 性能就越好; 例如,中国的手机号码为11位, vachar的长度设置为11位即可</p>
-</li>
-<li><p>使用join语法</p>
-<p>join语法分为内连接, 左(外)连接, 右(外)连接</p>
-</li>
-<li><p>尽量少使用select *</p>
-<p>select *会进行全表查询, 消耗的性能较大</p>
-</li>
-<li><p>在查找唯一一条数据的时候, 使用limit 1, 在查找到数据的时候会终止查找</p>
-</li>
-<li><p>使用limit分页</p>
-</li>
-<li><p>尽量少使用排序order by, order by DESC, order by ASC</p>
-</li>
-<li><p>避免进行类型转换</p>
-</li>
-<li><p>使用索引</p>
-<ul>
-<li><p>优点: 加快索引速度</p>
-</li>
-<li><p>缺点: 创建索引和维护索引需要耗费时间和精力</p>
-<p>​		  索引需要占用空间</p>
-<p>​		  进行数据的增删改查时需要动态维护索引</p>
-</li>
-</ul>
-</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>面试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Sping Cloud Alibaba</title>
-    <url>/SpringCloudAlibaba/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="1-主要功能"><a href="#1-主要功能" class="headerlink" title="1.主要功能"></a>1.主要功能</h3><ul>
-<li><p>服务限流降级</p>
-</li>
-<li><p>服务注册与发现</p>
-</li>
-<li><p>分布式配置管理</p>
-</li>
-<li><p>消息驱动能力</p>
-</li>
-<li><p>分布式事务</p>
-<span id="more"></span>
-
-<p>Spring Cloud Alibaba使用@GlobalTransactional注解，高效并且零入侵地解决分布式事务问题。</p>
-</li>
-</ul>
-<h3 id="2-主要组件"><a href="#2-主要组件" class="headerlink" title="2.主要组件"></a>2.主要组件</h3><ul>
-<li><p>Sentinel<br>Sentinel把流量作为切入点，从流量控制、熔断降级、系统负载等多个维度保障服务的稳定性。Sentinel主要分为两部分，客户端在我们的程序中集成，控制台基于Spring Boot开发，打包后直接运行。利用Sertinel流量控制功能可以<strong>对网关、服务进行过载保护</strong>，另一个核心功能是<strong>熔断降级</strong>，与Hystrix一致。</p>
-</li>
-<li><p>Nacos<br>Nacos是一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。主要功能有<strong>注册中心</strong>和<strong>配置中心</strong>。<strong>Nacos可以代替Eureka和Apollo</strong>。</p>
-</li>
-<li><p>RocketMQ<br>分布式消息系统，基于高可用分布式集群技术，提供低延时、高可靠的消息发布与订阅服务。使用消息队列可以让服务之间更加<strong>解耦</strong>，还可以进行<strong>流量削峰</strong>，还可以用<strong>事务消息来实现分布式事务</strong>。</p>
-</li>
-<li><p>Dubbo<br>Java RPC框架，Spring Cloud Alibaba体系中，服务之间的通信可以使用Dubbo进行远程调用。Rest的优势：通用性强、无语言限制、调试方便，但一般都是JSON格式，报文较大，Dubbo是<strong>二进制传输</strong>，性能更好。Spring Cloud Alibaba中可以将Dubbo和Feign结合使用，即服务可以暴露Dubbo协议，也可以暴露Rest协议，调用方选择对应的协议进行调用，对于性能要求高的使用Dubbo，其它的使用Rest。</p>
-</li>
-<li><p>Seata<br>分布式事务解决方案，提供了AT、TCC等事务模式。</p>
-</li>
-</ul>
-<h3 id="3-技术选型推荐"><a href="#3-技术选型推荐" class="headerlink" title="3.技术选型推荐"></a>3.技术选型推荐</h3><ul>
-<li>服务注册与发现：Nacos</li>
-<li>服务熔断限流：Sentinel</li>
-<li>服务通信调用：Feign</li>
-<li>配置中心：Nacos</li>
-<li>服务网关：Spring Cloud Gateway</li>
-<li>分布式事务：Seata</li>
-<li>消息队列：RocketMQ</li>
-<li>调用链监控：Sleuth+Zipkin</li>
-<li>分布式任务调度：XXL-JOB</li>
-</ul>
-]]></content>
-      <categories>
-        <category>微服务</category>
-      </categories>
-      <tags>
-        <tag>微服务</tag>
-        <tag>Spring Cloud</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Sping Cloud相关组件了解</title>
-    <url>/SpringCloud_01/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="1-Eureka"><a href="#1-Eureka" class="headerlink" title="1.Eureka"></a>1.Eureka</h3><p>如果需要实现完整的服务注册与服务发现的功能，我们需要有注册中心来统一存储和管理服务信息，应用程序需要将自身的信息注册到注册中心，也就是服务提供者和服务消费者的信息。整个过程中包含的操作有<strong>注册、拉取、心跳、剔除</strong>等动作。</p>
-<span id="more"></span>
-
-<p><img data-src="/../../../../assets/img/CgoB5l2DSRmATTQnAACaxgMS0KY966.png"></p>
-<ul>
-<li>注册中心：用来集中存储管理服务信息。</li>
-<li>服务提供者：通过API供其他方调用服务。</li>
-<li>服务消费者：需要调用其他方的API获取服务。</li>
-</ul>
-<p>项目启动后Eureka Client会向Eureka Server发送请求，进行注册，并将自身信息发送给Eureka Server。注册成功后，每隔一定的时间，Eureka Client会向Eureka Server<strong>发送心跳来续约服务</strong>，汇报健康状态。如果客户端长时间没有续约，那么Eureka Server大约在90秒内从服务器注册表中清除客户端的信息。应用程序停止时Eureka Client会通知Eureka Server移除相关信息，<strong>信息移除</strong>成功后，对应的客户端会更新服务的信息，这样就不会调用已经下线的服务，但操作<strong>具有延迟</strong>，有可能会调到已经失效的服务，所以在客户端会开启<strong>失败重试</strong>功能来避免这个问题。Eureka Serve集群保证高可用，Eureka Server没有集成其它第三方存储，而是存储在内存中。所以Eureka Server之间会将注册信息复制到集群中的Eureka Serve的所有节点。这样数据才是共享状态，任何的Eureka Client都可以在任何一个Eureka Server节点查找到注册信息。</p>
-<h4 id="1-1-Eureka注册表"><a href="#1-1-Eureka注册表" class="headerlink" title="1.1 Eureka注册表"></a>1.1 Eureka注册表</h4><p>Eureka的注册信息是存储在<strong>ConcurrentHashMap</strong>中的，Map的key是服务名称，value是一个Map。value的Map的key是服务实例的ID，value是Lease类，Lease中存储了实例的注册时间、上线时间等信息，还有具体的实例信息，如IP、端口、健康检查的地址等信息。</p>
-<p>Eureka将注册的服务信息存储在内存中的原因：性能高；部署简单，不需要依赖于第三方存储。<br>劣势：扩容难度高，每个Eureka Server都全量的存储一份注册表，假如存储空间不够了，需要扩容，那么所有的Eureka Server节点都必须扩容，必须采用的内存配置。</p>
-<p>Eureka核心操作主要有注册、续约、下线、移除，接口为com.netflix.eureka.lease.LeaseManager，这些操作都是针对注册表的操作，也就是Map的操作。</p>
-<h4 id="1-2-自我保护机制"><a href="#1-2-自我保护机制" class="headerlink" title="1.2 自我保护机制"></a>1.2 自我保护机制</h4><p>自我保护机制是为了<strong>避免因网络分区故障而导致服务不可用</strong>的问题。<br><img data-src="/../../../../assets/img/CgoB5l2DSRqAP1FMAACHP1JLl1g494.png"><br><img data-src="/../../../../assets/img/CgotOV2DSRqACgusAAB-W41DoEM379.png"><br>自我保护机制带来的问题：若服务提供者B真的下线了，由于Eureka Serve自我保护机制打开，不会移除任务信息，当服务消费者对服务提供者B进行调用时，就会出错。出现<strong>某些有问题的实例没能及时移除掉</strong>的情况，服务消费者可以通过<strong>Ribbon来进行重试</strong>，保证调用能够成功。</p>
-<p>自我保护开启的条件：AbstractInstanceRegistry中有两个字段，numberOfRenewsPerMinThreshold(期望最小每分钟能够续租的次数)、expectedNumberOfClientsSendingRenews(期望的服务实例数)。假如有10个实例，每个实例每分钟续约2次，那么10x2x0.85&#x3D;17，即每分钟至少有17次续约才是正常的。</p>
-<h4 id="1-3-健康检查"><a href="#1-3-健康检查" class="headerlink" title="1.3 健康检查"></a>1.3 健康检查</h4><p><img data-src="/../../../../assets/img/CgoB5l2DSRqALpz-AADDQMq9ysI107.png"><br>Eureka Client会定时发送心跳给Eureka Server来证明自己是否处于健康的状态。但某些场景下，服务处于存活状态，却已经不能对外提供服务，如数据库出问题了，但心跳正常，客户端在请求时还会请求到这个出问题的实例。可以在项目中集成Actuator，统一管理应用的健康状态，将这个状态反馈给Eureka Server。</p>
-<h3 id="2-Ribbon"><a href="#2-Ribbon" class="headerlink" title="2.Ribbon"></a>2.Ribbon</h3><h4 id="2-1-负载均衡"><a href="#2-1-负载均衡" class="headerlink" title="2.1 负载均衡"></a>2.1 负载均衡</h4><p>负载均衡是一种基础的网络服务，它的核心原理是按照指定的负载均衡算法，将请求分配到后端服务集群上，从而为系统提供并行处理和高可用的能力。</p>
-<ul>
-<li><p><strong>集中式负载均衡：</strong>在消费者和提供者中间使用独立的代理方式进行负载，有硬件的负载均衡器，如F5，也有软件，如Nginx。客户端不需要关心对应服务实例的信息，只需要与负载均衡器进行交互，服务实例扩容或者缩容，客户端不需要修改任何代码。<br><img data-src="/../../../../assets/img/CgoB5l2Nux-AfPsoAADd9v--bG8534.png"></p>
-</li>
-<li><p><strong>客户端负载均衡：</strong>需要自己维护服务实例信息，然后通过某些负载均衡算法，从实例中选取一个实例，直接进行访问。<br>区别：对服务实例信息的维护。集中式负载均衡的信息是集中进行维护的，如Nginx，都会在配置文件中进行指定。客户端负载均衡的信息是在客户端本地进行维护的，可以手动配置，最常见的是从注册中心拉取。</p>
-</li>
-</ul>
-<h4 id="2-2-Ribbon"><a href="#2-2-Ribbon" class="headerlink" title="2.2 Ribbon"></a>2.2 Ribbon</h4><p><img data-src="/../../../../assets/img/CgotOV2Nux-AO2PcAAEcl4M1Zi4629.png"><br><img data-src="/../../../../assets/img/CgoB5l2NuyCALoefAAAdV1DlSHY088.png"><br>使用方式：</p>
-<ol>
-<li>原生API</li>
-<li>Ribbon+RestTemplate</li>
-<li>Ribbon+Feign<br>通过给加了@LoadBalanced的RestTemplate添加拦截器，拦截器中通过Ribbon选取服务实例，然后将请求地址中的服务名称替换成Ribbon选取服务实例的IP和端口。</li>
-</ol>
-<h4 id="2-3-负载均衡策略"><a href="#2-3-负载均衡策略" class="headerlink" title="2.3 负载均衡策略"></a>2.3 负载均衡策略</h4><ol>
-<li>内置负载均衡策略</li>
-</ol>
-<ul>
-<li>RoundRobinRule：轮询算法</li>
-<li>RandomRule：随机算法</li>
-<li>BestAvailableRule：选择一个最小的并发请求server，如果有A、B两个实例，当A有4个请求正在处理中，B有2个，下次请求会选择B，适用于服务所在机器配置相同的情况。</li>
-<li>WeightedResponseTimeRule：根据请求的响应时间计算权重，如果响应时间越长，那么对应的权重越低，权重越低的服务器，被选择的可能性就越低。</li>
-</ul>
-<ol start="2">
-<li>自定义负载均衡算法<ol>
-<li>实现IRule接口或继承AbstractLoadBanlancerRule</li>
-<li>实现choose方法</li>
-<li>指定Ribbon的算法类<br>使用场景：</li>
-</ol>
-<ul>
-<li>定制与业务更匹配的策略。</li>
-<li>灰度发布</li>
-<li>多版本隔离</li>
-<li>故障隔离</li>
-</ul>
-</li>
-</ol>
-<h4 id="2-4-饥饿加载模式"><a href="#2-4-饥饿加载模式" class="headerlink" title="2.4 饥饿加载模式"></a>2.4 饥饿加载模式</h4><p>Ribbon在进行客户端负载均衡时并不是启动时就加载上下文，而是<strong>第一次请求时才去创建</strong>的，因此第一次调用会比较慢，有可能会引起调用超时。可以指定Ribbon客户端的名称，在启动时加载这些子应用程序上下文。</p>
-<p>初始化后进行了缓存操作，getContext()方法中，如果在contexts中不存在才会创建，创建时会用synchronized加锁，并进行二次判断，防止并发下出现创建多次的问题，最后进行增加操作。如果有的话就直接从contexts获取返回。contexts就是一个ConcurrentHashMap。</p>
-<h3 id="3-Hystrix"><a href="#3-Hystrix" class="headerlink" title="3.Hystrix"></a>3.Hystrix</h3><h4 id="3-1-服务雪崩"><a href="#3-1-服务雪崩" class="headerlink" title="3.1 服务雪崩"></a>3.1 服务雪崩</h4><p>微服务架构下，会存在服务之间相互依赖调用的情况，当<strong>某个服务不可用</strong>时，很容易因为<strong>服务之间的依赖关系</strong>使故障扩大，甚至<strong>造成整个系统不可用</strong>，这种现象称为服务雪崩效应。</p>
-<p>产生原因：</p>
-<ul>
-<li><p>服务提供者<br>代码的Bug问题，由于某些代码导致CPU飙升，将资源耗尽等；服务器出现问题，磁盘出问题，导致数据读写特别慢，拉高了响应时间；慢SQL语句问题；请求量太大，超出系统本身的承受能力。</p>
-</li>
-<li><p>服务消费者<br>同步调用等待结果导致资源耗尽；自己既是服务消费者也是服务提供者。</p>
-</li>
-</ul>
-<p>解决方案：</p>
-<ul>
-<li><p>服务提供者<br>代码Bug问题：测试、Code Review等方式；慢SQL问题：数据库性能优化；服务器硬件故障问题：加大运维粒度，通过监控等手段提前预防；请求量超出承受能力：扩容或限流</p>
-</li>
-<li><p>服务消费者<br>资源隔离、快速失败。</p>
-</li>
-</ul>
-<h4 id="3-2-容错实现"><a href="#3-2-容错实现" class="headerlink" title="3.2 容错实现"></a>3.2 容错实现</h4><p>设计原则：<br><img data-src="/../../../../assets/img/CgotOV2gPgGAP-qzAABk99lb2oU443.png"><br><img data-src="/../../../../assets/img/CgoB5l2gPgGAF353AAFVH3psdO4196.png"></p>
-<ul>
-<li>封装请求：将用户的操作进行统一封装，目的在于进行统一控制。</li>
-<li>资源隔离：将对应的资源按照指定的类型进行隔离，如线程池和信号量。</li>
-<li>失败回退：备用方案，当请求失败后，Hystrix会让用户自定义备用方案。</li>
-<li>断路器：决定了请求是否需要真正的执行，如果断路器打开，那么所有的请求都将失败，执行回退逻辑。如果断路器关闭，那么请求将正常执行。</li>
-<li>指标监控：对请求的生命周期进行监控。</li>
-</ul>
-<p>工作原理：<br><img data-src="/../../../../assets/img/CgotOV2gPgGATT0XAAHyJjjmin8233.png"></p>
-<ol>
-<li>构建一个HystrixCommand或者HystrixObservableCommand对象，将请求包装到Command对象中。</li>
-<li>执行构建好的命令。</li>
-<li>判断当前请求是否有缓存，如果有就直接返回缓存的内容。</li>
-<li>判断断路器是否打开，如果打开，跳到第8步，获取fallback方法，执行fallback逻辑。如果没有打开，执行第5步。</li>
-<li>如果是线程池隔离模式，判断线程池队列的容量；如果是信号量隔离模式，会判断信号量的值是否已经被使用完。如果线程池和信号量都已经满了，同样请求不被执行，直接跳到第8步。</li>
-<li>执行HystrixObservableCommand.construct()或HystrixCommand.run()方法，正在执行的请求逻辑就封装在construct()或run()方法中。</li>
-<li>请求过程中，若出现异常或者超时，会直接到第8步，执行成功就返回结果。执行结果会将数据上报给断路器，断路器会根据上报的数据来判断断路器是否打开</li>
-<li>fallback</li>
-</ol>
-<h4 id="3-3-Hystrix使用"><a href="#3-3-Hystrix使用" class="headerlink" title="3.3 Hystrix使用"></a>3.3 Hystrix使用</h4><ol>
-<li>HystrixCommand注解方式</li>
-<li>在Feign中使用</li>
-<li>在Zuul中使用</li>
-</ol>
-<p>Hystrix配置：<br><img data-src="/../../../../assets/img/CgotOV2gPgKAYjAMAABpYDXLwZU519.png"></p>
-<h4 id="3-4-Hystrix隔离机制"><a href="#3-4-Hystrix隔离机制" class="headerlink" title="3.4 Hystrix隔离机制"></a>3.4 Hystrix隔离机制</h4><ul>
-<li><p>线程池隔离：当用户请求A服务后，A服务需要调用其它服务，这个时候可以为不同的服务创建独立的线程池，假如A需要调用B和C，那么可以创建两个独立的线程池，将调用B服务的线程池丢入到一个线程池，将调用C服务的线程丢入另一个线程池，这样起隔离效果，就算其中某个线程池请求满了，无法处理请求了，对另一个线程池页没有影响。使用线程隔离。需要调整好线程池参数，否则和信号量一样，并发量大的时候性能上不去。设置最大线程数，默认为10，队列大小决定了能够堆积多少请求，但请求不能一直堆积，所有还需要设置一个阈值来进行拒绝。</p>
-</li>
-<li><p>信号量隔离：信号量就算一个计数器，如初始化是100，那么每次请求过来时信号量就会减1，当信号量计数为0时，请求就会被拒绝，等之前的请求处理完成后，信号量就会加1。起到了限流的作用，信号量隔离是在请求主线程中执行的。</p>
-<p>线程池隔离的特点是<strong>Command运行在独立的线程池中</strong>，可以支持超时，是单独的线程，支持异步。信号量隔离运行在调用的主线程中，不支持超时，只能同步调用。</p>
-</li>
-</ul>
-<h4 id="3-5-使用技巧"><a href="#3-5-使用技巧" class="headerlink" title="3.5 使用技巧"></a>3.5 使用技巧</h4><ul>
-<li><p>配置可以对接配置中心进行动态调整</p>
-</li>
-<li><p>回退逻辑中可以手动埋点或者通过输出日志进行告警</p>
-</li>
-<li><p>使用线程池隔离模式再用ThreadLocal会有坑<br>被隔离的方法会包装成一个Command丢入到独立的线程中执行，这个时候就是从A线程切换到了B线程，ThreadLocal的数据就会丢失。</p>
-</li>
-<li><p>网关中尽量用信号隔离</p>
-</li>
-<li><p>插件机制可以实现很多扩展</p>
-</li>
-<li><p>Hystrix各种超时配置方式</p>
-</li>
-<li><p>commandKey、groupKey、threadPoolKey的使用<br>在使用HystrixCommand注解时，会配置commandKey、groupKey、threadPoolKey。commandKey表示封装的command的名称，可以给指定的commandKey进行参数的设置。groupKey是将一组command进行分组，如果没有设置threadPoolKey的话，那么线程池的名称会用groupKey。threadPollKey是线程池的名称，多个command的threadPoolKey相同，那么会使用同一个线程池。</p>
-</li>
-</ul>
-<h3 id="4-Feign"><a href="#4-Feign" class="headerlink" title="4.Feign"></a>4.Feign</h3><p>Feign是一个声明式的REST客户端，Feign提供了HTTP请求的模板，通过编写简单的接口和插入注解，就可以定义好Http请求的参数、格式、地址等信息。Feign会完全代理HTTP请求，Spring Cloud对Feign进行了封装，使其支持SpringMVC标准注解和HttpMessageConverters。Feign可以与Eureka和Ribbon组合使用以支持负载均衡，与Hystrix组合使用，支持熔断回退。</p>
-<h4 id="4-1-重要组件"><a href="#4-1-重要组件" class="headerlink" title="4.1 重要组件"></a>4.1 重要组件</h4><p><img data-src="/../../../../assets/img/CgotOV2oGbmAMIEfAAFD417806k525.png"></p>
-<ul>
-<li><p>Contract 契约组件<br>Contract允许用户自定义契约去解析注解信息，如在Spring Cloud中使用Feign，可以使用SpringMVC的注解来定义Feign的客户端。</p>
-</li>
-<li><p>Encoder 编码组件<br>通过该组件可以将请求信息采用指定的编码方式来进行编码后传输。</p>
-</li>
-<li><p>Decoder 编码组件</p>
-<p>Decoder将相应数据解码成对象。</p>
-</li>
-<li><p>ErrorDecoder 异常解码器<br>当被调用方发生异常后，可以在ErrorDecoder中将响应的数据转换成具体的异常返回给调用方，适合内部服务之间调用，但不想通过指定的字段来判断是否成功的场景，直接用自定义异常代替。</p>
-</li>
-<li><p>Logger 日志记录<br>Logger组件负责Feign中记录日志的，可以指定Logger的级别及自定义日志的输出。</p>
-</li>
-<li><p>Client 请求执行组件<br>Client是负责HTTP请求执行的组件，Feign将请求信息封装好后会交由Client来执行，Feign中默认的Client是通过JDK的HttpURLConnection发起请求的，每次发起请求的适合，都会建立新的HttpURLConnection链接，性能很差。可以扩展该接口，使用Apache HttpClient等基于连接池的高性能HTTP客户端。</p>
-</li>
-<li><p>Retryer 重试组件<br>Retryer是负责重试的组件，Feign内置了重试器，当HTTP请求出现IO异常时，Feign会限定最大重试次数来进行重试操作。</p>
-</li>
-<li><p>InvocationHandlerFactory 代理<br>IncocationHandlerFactory采用JDK的动态代理方式生成代理对象，定义的Feign接口，当调用这个接口中定义的方法时，实际上是去调用远程的HTTP API，这里用了动态代理的方式，当调用某个方法时，会进入代理中正在的去调用远程HTTP API。</p>
-</li>
-<li><p>RequestInterceptor 请求拦截器<br>可以为Feign添加多个拦截器，在请求执行前设置一些扩展的参数信息。</p>
-</li>
-<li><p>QueryMapEncoder 参数查询<br>QueryMapEncoder是针对实体类参数查询的编码器，可以基于QueryMapEncoder将实体类生成对应的查询参数。</p>
-</li>
-</ul>
-<h4 id="4-2-Feign执行过程"><a href="#4-2-Feign执行过程" class="headerlink" title="4.2 Feign执行过程"></a>4.2 Feign执行过程</h4><p><img data-src="/../../../../assets/img/CgoB5l2oGbmACVdMAACewrpciZo953.png"><br>定义对应的接口类，在接口类上使用Feign自带的注解来标识HTTP的参数信息，当调用接口对应的方法时，Feign内部会基于面向接口的动态代理方式生成实现类，将请求调用委托到动态代理实现类，负责动态代理的组件是InvocationHandlerFactory。根据Contract规则，解析接口类的注解信息，翻译成Feign内部能识别的信息。Spring Cloud OpenFeign中就扩展了SpringMVCContract。MethodHandler在执行的时候会生成Request对象，在构建Request对象的时候会为其设置拦截器，交由Client执行前记录一些日志，Client执行完成后也记录一些日志，然后使Decoder进行相应结果的解码操作，并返回结果。</p>
-<h4 id="4-3-使用技巧"><a href="#4-3-使用技巧" class="headerlink" title="4.3 使用技巧"></a>4.3 使用技巧</h4><ul>
-<li><p>继承特性<br>将API的定义提取出来封装成一个单独的接口，给API的实现方和调用方共用。</p>
-</li>
-<li><p>拦截器<br>添加自己的拦截器来实现某些场景下的需求，实现RequestInterceptor接口，在apply方法中编写自己的逻辑。</p>
-</li>
-<li><p>GET请求多参数传递<br>一般超过3个以上的参数会封装在一个实体类中，在Spring Cloud Open Feign中要支持对象接收多个参数，需要增加@SpringQueryMap注解。</p>
-</li>
-<li><p>日志配置<br>Feign日志级别：</p>
-<ol>
-<li>NONE：不输出日志</li>
-<li>BASIC：只输出请求方法的URL和响应的状态码及执行的时间</li>
-<li>HEADERS：将BASIC和请求头信息输出</li>
-<li>FULL：会输出全部完整的请求信息</li>
-</ol>
-</li>
-<li><p>异常解码器</p>
-</li>
-</ul>
-<h3 id="5-Zuul"><a href="#5-Zuul" class="headerlink" title="5.Zuul"></a>5.Zuul</h3><p>API网关是对外提供服务的一个入口，并且隐藏了内部架构的实现。可以为我们管理大量的API接口，负责对接用户、协议适配、安全认证、路由转发、流量限制、日志监控、防止爬虫、灰度发布等功能。</p>
-<ul>
-<li><p>动态路由<br><img data-src="/../../../../assets/img/CgotOV2yzFKAbTymAAE9eECzbLs575.png"><br>将客户端的请求路由到后端不同的服务上，如果没有网关去做统一的路由，那么客户端就要关注后端N个服务。</p>
-</li>
-<li><p>请求监控<br><img data-src="/../../../../assets/img/CgoB5l2yzFKAMhJuAADDrRk--Cs646.png"><br>对整个系统的请求进行监控，详细的记录请求响应日志，可以实时的统计当前系统的访问量及监控状态。</p>
-</li>
-<li><p>认证鉴权<br>统一对访问请求做认证，拒绝非法请求，保护后端的服务。</p>
-</li>
-<li><p>压力测试<br><img data-src="/../../../../assets/img/CgoB5l2yzFKAe9wtAAEaJgA80DA706.png"><br>动态的将测试请求转发到后端服务的集群中，还可以识别测试流量和真实流量，用来做一些特殊的处理。</p>
-</li>
-<li><p>灰度发布<br><img data-src="/../../../../assets/img/CgotOV2yzFKAVLC_AAE1Ij_9Yow275.png"><br>当需要发布新版本时，通过测试请求对1.1版本的服务进行测试，若没发现问题，可以将正常的请求转发过来，若有问题，不影响用户使用的1.0版本。</p>
-</li>
-</ul>
-<h4 id="5-1-过滤器"><a href="#5-1-过滤器" class="headerlink" title="5.1 过滤器"></a>5.1 过滤器</h4><p>过滤器可以对请求或响应结果进行处理，Zuul支持动态加载、编译、运行这些过滤器。</p>
-<ul>
-<li>pre过滤器：可以在请求被路由器之前调用。适用于身份认证的场景，认证通过后再继续执行下个流程。</li>
-<li>route过滤器：在路由请求时被调用。适用于灰度发布的场景，在将要路由的时候可以做一些自定义的逻辑。</li>
-<li>post过滤器：在route和error过滤器之后被调用。将请求路由到达具体的服务之后执行，适用于添加响应头，记录响应日志等应用场景。</li>
-<li>error过滤器：处理请求发生错误时被调用。在执行过程中发送错误时会进入error过滤器，可以用来统一记录错误信息。</li>
-</ul>
-<p><strong>自定义过滤器</strong>：<br>继承ZuulFilter，然后重写ZuulFilter的四个方法<br><img data-src="/../../../../assets/img/CgotOV2yzFKARVycAADyi7HDY0s663.png"><br>shouldFilter方法决定了是否执行该过滤器，true为执行，false不执行，可以利用配置中心实现动态的开启或关闭过滤器。filterType方法是要返回过滤器的类型，可选择为pre、route、post、error四种类型。过滤器可以有多个，先后顺序可以通过filterOrder来指定过滤器的执行顺序，数字越小，优先级越高。业务逻辑写在run方法中。</p>
-<h4 id="5-2-请求生命周期"><a href="#5-2-请求生命周期" class="headerlink" title="5.2 请求生命周期"></a>5.2 请求生命周期</h4><p><img data-src="/../../../../assets/img/CgotOV2yzFKALGjnAAEfSfAim3o535.png"><br>请求先进入pre过滤器，在pre过滤器执行完后，进入routing过滤器，开始路由到具体的服务中，路由完成后，接着到了post过滤器，然后将请求结果返回给客户端。如果过程中出现异常，则会进入error过滤器。源码对应ZuulServlet。</p>
-<h4 id="5-3-Zuul容错与回退"><a href="#5-3-Zuul容错与回退" class="headerlink" title="5.3 Zuul容错与回退"></a>5.3 Zuul容错与回退</h4><h4 id="5-4-使用技巧"><a href="#5-4-使用技巧" class="headerlink" title="5.4 使用技巧"></a>5.4 使用技巧</h4><ul>
-<li><p>内置端点<br>当@EnableZuulProxy与Spring Boot Actuator配合使用时，Zuul会暴露一个路由管理端点&#x2F;routes。借助这个端点，可以直观的查看及管理Zuul的路由。还有一个&#x2F;filters端点可以查看Zuul中所有过滤器的信息。</p>
-</li>
-<li><p>文件上传<br>通过Zuul上传文件，超过1M的文件会上传失败，配置max-file-size和max-request-size，Zuul中需要配置，最终接受文件的服务也要配置。或在网关请求地址前面上加上&#x2F;zuul，可以绕过Spring DispatcherServlet上传大文件。Zuul服务不用再配置，但接收文件的服务还是要配置文件上传大小。在上传大文件时，时间较长，可以设置Ribbon的ConnectTimeOut和ReadTimeOut。如果Zuul的Hystrix隔离模式为线程的话需要设置Hystrix的超时时间。</p>
-</li>
-<li><p>请求响应输出</p>
-</li>
-<li><p>Zuul Debug</p>
-</li>
-<li><p>跨域配置</p>
-</li>
-<li><p>关闭Zuul全局路由转发<br>配置zuul.ignored-service&#x3D;*关闭路由转发，配置zuui.ignoredPatterns忽略不想暴露的API。</p>
-</li>
-<li><p>动态过滤器<br>定期扫描存放Groovy Filter文件的目录，如果发现有新Groovy Filter文件或者Groovy Filter源码有改动，那么就会对Groovy文件进行编译加载。首先在项目中增加Groovy的依赖，然后在项目启动后设置Groovy的动态加载任务，定时动态加载指定目录的Groovy文件。<br><img data-src="/../../../../assets/img/CgotOV2yzFOAAazFAAGQ15EC0VY427.png"></p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>微服务</category>
-      </categories>
-      <tags>
-        <tag>微服务</tag>
-        <tag>Spring Cloud</tag>
       </tags>
   </entry>
   <entry>
@@ -4178,6 +3917,217 @@
       </tags>
   </entry>
   <entry>
+    <title>Sping Cloud相关组件了解</title>
+    <url>/SpringCloud_01/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="1-Eureka"><a href="#1-Eureka" class="headerlink" title="1.Eureka"></a>1.Eureka</h3><p>如果需要实现完整的服务注册与服务发现的功能，我们需要有注册中心来统一存储和管理服务信息，应用程序需要将自身的信息注册到注册中心，也就是服务提供者和服务消费者的信息。整个过程中包含的操作有<strong>注册、拉取、心跳、剔除</strong>等动作。</p>
+<span id="more"></span>
+
+<p><img data-src="/../../../../assets/img/CgoB5l2DSRmATTQnAACaxgMS0KY966.png"></p>
+<ul>
+<li>注册中心：用来集中存储管理服务信息。</li>
+<li>服务提供者：通过API供其他方调用服务。</li>
+<li>服务消费者：需要调用其他方的API获取服务。</li>
+</ul>
+<p>项目启动后Eureka Client会向Eureka Server发送请求，进行注册，并将自身信息发送给Eureka Server。注册成功后，每隔一定的时间，Eureka Client会向Eureka Server<strong>发送心跳来续约服务</strong>，汇报健康状态。如果客户端长时间没有续约，那么Eureka Server大约在90秒内从服务器注册表中清除客户端的信息。应用程序停止时Eureka Client会通知Eureka Server移除相关信息，<strong>信息移除</strong>成功后，对应的客户端会更新服务的信息，这样就不会调用已经下线的服务，但操作<strong>具有延迟</strong>，有可能会调到已经失效的服务，所以在客户端会开启<strong>失败重试</strong>功能来避免这个问题。Eureka Serve集群保证高可用，Eureka Server没有集成其它第三方存储，而是存储在内存中。所以Eureka Server之间会将注册信息复制到集群中的Eureka Serve的所有节点。这样数据才是共享状态，任何的Eureka Client都可以在任何一个Eureka Server节点查找到注册信息。</p>
+<h4 id="1-1-Eureka注册表"><a href="#1-1-Eureka注册表" class="headerlink" title="1.1 Eureka注册表"></a>1.1 Eureka注册表</h4><p>Eureka的注册信息是存储在<strong>ConcurrentHashMap</strong>中的，Map的key是服务名称，value是一个Map。value的Map的key是服务实例的ID，value是Lease类，Lease中存储了实例的注册时间、上线时间等信息，还有具体的实例信息，如IP、端口、健康检查的地址等信息。</p>
+<p>Eureka将注册的服务信息存储在内存中的原因：性能高；部署简单，不需要依赖于第三方存储。<br>劣势：扩容难度高，每个Eureka Server都全量的存储一份注册表，假如存储空间不够了，需要扩容，那么所有的Eureka Server节点都必须扩容，必须采用的内存配置。</p>
+<p>Eureka核心操作主要有注册、续约、下线、移除，接口为com.netflix.eureka.lease.LeaseManager，这些操作都是针对注册表的操作，也就是Map的操作。</p>
+<h4 id="1-2-自我保护机制"><a href="#1-2-自我保护机制" class="headerlink" title="1.2 自我保护机制"></a>1.2 自我保护机制</h4><p>自我保护机制是为了<strong>避免因网络分区故障而导致服务不可用</strong>的问题。<br><img data-src="/../../../../assets/img/CgoB5l2DSRqAP1FMAACHP1JLl1g494.png"><br><img data-src="/../../../../assets/img/CgotOV2DSRqACgusAAB-W41DoEM379.png"><br>自我保护机制带来的问题：若服务提供者B真的下线了，由于Eureka Serve自我保护机制打开，不会移除任务信息，当服务消费者对服务提供者B进行调用时，就会出错。出现<strong>某些有问题的实例没能及时移除掉</strong>的情况，服务消费者可以通过<strong>Ribbon来进行重试</strong>，保证调用能够成功。</p>
+<p>自我保护开启的条件：AbstractInstanceRegistry中有两个字段，numberOfRenewsPerMinThreshold(期望最小每分钟能够续租的次数)、expectedNumberOfClientsSendingRenews(期望的服务实例数)。假如有10个实例，每个实例每分钟续约2次，那么10x2x0.85&#x3D;17，即每分钟至少有17次续约才是正常的。</p>
+<h4 id="1-3-健康检查"><a href="#1-3-健康检查" class="headerlink" title="1.3 健康检查"></a>1.3 健康检查</h4><p><img data-src="/../../../../assets/img/CgoB5l2DSRqALpz-AADDQMq9ysI107.png"><br>Eureka Client会定时发送心跳给Eureka Server来证明自己是否处于健康的状态。但某些场景下，服务处于存活状态，却已经不能对外提供服务，如数据库出问题了，但心跳正常，客户端在请求时还会请求到这个出问题的实例。可以在项目中集成Actuator，统一管理应用的健康状态，将这个状态反馈给Eureka Server。</p>
+<h3 id="2-Ribbon"><a href="#2-Ribbon" class="headerlink" title="2.Ribbon"></a>2.Ribbon</h3><h4 id="2-1-负载均衡"><a href="#2-1-负载均衡" class="headerlink" title="2.1 负载均衡"></a>2.1 负载均衡</h4><p>负载均衡是一种基础的网络服务，它的核心原理是按照指定的负载均衡算法，将请求分配到后端服务集群上，从而为系统提供并行处理和高可用的能力。</p>
+<ul>
+<li><p><strong>集中式负载均衡：</strong>在消费者和提供者中间使用独立的代理方式进行负载，有硬件的负载均衡器，如F5，也有软件，如Nginx。客户端不需要关心对应服务实例的信息，只需要与负载均衡器进行交互，服务实例扩容或者缩容，客户端不需要修改任何代码。<br><img data-src="/../../../../assets/img/CgoB5l2Nux-AfPsoAADd9v--bG8534.png"></p>
+</li>
+<li><p><strong>客户端负载均衡：</strong>需要自己维护服务实例信息，然后通过某些负载均衡算法，从实例中选取一个实例，直接进行访问。<br>区别：对服务实例信息的维护。集中式负载均衡的信息是集中进行维护的，如Nginx，都会在配置文件中进行指定。客户端负载均衡的信息是在客户端本地进行维护的，可以手动配置，最常见的是从注册中心拉取。</p>
+</li>
+</ul>
+<h4 id="2-2-Ribbon"><a href="#2-2-Ribbon" class="headerlink" title="2.2 Ribbon"></a>2.2 Ribbon</h4><p><img data-src="/../../../../assets/img/CgotOV2Nux-AO2PcAAEcl4M1Zi4629.png"><br><img data-src="/../../../../assets/img/CgoB5l2NuyCALoefAAAdV1DlSHY088.png"><br>使用方式：</p>
+<ol>
+<li>原生API</li>
+<li>Ribbon+RestTemplate</li>
+<li>Ribbon+Feign<br>通过给加了@LoadBalanced的RestTemplate添加拦截器，拦截器中通过Ribbon选取服务实例，然后将请求地址中的服务名称替换成Ribbon选取服务实例的IP和端口。</li>
+</ol>
+<h4 id="2-3-负载均衡策略"><a href="#2-3-负载均衡策略" class="headerlink" title="2.3 负载均衡策略"></a>2.3 负载均衡策略</h4><ol>
+<li>内置负载均衡策略</li>
+</ol>
+<ul>
+<li>RoundRobinRule：轮询算法</li>
+<li>RandomRule：随机算法</li>
+<li>BestAvailableRule：选择一个最小的并发请求server，如果有A、B两个实例，当A有4个请求正在处理中，B有2个，下次请求会选择B，适用于服务所在机器配置相同的情况。</li>
+<li>WeightedResponseTimeRule：根据请求的响应时间计算权重，如果响应时间越长，那么对应的权重越低，权重越低的服务器，被选择的可能性就越低。</li>
+</ul>
+<ol start="2">
+<li>自定义负载均衡算法<ol>
+<li>实现IRule接口或继承AbstractLoadBanlancerRule</li>
+<li>实现choose方法</li>
+<li>指定Ribbon的算法类<br>使用场景：</li>
+</ol>
+<ul>
+<li>定制与业务更匹配的策略。</li>
+<li>灰度发布</li>
+<li>多版本隔离</li>
+<li>故障隔离</li>
+</ul>
+</li>
+</ol>
+<h4 id="2-4-饥饿加载模式"><a href="#2-4-饥饿加载模式" class="headerlink" title="2.4 饥饿加载模式"></a>2.4 饥饿加载模式</h4><p>Ribbon在进行客户端负载均衡时并不是启动时就加载上下文，而是<strong>第一次请求时才去创建</strong>的，因此第一次调用会比较慢，有可能会引起调用超时。可以指定Ribbon客户端的名称，在启动时加载这些子应用程序上下文。</p>
+<p>初始化后进行了缓存操作，getContext()方法中，如果在contexts中不存在才会创建，创建时会用synchronized加锁，并进行二次判断，防止并发下出现创建多次的问题，最后进行增加操作。如果有的话就直接从contexts获取返回。contexts就是一个ConcurrentHashMap。</p>
+<h3 id="3-Hystrix"><a href="#3-Hystrix" class="headerlink" title="3.Hystrix"></a>3.Hystrix</h3><h4 id="3-1-服务雪崩"><a href="#3-1-服务雪崩" class="headerlink" title="3.1 服务雪崩"></a>3.1 服务雪崩</h4><p>微服务架构下，会存在服务之间相互依赖调用的情况，当<strong>某个服务不可用</strong>时，很容易因为<strong>服务之间的依赖关系</strong>使故障扩大，甚至<strong>造成整个系统不可用</strong>，这种现象称为服务雪崩效应。</p>
+<p>产生原因：</p>
+<ul>
+<li><p>服务提供者<br>代码的Bug问题，由于某些代码导致CPU飙升，将资源耗尽等；服务器出现问题，磁盘出问题，导致数据读写特别慢，拉高了响应时间；慢SQL语句问题；请求量太大，超出系统本身的承受能力。</p>
+</li>
+<li><p>服务消费者<br>同步调用等待结果导致资源耗尽；自己既是服务消费者也是服务提供者。</p>
+</li>
+</ul>
+<p>解决方案：</p>
+<ul>
+<li><p>服务提供者<br>代码Bug问题：测试、Code Review等方式；慢SQL问题：数据库性能优化；服务器硬件故障问题：加大运维粒度，通过监控等手段提前预防；请求量超出承受能力：扩容或限流</p>
+</li>
+<li><p>服务消费者<br>资源隔离、快速失败。</p>
+</li>
+</ul>
+<h4 id="3-2-容错实现"><a href="#3-2-容错实现" class="headerlink" title="3.2 容错实现"></a>3.2 容错实现</h4><p>设计原则：<br><img data-src="/../../../../assets/img/CgotOV2gPgGAP-qzAABk99lb2oU443.png"><br><img data-src="/../../../../assets/img/CgoB5l2gPgGAF353AAFVH3psdO4196.png"></p>
+<ul>
+<li>封装请求：将用户的操作进行统一封装，目的在于进行统一控制。</li>
+<li>资源隔离：将对应的资源按照指定的类型进行隔离，如线程池和信号量。</li>
+<li>失败回退：备用方案，当请求失败后，Hystrix会让用户自定义备用方案。</li>
+<li>断路器：决定了请求是否需要真正的执行，如果断路器打开，那么所有的请求都将失败，执行回退逻辑。如果断路器关闭，那么请求将正常执行。</li>
+<li>指标监控：对请求的生命周期进行监控。</li>
+</ul>
+<p>工作原理：<br><img data-src="/../../../../assets/img/CgotOV2gPgGATT0XAAHyJjjmin8233.png"></p>
+<ol>
+<li>构建一个HystrixCommand或者HystrixObservableCommand对象，将请求包装到Command对象中。</li>
+<li>执行构建好的命令。</li>
+<li>判断当前请求是否有缓存，如果有就直接返回缓存的内容。</li>
+<li>判断断路器是否打开，如果打开，跳到第8步，获取fallback方法，执行fallback逻辑。如果没有打开，执行第5步。</li>
+<li>如果是线程池隔离模式，判断线程池队列的容量；如果是信号量隔离模式，会判断信号量的值是否已经被使用完。如果线程池和信号量都已经满了，同样请求不被执行，直接跳到第8步。</li>
+<li>执行HystrixObservableCommand.construct()或HystrixCommand.run()方法，正在执行的请求逻辑就封装在construct()或run()方法中。</li>
+<li>请求过程中，若出现异常或者超时，会直接到第8步，执行成功就返回结果。执行结果会将数据上报给断路器，断路器会根据上报的数据来判断断路器是否打开</li>
+<li>fallback</li>
+</ol>
+<h4 id="3-3-Hystrix使用"><a href="#3-3-Hystrix使用" class="headerlink" title="3.3 Hystrix使用"></a>3.3 Hystrix使用</h4><ol>
+<li>HystrixCommand注解方式</li>
+<li>在Feign中使用</li>
+<li>在Zuul中使用</li>
+</ol>
+<p>Hystrix配置：<br><img data-src="/../../../../assets/img/CgotOV2gPgKAYjAMAABpYDXLwZU519.png"></p>
+<h4 id="3-4-Hystrix隔离机制"><a href="#3-4-Hystrix隔离机制" class="headerlink" title="3.4 Hystrix隔离机制"></a>3.4 Hystrix隔离机制</h4><ul>
+<li><p>线程池隔离：当用户请求A服务后，A服务需要调用其它服务，这个时候可以为不同的服务创建独立的线程池，假如A需要调用B和C，那么可以创建两个独立的线程池，将调用B服务的线程池丢入到一个线程池，将调用C服务的线程丢入另一个线程池，这样起隔离效果，就算其中某个线程池请求满了，无法处理请求了，对另一个线程池页没有影响。使用线程隔离。需要调整好线程池参数，否则和信号量一样，并发量大的时候性能上不去。设置最大线程数，默认为10，队列大小决定了能够堆积多少请求，但请求不能一直堆积，所有还需要设置一个阈值来进行拒绝。</p>
+</li>
+<li><p>信号量隔离：信号量就算一个计数器，如初始化是100，那么每次请求过来时信号量就会减1，当信号量计数为0时，请求就会被拒绝，等之前的请求处理完成后，信号量就会加1。起到了限流的作用，信号量隔离是在请求主线程中执行的。</p>
+<p>线程池隔离的特点是<strong>Command运行在独立的线程池中</strong>，可以支持超时，是单独的线程，支持异步。信号量隔离运行在调用的主线程中，不支持超时，只能同步调用。</p>
+</li>
+</ul>
+<h4 id="3-5-使用技巧"><a href="#3-5-使用技巧" class="headerlink" title="3.5 使用技巧"></a>3.5 使用技巧</h4><ul>
+<li><p>配置可以对接配置中心进行动态调整</p>
+</li>
+<li><p>回退逻辑中可以手动埋点或者通过输出日志进行告警</p>
+</li>
+<li><p>使用线程池隔离模式再用ThreadLocal会有坑<br>被隔离的方法会包装成一个Command丢入到独立的线程中执行，这个时候就是从A线程切换到了B线程，ThreadLocal的数据就会丢失。</p>
+</li>
+<li><p>网关中尽量用信号隔离</p>
+</li>
+<li><p>插件机制可以实现很多扩展</p>
+</li>
+<li><p>Hystrix各种超时配置方式</p>
+</li>
+<li><p>commandKey、groupKey、threadPoolKey的使用<br>在使用HystrixCommand注解时，会配置commandKey、groupKey、threadPoolKey。commandKey表示封装的command的名称，可以给指定的commandKey进行参数的设置。groupKey是将一组command进行分组，如果没有设置threadPoolKey的话，那么线程池的名称会用groupKey。threadPollKey是线程池的名称，多个command的threadPoolKey相同，那么会使用同一个线程池。</p>
+</li>
+</ul>
+<h3 id="4-Feign"><a href="#4-Feign" class="headerlink" title="4.Feign"></a>4.Feign</h3><p>Feign是一个声明式的REST客户端，Feign提供了HTTP请求的模板，通过编写简单的接口和插入注解，就可以定义好Http请求的参数、格式、地址等信息。Feign会完全代理HTTP请求，Spring Cloud对Feign进行了封装，使其支持SpringMVC标准注解和HttpMessageConverters。Feign可以与Eureka和Ribbon组合使用以支持负载均衡，与Hystrix组合使用，支持熔断回退。</p>
+<h4 id="4-1-重要组件"><a href="#4-1-重要组件" class="headerlink" title="4.1 重要组件"></a>4.1 重要组件</h4><p><img data-src="/../../../../assets/img/CgotOV2oGbmAMIEfAAFD417806k525.png"></p>
+<ul>
+<li><p>Contract 契约组件<br>Contract允许用户自定义契约去解析注解信息，如在Spring Cloud中使用Feign，可以使用SpringMVC的注解来定义Feign的客户端。</p>
+</li>
+<li><p>Encoder 编码组件<br>通过该组件可以将请求信息采用指定的编码方式来进行编码后传输。</p>
+</li>
+<li><p>Decoder 编码组件</p>
+<p>Decoder将相应数据解码成对象。</p>
+</li>
+<li><p>ErrorDecoder 异常解码器<br>当被调用方发生异常后，可以在ErrorDecoder中将响应的数据转换成具体的异常返回给调用方，适合内部服务之间调用，但不想通过指定的字段来判断是否成功的场景，直接用自定义异常代替。</p>
+</li>
+<li><p>Logger 日志记录<br>Logger组件负责Feign中记录日志的，可以指定Logger的级别及自定义日志的输出。</p>
+</li>
+<li><p>Client 请求执行组件<br>Client是负责HTTP请求执行的组件，Feign将请求信息封装好后会交由Client来执行，Feign中默认的Client是通过JDK的HttpURLConnection发起请求的，每次发起请求的适合，都会建立新的HttpURLConnection链接，性能很差。可以扩展该接口，使用Apache HttpClient等基于连接池的高性能HTTP客户端。</p>
+</li>
+<li><p>Retryer 重试组件<br>Retryer是负责重试的组件，Feign内置了重试器，当HTTP请求出现IO异常时，Feign会限定最大重试次数来进行重试操作。</p>
+</li>
+<li><p>InvocationHandlerFactory 代理<br>IncocationHandlerFactory采用JDK的动态代理方式生成代理对象，定义的Feign接口，当调用这个接口中定义的方法时，实际上是去调用远程的HTTP API，这里用了动态代理的方式，当调用某个方法时，会进入代理中正在的去调用远程HTTP API。</p>
+</li>
+<li><p>RequestInterceptor 请求拦截器<br>可以为Feign添加多个拦截器，在请求执行前设置一些扩展的参数信息。</p>
+</li>
+<li><p>QueryMapEncoder 参数查询<br>QueryMapEncoder是针对实体类参数查询的编码器，可以基于QueryMapEncoder将实体类生成对应的查询参数。</p>
+</li>
+</ul>
+<h4 id="4-2-Feign执行过程"><a href="#4-2-Feign执行过程" class="headerlink" title="4.2 Feign执行过程"></a>4.2 Feign执行过程</h4><p><img data-src="/../../../../assets/img/CgoB5l2oGbmACVdMAACewrpciZo953.png"><br>定义对应的接口类，在接口类上使用Feign自带的注解来标识HTTP的参数信息，当调用接口对应的方法时，Feign内部会基于面向接口的动态代理方式生成实现类，将请求调用委托到动态代理实现类，负责动态代理的组件是InvocationHandlerFactory。根据Contract规则，解析接口类的注解信息，翻译成Feign内部能识别的信息。Spring Cloud OpenFeign中就扩展了SpringMVCContract。MethodHandler在执行的时候会生成Request对象，在构建Request对象的时候会为其设置拦截器，交由Client执行前记录一些日志，Client执行完成后也记录一些日志，然后使Decoder进行相应结果的解码操作，并返回结果。</p>
+<h4 id="4-3-使用技巧"><a href="#4-3-使用技巧" class="headerlink" title="4.3 使用技巧"></a>4.3 使用技巧</h4><ul>
+<li><p>继承特性<br>将API的定义提取出来封装成一个单独的接口，给API的实现方和调用方共用。</p>
+</li>
+<li><p>拦截器<br>添加自己的拦截器来实现某些场景下的需求，实现RequestInterceptor接口，在apply方法中编写自己的逻辑。</p>
+</li>
+<li><p>GET请求多参数传递<br>一般超过3个以上的参数会封装在一个实体类中，在Spring Cloud Open Feign中要支持对象接收多个参数，需要增加@SpringQueryMap注解。</p>
+</li>
+<li><p>日志配置<br>Feign日志级别：</p>
+<ol>
+<li>NONE：不输出日志</li>
+<li>BASIC：只输出请求方法的URL和响应的状态码及执行的时间</li>
+<li>HEADERS：将BASIC和请求头信息输出</li>
+<li>FULL：会输出全部完整的请求信息</li>
+</ol>
+</li>
+<li><p>异常解码器</p>
+</li>
+</ul>
+<h3 id="5-Zuul"><a href="#5-Zuul" class="headerlink" title="5.Zuul"></a>5.Zuul</h3><p>API网关是对外提供服务的一个入口，并且隐藏了内部架构的实现。可以为我们管理大量的API接口，负责对接用户、协议适配、安全认证、路由转发、流量限制、日志监控、防止爬虫、灰度发布等功能。</p>
+<ul>
+<li><p>动态路由<br><img data-src="/../../../../assets/img/CgotOV2yzFKAbTymAAE9eECzbLs575.png"><br>将客户端的请求路由到后端不同的服务上，如果没有网关去做统一的路由，那么客户端就要关注后端N个服务。</p>
+</li>
+<li><p>请求监控<br><img data-src="/../../../../assets/img/CgoB5l2yzFKAMhJuAADDrRk--Cs646.png"><br>对整个系统的请求进行监控，详细的记录请求响应日志，可以实时的统计当前系统的访问量及监控状态。</p>
+</li>
+<li><p>认证鉴权<br>统一对访问请求做认证，拒绝非法请求，保护后端的服务。</p>
+</li>
+<li><p>压力测试<br><img data-src="/../../../../assets/img/CgoB5l2yzFKAe9wtAAEaJgA80DA706.png"><br>动态的将测试请求转发到后端服务的集群中，还可以识别测试流量和真实流量，用来做一些特殊的处理。</p>
+</li>
+<li><p>灰度发布<br><img data-src="/../../../../assets/img/CgotOV2yzFKAVLC_AAE1Ij_9Yow275.png"><br>当需要发布新版本时，通过测试请求对1.1版本的服务进行测试，若没发现问题，可以将正常的请求转发过来，若有问题，不影响用户使用的1.0版本。</p>
+</li>
+</ul>
+<h4 id="5-1-过滤器"><a href="#5-1-过滤器" class="headerlink" title="5.1 过滤器"></a>5.1 过滤器</h4><p>过滤器可以对请求或响应结果进行处理，Zuul支持动态加载、编译、运行这些过滤器。</p>
+<ul>
+<li>pre过滤器：可以在请求被路由器之前调用。适用于身份认证的场景，认证通过后再继续执行下个流程。</li>
+<li>route过滤器：在路由请求时被调用。适用于灰度发布的场景，在将要路由的时候可以做一些自定义的逻辑。</li>
+<li>post过滤器：在route和error过滤器之后被调用。将请求路由到达具体的服务之后执行，适用于添加响应头，记录响应日志等应用场景。</li>
+<li>error过滤器：处理请求发生错误时被调用。在执行过程中发送错误时会进入error过滤器，可以用来统一记录错误信息。</li>
+</ul>
+<p><strong>自定义过滤器</strong>：<br>继承ZuulFilter，然后重写ZuulFilter的四个方法<br><img data-src="/../../../../assets/img/CgotOV2yzFKARVycAADyi7HDY0s663.png"><br>shouldFilter方法决定了是否执行该过滤器，true为执行，false不执行，可以利用配置中心实现动态的开启或关闭过滤器。filterType方法是要返回过滤器的类型，可选择为pre、route、post、error四种类型。过滤器可以有多个，先后顺序可以通过filterOrder来指定过滤器的执行顺序，数字越小，优先级越高。业务逻辑写在run方法中。</p>
+<h4 id="5-2-请求生命周期"><a href="#5-2-请求生命周期" class="headerlink" title="5.2 请求生命周期"></a>5.2 请求生命周期</h4><p><img data-src="/../../../../assets/img/CgotOV2yzFKALGjnAAEfSfAim3o535.png"><br>请求先进入pre过滤器，在pre过滤器执行完后，进入routing过滤器，开始路由到具体的服务中，路由完成后，接着到了post过滤器，然后将请求结果返回给客户端。如果过程中出现异常，则会进入error过滤器。源码对应ZuulServlet。</p>
+<h4 id="5-3-Zuul容错与回退"><a href="#5-3-Zuul容错与回退" class="headerlink" title="5.3 Zuul容错与回退"></a>5.3 Zuul容错与回退</h4><h4 id="5-4-使用技巧"><a href="#5-4-使用技巧" class="headerlink" title="5.4 使用技巧"></a>5.4 使用技巧</h4><ul>
+<li><p>内置端点<br>当@EnableZuulProxy与Spring Boot Actuator配合使用时，Zuul会暴露一个路由管理端点&#x2F;routes。借助这个端点，可以直观的查看及管理Zuul的路由。还有一个&#x2F;filters端点可以查看Zuul中所有过滤器的信息。</p>
+</li>
+<li><p>文件上传<br>通过Zuul上传文件，超过1M的文件会上传失败，配置max-file-size和max-request-size，Zuul中需要配置，最终接受文件的服务也要配置。或在网关请求地址前面上加上&#x2F;zuul，可以绕过Spring DispatcherServlet上传大文件。Zuul服务不用再配置，但接收文件的服务还是要配置文件上传大小。在上传大文件时，时间较长，可以设置Ribbon的ConnectTimeOut和ReadTimeOut。如果Zuul的Hystrix隔离模式为线程的话需要设置Hystrix的超时时间。</p>
+</li>
+<li><p>请求响应输出</p>
+</li>
+<li><p>Zuul Debug</p>
+</li>
+<li><p>跨域配置</p>
+</li>
+<li><p>关闭Zuul全局路由转发<br>配置zuul.ignored-service&#x3D;*关闭路由转发，配置zuui.ignoredPatterns忽略不想暴露的API。</p>
+</li>
+<li><p>动态过滤器<br>定期扫描存放Groovy Filter文件的目录，如果发现有新Groovy Filter文件或者Groovy Filter源码有改动，那么就会对Groovy文件进行编译加载。首先在项目中增加Groovy的依赖，然后在项目启动后设置Groovy的动态加载任务，定时动态加载指定目录的Groovy文件。<br><img data-src="/../../../../assets/img/CgotOV2yzFOAAazFAAGQ15EC0VY427.png"></p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>微服务</category>
+      </categories>
+      <tags>
+        <tag>微服务</tag>
+        <tag>Spring Cloud</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Sping Cloud组件扩展</title>
     <url>/SpringCloud_02/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="1-Apollo"><a href="#1-Apollo" class="headerlink" title="1.Apollo"></a>1.Apollo</h3><p>统一管理配置信息，增强配置管理的服务能力。<br><img data-src="/../../../../assets/img/CgotOV28B1WAF4S2AACIYGiePW0196.png"><br>使用配置中心管理配置后，可以将配置信息从项目转移到配置中心，一般一个项目会有一个唯一的标识ID，通过这个ID从配置中心获取对应的配置内容。</p>
@@ -4363,6 +4313,56 @@
       </tags>
   </entry>
   <entry>
+    <title>Sping Cloud Alibaba</title>
+    <url>/SpringCloudAlibaba/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="1-主要功能"><a href="#1-主要功能" class="headerlink" title="1.主要功能"></a>1.主要功能</h3><ul>
+<li><p>服务限流降级</p>
+</li>
+<li><p>服务注册与发现</p>
+</li>
+<li><p>分布式配置管理</p>
+</li>
+<li><p>消息驱动能力</p>
+</li>
+<li><p>分布式事务</p>
+<span id="more"></span>
+
+<p>Spring Cloud Alibaba使用@GlobalTransactional注解，高效并且零入侵地解决分布式事务问题。</p>
+</li>
+</ul>
+<h3 id="2-主要组件"><a href="#2-主要组件" class="headerlink" title="2.主要组件"></a>2.主要组件</h3><ul>
+<li><p>Sentinel<br>Sentinel把流量作为切入点，从流量控制、熔断降级、系统负载等多个维度保障服务的稳定性。Sentinel主要分为两部分，客户端在我们的程序中集成，控制台基于Spring Boot开发，打包后直接运行。利用Sertinel流量控制功能可以<strong>对网关、服务进行过载保护</strong>，另一个核心功能是<strong>熔断降级</strong>，与Hystrix一致。</p>
+</li>
+<li><p>Nacos<br>Nacos是一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。主要功能有<strong>注册中心</strong>和<strong>配置中心</strong>。<strong>Nacos可以代替Eureka和Apollo</strong>。</p>
+</li>
+<li><p>RocketMQ<br>分布式消息系统，基于高可用分布式集群技术，提供低延时、高可靠的消息发布与订阅服务。使用消息队列可以让服务之间更加<strong>解耦</strong>，还可以进行<strong>流量削峰</strong>，还可以用<strong>事务消息来实现分布式事务</strong>。</p>
+</li>
+<li><p>Dubbo<br>Java RPC框架，Spring Cloud Alibaba体系中，服务之间的通信可以使用Dubbo进行远程调用。Rest的优势：通用性强、无语言限制、调试方便，但一般都是JSON格式，报文较大，Dubbo是<strong>二进制传输</strong>，性能更好。Spring Cloud Alibaba中可以将Dubbo和Feign结合使用，即服务可以暴露Dubbo协议，也可以暴露Rest协议，调用方选择对应的协议进行调用，对于性能要求高的使用Dubbo，其它的使用Rest。</p>
+</li>
+<li><p>Seata<br>分布式事务解决方案，提供了AT、TCC等事务模式。</p>
+</li>
+</ul>
+<h3 id="3-技术选型推荐"><a href="#3-技术选型推荐" class="headerlink" title="3.技术选型推荐"></a>3.技术选型推荐</h3><ul>
+<li>服务注册与发现：Nacos</li>
+<li>服务熔断限流：Sentinel</li>
+<li>服务通信调用：Feign</li>
+<li>配置中心：Nacos</li>
+<li>服务网关：Spring Cloud Gateway</li>
+<li>分布式事务：Seata</li>
+<li>消息队列：RocketMQ</li>
+<li>调用链监控：Sleuth+Zipkin</li>
+<li>分布式任务调度：XXL-JOB</li>
+</ul>
+]]></content>
+      <categories>
+        <category>微服务</category>
+      </categories>
+      <tags>
+        <tag>微服务</tag>
+        <tag>Spring Cloud</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Spring AOP</title>
     <url>/spring_aop/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="1-AOP概述"><a href="#1-AOP概述" class="headerlink" title="1.AOP概述"></a>1.AOP概述</h3><h4 id="1-1-什么是AOP？"><a href="#1-1-什么是AOP？" class="headerlink" title="1.1 什么是AOP？"></a>1.1 什么是AOP？</h4><p>AOP(Aspect Oriented Programming 面向切面编程)，通过<strong>预编译</strong>方式和<strong>运行期动态代理</strong>实现程序功能的统一维护的一种技术。利用AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的<strong>耦合度降低</strong>，提高程序的<strong>可重用性</strong>，同时提高了<strong>开发的效率</strong>。<br>常用于日志记录，性能统计，安全控制，事务处理，异常处理等等。</p>
@@ -4426,6 +4426,78 @@
         <tag>Spring</tag>
         <tag>AOP</tag>
         <tag>面向切面编程</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Spring：自定义Converter实现参数转换</title>
+    <url>/springcustomconverter/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>多个后端、前端开发时约定日期类型参数时未能统一，即存在<code>2022-12-21 12:45:00</code>，也存在<code>2022/12/21 12:45:00</code>。导致可以复用的接口，前端传参格式却不一样，前端改动的话，工作量比较大，所以在后端做格式兼容处理。</p>
+<span id="more"></span>
+
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><ol>
+<li><p>项目中只有某些字段需要做兼容处理，新建一个注解，用于标识哪些字段需要做兼容处理。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Target(&#123;ElementType.FIELD, ElementType.PARAMETER&#125;)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> BizDateAdapter &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>实现<code>ConditionalGenericConverter</code>接口，自定义匹配、转换逻辑。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BizDateConverter</span> <span class="keyword">implements</span> <span class="title class_">ConditionalGenericConverter</span> &#123;</span><br><span class="line">    <span class="comment">//匹配逻辑</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">matches</span><span class="params">(TypeDescriptor sourceType, TypeDescriptor targetType)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> targetType.hasAnnotation(BizDateAdapter.class);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Set&lt;ConvertiblePair&gt; <span class="title function_">getConvertibleTypes</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//转换逻辑</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">convert</span><span class="params">(Object source, TypeDescriptor sourceType, TypeDescriptor targetType)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (source != <span class="literal">null</span> &amp;&amp; source <span class="keyword">instanceof</span> String) &#123;</span><br><span class="line">            <span class="type">Date</span> <span class="variable">date</span> <span class="operator">=</span> DateUtil.parseDate(String.valueOf(source), <span class="string">&quot;yyyy-MM-dd&quot;</span>);</span><br><span class="line">            <span class="keyword">if</span> (date == <span class="literal">null</span>)&#123;</span><br><span class="line">                date = DateUtil.parseDate(String.valueOf(source), <span class="string">&quot;yyyy/MM/dd&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> date;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> source;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加自定义的转换器到容器</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">IWebMvcConfigurer</span> <span class="keyword">implements</span> <span class="title class_">WebMvcConfigurer</span> &#123;</span><br><span class="line">    <span class="comment">//......</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addFormatters</span><span class="params">(FormatterRegistry registry)</span> &#123;</span><br><span class="line">        registry.addConverter(<span class="keyword">new</span> <span class="title class_">BizDateConverter</span>());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> ApiResponse <span class="title function_">xxxxx</span><span class="params">(</span></span><br><span class="line"><span class="params">  <span class="meta">@RequestParam(value = &quot;userId&quot;, required = false)</span> String userId,</span></span><br><span class="line"><span class="params">  <span class="meta">@RequestParam(value = &quot;bizDate&quot;)</span> <span class="meta">@BizDateAdapter</span> Date bizDate)</span> &#123;</span><br><span class="line">    <span class="comment">//......</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">xxxxx</span> &#123;</span><br><span class="line">    <span class="meta">@BizDateAdapter</span></span><br><span class="line">    <span class="keyword">private</span> Date bizDate;</span><br><span class="line">    <span class="comment">//......</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+]]></content>
+      <categories>
+        <category>Spring</category>
+      </categories>
+      <tags>
+        <tag>Spring</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vue开发常用命令</title>
+    <url>/Vue_shell/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h4 id="1-创建vue脚手架项目"><a href="#1-创建vue脚手架项目" class="headerlink" title="1.创建vue脚手架项目"></a>1.创建vue脚手架项目</h4>   <figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">vue <span class="keyword">init</span> webpack 项目名</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-axios"><a href="#2-axios" class="headerlink" title="2.axios"></a>2.axios</h4><ol>
+<li><p>安装axios</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install axios --save-dev</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置main.js中引入axios</p>
+<span id="more"></span>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&#x27;axios&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">$http</span>=axios;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用axios<br>在需要发送异步请求的位置:</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="property">$http</span>.<span class="title function_">get</span>(</span><br><span class="line">        <span class="string">&quot;url&quot;</span></span><br><span class="line">      )</span><br><span class="line">      .<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">        </span><br><span class="line">      &#125;);</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="3-ElementUI"><a href="#3-ElementUI" class="headerlink" title="3.ElementUI"></a>3.ElementUI</h4><ol>
+<li><p>安装ElementUI</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm i element-ui -S</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置main.js中引入ElementUI</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">ElementUI</span> <span class="keyword">from</span> <span class="string">&#x27;element-ui&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;element-ui/lib/theme-chalk/index.css&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在vue脚手架中使用elementui</span></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">ElementUI</span>)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h4 id="4-项目打包"><a href="#4-项目打包" class="headerlink" title="4.项目打包"></a>4.项目打包</h4><ol>
+<li><p>打包<br>在项目根目录中执行如下命令:</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure>
+<p><code>注意:vue脚手架打包的项目必须在服务器上运行不能直接双击运行</code></p>
+</li>
+<li><p>打包之后当前项目中变化<br>在打包之后项目中出现dist目录,dist目录就是vue脚手架项目生产目录或者说是直接部署目录</p>
+</li>
+<li><p>与后端合并部署<br>复制dist目录到Java工程resource下的static文件夹,index.html中修改路径</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">/dist/static/css/app...../</span>&gt;</span></span><br><span class="line">...</span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">text/javascript</span> <span class="attr">src</span>=<span class="string">/dist/static/js/ma....</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>访问项目<br>浏览器访问:  <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo4MDgwL2Rpc3QvaW5kZXguaHRtbA==">http://localhost:8080/dist/index.html<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>Vue</tag>
       </tags>
   </entry>
   <entry>
@@ -4807,68 +4879,20 @@
       </tags>
   </entry>
   <entry>
-    <title>Vue开发常用命令</title>
-    <url>/Vue_shell/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h4 id="1-创建vue脚手架项目"><a href="#1-创建vue脚手架项目" class="headerlink" title="1.创建vue脚手架项目"></a>1.创建vue脚手架项目</h4>   <figure class="highlight csharp"><table><tr><td class="code"><pre><span class="line">vue <span class="keyword">init</span> webpack 项目名</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-axios"><a href="#2-axios" class="headerlink" title="2.axios"></a>2.axios</h4><ol>
-<li><p>安装axios</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm install axios --save-dev</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>配置main.js中引入axios</p>
-<span id="more"></span>
-
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&#x27;axios&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">$http</span>=axios;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>使用axios<br>在需要发送异步请求的位置:</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">this</span>.<span class="property">$http</span>.<span class="title function_">get</span>(</span><br><span class="line">        <span class="string">&quot;url&quot;</span></span><br><span class="line">      )</span><br><span class="line">      .<span class="title function_">then</span>(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">        </span><br><span class="line">      &#125;);</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h4 id="3-ElementUI"><a href="#3-ElementUI" class="headerlink" title="3.ElementUI"></a>3.ElementUI</h4><ol>
-<li><p>安装ElementUI</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm i element-ui -S</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>配置main.js中引入ElementUI</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">ElementUI</span> <span class="keyword">from</span> <span class="string">&#x27;element-ui&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;element-ui/lib/theme-chalk/index.css&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在vue脚手架中使用elementui</span></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">ElementUI</span>)</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h4 id="4-项目打包"><a href="#4-项目打包" class="headerlink" title="4.项目打包"></a>4.项目打包</h4><ol>
-<li><p>打包<br>在项目根目录中执行如下命令:</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure>
-<p><code>注意:vue脚手架打包的项目必须在服务器上运行不能直接双击运行</code></p>
-</li>
-<li><p>打包之后当前项目中变化<br>在打包之后项目中出现dist目录,dist目录就是vue脚手架项目生产目录或者说是直接部署目录</p>
-</li>
-<li><p>与后端合并部署<br>复制dist目录到Java工程resource下的static文件夹,index.html中修改路径</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">/dist/static/css/app...../</span>&gt;</span></span><br><span class="line">...</span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">text/javascript</span> <span class="attr">src</span>=<span class="string">/dist/static/js/ma....</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>访问项目<br>浏览器访问:  <span class="exturl" data-url="aHR0cDovL2xvY2FsaG9zdDo4MDgwL2Rpc3QvaW5kZXguaHRtbA==">http://localhost:8080/dist/index.html<i class="fa fa-external-link-alt"></i></span></p>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>Vue</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Spring：自定义Converter实现参数转换</title>
-    <url>/springcustomconverter/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>多个后端、前端开发时约定日期类型参数时未能统一，即存在<code>2022-12-21 12:45:00</code>，也存在<code>2022/12/21 12:45:00</code>。导致可以复用的接口，前端传参格式却不一样，前端改动的话，工作量比较大，所以在后端做格式兼容处理。</p>
+    <title>fastJson：自定义反序列化器实现参数转换</title>
+    <url>/fastjsoncustomconverter/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>与 <a href="https://imokkkk.github.io/springcustomconverter/">Spring：自定义 Converter 实现参数转换</a> ，需求类似，但经过测试及源码分析，上述实现只针对<strong>GET</strong>接口有效。针对<strong>POST</strong>接口，可以按以下方式将参数从<code>yyyy-MM-dd HH:mm:ss</code> 转化为<code>yyyy-MM-dd</code>。</p>
 <span id="more"></span>
 
 <h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><ol>
-<li><p>项目中只有某些字段需要做兼容处理，新建一个注解，用于标识哪些字段需要做兼容处理。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Target(&#123;ElementType.FIELD, ElementType.PARAMETER&#125;)</span></span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> BizDateAdapter &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li><p>自定义反序列化器(实现ObjectDeserializer接口，自定义匹配、转换逻辑)</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BizDateDeserializer</span> <span class="keyword">implements</span> <span class="title class_">ObjectDeserializer</span> &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; T <span class="title function_">deserialze</span><span class="params">(DefaultJSONParser parser, Type type, Object o)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (type.getTypeName().equals(Date.class.getName())) &#123;</span><br><span class="line">            <span class="type">Date</span> <span class="variable">date</span> <span class="operator">=</span> parser.parseObject(Date.class);</span><br><span class="line">            <span class="keyword">return</span> (T) DateUtil.beginOfDay(date);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (String.class.getName().equals(type.getTypeName())) &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">date</span> <span class="operator">=</span> parser.parseObject(String.class);</span><br><span class="line">            <span class="keyword">return</span> (T) DateUtil.beginOfDay(DateUtil.parse(date));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (T) parser.parseObject(type.getClass());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getFastMatchToken</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> ObjectDeserializer.<span class="built_in">super</span>.getFastMatchToken();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>实现<code>ConditionalGenericConverter</code>接口，自定义匹配、转换逻辑。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BizDateConverter</span> <span class="keyword">implements</span> <span class="title class_">ConditionalGenericConverter</span> &#123;</span><br><span class="line">    <span class="comment">//匹配逻辑</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">matches</span><span class="params">(TypeDescriptor sourceType, TypeDescriptor targetType)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> targetType.hasAnnotation(BizDateAdapter.class);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Set&lt;ConvertiblePair&gt; <span class="title function_">getConvertibleTypes</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//转换逻辑</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">convert</span><span class="params">(Object source, TypeDescriptor sourceType, TypeDescriptor targetType)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (source != <span class="literal">null</span> &amp;&amp; source <span class="keyword">instanceof</span> String) &#123;</span><br><span class="line">            <span class="type">Date</span> <span class="variable">date</span> <span class="operator">=</span> DateUtil.parseDate(String.valueOf(source), <span class="string">&quot;yyyy-MM-dd&quot;</span>);</span><br><span class="line">            <span class="keyword">if</span> (date == <span class="literal">null</span>)&#123;</span><br><span class="line">                date = DateUtil.parseDate(String.valueOf(source), <span class="string">&quot;yyyy/MM/dd&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> date;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> source;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>添加自定义的转换器到容器</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">IWebMvcConfigurer</span> <span class="keyword">implements</span> <span class="title class_">WebMvcConfigurer</span> &#123;</span><br><span class="line">    <span class="comment">//......</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addFormatters</span><span class="params">(FormatterRegistry registry)</span> &#123;</span><br><span class="line">        registry.addConverter(<span class="keyword">new</span> <span class="title class_">BizDateConverter</span>());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li><p>添加自定义的反序列化器到fastJson转换器</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@DependsOn(&quot;webConfig&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">IWebMvcConfigurer</span> <span class="keyword">implements</span> <span class="title class_">WebMvcConfigurer</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span> <span class="keyword">private</span> BizDateDeserializer bizDateDeserializer;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">extendMessageConverters</span><span class="params">(List&lt;HttpMessageConverter&lt;?&gt;&gt; converters)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (CollUtil.isNotEmpty(converters)) &#123;</span><br><span class="line">            <span class="keyword">for</span> (HttpMessageConverter&lt;?&gt; converter : converters) &#123;</span><br><span class="line">                <span class="keyword">if</span> (converter <span class="keyword">instanceof</span> FastJsonHttpMessageConverter) &#123;</span><br><span class="line">                    <span class="type">FastJsonConfig</span> <span class="variable">fastJsonConfig</span> <span class="operator">=</span></span><br><span class="line">                            ((FastJsonHttpMessageConverter) converter).getFastJsonConfig();</span><br><span class="line">                    fastJsonConfig</span><br><span class="line">                            .getParserConfig()</span><br><span class="line">                            .putDeserializer(BizDateDeserializer.class, bizDateDeserializer);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>使用</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> ApiResponse <span class="title function_">xxxxx</span><span class="params">(</span></span><br><span class="line"><span class="params">  <span class="meta">@RequestParam(value = &quot;userId&quot;, required = false)</span> String userId,</span></span><br><span class="line"><span class="params">  <span class="meta">@RequestParam(value = &quot;bizDate&quot;)</span> <span class="meta">@BizDateAdapter</span> Date bizDate)</span> &#123;</span><br><span class="line">    <span class="comment">//......</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">xxxxx</span> &#123;</span><br><span class="line">    <span class="meta">@BizDateAdapter</span></span><br><span class="line">    <span class="keyword">private</span> Date bizDate;</span><br><span class="line">    <span class="comment">//......</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RoomSearchQuery</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@JSONField(deserializeUsing = BizDateDeserializer.class)</span></span><br><span class="line">    <span class="keyword">private</span> Date beginDate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@JSONField(deserializeUsing = BizDateDeserializer.class)</span></span><br><span class="line">    <span class="keyword">private</span> Date endDate;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;String&gt; stas;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;String&gt; roomTypes;</span><br><span class="line">	<span class="comment">//......</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ol>
 ]]></content>
       <categories>
@@ -5000,27 +5024,6 @@ public class ObjectSizeTest &#123;
       </tags>
   </entry>
   <entry>
-    <title>使用tree命令导出文件夹/文件的目录树</title>
-    <url>/shell_tree/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>Windows和Linux都有tree命令，主要功能是创建文件列表，将所有文件以树的形式列出来</p>
-<h3 id="1-Windows的tree命令"><a href="#1-Windows的tree命令" class="headerlink" title="1.Windows的tree命令"></a>1.Windows的tree命令</h3><p>使用tree命令导出windows的文件夹&#x2F;文件的目录树</p>
-<span id="more"></span>
-
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">TREE <span class="selector-attr">[drive:]</span><span class="selector-attr">[path]</span> <span class="selector-attr">[/F]</span> <span class="selector-attr">[/A]</span></span><br><span class="line">/F   显示每个文件夹中文件的名称。（带扩展名）</span><br><span class="line">/<span class="selector-tag">A</span>   使用 ASCII 字符，而不使用扩展字符。(如果要显示中文，例如 tree /f /<span class="selector-tag">A</span> &gt;tree<span class="selector-class">.txt</span>)</span><br><span class="line">tree /f &gt; list<span class="selector-class">.txt</span>  将带扩展名的文件目录输出到list<span class="selector-class">.txt</span>文件中</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-Linux的tree命令"><a href="#2-Linux的tree命令" class="headerlink" title="2.Linux的tree命令"></a>2.Linux的tree命令</h3><p>Linux下的tree就比较强大了，但一般系统并不自带这个命令，需要手动下载安装：sudo apt-get install tree 。</p>
-<figure class="highlight diff"><table><tr><td class="code"><pre><span class="line"><span class="deletion">-a 显示所有文件和目录。</span></span><br><span class="line"><span class="deletion">-A 使用ASNI绘图字符显示树状图而非以ASCII字符组合。</span></span><br><span class="line"><span class="deletion">-C 在文件和目录清单加上色彩，便于区分各种类型。</span></span><br><span class="line"><span class="deletion">-d 显示目录名称而非内容。</span></span><br><span class="line"><span class="deletion">-D 列出文件或目录的更改时间。</span></span><br><span class="line"><span class="deletion">-f 在每个文件或目录之前，显示完整的相对路径名称。</span></span><br><span class="line"><span class="deletion">-F 在执行文件，目录，Socket，符号连接，管道名称名称，各自加上&quot;*&quot;,&quot;/&quot;,&quot;=&quot;,&quot;@&quot;,&quot;|&quot;号。</span></span><br><span class="line"><span class="deletion">-g 列出文件或目录的所属群组名称，没有对应的名称时，则显示群组识别码。</span></span><br><span class="line"><span class="deletion">-i 不以阶梯状列出文件或目录名称。</span></span><br><span class="line"><span class="deletion">-I 不显示符合范本样式的文件或目录名称。</span></span><br><span class="line"><span class="deletion">-l 如遇到性质为符号连接的目录，直接列出该连接所指向的原始目录。</span></span><br><span class="line"><span class="deletion">-n 不在文件和目录清单加上色彩。</span></span><br><span class="line"><span class="deletion">-N 直接列出文件和目录名称，包括控制字符。</span></span><br><span class="line"><span class="deletion">-p 列出权限标示。</span></span><br><span class="line"><span class="deletion">-P 只显示符合范本样式的文件或目录名称。</span></span><br><span class="line"><span class="deletion">-q 用&quot;?&quot;号取代控制字符，列出文件和目录名称。</span></span><br><span class="line"><span class="deletion">-s 列出文件或目录大小。</span></span><br><span class="line"><span class="deletion">-t 用文件和目录的更改时间排序。</span></span><br><span class="line"><span class="deletion">-u 列出文件或目录的拥有者名称，没有对应的名称时，则显示用户识别码。</span></span><br><span class="line"><span class="deletion">-x 将范围局限在现行的文件系统中，若指定目录下的某些子目录，其存放于另一个文件系统上，则将该子目录予以排除在寻找范围外。</span></span><br></pre></td></tr></table></figure>
-<h3 id="3-测试"><a href="#3-测试" class="headerlink" title="3.测试"></a>3.测试</h3><p>执行命令行<code>tree /f &gt; tree.txt</code></p>
-<p><img data-src="/../../../../assets/img/105116.jpg"></p>
-]]></content>
-      <categories>
-        <category>shell</category>
-      </categories>
-      <tags>
-        <tag>tool</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>代理模式(JDK Proxy与CGLIB Proxy)</title>
     <url>/proxymode/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="1-静态代理"><a href="#1-静态代理" class="headerlink" title="1.静态代理"></a>1.静态代理</h3><ol>
@@ -5145,59 +5148,24 @@ public class ObjectSizeTest &#123;
       </tags>
   </entry>
   <entry>
-    <title>四种常见的排序算法</title>
-    <url>/23116/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="1-冒泡排序"><a href="#1-冒泡排序" class="headerlink" title="1.冒泡排序"></a>1.冒泡排序</h3><p><strong>思想:</strong> 每一趟将待排序序列中最大元素移到最后，剩下的为新的待排序序列, 重复上述步骤直到排完所有元素。这只是冒泡排序的一种, 当然也可以从后往前排</p>
-<p><strong>平均时间复杂度:</strong> O(n^2)     </p>
+    <title>使用tree命令导出文件夹/文件的目录树</title>
+    <url>/shell_tree/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>Windows和Linux都有tree命令，主要功能是创建文件列表，将所有文件以树的形式列出来</p>
+<h3 id="1-Windows的tree命令"><a href="#1-Windows的tree命令" class="headerlink" title="1.Windows的tree命令"></a>1.Windows的tree命令</h3><p>使用tree命令导出windows的文件夹&#x2F;文件的目录树</p>
 <span id="more"></span>
 
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Demo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">bubbleSort</span><span class="params">(<span class="type">int</span> arr[])</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; arr.length - <span class="number">1</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; arr.length - <span class="number">1</span> - i; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (arr[j] &gt; arr[j + <span class="number">1</span>]) &#123;</span><br><span class="line">                    <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> arr[j];</span><br><span class="line">                    arr[j] = arr[j + <span class="number">1</span>];</span><br><span class="line">                    arr[j + <span class="number">1</span>] = temp;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">int</span>[] arr=&#123;<span class="number">4</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">1</span>&#125;;</span><br><span class="line">        <span class="type">Demo</span> <span class="variable">d</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Demo</span>();</span><br><span class="line">        d.selectSort(arr);</span><br><span class="line">        System.out.println(Arrays.toString(arr));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line">TREE <span class="selector-attr">[drive:]</span><span class="selector-attr">[path]</span> <span class="selector-attr">[/F]</span> <span class="selector-attr">[/A]</span></span><br><span class="line">/F   显示每个文件夹中文件的名称。（带扩展名）</span><br><span class="line">/<span class="selector-tag">A</span>   使用 ASCII 字符，而不使用扩展字符。(如果要显示中文，例如 tree /f /<span class="selector-tag">A</span> &gt;tree<span class="selector-class">.txt</span>)</span><br><span class="line">tree /f &gt; list<span class="selector-class">.txt</span>  将带扩展名的文件目录输出到list<span class="selector-class">.txt</span>文件中</span><br></pre></td></tr></table></figure>
 
-<h3 id="2-选择排序"><a href="#2-选择排序" class="headerlink" title="2.选择排序"></a>2.选择排序</h3><p><strong>思想:</strong> 每一趟从待排序序列选择一个最小的元素放在已排好序列的末尾, 剩下的为待排序序列, 重复上述步骤直至完成排序</p>
-<p><strong>平均时间复杂度:</strong> O(n^2)</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">selectSort</span><span class="params">(<span class="type">int</span> arr[])</span> &#123;</span><br><span class="line">    <span class="comment">//选择</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">        <span class="comment">//默认第一个是最小的。</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">min</span> <span class="operator">=</span> arr[i];</span><br><span class="line">        <span class="comment">//记录最小的下标</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> i;</span><br><span class="line">        <span class="comment">//通过与后面的数据进行比较得出，最小值和下标</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i + <span class="number">1</span>; j &lt; arr.length; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (min &gt; arr[j]) &#123;</span><br><span class="line">                min = arr[j];</span><br><span class="line">                index = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//然后将最小值与本次循环的，开始值交换</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> arr[i];</span><br><span class="line">        arr[i] = min;</span><br><span class="line">        arr[index] = temp;</span><br><span class="line">        <span class="comment">//说明：将i前面的数据看成一个排好的队列，i后面的看成一个无序队列。每次只需要找无需的最小值，做替换</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-插入排序"><a href="#3-插入排序" class="headerlink" title="3.插入排序"></a>3.插入排序</h3><p><strong>思想:</strong> 1. 默认从第二个数据开始比较。</p>
-<p>　　  2.如果第二个数据比第一个小，则交换。然后在用第三个数据比较，如果比前面小，则插入（狡猾）。否则，退出循环</p>
-<p>　　  3.说明：默认将第一数据看成有序列表，后面无序的列表循环每一个数据，如果比前面的数据小则插入（交换）。否则退出</p>
-<p><strong>平均时间复杂度:</strong>  O(n^2)</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">insertSort</span><span class="params">(<span class="type">int</span> arr[])</span> &#123;</span><br><span class="line">    <span class="comment">//插入排序</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">        <span class="comment">//外层循环，从第二个开始比较</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i; j &gt; <span class="number">0</span>; j--) &#123;</span><br><span class="line">            <span class="comment">//内存循环，与前面排好序的数据比较，如果后面的数据小于前面的则交换</span></span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[j - <span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> arr[j - <span class="number">1</span>];</span><br><span class="line">                arr[j - <span class="number">1</span>] = arr[j];</span><br><span class="line">                arr[j] = temp;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">//如果不小于，说明插入完毕，退出内层循环</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-快速排序"><a href="#4-快速排序" class="headerlink" title="4.快速排序"></a>4.快速排序</h3><p><strong>采用分治法的思想：</strong>首先设置一个轴值pivot，然后以这个轴值为划分基准将待排序序列分成比pivot大和比pivot小的两部分，接下来对划分完的子序列进行快排直到子序列为一个元素为止。</p>
-<p><strong>平均时间复杂度:</strong>  O(n*log(n))  </p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Demo</span> &#123;    </span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">quickSort</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> low, <span class="type">int</span> high)</span> &#123;</span><br><span class="line">        <span class="comment">//pivot:位索引;p_pos:轴值</span></span><br><span class="line">        <span class="type">int</span> pivot, p_pos, i, temp;</span><br><span class="line">        <span class="keyword">if</span> (low &lt; high) &#123;</span><br><span class="line">            p_pos = low;</span><br><span class="line">            pivot = arr[p_pos];</span><br><span class="line">            <span class="keyword">for</span> (i = low + <span class="number">1</span>; i &lt;= high; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (arr[i] &gt; pivot) &#123;</span><br><span class="line">                    p_pos++;</span><br><span class="line">                    temp = arr[p_pos];</span><br><span class="line">                    arr[p_pos] = arr[i];</span><br><span class="line">                    arr[i] = temp;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            temp = arr[low];</span><br><span class="line">            arr[low] = arr[p_pos];</span><br><span class="line">            arr[p_pos] = temp;</span><br><span class="line">            <span class="comment">//分而治之</span></span><br><span class="line">            quickSort(arr, low, p_pos - <span class="number">1</span>);<span class="comment">//排序左半部分</span></span><br><span class="line">            quickSort(arr, p_pos + <span class="number">1</span>, high);<span class="comment">//排序右半部分</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">int</span>[] arr = &#123;<span class="number">4</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">1</span>&#125;;</span><br><span class="line">        <span class="type">Demo</span> <span class="variable">d</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Demo</span>();</span><br><span class="line"> 	    d.quickSort(arr, <span class="number">0</span>, arr.length - <span class="number">1</span>);</span><br><span class="line">        System.out.println(Arrays.toString(arr));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="注-各排序时间复杂度"><a href="#注-各排序时间复杂度" class="headerlink" title="注: 各排序时间复杂度"></a>注: 各排序时间复杂度</h3><table>
-<thead>
-<tr>
-<th>排序方法        平均情况        最好情况            最坏情况        辅助空间        稳定性</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>冒泡排序         O(n^2)                  O(n)               O(n^2)            O(1)                稳定</td>
-</tr>
-<tr>
-<td>选择排序         O(n^2)                 O(n^2)            O(n^2)            O(1)              不稳定</td>
-</tr>
-<tr>
-<td>插入排序         O(n^2)                  O(n)               O(n^2)             O(1)                稳定</td>
-</tr>
-<tr>
-<td>希尔排序O(n*log(n))~O(n^2)      O(n^1.3)       O(n^2)            O(1)              不稳定</td>
-</tr>
-<tr>
-<td>堆排序          O(n<em>log(n))          O(n</em>log(n))       O(n*log(n))         O(1)              不稳定</td>
-</tr>
-<tr>
-<td>归并排序       O(n<em>log(n))        O(n</em>log(n))       O(n*log(n))          O(n)                稳定</td>
-</tr>
-<tr>
-<td>快速排序       O(n<em>log(n))        O(n</em>log(n))            O(n^2)             O(1)              不稳定</td>
-</tr>
-</tbody></table>
+<h3 id="2-Linux的tree命令"><a href="#2-Linux的tree命令" class="headerlink" title="2.Linux的tree命令"></a>2.Linux的tree命令</h3><p>Linux下的tree就比较强大了，但一般系统并不自带这个命令，需要手动下载安装：sudo apt-get install tree 。</p>
+<figure class="highlight diff"><table><tr><td class="code"><pre><span class="line"><span class="deletion">-a 显示所有文件和目录。</span></span><br><span class="line"><span class="deletion">-A 使用ASNI绘图字符显示树状图而非以ASCII字符组合。</span></span><br><span class="line"><span class="deletion">-C 在文件和目录清单加上色彩，便于区分各种类型。</span></span><br><span class="line"><span class="deletion">-d 显示目录名称而非内容。</span></span><br><span class="line"><span class="deletion">-D 列出文件或目录的更改时间。</span></span><br><span class="line"><span class="deletion">-f 在每个文件或目录之前，显示完整的相对路径名称。</span></span><br><span class="line"><span class="deletion">-F 在执行文件，目录，Socket，符号连接，管道名称名称，各自加上&quot;*&quot;,&quot;/&quot;,&quot;=&quot;,&quot;@&quot;,&quot;|&quot;号。</span></span><br><span class="line"><span class="deletion">-g 列出文件或目录的所属群组名称，没有对应的名称时，则显示群组识别码。</span></span><br><span class="line"><span class="deletion">-i 不以阶梯状列出文件或目录名称。</span></span><br><span class="line"><span class="deletion">-I 不显示符合范本样式的文件或目录名称。</span></span><br><span class="line"><span class="deletion">-l 如遇到性质为符号连接的目录，直接列出该连接所指向的原始目录。</span></span><br><span class="line"><span class="deletion">-n 不在文件和目录清单加上色彩。</span></span><br><span class="line"><span class="deletion">-N 直接列出文件和目录名称，包括控制字符。</span></span><br><span class="line"><span class="deletion">-p 列出权限标示。</span></span><br><span class="line"><span class="deletion">-P 只显示符合范本样式的文件或目录名称。</span></span><br><span class="line"><span class="deletion">-q 用&quot;?&quot;号取代控制字符，列出文件和目录名称。</span></span><br><span class="line"><span class="deletion">-s 列出文件或目录大小。</span></span><br><span class="line"><span class="deletion">-t 用文件和目录的更改时间排序。</span></span><br><span class="line"><span class="deletion">-u 列出文件或目录的拥有者名称，没有对应的名称时，则显示用户识别码。</span></span><br><span class="line"><span class="deletion">-x 将范围局限在现行的文件系统中，若指定目录下的某些子目录，其存放于另一个文件系统上，则将该子目录予以排除在寻找范围外。</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-测试"><a href="#3-测试" class="headerlink" title="3.测试"></a>3.测试</h3><p>执行命令行<code>tree /f &gt; tree.txt</code></p>
+<p><img data-src="/../../../../assets/img/105116.jpg"></p>
 ]]></content>
+      <categories>
+        <category>shell</category>
+      </categories>
       <tags>
-        <tag>面试</tag>
+        <tag>tool</tag>
       </tags>
   </entry>
   <entry>
@@ -5388,6 +5356,62 @@ public class ObjectSizeTest &#123;
       </tags>
   </entry>
   <entry>
+    <title>四种常见的排序算法</title>
+    <url>/23116/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="1-冒泡排序"><a href="#1-冒泡排序" class="headerlink" title="1.冒泡排序"></a>1.冒泡排序</h3><p><strong>思想:</strong> 每一趟将待排序序列中最大元素移到最后，剩下的为新的待排序序列, 重复上述步骤直到排完所有元素。这只是冒泡排序的一种, 当然也可以从后往前排</p>
+<p><strong>平均时间复杂度:</strong> O(n^2)     </p>
+<span id="more"></span>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Demo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">bubbleSort</span><span class="params">(<span class="type">int</span> arr[])</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; arr.length - <span class="number">1</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; arr.length - <span class="number">1</span> - i; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (arr[j] &gt; arr[j + <span class="number">1</span>]) &#123;</span><br><span class="line">                    <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> arr[j];</span><br><span class="line">                    arr[j] = arr[j + <span class="number">1</span>];</span><br><span class="line">                    arr[j + <span class="number">1</span>] = temp;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">int</span>[] arr=&#123;<span class="number">4</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">1</span>&#125;;</span><br><span class="line">        <span class="type">Demo</span> <span class="variable">d</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Demo</span>();</span><br><span class="line">        d.selectSort(arr);</span><br><span class="line">        System.out.println(Arrays.toString(arr));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-选择排序"><a href="#2-选择排序" class="headerlink" title="2.选择排序"></a>2.选择排序</h3><p><strong>思想:</strong> 每一趟从待排序序列选择一个最小的元素放在已排好序列的末尾, 剩下的为待排序序列, 重复上述步骤直至完成排序</p>
+<p><strong>平均时间复杂度:</strong> O(n^2)</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">selectSort</span><span class="params">(<span class="type">int</span> arr[])</span> &#123;</span><br><span class="line">    <span class="comment">//选择</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">        <span class="comment">//默认第一个是最小的。</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">min</span> <span class="operator">=</span> arr[i];</span><br><span class="line">        <span class="comment">//记录最小的下标</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> i;</span><br><span class="line">        <span class="comment">//通过与后面的数据进行比较得出，最小值和下标</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i + <span class="number">1</span>; j &lt; arr.length; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (min &gt; arr[j]) &#123;</span><br><span class="line">                min = arr[j];</span><br><span class="line">                index = j;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//然后将最小值与本次循环的，开始值交换</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> arr[i];</span><br><span class="line">        arr[i] = min;</span><br><span class="line">        arr[index] = temp;</span><br><span class="line">        <span class="comment">//说明：将i前面的数据看成一个排好的队列，i后面的看成一个无序队列。每次只需要找无需的最小值，做替换</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-插入排序"><a href="#3-插入排序" class="headerlink" title="3.插入排序"></a>3.插入排序</h3><p><strong>思想:</strong> 1. 默认从第二个数据开始比较。</p>
+<p>　　  2.如果第二个数据比第一个小，则交换。然后在用第三个数据比较，如果比前面小，则插入（狡猾）。否则，退出循环</p>
+<p>　　  3.说明：默认将第一数据看成有序列表，后面无序的列表循环每一个数据，如果比前面的数据小则插入（交换）。否则退出</p>
+<p><strong>平均时间复杂度:</strong>  O(n^2)</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">insertSort</span><span class="params">(<span class="type">int</span> arr[])</span> &#123;</span><br><span class="line">    <span class="comment">//插入排序</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">        <span class="comment">//外层循环，从第二个开始比较</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i; j &gt; <span class="number">0</span>; j--) &#123;</span><br><span class="line">            <span class="comment">//内存循环，与前面排好序的数据比较，如果后面的数据小于前面的则交换</span></span><br><span class="line">            <span class="keyword">if</span> (arr[j] &lt; arr[j - <span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> arr[j - <span class="number">1</span>];</span><br><span class="line">                arr[j - <span class="number">1</span>] = arr[j];</span><br><span class="line">                arr[j] = temp;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">//如果不小于，说明插入完毕，退出内层循环</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-快速排序"><a href="#4-快速排序" class="headerlink" title="4.快速排序"></a>4.快速排序</h3><p><strong>采用分治法的思想：</strong>首先设置一个轴值pivot，然后以这个轴值为划分基准将待排序序列分成比pivot大和比pivot小的两部分，接下来对划分完的子序列进行快排直到子序列为一个元素为止。</p>
+<p><strong>平均时间复杂度:</strong>  O(n*log(n))  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Demo</span> &#123;    </span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">quickSort</span><span class="params">(<span class="type">int</span> arr[], <span class="type">int</span> low, <span class="type">int</span> high)</span> &#123;</span><br><span class="line">        <span class="comment">//pivot:位索引;p_pos:轴值</span></span><br><span class="line">        <span class="type">int</span> pivot, p_pos, i, temp;</span><br><span class="line">        <span class="keyword">if</span> (low &lt; high) &#123;</span><br><span class="line">            p_pos = low;</span><br><span class="line">            pivot = arr[p_pos];</span><br><span class="line">            <span class="keyword">for</span> (i = low + <span class="number">1</span>; i &lt;= high; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (arr[i] &gt; pivot) &#123;</span><br><span class="line">                    p_pos++;</span><br><span class="line">                    temp = arr[p_pos];</span><br><span class="line">                    arr[p_pos] = arr[i];</span><br><span class="line">                    arr[i] = temp;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            temp = arr[low];</span><br><span class="line">            arr[low] = arr[p_pos];</span><br><span class="line">            arr[p_pos] = temp;</span><br><span class="line">            <span class="comment">//分而治之</span></span><br><span class="line">            quickSort(arr, low, p_pos - <span class="number">1</span>);<span class="comment">//排序左半部分</span></span><br><span class="line">            quickSort(arr, p_pos + <span class="number">1</span>, high);<span class="comment">//排序右半部分</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">int</span>[] arr = &#123;<span class="number">4</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">3</span>, <span class="number">1</span>&#125;;</span><br><span class="line">        <span class="type">Demo</span> <span class="variable">d</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Demo</span>();</span><br><span class="line"> 	    d.quickSort(arr, <span class="number">0</span>, arr.length - <span class="number">1</span>);</span><br><span class="line">        System.out.println(Arrays.toString(arr));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="注-各排序时间复杂度"><a href="#注-各排序时间复杂度" class="headerlink" title="注: 各排序时间复杂度"></a>注: 各排序时间复杂度</h3><table>
+<thead>
+<tr>
+<th>排序方法        平均情况        最好情况            最坏情况        辅助空间        稳定性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>冒泡排序         O(n^2)                  O(n)               O(n^2)            O(1)                稳定</td>
+</tr>
+<tr>
+<td>选择排序         O(n^2)                 O(n^2)            O(n^2)            O(1)              不稳定</td>
+</tr>
+<tr>
+<td>插入排序         O(n^2)                  O(n)               O(n^2)             O(1)                稳定</td>
+</tr>
+<tr>
+<td>希尔排序O(n*log(n))~O(n^2)      O(n^1.3)       O(n^2)            O(1)              不稳定</td>
+</tr>
+<tr>
+<td>堆排序          O(n<em>log(n))          O(n</em>log(n))       O(n*log(n))         O(1)              不稳定</td>
+</tr>
+<tr>
+<td>归并排序       O(n<em>log(n))        O(n</em>log(n))       O(n*log(n))          O(n)                稳定</td>
+</tr>
+<tr>
+<td>快速排序       O(n<em>log(n))        O(n</em>log(n))            O(n^2)             O(1)              不稳定</td>
+</tr>
+</tbody></table>
+]]></content>
+      <tags>
+        <tag>面试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>常用设计模式</title>
     <url>/14808/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p>Java 中一般认为有23种设计模式, 下面介绍几种常见的设计模式。总体来说设计模式分为三大类： </p>
@@ -5500,6 +5524,69 @@ public class ObjectSizeTest &#123;
       </tags>
   </entry>
   <entry>
+    <title>微信公众号开发(二)自动回复功能实现简单的天气查询</title>
+    <url>/39972/</url>
+    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p>微信公众平台服务器配置通过后，就能进行下面的开发啦</p>
+<blockquote>
+<p>首先可以查看官方的说明文档：<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXJzLndlaXhpbi5xcS5jb20vZG9jL29mZmlhY2NvdW50L0dldHRpbmdfU3RhcnRlZC9PdmVydmlldy5odG1s">https://developers.weixin.qq.com/doc/offiaccount/Getting_Started/Overview.html<i class="fa fa-external-link-alt"></i></span></p>
+</blockquote>
+<p>普通消息的类型分为7种：</p>
+<span id="more"></span>
+
+<ol>
+<li>文本消息</li>
+<li>图片消息</li>
+<li>语音消息</li>
+<li>视频消息</li>
+<li>小视频消息</li>
+<li>地理位置消息</li>
+<li>链接消息</li>
+</ol>
+<p>本文使用的是文本消息与图片消息</p>
+<h3 id="2-图文消息的自动回复"><a href="#2-图文消息的自动回复" class="headerlink" title="2.图文消息的自动回复"></a>2.图文消息的自动回复</h3><h4 id="2-1-文本消息"><a href="#2-1-文本消息" class="headerlink" title="2.1 文本消息"></a>2.1 文本消息</h4><p>文本消息的XML结构是：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">xml</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ToUserName</span>&gt;</span>&lt;![CDATA[toUser]]&gt;<span class="tag">&lt;/<span class="name">ToUserName</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">FromUserName</span>&gt;</span>&lt;![CDATA[fromUser]]&gt;<span class="tag">&lt;/<span class="name">FromUserName</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">CreateTime</span>&gt;</span>1348831860<span class="tag">&lt;/<span class="name">CreateTime</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">MsgType</span>&gt;</span>&lt;![CDATA[text]]&gt;<span class="tag">&lt;/<span class="name">MsgType</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Content</span>&gt;</span>&lt;![CDATA[this is a test]]&gt;<span class="tag">&lt;/<span class="name">Content</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">MsgId</span>&gt;</span>1234567890123456<span class="tag">&lt;/<span class="name">MsgId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">xml</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>参数包含：<img data-src="/../../../../assets/img/203231.jpg"></p>
+<p>定义一个BaseMessage，消息基类，封装通用属性：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 消息基类（普通用户 -&gt; 公众帐号）</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BaseMessage</span> &#123;</span><br><span class="line">    <span class="comment">// 开发者微信号</span></span><br><span class="line">    <span class="keyword">private</span> String ToUserName;</span><br><span class="line">    <span class="comment">// 发送方帐号（一个OpenID）</span></span><br><span class="line">    <span class="keyword">private</span> String FromUserName;</span><br><span class="line">    <span class="comment">// 消息创建时间 （整型）</span></span><br><span class="line">    <span class="keyword">private</span> String CreateTime;</span><br><span class="line">    <span class="comment">// 消息类型（text/image/location/link）</span></span><br><span class="line">    <span class="keyword">private</span> String MsgType;</span><br><span class="line">    <span class="comment">// 消息id，64位整型</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">long</span> MsgId;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 位0x0001被标志时，星标刚收到的消息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> FuncFlag;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来定义文本消息属性TextMessage：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 文本消息</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TextMessage</span> <span class="keyword">extends</span> <span class="title class_">BaseMessage</span>&#123;</span><br><span class="line">    <span class="comment">// 消息内容</span></span><br><span class="line">    <span class="keyword">private</span> String Content;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-2-图片消息"><a href="#2-2-图片消息" class="headerlink" title="2.2 图片消息"></a>2.2 图片消息</h4><p>图片消息的XML结构是：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">xml</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ToUserName</span>&gt;</span>&lt;![CDATA[toUser]]&gt;<span class="tag">&lt;/<span class="name">ToUserName</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">FromUserName</span>&gt;</span>&lt;![CDATA[fromUser]]&gt;<span class="tag">&lt;/<span class="name">FromUserName</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">CreateTime</span>&gt;</span>1348831860<span class="tag">&lt;/<span class="name">CreateTime</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">MsgType</span>&gt;</span>&lt;![CDATA[image]]&gt;<span class="tag">&lt;/<span class="name">MsgType</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">PicUrl</span>&gt;</span>&lt;![CDATA[this is a url]]&gt;<span class="tag">&lt;/<span class="name">PicUrl</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">MediaId</span>&gt;</span>&lt;![CDATA[media_id]]&gt;<span class="tag">&lt;/<span class="name">MediaId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">MsgId</span>&gt;</span>1234567890123456<span class="tag">&lt;/<span class="name">MsgId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">xml</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>参数包含：<img data-src="/../../../../assets/img/215347.jpg"></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ImageMessage</span> <span class="keyword">extends</span> <span class="title class_">BaseMessage</span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-3-图文消息"><a href="#2-3-图文消息" class="headerlink" title="2.3 图文消息"></a>2.3 图文消息</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Article</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 图文消息描述</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String Description;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 图片链接，支持JPG、PNG格式，&lt;br&gt;</span></span><br><span class="line"><span class="comment">     * 较好的效果为大图640*320，小图80*80</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String PicUrl;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 图文消息名称</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String Title;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 点击图文消息跳转链接</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String Url;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * &lt;p&gt; 图文消息 &lt;/p&gt;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NewsMessage</span> <span class="keyword">extends</span> <span class="title class_">BaseMessage</span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 图文消息个数，限制为10条以内</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Integer ArticleCount;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 多条图文消息信息，默认第一个item为大图</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;Article&gt; Articles;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-功能实现"><a href="#3-功能实现" class="headerlink" title="3.功能实现"></a>3.功能实现</h3><h4 id="3-1-工具类MessageUtil"><a href="#3-1-工具类MessageUtil" class="headerlink" title="3.1 工具类MessageUtil"></a>3.1 工具类MessageUtil</h4><ol>
+<li>解析微信发来的请求（xml）</li>
+<li>将响应消息的Java对象转换成xml</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MessageUtil</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回消息类型：文本</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">RESP_MESSAGE_TYPE_TEXT</span> <span class="operator">=</span> <span class="string">&quot;text&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回消息类型：音乐</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">RESP_MESSAGE_TYPE_MUSIC</span> <span class="operator">=</span> <span class="string">&quot;music&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回消息类型：图文</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">RESP_MESSAGE_TYPE_NEWS</span> <span class="operator">=</span> <span class="string">&quot;news&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 请求消息类型：文本</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">REQ_MESSAGE_TYPE_TEXT</span> <span class="operator">=</span> <span class="string">&quot;text&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 请求消息类型：图片</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">REQ_MESSAGE_TYPE_IMAGE</span> <span class="operator">=</span> <span class="string">&quot;image&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 请求消息类型：链接</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">REQ_MESSAGE_TYPE_LINK</span> <span class="operator">=</span> <span class="string">&quot;link&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 请求消息类型：地理位置</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">REQ_MESSAGE_TYPE_LOCATION</span> <span class="operator">=</span> <span class="string">&quot;location&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 请求消息类型：音频</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">REQ_MESSAGE_TYPE_VOICE</span> <span class="operator">=</span> <span class="string">&quot;voice&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 请求消息类型：推送</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">REQ_MESSAGE_TYPE_EVENT</span> <span class="operator">=</span> <span class="string">&quot;event&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 事件类型：subscribe(订阅)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">EVENT_TYPE_SUBSCRIBE</span> <span class="operator">=</span> <span class="string">&quot;subscribe&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 事件类型：unsubscribe(取消订阅)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">EVENT_TYPE_UNSUBSCRIBE</span> <span class="operator">=</span> <span class="string">&quot;unsubscribe&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 事件类型：CLICK(自定义菜单点击事件)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">EVENT_TYPE_CLICK</span> <span class="operator">=</span> <span class="string">&quot;CLICK&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * xml转换为map</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Map&lt;String, String&gt; <span class="title function_">xmlToMap</span><span class="params">(HttpServletRequest request)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        Map&lt;String, String&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, String&gt;();</span><br><span class="line">        <span class="type">SAXReader</span> <span class="variable">reader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SAXReader</span>();</span><br><span class="line"></span><br><span class="line">        <span class="type">InputStream</span> <span class="variable">ins</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            ins = request.getInputStream();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e1) &#123;</span><br><span class="line">            e1.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">Document</span> <span class="variable">doc</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            doc = reader.read(ins);</span><br><span class="line">            <span class="type">Element</span> <span class="variable">root</span> <span class="operator">=</span> doc.getRootElement();</span><br><span class="line"></span><br><span class="line">            List&lt;Element&gt; list = root.elements();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (Element e : list) &#123;</span><br><span class="line">                map.put(e.getName(), e.getText());</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> map;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (DocumentException e1) &#123;</span><br><span class="line">            e1.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">            ins.close();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span>: 解析微信发来的请求（XML）</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> dapengniao</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2016年3月7日 上午10:04:02</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Map&lt;String, String&gt; <span class="title function_">parseXml</span><span class="params">(HttpServletRequest request)</span></span><br><span class="line">            <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="comment">// 将解析结果存储在HashMap中</span></span><br><span class="line">        Map&lt;String, String&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, String&gt;();</span><br><span class="line">        <span class="comment">// 从request中取得输入流</span></span><br><span class="line">        <span class="type">InputStream</span> <span class="variable">inputStream</span> <span class="operator">=</span> request.getInputStream();</span><br><span class="line">        <span class="comment">// 读取输入流</span></span><br><span class="line">        <span class="type">SAXReader</span> <span class="variable">reader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SAXReader</span>();</span><br><span class="line">        <span class="type">Document</span> <span class="variable">document</span> <span class="operator">=</span> reader.read(inputStream);</span><br><span class="line">        <span class="comment">// 得到xml根元素</span></span><br><span class="line">        <span class="type">Element</span> <span class="variable">root</span> <span class="operator">=</span> document.getRootElement();</span><br><span class="line">        <span class="comment">// 得到根元素的所有子节点</span></span><br><span class="line">        List&lt;Element&gt; elementList = root.elements();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 遍历所有子节点</span></span><br><span class="line">        <span class="keyword">for</span> (Element e : elementList) &#123;</span><br><span class="line">            map.put(e.getName(), e.getText());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 释放资源</span></span><br><span class="line">        inputStream.close();</span><br><span class="line">        inputStream = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//    public static XStream xstream = new XStream();</span></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 文本消息对象转换成xml</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> textMessage 文本消息对象</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> xml</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">textMessageToXml</span><span class="params">(TextMessage textMessage)</span>&#123;</span><br><span class="line"><span class="comment">//        XStream xstream = new XStream();</span></span><br><span class="line">        xstream.alias(<span class="string">&quot;xml&quot;</span>, textMessage.getClass());</span><br><span class="line">        <span class="keyword">return</span> xstream.toXML(textMessage);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span>: 图文消息对象转换成xml</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> <span class="doctag">@param</span> newsMessage</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> dapengniao</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2016年3月8日 下午4:14:09</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">newsMessageToXml</span><span class="params">(NewsMessage newsMessage)</span> &#123;</span><br><span class="line">        xstream.alias(<span class="string">&quot;xml&quot;</span>, newsMessage.getClass());</span><br><span class="line">        xstream.alias(<span class="string">&quot;item&quot;</span>, <span class="keyword">new</span> <span class="title class_">Article</span>().getClass());</span><br><span class="line">        <span class="keyword">return</span> xstream.toXML(newsMessage);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span>: 图片消息对象转换成xml</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> <span class="doctag">@param</span> imageMessage</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> dapengniao</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2016年3月9日 上午9:25:51</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">imageMessageToXml</span><span class="params">(ImageMessage imageMessage)</span> &#123;</span><br><span class="line">        xstream.alias(<span class="string">&quot;xml&quot;</span>, imageMessage.getClass());</span><br><span class="line">        <span class="keyword">return</span> xstream.toXML(imageMessage);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 对象到xml的处理</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">XStream</span> <span class="variable">xstream</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">XStream</span>(<span class="keyword">new</span> <span class="title class_">XppDriver</span>() &#123;</span><br><span class="line">        <span class="keyword">public</span> HierarchicalStreamWriter <span class="title function_">createWriter</span><span class="params">(Writer out)</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">PrettyPrintWriter</span>(out) &#123;</span><br><span class="line">                <span class="comment">// 对所有xml节点的转换都增加CDATA标记</span></span><br><span class="line">                <span class="type">boolean</span> <span class="variable">cdata</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">                <span class="meta">@SuppressWarnings(&quot;rawtypes&quot;)</span></span><br><span class="line">                <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">startNode</span><span class="params">(String name, Class clazz)</span> &#123;</span><br><span class="line">                    <span class="built_in">super</span>.startNode(name, clazz);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">writeText</span><span class="params">(QuickWriter writer, String text)</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (cdata) &#123;</span><br><span class="line">                        writer.write(<span class="string">&quot;&lt;![CDATA[&quot;</span>);</span><br><span class="line">                        writer.write(text);</span><br><span class="line">                        writer.write(<span class="string">&quot;]]&gt;&quot;</span>);</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        writer.write(text);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-实现"><a href="#3-2-实现" class="headerlink" title="3.2 实现"></a>3.2 实现</h4><p>当用户发送消息给公众号时（或某些特定的用户操作引发的事件推送时），会产生一个POST请求，开发者可以在响应包（Get）中返回特定XML结构，来对该消息进行响应（现支持回复<code>文本</code>、<code>图片</code>、<code>图文</code>、<code>语音</code>、<code>视频</code>、<code>音乐</code>）。</p>
+<p>上一篇文章，已经创建了IndexController ，里面的GET方法用来验证token，下面直接加一个POST方法，用于进行消息管理。消息接收<code>POST</code>和微信认证<code>GET</code>是同一个接口（开发者填写的URL）</p>
+<p><strong>Controller</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@PostMapping</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">msgProcess</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        request.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    response.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">    <span class="comment">// 调用核心业务类接收消息、处理消息</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">respMessage</span> <span class="operator">=</span> msgService.processRequest(request);</span><br><span class="line">    <span class="comment">// 响应消息</span></span><br><span class="line">    <span class="type">PrintWriter</span> <span class="variable">out</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        out = response.getWriter();</span><br><span class="line">        out.print(respMessage);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        out.close();</span><br><span class="line">        out = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>Service</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MsgService</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Logger</span> <span class="variable">LOGGER</span> <span class="operator">=</span> LoggerFactory.getLogger(MsgService.class);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">processRequest</span><span class="params">(HttpServletRequest request)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">respMessage</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern(<span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>)));</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// xml请求解析</span></span><br><span class="line">            Map&lt;String, String&gt; requestMap = MessageUtil.xmlToMap(request);</span><br><span class="line">            <span class="comment">// 发送方帐号（open_id）</span></span><br><span class="line">            <span class="type">String</span> <span class="variable">fromUserName</span> <span class="operator">=</span> requestMap.get(<span class="string">&quot;FromUserName&quot;</span>);</span><br><span class="line">            <span class="comment">// 公众帐号</span></span><br><span class="line">            <span class="type">String</span> <span class="variable">toUserName</span> <span class="operator">=</span> requestMap.get(<span class="string">&quot;ToUserName&quot;</span>);</span><br><span class="line">            <span class="comment">// 消息类型</span></span><br><span class="line">            <span class="type">String</span> <span class="variable">msgType</span> <span class="operator">=</span> requestMap.get(<span class="string">&quot;MsgType&quot;</span>);</span><br><span class="line">            <span class="comment">// 消息内容</span></span><br><span class="line">            <span class="type">String</span> <span class="variable">content</span> <span class="operator">=</span> requestMap.get(<span class="string">&quot;Content&quot;</span>);</span><br><span class="line">            LOGGER.info(<span class="string">&quot;FromUserName is:&quot;</span> + fromUserName + <span class="string">&quot;, ToUserName is:&quot;</span> + toUserName + <span class="string">&quot;, MsgType is:&quot;</span> + msgType);</span><br><span class="line">            <span class="comment">// 文本消息</span></span><br><span class="line">            <span class="keyword">if</span> (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) &#123;</span><br><span class="line">                <span class="comment">//这里根据关键字执行相应的逻辑，只有你想不到的，没有做不到的</span></span><br><span class="line">                <span class="keyword">if</span> (content.indexOf(<span class="string">&quot;天气&quot;</span>)!=-<span class="number">1</span>) &#123;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">//自动回复</span></span><br><span class="line">                    <span class="type">NewsMessage</span> <span class="variable">newmsg</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">NewsMessage</span>();</span><br><span class="line">                    newmsg.setToUserName(fromUserName);</span><br><span class="line">                    newmsg.setFromUserName(toUserName);</span><br><span class="line">                    newmsg.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(<span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>)));</span><br><span class="line">                    newmsg.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);</span><br><span class="line">                    newmsg.setFuncFlag(<span class="number">0</span>);</span><br><span class="line">                    List&lt;Article&gt; articleList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">                    <span class="type">Article</span> <span class="variable">article</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Article</span>();</span><br><span class="line">                    article.setTitle(<span class="string">&quot;天气预报&quot;</span>);</span><br><span class="line">                    article.setDescription(<span class="string">&quot;点击了解未来天气详情...&quot;</span>);</span><br><span class="line">                    article.setPicUrl(<span class="string">&quot;https://lwy-image.oss-cn-beijing.aliyuncs.com/ep.png&quot;</span>);</span><br><span class="line">                    article.setUrl(<span class="string">&quot;https://widget-page.heweather.net/h5/index.html?bg=1&amp;md=0123456&amp;lc=auto&amp;key=f1688db9422246fc969a6ba559075097&quot;</span>);</span><br><span class="line">                    articleList.add(article);</span><br><span class="line">                    <span class="comment">// 设置图文消息个数</span></span><br><span class="line">                    newmsg.setArticleCount(articleList.size());</span><br><span class="line">                    <span class="comment">// 设置图文消息包含的图文集合</span></span><br><span class="line">                    newmsg.setArticles(articleList);</span><br><span class="line">                    <span class="comment">// 将图文消息对象转换成xml字符串</span></span><br><span class="line">                    respMessage = MessageUtil.newsMessageToXml(newmsg);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            LOGGER.error(<span class="string">&quot;error......&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> respMessage;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试	<img data-src="/../../../../assets/img/06215027.jpg"></p>
+<blockquote>
+<p>源码参考 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3pob3VtaW5wei93ZWNoYXRQdWJsaWNBY2NvdW50LQ==">https://github.com/zhouminpz/wechatPublicAccount-<i class="fa fa-external-link-alt"></i></span></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>tool</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>微信公众号开发(三)快递信息查询</title>
     <url>/12221/</url>
     <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="1-快递查询API"><a href="#1-快递查询API" class="headerlink" title="1.快递查询API"></a>1.快递查询API</h3><p>这里使用的是阿里云全国快递物流查询-快递查询接口:<span class="exturl" data-url="aHR0cHM6Ly9tYXJrZXQuYWxpeXVuLmNvbS9wcm9kdWN0cy81NjkyODAwNC9jbWFwaTAyMTg2My5odG1s">https://market.aliyun.com/products/56928004/cmapi021863.html<i class="fa fa-external-link-alt"></i></span></p>
@@ -5577,69 +5664,6 @@ public class ObjectSizeTest &#123;
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> (TextUtil.DecText(content)==<span class="literal">true</span>)&#123;</span><br><span class="line">                    <span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> ExpressUtil.QueryExpress(content);</span><br><span class="line">                    List&lt;HashMap&gt; r = JSON.parseArray(str, HashMap.class);</span><br><span class="line">                    <span class="type">StringBuilder</span> <span class="variable">stringBuilder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">                    <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> r.size() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">                        System.out.println(r.get(i).get(<span class="string">&quot;time&quot;</span>) + <span class="string">&quot;:&quot;</span> + r.get(i).get(<span class="string">&quot;status&quot;</span>));</span><br><span class="line">                        <span class="type">String</span> <span class="variable">string</span> <span class="operator">=</span> r.get(i).get(<span class="string">&quot;time&quot;</span>) + <span class="string">&quot;:&quot;</span> + r.get(i).get(<span class="string">&quot;status&quot;</span>);</span><br><span class="line">                        <span class="keyword">if</span> (i == <span class="number">0</span>) &#123;</span><br><span class="line">                            stringBuilder.append(string);</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            stringBuilder.append(string).append(<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                    System.out.println(stringBuilder);</span><br><span class="line">                    <span class="comment">//文本消息</span></span><br><span class="line">                    <span class="type">TextMessage</span> <span class="variable">text</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TextMessage</span>();</span><br><span class="line">                    text.setContent(stringBuilder+<span class="string">&quot;&quot;</span>);</span><br><span class="line">                    text.setToUserName(fromUserName);</span><br><span class="line">                    text.setFromUserName(toUserName);</span><br><span class="line">                    text.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(<span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>)));</span><br><span class="line">                    text.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);</span><br><span class="line">                    respMessage = MessageUtil.textMessageToXml(text);</span><br><span class="line">                &#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="3-功能测试"><a href="#3-功能测试" class="headerlink" title="3.功能测试"></a>3.功能测试</h3><p><img data-src="/../../../../assets/img/68078.jpg"></p>
-]]></content>
-      <tags>
-        <tag>tool</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>微信公众号开发(二)自动回复功能实现简单的天气查询</title>
-    <url>/39972/</url>
-    <content><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><p>微信公众平台服务器配置通过后，就能进行下面的开发啦</p>
-<blockquote>
-<p>首先可以查看官方的说明文档：<span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXJzLndlaXhpbi5xcS5jb20vZG9jL29mZmlhY2NvdW50L0dldHRpbmdfU3RhcnRlZC9PdmVydmlldy5odG1s">https://developers.weixin.qq.com/doc/offiaccount/Getting_Started/Overview.html<i class="fa fa-external-link-alt"></i></span></p>
-</blockquote>
-<p>普通消息的类型分为7种：</p>
-<span id="more"></span>
-
-<ol>
-<li>文本消息</li>
-<li>图片消息</li>
-<li>语音消息</li>
-<li>视频消息</li>
-<li>小视频消息</li>
-<li>地理位置消息</li>
-<li>链接消息</li>
-</ol>
-<p>本文使用的是文本消息与图片消息</p>
-<h3 id="2-图文消息的自动回复"><a href="#2-图文消息的自动回复" class="headerlink" title="2.图文消息的自动回复"></a>2.图文消息的自动回复</h3><h4 id="2-1-文本消息"><a href="#2-1-文本消息" class="headerlink" title="2.1 文本消息"></a>2.1 文本消息</h4><p>文本消息的XML结构是：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">xml</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ToUserName</span>&gt;</span>&lt;![CDATA[toUser]]&gt;<span class="tag">&lt;/<span class="name">ToUserName</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">FromUserName</span>&gt;</span>&lt;![CDATA[fromUser]]&gt;<span class="tag">&lt;/<span class="name">FromUserName</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">CreateTime</span>&gt;</span>1348831860<span class="tag">&lt;/<span class="name">CreateTime</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">MsgType</span>&gt;</span>&lt;![CDATA[text]]&gt;<span class="tag">&lt;/<span class="name">MsgType</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">Content</span>&gt;</span>&lt;![CDATA[this is a test]]&gt;<span class="tag">&lt;/<span class="name">Content</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">MsgId</span>&gt;</span>1234567890123456<span class="tag">&lt;/<span class="name">MsgId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">xml</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>参数包含：<img data-src="/../../../../assets/img/203231.jpg"></p>
-<p>定义一个BaseMessage，消息基类，封装通用属性：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 消息基类（普通用户 -&gt; 公众帐号）</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">BaseMessage</span> &#123;</span><br><span class="line">    <span class="comment">// 开发者微信号</span></span><br><span class="line">    <span class="keyword">private</span> String ToUserName;</span><br><span class="line">    <span class="comment">// 发送方帐号（一个OpenID）</span></span><br><span class="line">    <span class="keyword">private</span> String FromUserName;</span><br><span class="line">    <span class="comment">// 消息创建时间 （整型）</span></span><br><span class="line">    <span class="keyword">private</span> String CreateTime;</span><br><span class="line">    <span class="comment">// 消息类型（text/image/location/link）</span></span><br><span class="line">    <span class="keyword">private</span> String MsgType;</span><br><span class="line">    <span class="comment">// 消息id，64位整型</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">long</span> MsgId;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 位0x0001被标志时，星标刚收到的消息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> FuncFlag;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>接下来定义文本消息属性TextMessage：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 文本消息</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TextMessage</span> <span class="keyword">extends</span> <span class="title class_">BaseMessage</span>&#123;</span><br><span class="line">    <span class="comment">// 消息内容</span></span><br><span class="line">    <span class="keyword">private</span> String Content;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-2-图片消息"><a href="#2-2-图片消息" class="headerlink" title="2.2 图片消息"></a>2.2 图片消息</h4><p>图片消息的XML结构是：</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">xml</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ToUserName</span>&gt;</span>&lt;![CDATA[toUser]]&gt;<span class="tag">&lt;/<span class="name">ToUserName</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">FromUserName</span>&gt;</span>&lt;![CDATA[fromUser]]&gt;<span class="tag">&lt;/<span class="name">FromUserName</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">CreateTime</span>&gt;</span>1348831860<span class="tag">&lt;/<span class="name">CreateTime</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">MsgType</span>&gt;</span>&lt;![CDATA[image]]&gt;<span class="tag">&lt;/<span class="name">MsgType</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">PicUrl</span>&gt;</span>&lt;![CDATA[this is a url]]&gt;<span class="tag">&lt;/<span class="name">PicUrl</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">MediaId</span>&gt;</span>&lt;![CDATA[media_id]]&gt;<span class="tag">&lt;/<span class="name">MediaId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">MsgId</span>&gt;</span>1234567890123456<span class="tag">&lt;/<span class="name">MsgId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">xml</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>参数包含：<img data-src="/../../../../assets/img/215347.jpg"></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ImageMessage</span> <span class="keyword">extends</span> <span class="title class_">BaseMessage</span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-3-图文消息"><a href="#2-3-图文消息" class="headerlink" title="2.3 图文消息"></a>2.3 图文消息</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Article</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 图文消息描述</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String Description;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 图片链接，支持JPG、PNG格式，&lt;br&gt;</span></span><br><span class="line"><span class="comment">     * 较好的效果为大图640*320，小图80*80</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String PicUrl;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 图文消息名称</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String Title;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 点击图文消息跳转链接</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String Url;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * &lt;p&gt; 图文消息 &lt;/p&gt;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NewsMessage</span> <span class="keyword">extends</span> <span class="title class_">BaseMessage</span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 图文消息个数，限制为10条以内</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Integer ArticleCount;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 多条图文消息信息，默认第一个item为大图</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;Article&gt; Articles;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-功能实现"><a href="#3-功能实现" class="headerlink" title="3.功能实现"></a>3.功能实现</h3><h4 id="3-1-工具类MessageUtil"><a href="#3-1-工具类MessageUtil" class="headerlink" title="3.1 工具类MessageUtil"></a>3.1 工具类MessageUtil</h4><ol>
-<li>解析微信发来的请求（xml）</li>
-<li>将响应消息的Java对象转换成xml</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MessageUtil</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回消息类型：文本</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">RESP_MESSAGE_TYPE_TEXT</span> <span class="operator">=</span> <span class="string">&quot;text&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回消息类型：音乐</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">RESP_MESSAGE_TYPE_MUSIC</span> <span class="operator">=</span> <span class="string">&quot;music&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回消息类型：图文</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">RESP_MESSAGE_TYPE_NEWS</span> <span class="operator">=</span> <span class="string">&quot;news&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 请求消息类型：文本</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">REQ_MESSAGE_TYPE_TEXT</span> <span class="operator">=</span> <span class="string">&quot;text&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 请求消息类型：图片</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">REQ_MESSAGE_TYPE_IMAGE</span> <span class="operator">=</span> <span class="string">&quot;image&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 请求消息类型：链接</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">REQ_MESSAGE_TYPE_LINK</span> <span class="operator">=</span> <span class="string">&quot;link&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 请求消息类型：地理位置</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">REQ_MESSAGE_TYPE_LOCATION</span> <span class="operator">=</span> <span class="string">&quot;location&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 请求消息类型：音频</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">REQ_MESSAGE_TYPE_VOICE</span> <span class="operator">=</span> <span class="string">&quot;voice&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 请求消息类型：推送</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">REQ_MESSAGE_TYPE_EVENT</span> <span class="operator">=</span> <span class="string">&quot;event&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 事件类型：subscribe(订阅)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">EVENT_TYPE_SUBSCRIBE</span> <span class="operator">=</span> <span class="string">&quot;subscribe&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 事件类型：unsubscribe(取消订阅)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">EVENT_TYPE_UNSUBSCRIBE</span> <span class="operator">=</span> <span class="string">&quot;unsubscribe&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 事件类型：CLICK(自定义菜单点击事件)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">EVENT_TYPE_CLICK</span> <span class="operator">=</span> <span class="string">&quot;CLICK&quot;</span>;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * xml转换为map</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Map&lt;String, String&gt; <span class="title function_">xmlToMap</span><span class="params">(HttpServletRequest request)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        Map&lt;String, String&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, String&gt;();</span><br><span class="line">        <span class="type">SAXReader</span> <span class="variable">reader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SAXReader</span>();</span><br><span class="line"></span><br><span class="line">        <span class="type">InputStream</span> <span class="variable">ins</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            ins = request.getInputStream();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e1) &#123;</span><br><span class="line">            e1.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">Document</span> <span class="variable">doc</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            doc = reader.read(ins);</span><br><span class="line">            <span class="type">Element</span> <span class="variable">root</span> <span class="operator">=</span> doc.getRootElement();</span><br><span class="line"></span><br><span class="line">            List&lt;Element&gt; list = root.elements();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (Element e : list) &#123;</span><br><span class="line">                map.put(e.getName(), e.getText());</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> map;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (DocumentException e1) &#123;</span><br><span class="line">            e1.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span>&#123;</span><br><span class="line">            ins.close();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span>: 解析微信发来的请求（XML）</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> <span class="doctag">@param</span> request</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> <span class="doctag">@throws</span> Exception</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> dapengniao</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2016年3月7日 上午10:04:02</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Map&lt;String, String&gt; <span class="title function_">parseXml</span><span class="params">(HttpServletRequest request)</span></span><br><span class="line">            <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="comment">// 将解析结果存储在HashMap中</span></span><br><span class="line">        Map&lt;String, String&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;String, String&gt;();</span><br><span class="line">        <span class="comment">// 从request中取得输入流</span></span><br><span class="line">        <span class="type">InputStream</span> <span class="variable">inputStream</span> <span class="operator">=</span> request.getInputStream();</span><br><span class="line">        <span class="comment">// 读取输入流</span></span><br><span class="line">        <span class="type">SAXReader</span> <span class="variable">reader</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SAXReader</span>();</span><br><span class="line">        <span class="type">Document</span> <span class="variable">document</span> <span class="operator">=</span> reader.read(inputStream);</span><br><span class="line">        <span class="comment">// 得到xml根元素</span></span><br><span class="line">        <span class="type">Element</span> <span class="variable">root</span> <span class="operator">=</span> document.getRootElement();</span><br><span class="line">        <span class="comment">// 得到根元素的所有子节点</span></span><br><span class="line">        List&lt;Element&gt; elementList = root.elements();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 遍历所有子节点</span></span><br><span class="line">        <span class="keyword">for</span> (Element e : elementList) &#123;</span><br><span class="line">            map.put(e.getName(), e.getText());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 释放资源</span></span><br><span class="line">        inputStream.close();</span><br><span class="line">        inputStream = <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">return</span> map;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//    public static XStream xstream = new XStream();</span></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 文本消息对象转换成xml</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> textMessage 文本消息对象</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> xml</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">textMessageToXml</span><span class="params">(TextMessage textMessage)</span>&#123;</span><br><span class="line"><span class="comment">//        XStream xstream = new XStream();</span></span><br><span class="line">        xstream.alias(<span class="string">&quot;xml&quot;</span>, textMessage.getClass());</span><br><span class="line">        <span class="keyword">return</span> xstream.toXML(textMessage);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span>: 图文消息对象转换成xml</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> <span class="doctag">@param</span> newsMessage</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> dapengniao</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2016年3月8日 下午4:14:09</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">newsMessageToXml</span><span class="params">(NewsMessage newsMessage)</span> &#123;</span><br><span class="line">        xstream.alias(<span class="string">&quot;xml&quot;</span>, newsMessage.getClass());</span><br><span class="line">        xstream.alias(<span class="string">&quot;item&quot;</span>, <span class="keyword">new</span> <span class="title class_">Article</span>().getClass());</span><br><span class="line">        <span class="keyword">return</span> xstream.toXML(newsMessage);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@Description</span>: 图片消息对象转换成xml</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> <span class="doctag">@param</span> imageMessage</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> dapengniao</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2016年3月9日 上午9:25:51</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">imageMessageToXml</span><span class="params">(ImageMessage imageMessage)</span> &#123;</span><br><span class="line">        xstream.alias(<span class="string">&quot;xml&quot;</span>, imageMessage.getClass());</span><br><span class="line">        <span class="keyword">return</span> xstream.toXML(imageMessage);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 对象到xml的处理</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="type">XStream</span> <span class="variable">xstream</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">XStream</span>(<span class="keyword">new</span> <span class="title class_">XppDriver</span>() &#123;</span><br><span class="line">        <span class="keyword">public</span> HierarchicalStreamWriter <span class="title function_">createWriter</span><span class="params">(Writer out)</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">PrettyPrintWriter</span>(out) &#123;</span><br><span class="line">                <span class="comment">// 对所有xml节点的转换都增加CDATA标记</span></span><br><span class="line">                <span class="type">boolean</span> <span class="variable">cdata</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">                <span class="meta">@SuppressWarnings(&quot;rawtypes&quot;)</span></span><br><span class="line">                <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">startNode</span><span class="params">(String name, Class clazz)</span> &#123;</span><br><span class="line">                    <span class="built_in">super</span>.startNode(name, clazz);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">writeText</span><span class="params">(QuickWriter writer, String text)</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span> (cdata) &#123;</span><br><span class="line">                        writer.write(<span class="string">&quot;&lt;![CDATA[&quot;</span>);</span><br><span class="line">                        writer.write(text);</span><br><span class="line">                        writer.write(<span class="string">&quot;]]&gt;&quot;</span>);</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        writer.write(text);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="3-2-实现"><a href="#3-2-实现" class="headerlink" title="3.2 实现"></a>3.2 实现</h4><p>当用户发送消息给公众号时（或某些特定的用户操作引发的事件推送时），会产生一个POST请求，开发者可以在响应包（Get）中返回特定XML结构，来对该消息进行响应（现支持回复<code>文本</code>、<code>图片</code>、<code>图文</code>、<code>语音</code>、<code>视频</code>、<code>音乐</code>）。</p>
-<p>上一篇文章，已经创建了IndexController ，里面的GET方法用来验证token，下面直接加一个POST方法，用于进行消息管理。消息接收<code>POST</code>和微信认证<code>GET</code>是同一个接口（开发者填写的URL）</p>
-<p><strong>Controller</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@PostMapping</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">msgProcess</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        request.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    response.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">    <span class="comment">// 调用核心业务类接收消息、处理消息</span></span><br><span class="line">    <span class="type">String</span> <span class="variable">respMessage</span> <span class="operator">=</span> msgService.processRequest(request);</span><br><span class="line">    <span class="comment">// 响应消息</span></span><br><span class="line">    <span class="type">PrintWriter</span> <span class="variable">out</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        out = response.getWriter();</span><br><span class="line">        out.print(respMessage);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        out.close();</span><br><span class="line">        out = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>Service</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MsgService</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Logger</span> <span class="variable">LOGGER</span> <span class="operator">=</span> LoggerFactory.getLogger(MsgService.class);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">processRequest</span><span class="params">(HttpServletRequest request)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">respMessage</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern(<span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>)));</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// xml请求解析</span></span><br><span class="line">            Map&lt;String, String&gt; requestMap = MessageUtil.xmlToMap(request);</span><br><span class="line">            <span class="comment">// 发送方帐号（open_id）</span></span><br><span class="line">            <span class="type">String</span> <span class="variable">fromUserName</span> <span class="operator">=</span> requestMap.get(<span class="string">&quot;FromUserName&quot;</span>);</span><br><span class="line">            <span class="comment">// 公众帐号</span></span><br><span class="line">            <span class="type">String</span> <span class="variable">toUserName</span> <span class="operator">=</span> requestMap.get(<span class="string">&quot;ToUserName&quot;</span>);</span><br><span class="line">            <span class="comment">// 消息类型</span></span><br><span class="line">            <span class="type">String</span> <span class="variable">msgType</span> <span class="operator">=</span> requestMap.get(<span class="string">&quot;MsgType&quot;</span>);</span><br><span class="line">            <span class="comment">// 消息内容</span></span><br><span class="line">            <span class="type">String</span> <span class="variable">content</span> <span class="operator">=</span> requestMap.get(<span class="string">&quot;Content&quot;</span>);</span><br><span class="line">            LOGGER.info(<span class="string">&quot;FromUserName is:&quot;</span> + fromUserName + <span class="string">&quot;, ToUserName is:&quot;</span> + toUserName + <span class="string">&quot;, MsgType is:&quot;</span> + msgType);</span><br><span class="line">            <span class="comment">// 文本消息</span></span><br><span class="line">            <span class="keyword">if</span> (msgType.equals(MessageUtil.REQ_MESSAGE_TYPE_TEXT)) &#123;</span><br><span class="line">                <span class="comment">//这里根据关键字执行相应的逻辑，只有你想不到的，没有做不到的</span></span><br><span class="line">                <span class="keyword">if</span> (content.indexOf(<span class="string">&quot;天气&quot;</span>)!=-<span class="number">1</span>) &#123;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">//自动回复</span></span><br><span class="line">                    <span class="type">NewsMessage</span> <span class="variable">newmsg</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">NewsMessage</span>();</span><br><span class="line">                    newmsg.setToUserName(fromUserName);</span><br><span class="line">                    newmsg.setFromUserName(toUserName);</span><br><span class="line">                    newmsg.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern(<span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>)));</span><br><span class="line">                    newmsg.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);</span><br><span class="line">                    newmsg.setFuncFlag(<span class="number">0</span>);</span><br><span class="line">                    List&lt;Article&gt; articleList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">                    <span class="type">Article</span> <span class="variable">article</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Article</span>();</span><br><span class="line">                    article.setTitle(<span class="string">&quot;天气预报&quot;</span>);</span><br><span class="line">                    article.setDescription(<span class="string">&quot;点击了解未来天气详情...&quot;</span>);</span><br><span class="line">                    article.setPicUrl(<span class="string">&quot;https://lwy-image.oss-cn-beijing.aliyuncs.com/ep.png&quot;</span>);</span><br><span class="line">                    article.setUrl(<span class="string">&quot;https://widget-page.heweather.net/h5/index.html?bg=1&amp;md=0123456&amp;lc=auto&amp;key=f1688db9422246fc969a6ba559075097&quot;</span>);</span><br><span class="line">                    articleList.add(article);</span><br><span class="line">                    <span class="comment">// 设置图文消息个数</span></span><br><span class="line">                    newmsg.setArticleCount(articleList.size());</span><br><span class="line">                    <span class="comment">// 设置图文消息包含的图文集合</span></span><br><span class="line">                    newmsg.setArticles(articleList);</span><br><span class="line">                    <span class="comment">// 将图文消息对象转换成xml字符串</span></span><br><span class="line">                    respMessage = MessageUtil.newsMessageToXml(newmsg);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            LOGGER.error(<span class="string">&quot;error......&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> respMessage;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>测试	<img data-src="/../../../../assets/img/06215027.jpg"></p>
-<blockquote>
-<p>源码参考 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3pob3VtaW5wei93ZWNoYXRQdWJsaWNBY2NvdW50LQ==">https://github.com/zhouminpz/wechatPublicAccount-<i class="fa fa-external-link-alt"></i></span></p>
-</blockquote>
 ]]></content>
       <tags>
         <tag>tool</tag>
