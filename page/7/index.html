@@ -218,7 +218,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/SpringCloud_01/">
+    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/git_shell/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -232,7 +232,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/SpringCloud_01/" class="post-title-link" itemprop="url">Sping Cloud相关组件了解</a>
+            <a href="/git_shell/" class="post-title-link" itemprop="url">Git</a>
         </h2>
 
         <div class="post-meta">
@@ -242,7 +242,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+              <time title="创建时间：2024-02-24 09:58:26" itemprop="dateCreated datePublished" datetime="2024-02-24T09:58:26+08:00">2024-02-24</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -250,7 +250,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" itemprop="url" rel="index"><span itemprop="name">微服务</span></a>
+                  <a href="/categories/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
                 </span>
             </span>
 
@@ -265,10 +265,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-Eureka"><a href="#1-Eureka" class="headerlink" title="1.Eureka"></a>1.Eureka</h3><p>如果需要实现完整的服务注册与服务发现的功能，我们需要有注册中心来统一存储和管理服务信息，应用程序需要将自身的信息注册到注册中心，也就是服务提供者和服务消费者的信息。整个过程中包含的操作有<strong>注册、拉取、心跳、剔除</strong>等动作。</p>
+          <h3 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h3><h4 id="1-创建版本库"><a href="#1-创建版本库" class="headerlink" title="1.创建版本库"></a>1.创建版本库</h4><ol>
+<li>git init    把这个目录变成Git可以管理的仓库</li>
+<li>git add readme.md    把文件添加到仓库</li>
+<li>git commit -m “wrote a readme file”    <code>-m</code>后面输入的是本次提交的说明
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/SpringCloud_01/#more" rel="contents">
+              <a class="btn" href="/git_shell/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -292,7 +295,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/redisfive/">
+    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/HashMap/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -306,7 +309,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/redisfive/" class="post-title-link" itemprop="url">Redis五种数据类型的底层结构</a>
+            <a href="/HashMap/" class="post-title-link" itemprop="url">HashMap分析</a>
         </h2>
 
         <div class="post-meta">
@@ -316,7 +319,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+              <time title="创建时间：2024-02-24 09:58:26" itemprop="dateCreated datePublished" datetime="2024-02-24T09:58:26+08:00">2024-02-24</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -324,7 +327,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
+                  <a href="/categories/%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">源码分析</span></a>
                 </span>
             </span>
 
@@ -339,144 +342,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>RedisObject:  </p>
-<p>Redis 中只有一个 K，一个 V。其中 K 绝对是字符串对象，而 V 可以是 String、List、Hash、Set、ZSet 任意一种。</p>
+          <h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h3><p>HashMap位于<code>java.util</code>包中，HashMap基于Map接口实现，元素以<strong>键值对</strong>的方式存储，并且允许使用null键和null值，因为key不允许重复，因此只能有一个键为null,另外HashMap不能保证放入元素的顺序，它是<strong>无序</strong>的，和放入的顺序并不能相同。HashMap是<strong>线程不安全</strong>的。它的底层为哈希表结构（链表散列：<strong>数组+链表</strong>）实现，结合数组和链表的优点。JDK1.8之后，当链表长度超过 <strong>8</strong> 时，<strong>链表转换为红黑树</strong>。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/redisfive/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/27273/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/../assets/img/head.jpg">
-      <meta itemprop="name" content="ImOkkkk">
-      <meta itemprop="description" content="Java开发, 后端开发">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ImOkkkk BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/27273/" class="post-title-link" itemprop="url">Redis</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1-Redis概述"><a href="#1-Redis概述" class="headerlink" title="1.Redis概述"></a>1.Redis概述</h3><p>redis是一款高性能的NOSQL系列的非关系型数据库</p>
-<h4 id="1-1-什么是NoSQL"><a href="#1-1-什么是NoSQL" class="headerlink" title="1.1 什么是NoSQL"></a>1.1 什么是NoSQL</h4><p>​	NoSQL(NoSQL &#x3D; Not Only SQL)，意即“不仅仅是SQL”，是一项全新的数据库理念，泛指非关系型的数据库。<br>​	随着互联网web2.0网站的兴起，传统的关系数据库在应付web2.0网站，特别是超大规模和高并发的SNS类型的web2.0纯动态网站已经显得力不从心，暴露了很多难以克服的问题，而非关系型的数据库则由于其本身的特点得到了非常迅速的发展。NoSQL数据库的产生就是为了<strong>解决大规模数据集和多重数据种类</strong>带来的挑战，尤其是大数据应用难题。</p>
-<h5 id="1-1-1-NOSQL和关系型数据库比较"><a href="#1-1-1-NOSQL和关系型数据库比较" class="headerlink" title="1.1.1 NOSQL和关系型数据库比较"></a>1.1.1 NOSQL和关系型数据库比较</h5>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/27273/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/16852/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/../assets/img/head.jpg">
-      <meta itemprop="name" content="ImOkkkk">
-      <meta itemprop="description" content="Java开发, 后端开发">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ImOkkkk BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/16852/" class="post-title-link" itemprop="url">MyBatis是如何防止SQL注入的</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1-MyBatis概述"><a href="#1-MyBatis概述" class="headerlink" title="1.MyBatis概述"></a>1.MyBatis概述</h3><p>​	MyBatis 是一款优秀的持久层框架，它支持定制化 SQL、存储过程以及高级映射。MyBatis 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结果集。MyBatis 可以使用简单的 XML 或注解来配置和映射原生信息，将接口和 Java 的 POJOs(Plain Ordinary Java Object,普通的 Java对象)映射成数据库中的记录。</p>
-<h3 id="2-SQL-注入攻击概述"><a href="#2-SQL-注入攻击概述" class="headerlink" title="2.SQL 注入攻击概述"></a>2.SQL 注入攻击概述</h3>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/16852/#more" rel="contents">
+              <a class="btn" href="/HashMap/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -524,7 +393,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+              <time title="创建时间：2024-02-24 09:58:26" itemprop="dateCreated datePublished" datetime="2024-02-24T09:58:26+08:00">2024-02-24</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -555,6 +424,167 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/jvmAndgc/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/multithreading/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="ImOkkkk">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ImOkkkk BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/multithreading/" class="post-title-link" itemprop="url">Java并发编程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-02-24 09:58:26" itemprop="dateCreated datePublished" datetime="2024-02-24T09:58:26+08:00">2024-02-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%9A%E7%BA%BF%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">多线程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="1-多线程基础"><a href="#1-多线程基础" class="headerlink" title="1.多线程基础"></a>1.多线程基础</h3><h4 id="1-1-实现多线程的方法"><a href="#1-1-实现多线程的方法" class="headerlink" title="1.1 实现多线程的方法"></a>1.1 实现多线程的方法</h4><ol>
+<li><p>实现Runnable接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test_01</span> <span class="keyword">implements</span> <span class="title class_">Runnable</span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;实现Runnable接口实现多线程&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/multithreading/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/docker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="ImOkkkk">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ImOkkkk BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/docker/" class="post-title-link" itemprop="url">Docker+Kubernetes</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-02-24 09:58:26" itemprop="dateCreated datePublished" datetime="2024-02-24T09:58:26+08:00">2024-02-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/" itemprop="url" rel="index"><span itemprop="name">云原生</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h1><h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><ol>
+<li><p><strong>Chroot</strong></p>
+<p>改变进程及其子进程外显的根目录，chroot设置根目录的程序，不能够对这个之外的文件进行访问，外部也不能读取、更改它的内容。</p>
+</li>
+<li><p><strong>NameSpace</strong></p>
+<p>对内核资源进行隔离，容器中的进程只可以访问当前容器命名空间的资源(进程ID，主机名、用户、文件名等)。</p>
+</li>
+<li><p><strong>Cgroup</strong></p>
+<p>限制隔离进程的资源使用(CPU、内存、磁盘、网络等)。</p>
+</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/docker/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -700,7 +730,7 @@
 <div class="copyright">
   
   &copy; 2019 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="heartbeat"></i>
   </span>

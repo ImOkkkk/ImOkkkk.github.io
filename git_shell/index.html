@@ -55,7 +55,7 @@
 <meta property="og:description" content="Git1.创建版本库 git init    把这个目录变成Git可以管理的仓库 git add readme.md    把文件添加到仓库 git commit -m “wrote a readme file”    -m后面输入的是本次提交的说明">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://imokkkk.github.io/assets/img/86989.jpg">
-<meta property="article:published_time" content="2021-05-08T13:19:59.126Z">
+<meta property="article:published_time" content="2024-02-24T01:58:26.947Z">
 <meta property="article:modified_time" content="2020-08-05T07:34:41.314Z">
 <meta property="article:author" content="ImOkkkk">
 <meta property="article:tag" content="shell">
@@ -247,7 +247,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+              <time title="创建时间：2024-02-24 09:58:26" itemprop="dateCreated datePublished" datetime="2024-02-24T09:58:26+08:00">2024-02-24</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -305,8 +305,8 @@
 <li>直接在文件管理器中把没用的文件删了，或者用<code>rm</code>命令删除rm test.txt<br>从版本库中删除该文件，那就用命令<code>git rm</code>删掉，并且<code>git commit</code><br>git rm test.txt<br>git commit -m “remove test.txt”<br>删错了，因为版本库里还有，所以可以把误删的文件恢复到最新版本<br>git checkout – test.txt</li>
 </ol>
 <h4 id="7-远程仓库"><a href="#7-远程仓库" class="headerlink" title="7.远程仓库"></a>7.远程仓库</h4><ol>
-<li>添加远程库<br>在GitHub创建一个Git仓库<br>git remote add origin <span class="exturl" data-url="bWFpbHRvOiYjeDY3OyYjeDY5OyYjMTE2OyYjeDQwOyYjeDY3OyYjeDY5OyYjMTE2OyYjeDY4OyYjMTE3OyYjeDYyOyYjNDY7JiN4NjM7JiMxMTE7JiMxMDk7">&#x67;&#x69;&#116;&#x40;&#x67;&#x69;&#116;&#x68;&#117;&#x62;&#46;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span>:xxxxxxxx    关联<br>git push -u origin master    把本地库的所有内容推送到远程库上</li>
-<li>从远程库克隆<br>git clone <span class="exturl" data-url="bWFpbHRvOiYjeDY3OyYjMTA1OyYjeDc0OyYjeDQwOyYjeDY3OyYjMTA1OyYjMTE2OyYjeDY4OyYjeDc1OyYjeDYyOyYjNDY7JiN4NjM7JiMxMTE7JiMxMDk7">&#x67;&#105;&#x74;&#x40;&#x67;&#105;&#116;&#x68;&#x75;&#x62;&#46;&#x63;&#111;&#109;<i class="fa fa-external-link-alt"></i></span>:xxxxxxxxx</li>
+<li>添加远程库<br>在GitHub创建一个Git仓库<br>git remote add origin <span class="exturl" data-url="bWFpbHRvOiYjMTAzOyYjeDY5OyYjeDc0OyYjNjQ7JiN4Njc7JiN4Njk7JiN4NzQ7JiMxMDQ7JiMxMTc7JiN4NjI7JiM0NjsmI3g2MzsmI3g2ZjsmIzEwOTs=">&#103;&#x69;&#x74;&#64;&#x67;&#x69;&#x74;&#104;&#117;&#x62;&#46;&#x63;&#x6f;&#109;<i class="fa fa-external-link-alt"></i></span>:xxxxxxxx    关联<br>git push -u origin master    把本地库的所有内容推送到远程库上</li>
+<li>从远程库克隆<br>git clone <span class="exturl" data-url="bWFpbHRvOiYjMTAzOyYjMTA1OyYjMTE2OyYjeDQwOyYjeDY3OyYjeDY5OyYjMTE2OyYjeDY4OyYjeDc1OyYjeDYyOyYjeDJlOyYjOTk7JiMxMTE7JiMxMDk7">&#103;&#105;&#116;&#x40;&#x67;&#x69;&#116;&#x68;&#x75;&#x62;&#x2e;&#99;&#111;&#109;<i class="fa fa-external-link-alt"></i></span>:xxxxxxxxx</li>
 </ol>
 <h4 id="8-分支管理"><a href="#8-分支管理" class="headerlink" title="8.分支管理"></a>8.分支管理</h4><ol>
 <li>创建与合并分支<br>git switch -c dev    创建dev分支，然后切换到dev分支<br>git branch    查看当前分支<br>修改readme.md    git add readme.md    git commit -m “branch test”<br>git switch master    切换回master分支<br>再查看readme.md文件，刚才添加的内容不见了！因为那个提交是在dev分支上，而master分支此刻的提交点并没有变。<br>git merge dev    把dev分支的工作成果合并到master分支上<br>git branch -d dev    删除dev分支</li>
@@ -360,10 +360,13 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/HashMap/" rel="next" title="HashMap分析">
-      HashMap分析 <i class="fa fa-chevron-right"></i>
+    <a href="/HashMap/" rel="prev" title="HashMap分析">
+      <i class="fa fa-chevron-left"></i> HashMap分析
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/27273/" rel="next" title="Redis">
+      Redis <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -494,7 +497,7 @@
 <div class="copyright">
   
   &copy; 2019 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="heartbeat"></i>
   </span>

@@ -218,7 +218,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/1060/">
+    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/16852/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -232,7 +232,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/1060/" class="post-title-link" itemprop="url">top K问题的优化解法</a>
+            <a href="/16852/" class="post-title-link" itemprop="url">MyBatis是如何防止SQL注入的</a>
         </h2>
 
         <div class="post-meta">
@@ -242,7 +242,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+              <time title="创建时间：2024-02-24 09:58:26" itemprop="dateCreated datePublished" datetime="2024-02-24T09:58:26+08:00">2024-02-24</time>
             </span>
 
           
@@ -256,10 +256,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="top-K问题的优化解法"><a href="#top-K问题的优化解法" class="headerlink" title="top K问题的优化解法"></a>top K问题的优化解法</h3><p>​	在大规模数据处理中，经常会遇到的一类问题：在海量数据中找出出现频率最好的前k个数，或者从海量数据中找出最大的前k个数，这类问题通常被称为top K问题。例如，在搜索引擎中，统计搜索最热门的10个查询词；在歌曲库中统计下载最高的前10首歌等。</p>
+          <h3 id="1-MyBatis概述"><a href="#1-MyBatis概述" class="headerlink" title="1.MyBatis概述"></a>1.MyBatis概述</h3><p>​	MyBatis 是一款优秀的持久层框架，它支持定制化 SQL、存储过程以及高级映射。MyBatis 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结果集。MyBatis 可以使用简单的 XML 或注解来配置和映射原生信息，将接口和 Java 的 POJOs(Plain Ordinary Java Object,普通的 Java对象)映射成数据库中的记录。</p>
+<h3 id="2-SQL-注入攻击概述"><a href="#2-SQL-注入攻击概述" class="headerlink" title="2.SQL 注入攻击概述"></a>2.SQL 注入攻击概述</h3>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/1060/#more" rel="contents">
+              <a class="btn" href="/16852/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -283,7 +284,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/31546/">
+    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/PrometheusAndGrafana/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -297,7 +298,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/31546/" class="post-title-link" itemprop="url">SQL执行慢分析及SQL语句优化</a>
+            <a href="/PrometheusAndGrafana/" class="post-title-link" itemprop="url">Prometheus+Grafana 入门</a>
         </h2>
 
         <div class="post-meta">
@@ -307,7 +308,16 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
+              <time title="创建时间：2024-02-24 09:58:26" itemprop="dateCreated datePublished" datetime="2024-02-24T09:58:26+08:00">2024-02-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%BA%91%E5%8E%9F%E7%94%9F/" itemprop="url" rel="index"><span itemprop="name">云原生</span></a>
+                </span>
             </span>
 
           
@@ -321,20 +331,165 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-SQL语句执行速度慢"><a href="#1-SQL语句执行速度慢" class="headerlink" title="1.SQL语句执行速度慢"></a>1.SQL语句执行速度慢</h3><p>一个SQL语句执行的速度很慢, 分两种情况讨论:</p>
+          <h2 id="Prometheus"><a href="#Prometheus" class="headerlink" title="Prometheus"></a>Prometheus</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ol>
+<li><p>下载：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3Byb21ldGhldXMvcHJvbWV0aGV1cy9yZWxlYXNlcy9kb3dubG9hZC92Mi4yOS4xL3Byb21ldGhldXMtMi4yOS4xLmxpbnV4LWFtZDY0LnRhci5neg==">https://github.com/prometheus/prometheus/releases/download/v2.29.1/prometheus-2.29.1.linux-amd64.tar.gz<i class="fa fa-external-link-alt"></i></span></p>
+</li>
+<li><p>上传到服务器，解压</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/PrometheusAndGrafana/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/redisfive/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="ImOkkkk">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ImOkkkk BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/redisfive/" class="post-title-link" itemprop="url">Redis五种数据类型的底层结构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-02-24 09:58:26" itemprop="dateCreated datePublished" datetime="2024-02-24T09:58:26+08:00">2024-02-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>RedisObject:  </p>
+<p>Redis 中只有一个 K，一个 V。其中 K 绝对是字符串对象，而 V 可以是 String、List、Hash、Set、ZSet 任意一种。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/redisfive/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/mysql/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/../assets/img/head.jpg">
+      <meta itemprop="name" content="ImOkkkk">
+      <meta itemprop="description" content="Java开发, 后端开发">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ImOkkkk BLOG">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/mysql/" class="post-title-link" itemprop="url">MySQL</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2024-02-24 09:58:26" itemprop="dateCreated datePublished" datetime="2024-02-24T09:58:26+08:00">2024-02-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="1-基础篇"><a href="#1-基础篇" class="headerlink" title="1.基础篇"></a>1.基础篇</h3><h4 id="1-1-一条SQL查询语句是如何执行的？"><a href="#1-1-一条SQL查询语句是如何执行的？" class="headerlink" title="1.1 一条SQL查询语句是如何执行的？"></a>1.1 一条SQL查询语句是如何执行的？</h4><p><img data-src="/../assets/img/0d2070e8f84c4801adbfa03bda1f98d9.png"></p>
 <ul>
-<li><p>大多数情况下很正常, 偶尔很慢, 则有如下原因:</p>
-<ol>
-<li>数据库在刷新脏页</li>
-<li>执行的时候, 遇到锁, 如表锁, 行锁</li>
-</ol>
-</li>
-<li><p>一直执行很慢, 则有如下原因</p>
-</li>
-</ul>
+<li><p>Server层</p>
+<p>连接器、查询缓存、分析器、优化器、执行器等。涵盖MySQL的大多数核心服务功能，以及所有的内置函数(如日期、时间、数学和加密函数等)，所有跨存储引擎的功能在这一层实现，如存储过程、触发器、视图等。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/31546/#more" rel="contents">
+              <a class="btn" href="/mysql/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -358,7 +513,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/spring_aop/">
+    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/27273/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/../assets/img/head.jpg">
@@ -372,7 +527,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/spring_aop/" class="post-title-link" itemprop="url">Spring AOP</a>
+            <a href="/27273/" class="post-title-link" itemprop="url">Redis</a>
         </h2>
 
         <div class="post-meta">
@@ -382,16 +537,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spring/" itemprop="url" rel="index"><span itemprop="name">Spring</span></a>
-                </span>
+              <time title="创建时间：2024-02-24 09:58:26" itemprop="dateCreated datePublished" datetime="2024-02-24T09:58:26+08:00">2024-02-24</time>
             </span>
 
           
@@ -405,167 +551,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="1-AOP概述"><a href="#1-AOP概述" class="headerlink" title="1.AOP概述"></a>1.AOP概述</h3><h4 id="1-1-什么是AOP？"><a href="#1-1-什么是AOP？" class="headerlink" title="1.1 什么是AOP？"></a>1.1 什么是AOP？</h4><p>AOP(Aspect Oriented Programming 面向切面编程)，通过<strong>预编译</strong>方式和<strong>运行期动态代理</strong>实现程序功能的统一维护的一种技术。利用AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的<strong>耦合度降低</strong>，提高程序的<strong>可重用性</strong>，同时提高了<strong>开发的效率</strong>。<br>常用于日志记录，性能统计，安全控制，事务处理，异常处理等等。</p>
+          <h3 id="1-Redis概述"><a href="#1-Redis概述" class="headerlink" title="1.Redis概述"></a>1.Redis概述</h3><p>redis是一款高性能的NOSQL系列的非关系型数据库</p>
+<h4 id="1-1-什么是NoSQL"><a href="#1-1-什么是NoSQL" class="headerlink" title="1.1 什么是NoSQL"></a>1.1 什么是NoSQL</h4><p>​	NoSQL(NoSQL &#x3D; Not Only SQL)，意即“不仅仅是SQL”，是一项全新的数据库理念，泛指非关系型的数据库。<br>​	随着互联网web2.0网站的兴起，传统的关系数据库在应付web2.0网站，特别是超大规模和高并发的SNS类型的web2.0纯动态网站已经显得力不从心，暴露了很多难以克服的问题，而非关系型的数据库则由于其本身的特点得到了非常迅速的发展。NoSQL数据库的产生就是为了<strong>解决大规模数据集和多重数据种类</strong>带来的挑战，尤其是大数据应用难题。</p>
+<h5 id="1-1-1-NOSQL和关系型数据库比较"><a href="#1-1-1-NOSQL和关系型数据库比较" class="headerlink" title="1.1.1 NOSQL和关系型数据库比较"></a>1.1.1 NOSQL和关系型数据库比较</h5>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/spring_aop/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/SpringCloudAlibaba/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/../assets/img/head.jpg">
-      <meta itemprop="name" content="ImOkkkk">
-      <meta itemprop="description" content="Java开发, 后端开发">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ImOkkkk BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/SpringCloudAlibaba/" class="post-title-link" itemprop="url">Sping Cloud Alibaba</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" itemprop="url" rel="index"><span itemprop="name">微服务</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1-主要功能"><a href="#1-主要功能" class="headerlink" title="1.主要功能"></a>1.主要功能</h3><ul>
-<li><p>服务限流降级</p>
-</li>
-<li><p>服务注册与发现</p>
-</li>
-<li><p>分布式配置管理</p>
-</li>
-<li><p>消息驱动能力</p>
-</li>
-<li><p>分布式事务</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/SpringCloudAlibaba/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://imokkkk.github.io/SpringCloud_02/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/../assets/img/head.jpg">
-      <meta itemprop="name" content="ImOkkkk">
-      <meta itemprop="description" content="Java开发, 后端开发">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ImOkkkk BLOG">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/SpringCloud_02/" class="post-title-link" itemprop="url">Sping Cloud组件扩展</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-08 21:19:59" itemprop="dateCreated datePublished" datetime="2021-05-08T21:19:59+08:00">2021-05-08</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" itemprop="url" rel="index"><span itemprop="name">微服务</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1-Apollo"><a href="#1-Apollo" class="headerlink" title="1.Apollo"></a>1.Apollo</h3><p>统一管理配置信息，增强配置管理的服务能力。<br><img data-src="/../../../../assets/img/CgotOV28B1WAF4S2AACIYGiePW0196.png"><br>使用配置中心管理配置后，可以将配置信息从项目转移到配置中心，一般一个项目会有一个唯一的标识ID，通过这个ID从配置中心获取对应的配置内容。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/SpringCloud_02/#more" rel="contents">
+              <a class="btn" href="/27273/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -711,7 +702,7 @@
 <div class="copyright">
   
   &copy; 2019 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="heartbeat"></i>
   </span>
